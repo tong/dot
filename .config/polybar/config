@@ -2,6 +2,8 @@
 ; POLYBAR – https://github.com/polybar/polybar
 ;
 
+#include-file = ~/.config/polybar/modules.conf
+
 [settings]
     screenchange-reload = true
     ;compositing-background = xor
@@ -18,9 +20,9 @@
     font-0 = Anonymous Pro Regular:pixelsize=8:antialias=false;0
     font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
     font-2 = siji:pixelsize=10;1
-    ; font-3 = Font Awesome 5 Free:pixelsize=7:antialias=false;2
-    ; font-4 = Font Awesome 5 Free Solid:pixelsize=7;2
-    ; font-5 = Font Awesome 5 Brands:pixelsize=7;2
+    font-3 = Font Awesome 5 Free:pixelsize=7:antialias=false;2
+    font-4 = Font Awesome 5 Free Solid:pixelsize=7;2
+    font-5 = Font Awesome 5 Brands:pixelsize=7;2
 
 [colors]
     ;background = ${xrdb:color0:#222}
@@ -68,9 +70,9 @@
     #modules-left = bspwm i3
     modules-left = i3 xwindow
     #modules-center = mpd
-    modules-center = #network-public-ip
+    modules-center =
     #modules-right = filesystem xbacklight alsa pulseaudio memory cpu temperature wlan eth battery date powermenu
-    modules-right = alsa system-cpu-loadavg filesystem memory cpu temperature eth network-public-ip network-speed time powermenu
+    modules-right = kernel alsa system-cpu-loadavg filesystem memory cpu temperature eth network-public-ip network-speed time powermenu
 
     tray-position = left
     tray-padding = 
@@ -93,6 +95,7 @@
     #;enable-ipc = true
 
 ### ---------------------------------------------
+
 
 [module/alsa]
     type = internal/alsa
@@ -216,30 +219,39 @@
 
 [module/i3]
     type = internal/i3
+    ws-icon-default = ♟
+    ws-icon-0 = 1;♚
+    ws-icon-1 = 2;♛
+    ws-icon-2 = 3;♜
+    ws-icon-3 = 4;♝
+    ws-icon-4 = 5;♞
+    
     format = <label-state> <label-mode>
     index-sort = true
-    wrapping-scroll = false
-    ;enable-scroll = false
-
-    ; Only show workspaces on the same output as the bar
+    ;strip-wsnumbers = false
+    ; wrapping-scroll = false
+    ; enable-click = true
+    ; enable-scroll = true
     ;pin-workspaces = true
 
+    label-mode = %mode%
     label-mode-padding = 1
     label-mode-foreground = #000
-    label-mode-background = ${colors.primary}
+    ;${colors.primary}
 
     ; focused = Active workspace on focused monitor
-    label-focused = %index%
+    label-focused = %index% %icon%
     label-focused-background = ${colors.background-alt}
+    #label-focused-background = #ff0000
     label-focused-underline= ${colors.primary}
-    label-focused-padding = 2
+    label-focused-padding = 4
 
     ; unfocused = Inactive workspace on any monitor
-    label-unfocused = %index%
+    label-unfocused = %index%  %icon% 
     label-unfocused-padding = 2
 
     ; visible = Active workspace on unfocused monitor
-    label-visible = %index%
+    label-visible = %index%  %icon% 
     ;label-visible-background = ${self.label-focused-background}
     label-visible-background = ${colors.background-alt}
     ;label-visible-underline = ${self.label-focused-underline}
@@ -247,14 +259,13 @@
     label-visible-padding = ${self.label-focused-padding}
 
     ; urgent = Workspace with urgency hint set
-    label-urgent = %index%
+    label-urgent = %index%  %icon% 
     label-urgent-background = ${colors.alert}
     label-urgent-padding = 2
-
     ; Separator in between workspaces
     ; label-separator = |
 
-[module/kernel-version]
+[module/kernel]
     type = custom/script
     exec = uname -r
     #interval = 1024
@@ -268,7 +279,7 @@
 
 [module/network-public-ip]
     type = custom/script
-    exec = ~/.config/polybar/scripts/public-ip.sh
+    exec = ~/.config/polybar/scripts/network-public-ip.sh
     interval = 3600
 
 [module/network-traffic]
@@ -363,6 +374,16 @@
     exec = ~/.config/polybar/scripts/system-cpu-loadavg.sh
     interval = 5
 
+[module/system-gpu-nvidia]
+    type = custom/script
+    exec = ~/.config/polybar/scripts/system-nvidia-smi.sh
+    interval = 10
+
+[module/system-uptime-pretty]
+    type = custom/script
+    exec = ~/.config/polybar/scripts/system-uptime-pretty.sh
+    interval = 30
+
 [module/temperature]
     type = internal/temperature
     thermal-zone = 0
@@ -398,6 +419,11 @@
     # #0a6cf5
 
     label = %date% %time%
+    
+[module/updates-pacman]
+    type = custom/script
+    exec = ~/.config/polybar/scripts/updates-pacman.sh
+    interval = 14400
 
 [module/wlan]
     type = internal/network
