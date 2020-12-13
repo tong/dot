@@ -1,0 +1,518 @@
+
+## --- Screen vars
+set $SCREEN1 DP-0
+#set $SCREEN2 DP-3
+
+## --- Mod1 = Alt, Mod4 = Win
+set $mod Mod4
+set $editor atom
+#set $filemanager nemo
+#set $filemanager $FILEMANAGER
+set $filemanager nautilus
+
+## --- Fonts
+font pango:Anonymous Pro 8
+#font pango:DejaVu Sans Mono, Icons 7
+#font pango:Roboto 9
+
+## --- Colors
+#set $color_stage #141419
+set $color_stage #000000
+set $color_bg #263238
+set $color_base #263238
+set $color_text #455A64
+#set $color_separator #2A373E
+set $color_separator #455A64
+set $color_white #ECEFF1
+
+set $color_select_bg #00BCD4
+set $color_select_bg_secondary #4DD0E1
+set $color_accent #4DB6AC
+set $color_accent_secondary #4DB6AC
+set $color_urgent #F44336
+
+set $color_success #00E676
+set $color_question #FFEA00
+set $color_warning #FF9800
+set $color_error #F44336
+set $color_error_bg #FF1744
+set $color_link #03A9F4
+set $color_visited #9C27B0
+
+#TODO see https://github.com/dylanaraps/pywal/wiki/Customization#i3
+#set_from_resource $fg color15
+#set_from_resource $bg color8
+#set_from_resource $color_border i3wm.border
+#set_from_resource $color_background i3wm.background
+#set_from_resource $color_test i3wm.test
+
+## -----
+
+## Hack to disable compton shadows on non floating windows
+#set $toggle_active_window_floating exec --no-startup-id /$HOME/.config/i3/script/toggle_active_window_shadow.sh, floating toggle
+
+## Volume control methods
+set $volume_up amixer -q set Master 10%+ unmute && killall -SIGUSR1 i3status
+set $volume_down amixer -q set Master 10%- unmute && killall -SIGUSR1 i3status
+set $volume_mute amixer -q set Master 0% unmute && killall -SIGUSR1 i3status
+set $volume_toggle amixer set Master toggle && killall -SIGUSR1 i3status
+
+
+## ----- Workspaces
+
+#focus_on_window_activation smart
+focus_on_window_activation none
+#workspace_layout default|stacking|tabbed
+#workspace_auto_back_and_forth yes
+#default_orientation horizontal|vertical|auto
+#force_display_urgency_hint 500 ms
+#popup_during_fullscreen smart #|ignore|leave_fullscreen
+
+#            
+
+#set $WS1 1:
+set $WS1 1:
+set $WS2 2:
+set $WS3 3:
+set $WS4 4:
+set $WS5 5:
+set $WS6 6:
+set $WS7 7:
+set $WS8 8:
+set $WS9 9:
+set $WS10 
+
+#workspace $WS1 output $SCREEN1
+#workspace $WS2 output $SCREEN1
+#workspace $WS3 output $SCREEN1
+#workspace $WS4 output $SCREEN1
+#workspace $WS5 output $SCREEN1
+#workspace $WS6 output $SCREEN1
+#workspace $WS7 output $SCREEN1
+#workspace $WS8 output $SCREEN1
+#workspace $WS9 output $SCREEN1
+#workspace $WS10 output $SCREEN1
+
+
+## ----- Window
+
+## <colorclass> <border> <background> <text> <indicator> <child_border>
+client.focused          #212C31 #212C31 #CFD8DC #CFD8DC   #222D32
+client.focused_inactive #141419 #141419 #586e75 #484e50   #141419
+client.unfocused        #141419 #141419 #212C31 #292d2e   #141419
+client.urgent           #2f343a #DC322F #ffffff #DC322F   #DC322F
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.background       #141419
+
+# bar {
+# 	position top
+#     status_command i3status
+# 	#separator_symbol " "
+# 	#mode hide
+# 	#hidden_state show
+#     tray_padding 10
+# 	colors {
+# 		statusline #f0f0f0
+# 	}
+# }
+
+floating_minimum_size 8 x 8
+floating_maximum_size 3840 x 2160
+show_marks yes
+hide_edge_borders smart
+popup_during_fullscreen smart
+
+new_window normal 1
+#new_window pixel 10
+#new_float normal 1
+
+#for_window [class="^."] border none
+#for_window [class="^.*"] border
+#for_window [class=".*"] title_format "<span foreground='red' background='.#586e75'>%title</span>"
+#for_window [class=".*"] title_format "<span>%title</span>"
+#for_window [class=".*"] title_format "<b>%title</b>"
+#for_window [window_role="splash"] floating enable, border none
+#for_window [class="^evil-app$"] floating enable, move container to workspace 4
+#for_window [window_role="devtools"] border none floating enable
+#for_window [instance="^mpv$"] $toggle_active_window_floating, workspace video
+for_window [class="Alacritty"] border none floating enable
+for_window [class="Arandr"] border none floating enable
+for_window [class="Atom"] border noneQ
+for_window [class="Baobab"] floating enable resize set 400 800
+for_window [class="Blueman-manager"] floating enable resize set 600 600
+for_window [class="Blender"] border none
+for_window [class="Code"] border none
+for_window [class="Darktable"] border none floating enable
+for_window [class="darkside"] floating enable
+for_window [class="Code"] border none
+for_window [class="DB Browser for SQLite"] border none floating enable resize set 800 600
+for_window [class="Dconf-editor"] floating enable resize set 1000 600
+for_window [class="Eog"] border none floating enable
+for_window [class="feh"] border none floating enable
+for_window [class="File-roller"] border none floating enable
+for_window [class="Geary"] border none floating enable
+for_window [class="Gpick"] floating enable
+for_window [class="Gimp-2.10"] border none
+for_window [class="FKY"] border none floating enable resize set 500 720
+for_window [class="Gamma"] border none floating enable resize set 1280 720
+#for_window [class="Gnome-*"] border none floating enable
+for_window [class="Gnome-calculator"] floating enable
+for_window [class="Gnome-contacts"] border none floating enable
+for_window [class="Gnome-control-center"] floating enable
+for_window [class="Gnome-disks"] floating enable
+for_window [class="Gnome-font-viewer"] border none floating enable resize set 1000 1400
+for_window [class="Gnome-logs"] border none floating enable resize set 1000 1400
+for_window [class="Gnome-mplayer"] floating enable
+#for_window [class="Gnome-system-monitor"] border none floating enable resize set 1000 1400
+for_window [class="Gnome-tweaks"] floating enable resize set 800 1000
+for_window [class="Gtk-recordMyDesktop"] floating enable
+for_window [class="hl"] border none floating enable
+for_window [class="hxviz"] floating enable
+for_window [class="Hyper"] border none floating enable resize set 600 600
+for_window [class="itch"] border none floating enable
+for_window [class="KoreApplication"] border none floating enable
+for_window [class="letterspace"] border none floating enable
+#for_window [class="LD47_KincApplication"] border none floating enable
+for_window [class="org.gnome.Maps"] border none floating enable
+for_window [class="MPlayer"] border none floating enable
+for_window [class="Nautilus"] border none floating enable set 700 1000
+for_window [class="Nemo"] border none floating enable set 500 800
+for_window [class="Nm-connection-editor"] floating enable resize set 600 1000
+for_window [class="Nitrogen"] floating enable resize set 400 900
+for_window [class="Nvidia-settings"] floating enable
+for_window [class="Panzerschokolade"] border none floating enable
+for_window [class="Pavucontrol"] border none floating enable resize set 600 800
+for_window [class="Pidgin"] border none resize set 200 600
+for_window [class="Psi"] border none floating enable resize set 300 300
+for_window [class="Seahorse"] border none floating enable resize set 720 1000
+for_window [class="SimpleScreenRecorder"] floating enable
+for_window [class="Steam"] floating enable
+for_window [class="superposition_KincApplication"] border none floating enable
+for_window [title="Task Manager - Chromium"] border none floating enable resize set 720 500
+for_window [class="Terminator"] border none floating enable resize set 720 600
+for_window [class="Tilix"] border none floating enable
+for_window [class="vlc"] border none floating enable resize set 720 1000
+#for_window [class="www.youtube.com__watch"] border none floating enable
+#for_window [title="Tasks.*"] floating enable; resize shrink width 1--0000px; resize grow width 400px; resize shrink height 10000px; resize grow height 800px;
+#for_window [class="Transmission-gtk"] floating enable; resize shrink width 200px; resize grow width 400px; resize shrink height 4000px; resize grow height 800px;
+
+#assign [class="^Atom"] → $WS1
+#assign [class="^Gnome-mplayer"] → $WS7
+assign [class="^Pidgin"] → $WS9
+assign [class="^Steam"] → $WS6
+assign [class="^SoulseekQt-2016-1-17-64bit"] → $WS8
+assign [class="^Transmission-gtk"] → $WS8
+
+## ----- Keyboard
+
+#set $up l
+#set $down semicolon
+#set $left j
+#set $right k
+
+## Reload i3
+bindsym $mod+Shift+c reload
+
+## Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+## Kill focused window
+bindsym $mod+q kill
+bindsym $mod+Shift+q kill
+
+## Exit i3 (log out of X session)
+#bindsym $mod+Shift+e exec i3-nagbar -t warning -m 'EXIT?' -b 'Exit' 'i3-msg exit' -f 'Anonymous Pro 9'
+
+## Change focus
+bindsym $mod+Left focus left
+bindsym $mod+Right focus right
+bindsym $mod+Up focus up
+bindsym $mod+Down focus down
+#bindsym Shift+j focus left
+#bindsym Shift+k focus right
+#bindsym $mod+$left focus left
+#bindsym $mod+$down focus down
+#bindsym $mod+$up focus up
+#bindsym $mod+$right focus right
+
+## Move focused window
+set $window_move_speed 150px
+bindsym $mod+Shift+Left move left $window_move_speed
+bindsym $mod+Shift+Right move right $window_move_speed
+bindsym $mod+Shift+Up move up $window_move_speed
+bindsym $mod+Shift+Down move down $window_move_speed
+bindsym $mod+Shift+j move left $window_move_speed
+bindsym $mod+Shift+k move right $window_move_speed
+bindsym $mod+Shift+h move up $window_move_speed
+bindsym $mod+Shift+n move down $window_move_speed
+
+## Resize focused window
+#bindsym $mod+Mod1+Left resize shrink width 10 px or 10 ppt
+#bindsym $mod+Mod1+Right resize grow width 10 px or 10 ppt
+#bindsym $mod+Mod1+Up resize grow height 10 px or 10 ppt
+#bindsym $mod+Mod1+Down resize resize shrink height 10 px or 10 ppt
+#bindsym $mod+Mod1+j resize shrink width 10 px or 10 ppt
+#bindsym $mod+Mod1+k resize grow width 10 px or 10 ppt
+#bindsym $mod+Mod1+h resize grow height 10 px or 10 ppt
+#bindsym $mod+Mod1+n resize shrink height 10 px or 10 ppt
+
+## Split container
+bindsym $mod+h split horizontal
+bindsym $mod+v split vertical
+bindsym $mod+t split toggle
+
+## Change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+## Toggle tiling/floating
+bindsym $mod+Shift+space floating toggle
+#bindsym $mod+Shift+space $toggle_active_window_floating
+
+bindsym $mod+space focus mode_toggle
+
+## Focus the parent container
+bindsym $mod+a focus parent
+
+## Jump to urgent window
+#bindsym $mod+x [urgent=latest] focus
+
+## Focus the child container
+#bindsym $mod+d focus child
+
+## Switch to next/prev workspace
+bindsym $mod+Ctrl+Right workspace next
+bindsym $mod+Ctrl+Left workspace prev
+
+## Move window to next/prev workspace
+bindsym $mod+Ctrl+Shift+Right move container to workspace next; workspace next
+bindsym $mod+Ctrl+Shift+Left move container to workspace prev; workspace prev
+
+## Switch to workspace
+bindsym $mod+1 workspace $WS1
+bindsym $mod+2 workspace $WS2
+bindsym $mod+3 workspace $WS3
+bindsym $mod+4 workspace $WS4
+bindsym $mod+5 workspace $WS5
+bindsym $mod+6 workspace $WS6
+bindsym $mod+7 workspace $WS7
+bindsym $mod+8 workspace $WS8
+bindsym $mod+9 workspace $WS9
+bindsym $mod+0 workspace $WS10
+
+## Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $WS1
+bindsym $mod+Shift+2 move container to workspace $WS2
+bindsym $mod+Shift+3 move container to workspace $WS3
+bindsym $mod+Shift+4 move container to workspace $WS4
+bindsym $mod+Shift+5 move container to workspace $WS5
+bindsym $mod+Shift+6 move container to workspace $WS6
+bindsym $mod+Shift+7 move container to workspace $WS7
+bindsym $mod+Shift+8 move container to workspace $WS8
+bindsym $mod+Shift+9 move container to workspace $WS9
+bindsym $mod+Shift+0 move container to workspace $WS10
+
+## Move focused container to workspace and switch to it
+bindsym $mod+Ctrl+Shift+1 move container to workspace $WS1; workspace $WS1
+bindsym $mod+Ctrl+Shift+2 move container to workspace $WS2; workspace $WS2
+bindsym $mod+Ctrl+Shift+3 move container to workspace $WS3; workspace $WS3
+bindsym $mod+Ctrl+Shift+4 move container to workspace $WS4; workspace $WS4
+bindsym $mod+Ctrl+Shift+5 move container to workspace $WS5; workspace $WS5
+bindsym $mod+Ctrl+Shift+6 move container to workspace $WS6; workspace $WS6
+bindsym $mod+Ctrl+Shift+7 move container to workspace $WS7; workspace $WS7
+bindsym $mod+Ctrl+Shift+8 move container to workspace $WS8; workspace $WS8
+bindsym $mod+Ctrl+Shift+9 move container to workspace $WS9; workspace $WS9
+bindsym $mod+Ctrl+Shift+0 move container to workspace $WS10; workspace $WS10
+
+## Fullscreen
+bindsym $mod+f fullscreen toggle
+
+## Scratchpad
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
+## Rofi
+bindsym $mod+d exec rofi -show run -nb "$fg" # -font "Anonymous Pro 8"
+bindsym $mod+Tab exec rofi -show window # -font "Anonymous Pro 8"
+#bindsym $mod+d exec rofi -show combi -combi-modi window,run -font "Anonymous Pro 8"
+#bindsym $mod+d exec --no-startup-id /$HOME/.config/i3/script/rofi-run.sh
+
+#bindsym $mod+Ctrl+Tab exec --no-startup-id tilix --quake
+
+## Mediakeys
+bindsym XF86AudioMute exec --no-startup-id $volume_toggle
+bindsym XF86AudioLowerVolume exec --no-startup-id $volume_down unmute && killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id $volume_up unmute && killall -SIGUSR1 i3status
+#bindsym F3 exec --no-startup-id $volume_up unmute && killall -SIGUSR1 i3status
+#bindsym F2 exec --no-startup-id $volume_down unmute && killall -SIGUSR1 i3status
+
+## Cmus
+#bindsym XF86AudioPlay exec cmus-remote --pause
+#bindsym XF86AudioStop exec cmus-remote --stop
+#bindsym XF86AudioPrev exec cmus-remote --prev
+#bindsym XF86AudioNext exec cmus-remote --next
+##bindsym XF86AudioRaiseVolume exec cmus-remote --volume +10%
+##bindsym XF86AudioLowerVolume exec cmus-remote --volume -10%
+
+## DMenu (applications shipping a .desktop file only)
+#bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop
+
+## Filemanager
+bindsym $mod+n exec $filemanager
+
+## Screenshot
+bindsym $mod+x exec --no-startup-id xfce4-screenshooter
+
+## Terminal
+bindsym $mod+Return exec i3-sensible-terminal
+
+## Browser/Chrome
+bindsym $mod+c exec chromium
+
+#bindsym $mod+Shift+Left move workspace to output left
+#bindsym $mod+Shift+u move workspace to output left
+
+
+#bindsym $mod+q exec --no-startup-id tilix --quake
+
+## ----- Mouse
+
+#focus_follows_mouse yes
+focus_follows_mouse no
+mouse_warping output
+#force_focus_wrapping force
+
+## Use Mouse+$mod to drag floating windows
+floating_modifier $mod
+
+# Middle button and modifer over any part of the window to kill it
+bindsym --whole-window $mod + button2 kill
+#bindsym button9 move left
+#bindsym button8 move right
+
+
+## ----- Modes
+
+# Workspace movement
+set $mode_move  MOVE
+mode "$mode_move" {
+    bindsym Left move workspace to output left
+    bindsym Right move workspace to output right
+    bindsym Left j workspace to output left
+    bindsym Right k workspace to output right
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Shift+m mode "$mode_move"
+
+## Window resize
+#set $mode_resize_h 150
+#set $mode_resize_v 150
+#set $mode_resize  RESIZE
+#mode "$mode_resize" {
+#    bindsym Left resize shrink width $mode_resize_h px or $mode_resize_h ppt
+#    bindsym Right resize grow width $mode_resize_h px or $mode_resize_h ppt
+#    bindsym Up resize grow height $mode_resize_v px or $mode_resize_v ppt
+#    bindsym Down resize shrink height $mode_resize_v px or $mode_resize_v ppt
+#    bindsym j resize shrink width $mode_resize_h px or $mode_resize_h ppt
+#    bindsym k resize grow width $mode_resize_h px or $mode_resize_h ppt
+#    bindsym h resize grow height $mode_resize_v px or $mode_resize_v ppt
+#    bindsym n resize shrink height $mode_resize_v px or $mode_resize_v ppt
+#    bindsym Return mode "default"
+#    bindsym Escape mode "default"
+#}
+#bindsym $mod+r mode "$mode_resize"
+
+## Audio volume  L   R   M
+#set $mode_volume VOLUME   <span color='#141414'>U</span><span color='#606060'>P</span>   <span color='#141414'>D</span><span color='#606060'>OWN</span>   <span color='#141414'>M</span><span color='#606060'>UTE</span>
+#mode --pango_markup "$mode_volume" {
+#    bindsym Up exec --no-startup-id $volume_up
+#    bindsym Down exec --no-startup-id $volume_down
+#    bindsym h exec --no-startup-id $volume_up
+#    bindsym n exec --no-startup-id $volume_down
+#    bindsym m exec --no-startup-id $volume_mute
+#    bindsym Return mode "default"
+#    bindsym Escape mode "default"
+#}
+#bindsym $mod+Shift+v mode "$mode_volume"
+
+## Music               
+# 0[P]AUSE  [S]TOP [H]PREV [N]EXT [Q]UIT
+set $mode_music   <span color='#141414'>P</span><span color='#505050'>REV</span>   <span color='#141414'>N</span><span color='#505050'>EXT</span>  <span color='#141414'>P</span><span color='#505050'>AUSE</span>  <span color='#141414'>S</span><span color='#505050'>TOP</span>  <span color='#141414'>J</span>  <span color='#141414'>K</span>
+mode --pango_markup "$mode_music" {
+    bindsym p exec --no-startup-id cmus-remote --pause
+    bindsym s exec --no-startup-id cmus-remote --stop
+    bindsym n exec --no-startup-id cmus-remote --next
+    bindsym h exec --no-startup-id cmus-remote --prev
+    bindsym j exec --no-startup-id cmus-remote --seek -10
+    bindsym k exec --no-startup-id cmus-remote --seek 10
+    bindsym Shift+j exec --no-startup-id cmus-remote --seek -60
+    bindsym Shift+k exec --no-startup-id cmus-remote --seek 60
+    #bindsym q exec --no-startup-id killall cmus
+    bindsym Down exec --no-startup-id cmus-remote --next
+    bindsym Up exec --no-startup-id cmus-remote --prev
+    bindsym Left exec --no-startup-id cmus-remote --seek -10
+    bindsym Right exec --no-startup-id cmus-remote --seek 10
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+m mode "$mode_music"
+
+## Session management
+set $mode_system <span color='#141414'>B</span><span color='#505050'>LANK</span> <span color='#141414'>L</span><span color='#505050'>OCK</span> <span color='#141414'>S</span><span color='#505050'>USPEND</span> <span color='#141414'>H</span><span color='#505050'>IBERNATE</span> <span color='#141414'>⇧E</span><span color='#505050'>XIT</span> <span color='#141414'>⇧R</span><span color='#505050'>EBOOT</span> <span color='#141414'>⇧S</span><span color='#505050'>HUTDOWN</span>
+mode --pango_markup "$mode_system" {
+    bindsym l exec --no-startup-id i3exit lock
+    bindsym b exec --no-startup-id screen-blank
+    bindsym s exec --no-startup-id i3exit suspend, mode "default"
+    bindsym h exec --no-startup-id i3exit hibernate, mode "default"
+    bindsym Shift+e exec --no-startup-id i3exit logout, mode "default"
+    bindsym Shift+r exec --no-startup-id i3exit reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Shift+Delete mode "$mode_system"
+
+# ## Application launcher
+# set $mode_launch  <span color='#141414'>A</span><span color='#606060'>TOM</span>   <span color='#141414'>C</span><span color='#606060'>HROME</span>   <span color='#141414'>G</span><span color='#606060'>ITHUB</span>   <span color='#141414'>F</span><span color='#606060'>IREFOX</span>   <span color='#141414'>N</span><span color='#606060'>AUTILUS</span>   <span color='#141414'>P</span><span color='#606060'>IDGIN</span>   <span color='#141414'>S</span><span color='#606060'>TEAM</span>  
+# mode --pango_markup "$mode_launch" {
+#     bindsym a exec atom, mode "default"
+#     bindsym c exec chromium, mode "default"
+#     bindsym f exec firefox, mode "default"
+#     bindsym g exec chromium https://github.com/tong, mode "default"
+#     bindsym n exec nautilus, mode "default"
+#     bindsym t exec chromium https://twitter.com/, mode "default"
+#     bindsym s exec steam, mode "default"
+#     bindsym y exec chromium --app=https://youtube.com, mode "default"
+#     bindsym Return mode "default"
+#     bindsym Escape mode "default"
+# }
+# bindsym $mod+o mode "$mode_launch"
+
+################################################################################
+
+## Startup
+
+#exec_always --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh --daemonize
+#exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets
+#exec_always --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh --daemonize
+#exec --no-startup-id /usr/lib/gnome-settings-daemon/gsd-xsettings
+#exec_always --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh --daemonize
+
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+#exec --no-startup-id nm-applet
+#exec --no-startup-id blueman-manager
+#exec --no-startup-id conky -c $HOME/.config/i3/desktop.conky
+
+#exec --no-startup-id nitrogen --restore
+exec_always --no-startup-id hsetroot -solid '#141419'
+exec_always --no-startup-id xset r rate 250 40
+
+#exec --no-startup-id compton -b --config ~/.config/compton.conf
+exec_always --no-startup-id picom -b --config ~/.config/picom.conf
+
+#exec --no-startup-id chromium --no-startup-window
+exec --no-startup-id i3-sensible-terminal
+
+#exec --no-startup-id dbus-send --session --print-reply=literal --dest=org.gnome.SessionManager "/org/gnome/SessionManager" org.gnome.SessionManager.RegisterClient "string:i3" "string:$DESKTOP_AUTOSTART_ID"
