@@ -1,6 +1,5 @@
-;
+
 ; POLYBAR – https://github.com/polybar/polybar
-;
 
 #include-file = ~/.config/polybar/modules.conf
 
@@ -17,12 +16,13 @@
     margin-bottom = 2
 
 [fonts]
-    font-0 = Anonymous Pro Regular:pixelsize=8:antialias=false;0
+    font-0 = Roboto Mono:pixelsize=8:antialias=false;0
     font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
     font-2 = siji:pixelsize=10;1
-    font-3 = Font Awesome 5 Free:pixelsize=7:antialias=false;2
-    font-4 = Font Awesome 5 Free Solid:pixelsize=7;2
-    font-5 = Font Awesome 5 Brands:pixelsize=7;2
+    font-3 = Font Awesome 5 Free:pixelsize=8:style=Regular:antialias=false;0
+    font-4 = Font Awesome 5 Free Solid:pixelsize=8:style=Solid:antialias=false;2
+    font-5 = Font Awesome 5 Brands:pixelsize=8:style=Regular:antialias=false;2
+    font-6 = Material Icons:pixelsize=8:style=Regular:antialias=false;2
 
 [colors]
     ;background = ${xrdb:color0:#222}
@@ -31,19 +31,27 @@
     background-alt = #37474F
     ;foreground = ${xrdb:color7:#222}
     foreground = #CFD8DC
-    foreground-alt = #CFD8DC
+    foreground-alt = #ffffff
     primary = #586e75
     secondary = #2f343a
     alert = #bd2c40
 
+[bar/test]
+    width = 100%
+    height = 24
+    modules-left =
+    modules-center = xwindow 
+    modules-right =
+
 [bar/main]
+    inherit = fonts
     ;monitor = ${env:MONITOR:HDMI-1}
     width = 100%
-    height = 20
+    height = 24
     ;offset-x = 1%
     ;offset-y = 20%
     ;radius = 0.0
-    fixed-center = false
+    fixed-center = true
     line-size = 3
     ;line-color = #f00
     ;dpi-x = 96
@@ -60,25 +68,14 @@
     border-size = 1
     border-color = #141419
 
-    font-0 = Anonymous Pro Regular:pixelsize=8:antialias=false;0
-    font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
-    font-2 = siji:pixelsize=10;1
-    ; font-3 = Font Awesome 5 Free:pixelsize=7:antialias=false;2
-    ; font-4 = Font Awesome 5 Free Solid:pixelsize=7;2
-    ; font-5 = Font Awesome 5 Brands:pixelsize=7;2
-
-    #modules-left = bspwm i3
-    modules-left = i3 xwindow
-    #modules-center = mpd
-    modules-center =
+    modules-left = i3
+    modules-center = xwindow 
     #modules-right = filesystem xbacklight alsa pulseaudio memory cpu temperature wlan eth battery date powermenu
-    modules-right = kernel alsa system-cpu-loadavg filesystem memory cpu temperature eth network-public-ip network-speed time powermenu
+    modules-right = alsa system-cpu-loadavg filesystem memory cpu eth network-public-ip network-speed time powermenu
 
-    tray-position = left
-    tray-padding = 
-    ;tray-background = #0063ff
+    tray-position = right
+    tray-padding = 4
 
-    ;wm-restack = bspwm
     ;wm-restack = i3
 
     ;override-redirect = true
@@ -96,6 +93,49 @@
 
 ### ---------------------------------------------
 
+[module/apps]
+    type = custom/menu
+
+    expand-right = true
+
+    ;format-background = #ffffff
+    ;format-foreground = #000000
+    format-spacing = 10
+
+    ;label-open = "  u"
+    label-open = 
+    ;label-open-foreground = ${colors.foreground}
+
+    label-close =  CANCEL
+    label-close-foreground = ${colors.foreground}
+
+    label-separator = |
+    label-separator-foreground = ${colors.foreground-alt}
+
+    menu-0-0 = REBOOT
+    menu-0-0-exec = menu-open-1
+    menu-0-1 = SHUTTDOWN
+    menu-0-1-exec = menu-open-2
+
+    menu-1-0 = CANCEL
+    menu-1-0-exec = menu-open-0
+    menu-1-1 = reboot
+    menu-1-1-exec = sudo reboot
+
+    menu-2-0 = OFF
+    menu-2-0-exec = sudo poweroff
+    menu-2-1 = CCCANCEL
+    menu-2-1-exec = menu-open-0
+
+[module/all-icons]
+    type = custom/script
+    interval = 2
+    ;format-prefix = " "
+    ;format-prefix-foreground = ${colors.foreground-alt}
+    ;format-underline = #f90000
+    ;label = AAAAAAAAAAAAAAAAA
+    ;exec = echo "23"
+    exec = echo "  "
 
 [module/alsa]
     type = internal/alsa
@@ -125,10 +165,10 @@
     bar-volume-empty-font = 2
     bar-volume-empty-foreground = ${colors.foreground-alt}
 
-[module/backlight-acpi]
-    inherit = module/xbacklight
-    type = internal/backlight
-    card = intel_backlight
+; [module/backlight-acpi]
+;     inherit = module/xbacklight
+;     type = internal/backlight
+;     card = intel_backlight
 
 [module/battery]
     type = internal/battery
@@ -163,34 +203,14 @@
     animation-discharging-foreground = ${colors.foreground-alt}
     animation-discharging-framerate = 750
 
-[module/bspwm]
-    type = internal/bspwm
-
-    label-focused = %index%
-    label-focused-background = ${colors.background-alt}
-    label-focused-underline= ${colors.primary}
-    label-focused-padding = 2
-
-    label-occupied = %index%
-    label-occupied-padding = 2
-
-    label-urgent = %index%!
-    label-urgent-background = ${colors.alert}
-    label-urgent-padding = 2
-
-    label-empty = %index%
-    label-empty-foreground = ${colors.foreground-alt}
-    label-empty-padding = 2
-
-    ; Separator in between workspaces
-    ; label-separator = |
-
 [module/cpu]
     type = internal/cpu
-    interval = 2
+    interval = 1
     format-prefix = " "
+    ;format-prefix = "  "
     format-prefix-foreground = ${colors.foreground-alt}
     ;format-underline = #f90000
+    ;label = %percentage:2%%
     label = %percentage:2%%
 
 [module/eth]
@@ -217,41 +237,49 @@
     ;label-unmounted = %mountpoint% not mounted
     ;label-unmounted-foreground = ${colors.foreground-alt}
 
+[module/info-gitlab-pipelines]
+    type = custom/script
+    exec = ~/.config/polybar/scripts/info-gitlab-pipelines.sh
+    interval = 30
+
 [module/i3]
     type = internal/i3
-    ws-icon-default = ♟
-    ws-icon-0 = 1;♚
-    ws-icon-1 = 2;♛
-    ws-icon-2 = 3;♜
-    ws-icon-3 = 4;♝
+    ws-icon-default =
+    ws-icon-0 = 1
+    ws-icon-1 = 2
+    ws-icon-2 = 3
+    ws-icon-3 = 4
     ws-icon-4 = 5;♞
     
     format = <label-state> <label-mode>
     index-sort = true
-    ;strip-wsnumbers = false
+    #strip-wsnumbers = true
     ; wrapping-scroll = false
-    ; enable-click = true
+    ; enable-click = false
     ; enable-scroll = true
-    ;pin-workspaces = true
+    #pin-workspaces = true
 
     label-mode = %mode%
-    label-mode-padding = 1
+    ;label-mode-padding = 1
     label-mode-foreground = #000
-    ;${colors.primary}
 
     ; focused = Active workspace on focused monitor
-    label-focused = %index% %icon%
+    ;label-focused = %index% %icon%
+    label-focused = %index%
     label-focused-background = ${colors.background-alt}
+    label-focused-foreground = ${colors.foreground-alt}
     #label-focused-background = #ff0000
     label-focused-underline= ${colors.primary}
-    label-focused-padding = 4
+    label-focused-padding = 2
 
     ; unfocused = Inactive workspace on any monitor
-    label-unfocused = %index%  %icon% 
+    ;label-unfocused = %index%  %icon% 
+    label-unfocused = %index%
     label-unfocused-padding = 2
 
     ; visible = Active workspace on unfocused monitor
-    label-visible = %index%  %icon% 
+    ;label-visible = %index%  %icon% 
+    label-visible = %index%
     ;label-visible-background = ${self.label-focused-background}
     label-visible-background = ${colors.background-alt}
     ;label-visible-underline = ${self.label-focused-underline}
@@ -261,14 +289,23 @@
     ; urgent = Workspace with urgency hint set
     label-urgent = %index%  %icon% 
     label-urgent-background = ${colors.alert}
-    label-urgent-padding = 2
+    label-urgent-padding = 6
     ; Separator in between workspaces
-    ; label-separator = |
+    
+    ;label-separator = |
 
 [module/kernel]
     type = custom/script
     exec = uname -r
     #interval = 1024
+
+[module/memory]
+    type = internal/memory
+    interval = 2
+    format-prefix = " "
+    format-prefix-foreground = ${colors.foreground-alt}
+    ;format-underline = #4bffdc
+    label = %gb_used%/%gb_free%
 
 [module/network-speed]
     type = internal/network
@@ -291,14 +328,15 @@
     type = custom/script
     exec = ~/.config/polybar/scripts/notification-github.sh
     interval = 60
-
-[module/memory]
-    type = internal/memory
-    interval = 2
     format-prefix = " "
-    format-prefix-foreground = ${colors.foreground-alt}
-    ;format-underline = #4bffdc
-    label = %percentage_used%%
+; [module/github]
+;     type = internal/github
+;     format-prefix = " "
+;     token = ${file:~/.config/polybar/github-token}
+;     user = tong
+;     empty-notifications = true
+;     interval = 10
+;     api-url = https://api.github.com/
 
 [module/mpd]
     type = internal/mpd
@@ -322,14 +360,16 @@
 
     label-open = 
     label-open-foreground = ${colors.foreground}
+
     label-close =  CANCEL
     label-close-foreground = ${colors.foreground}
+
     label-separator = |
     label-separator-foreground = ${colors.foreground-alt}
 
-    menu-0-0 = REBOOT
+    menu-0-0 =  REBOOT
     menu-0-0-exec = menu-open-1
-    menu-0-1 = SHUTTDOWN
+    menu-0-1 =  SHUTTDOWN
     menu-0-1-exec = menu-open-2
 
     menu-1-0 = CANCEL
@@ -339,35 +379,8 @@
 
     menu-2-0 = OFF
     menu-2-0-exec = sudo poweroff
-    menu-2-1 = CANCEL
+    menu-2-1 = CCCANCEL
     menu-2-1-exec = menu-open-0
-
-[module/pulseaudio]
-    type = internal/pulseaudio
-
-    format-volume = <label-volume> <bar-volume>
-    label-volume = VOL %percentage%%
-    label-volume-foreground = ${root.foreground}
-
-    label-muted = 🔇 muted
-    label-muted-foreground = #666
-
-    bar-volume-width = 10
-    bar-volume-foreground-0 = #55aa55
-    bar-volume-foreground-1 = #55aa55
-    bar-volume-foreground-2 = #55aa55
-    bar-volume-foreground-3 = #55aa55
-    bar-volume-foreground-4 = #55aa55
-    bar-volume-foreground-5 = #f5a70a
-    bar-volume-foreground-6 = #ff5555
-    bar-volume-gradient = false
-    bar-volume-indicator = |
-    bar-volume-indicator-font = 2
-    bar-volume-fill = ─
-    bar-volume-fill-font = 2
-    bar-volume-empty = ─
-    bar-volume-empty-font = 2
-    bar-volume-empty-foreground = ${colors.foreground-alt}
 
 [module/system-cpu-loadavg]
     type = custom/script
@@ -406,18 +419,13 @@
 [module/time]
     type = internal/date
     interval = 5
-
     date =
     date-alt = " %Y-%m-%d"
-
     time = %H:%M
     time-alt = %H:%M:%S
-
     ;format-prefix = 
     ;format-prefix-foreground = ${colors.foreground-alt}
     #format-underline = ${colors.foreground} 
-    # #0a6cf5
-
     label = %date% %time%
     
 [module/updates-pacman]
@@ -447,22 +455,22 @@
     ramp-signal-4 = 
     ramp-signal-foreground = ${colors.foreground-alt}
 
-[module/xbacklight]
-    type = internal/xbacklight
+; [module/xbacklight]
+;     type = internal/xbacklight
 
-    format = <label> <bar>
-    label = BL
+;     format = <label> <bar>
+;     label = BL
 
-    bar-width = 10
-    bar-indicator = |
-    bar-indicator-foreground = #fff
-    bar-indicator-font = 2
-    bar-fill = ─
-    bar-fill-font = 2
-    bar-fill-foreground = #9f78e1
-    bar-empty = ─
-    bar-empty-font = 2
-    bar-empty-foreground = ${colors.foreground-alt}
+;     bar-width = 10
+;     bar-indicator = |
+;     bar-indicator-foreground = #fff
+;     bar-indicator-font = 2
+;     bar-fill = ─
+;     bar-fill-font = 2
+;     bar-fill-foreground = #9f78e1
+;     bar-empty = ─
+;     bar-empty-font = 2
+;     bar-empty-foreground = ${colors.foreground-alt}
 
 [module/xkeyboard]
     type = internal/xkeyboard
