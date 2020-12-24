@@ -17,9 +17,10 @@ include-directory = ~/.config/polybar/modules/
     margin-bottom = 2
 
 [fonts]
-    font-0 = Anonymous Pro:pixelsize=8:antialias=true;0
+    font-0 = Anonymous Pro:pixelsize=8:antialias=false;0
+    ;font-0 = Terminussdf:pixelsize=8:antialias=true;0
     font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
-    font-2 = siji:pixelsize=10;1
+    font-2 = siji:pixelsize=8;1
     font-3 = Font Awesome 5 Free:pixelsize=8:style=Regular:antialias=false;0
     font-4 = Font Awesome 5 Free Solid:pixelsize=8:style=Solid:antialias=false;0
     font-5 = Font Awesome 5 Brands:pixelsize=8:style=Regular:antialias=false;0
@@ -61,11 +62,10 @@ include-directory = ~/.config/polybar/modules/
     border-color = #141419
 
     modules-left = i3 xwindow
-    ;modules-center = apps tdo isup notification-github updates-pacman 
-    modules-center = tdo github-notifications pacman-updates isup
-    modules-right = mediaplayer alsa eth ip-public net-speed filesystem memory cpu time powermenu
+    modules-center = 
+    modules-right = mediaplayer alsa eth ip-public net-speed memory cpu time powermenu
 
-    tray-position = left
+    tray-position = right
     ;tray-padding = 4
     ;tray-maxsize = 14
 
