@@ -63,7 +63,7 @@ include-directory = ~/.config/polybar/modules/
 
     modules-left = i3 xwindow
     modules-center = 
-    modules-right = mediaplayer alsa eth ip-public net-speed memory cpu time powermenu
+    modules-right = alsa eth ip-public net-speed memory cpu time powermenu
 
     tray-position = right
     ;tray-padding = 4
