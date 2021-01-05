@@ -17,14 +17,15 @@ include-directory = ~/.config/polybar/modules/
     margin-bottom = 2
 
 [fonts]
-    font-0 = Anonymous Pro:pixelsize=8:antialias=false;0
+    ;font-0 = Anonymous Pro:pixelsize=8:antialias=false;0
+    font-0 = JetBrains Mono:pixelsize=9:antialias=trueR;0
     ;font-0 = Terminussdf:pixelsize=8:antialias=true;0
     font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
     font-2 = siji:pixelsize=8;1
     font-3 = Font Awesome 5 Free:pixelsize=8:style=Regular:antialias=false;0
     font-4 = Font Awesome 5 Free Solid:pixelsize=8:style=Solid:antialias=false;0
-    font-5 = Font Awesome 5 Brands:pixelsize=8:style=Regular:antialias=false;0
-    font-6 = Material Icons:pixelsize=8:style=Regular:antialias=false;1
+    ;font-4 = Font Awesome 5 Brands:pixelsize=8:style=Regular:antialias=false;0
+    font-5 = Material Icons:pixelsize=12:style=Regular:antialias=false;1
 
 [colors]
     ;background = ${xrdb:color0:#222}
@@ -42,7 +43,7 @@ include-directory = ~/.config/polybar/modules/
     inherit = fonts
     ;monitor = ${env:MONITOR:HDMI-1}
     width = 100%
-    height = 20
+    height = 24<
     ;offset-x = 1%
     ;offset-y = 20%
     ;radius = 0.0
@@ -65,7 +66,7 @@ include-directory = ~/.config/polybar/modules/
     modules-center = 
     modules-right = alsa eth ip-public net-speed memory cpu time powermenu
 
-    tray-position = right
+    tray-position = left
     ;tray-padding = 4
     ;tray-maxsize = 14
 
