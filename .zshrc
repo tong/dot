@@ -11,7 +11,7 @@ GITHUB_USER=tong
 
 export EDITOR='vscode'
 export FILEMANAGER='nautilus'
-export TERMINAL='terminator'
+export TERMINAL='tilix'
 
 # Man pages colors
 export LESS_TERMCAP_mb=$'\e[1;32m'
