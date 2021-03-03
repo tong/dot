@@ -8,7 +8,7 @@
   title_transmit_bg_color = "#141419"
   title_inactive_bg_color = "#141419"
   inactive_color_offset = 0.878048780488
-  enabled_plugins = Logger, ActivityWatch
+  enabled_plugins = Logger,
   suppress_multiple_term_dialog = True
   title_use_system_font = False
   title_font = Frucade Small 6
@@ -269,6 +269,8 @@
     copy_on_selection = True
   [[op-1]]
     background_color = "#0E0D11"
+    background_darkness = 0.98
+    background_type = transparent
     cursor_shape = ibeam
     cursor_color = "#c0c5ce"
     foreground_color = "#26936F"
@@ -277,6 +279,7 @@
     scrollback_infinite = True
     palette = "#0E0D11:#A5435A:#26936F:#ffba7b:#97bedc:#e1c0fa:#00988e:#dedede:#bdbdbd:#ffa1a1:#bddeab:#ffdca0:#b1d8f6:#fbdaff:#1ab2a8:#ffffff"
     copy_on_selection = True
+    background_alpha = 0.1
   [[parasio]]
     background_color = "#2f1e2e"
     background_darkness = 0.98
@@ -534,6 +537,7 @@
     command = atom -a {filepath}:{line}
     match = ([^ \t\n\r\f\v:]+?):([0-9]+)
     groups = file line
+    open_in_current_term = False
     enabled = True
   [[CustomCommandsMenu]]
     [[[haxe]]]
