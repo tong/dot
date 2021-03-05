@@ -1,0 +1,73 @@
+general {
+	#output_format = "dzen2"
+	#output_format = "xmobar"
+    colors = true
+	interval = 1
+	color_good = "#78909C"
+	color_bad = "#F44336"
+	color_degraded = '#ccdc90' 
+}
+
+#order += "disk /"
+#order += "ipv6"
+#order += "wireless wlan0"
+order += "cpu_usage"
+order += "load"
+order += "memory"                                                                                                    
+order += "ethernet eth0"
+order += "tztime local"
+#sorder += "volume master"
+#order += "cpu_temperature 0"
+
+#wireless wlan0 {
+#        format_up = "W: (%quality at %essid) %ip"
+#        format_down = "W: down"
+#}
+
+disk "/" {
+    format = "%avail"
+}
+
+load {
+   format = " %1min %5min %15min"
+}
+
+cpu_usage {
+	format = " %usage"
+}
+
+memory {
+   	#format = "%used | %available"
+   	format = " %used"
+	#threshold_degraded = "1G"
+   	#format_degraded = "MEMORY < %available"
+}
+
+ethernet eth0 {
+    #format_up = "%ip (%speed)"
+    format_up = " %ip"
+    format_down = "E:down"
+}
+
+tztime local {
+    #format = "%Y-%m-%d %H:%M:%S"
+    format = "%y.%m.%d %H:%M"
+	#format_time = "%H:%M %Z"
+}
+
+# read_file uptime {
+#     path = "/proc/uptime"
+# }
+
+cpu_temperature 0 {
+    format = "T: %degrees °C"
+    path = "/sys/devices/platform/coretemp.0/temp1_input"
+}
+
+# volume master {
+#         format = "♪: %volume"
+#         format_muted = "♪: muted (%volume)"
+#         device = "default"
+#         mixer = "Master"
+#         mixer_idx = 0
+# }
