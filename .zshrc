@@ -9,9 +9,11 @@
 
 GITHUB_USER=tong
 
-export EDITOR='vscode'
+export EDITOR='code'
+#export EDITOR='code'
 export FILEMANAGER='nautilus'
-export TERMINAL='tilix'
+#export TERMINAL='tilix'
+export TERMINAL='terminator'
 
 # Man pages colors
 export LESS_TERMCAP_mb=$'\e[1;32m'
