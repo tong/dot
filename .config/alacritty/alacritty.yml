@@ -45,9 +45,9 @@
   #
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
-padding:
-  x: 4
-  y: 4
+# padding:
+#   x: 40
+#   y: 40
 
   # Spread additional padding evenly around the terminal content.
   #dynamic_padding: false
@@ -61,7 +61,7 @@ padding:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background and no title bar buttons
-  #decorations: full
+# decorations: full
 
   # Startup Mode (changes require restart)
   #
@@ -191,6 +191,59 @@ font:
 #draw_bold_text_with_bright_colors: false
 
 schemes:
+
+  blood_moon: &blood_moon
+    primary:
+      background: '#10100E'
+      foreground: '#C6C6C4'
+    normal:
+      black:   '#10100E'
+      red:     '#C40233'
+      green:   '#009F6B'
+      yellow:  '#FFD700'
+      blue:    '#0087BD'
+      magenta: '#9A4EAE'
+      cyan:    '#20B2AA'
+      white:   '#C6C6C4'
+    bright:
+      black:   '#696969'
+      red:     '#FF2400'
+      green:   '#03C03C'
+      yellow:  '#FDFF00'
+      blue:    '#007FFF'
+      magenta: '#FF1493'
+      cyan:    '#00CCCC'
+      white:   '#FFFAFA'
+
+  jellybeans: &jellybeans
+    primary:
+      background: '#161616'
+      foreground: '#e4e4e4'
+    cursor:
+      text: '#feffff'
+      cursor: '#ffb472'
+    normal:
+      black:   '#a3a3a3'
+      red:     '#e98885'
+      green:   '#a3c38b'
+      yellow:  '#ffc68d'
+      blue:    '#a6cae2'
+      magenta: '#e7cdfb'
+      cyan:    '#00a69f'
+      white:   '#e4e4e4'
+    bright:
+      black:   '#c8c8c8'
+      red:     '#ffb2b0'
+      green:   '#c8e2b9'
+      yellow:  '#ffe1af'
+      blue:    '#bddff7'
+      magenta: '#fce2ff'
+      cyan:    '#0bbdb6'
+      white:   '#feffff'
+    selection:
+      text: '#5963a2'
+      background: '#f6f6f6'
+
   schuam_dark: &schuam_dark
     primary:
       background: '#000000'
@@ -213,6 +266,30 @@ schemes:
       magenta: '#ff55ff'
       cyan:    '#00eaea'
       white:   '#dedede'
+  
+  simple_dark: &simple_dark
+    primary:
+      background: '#0a0a0a'
+      foreground: '#B8B9B4'
+    normal:
+      black: '#0A0A0A'
+      red: '#939490'
+      green: '#5E6E5C'
+      yellow: '#B6B8B3'
+      blue: '#727370'
+      magenta: '#D1D1CB'
+      cyan: '#636361'
+      white: '#AAABA6'
+    bright:
+      black: '#2E2E2C'
+      red: '#989995'
+      green: '#636361'
+      yellow: '#BBBDB8'
+      blue: '#777875'
+      magenta: '#D6D6D0'
+      cyan: '#696966'
+      white: '#AFB0AB'
+
   solarized: &solarized
     primary:
       background: '#002b36' # base3
@@ -239,7 +316,61 @@ schemes:
       cyan:    '#93a1a1' # base1
       white:   '#fdf6e3' # base3
 
-colors: *solarized
+  tomorrow_night: &tomorrow_night
+    primary:
+      background: '#1d1f21'
+      foreground: '#c5c8c6'
+    cursor:
+      text: '#1d1f21'
+      cursor: '#ffffff'
+    normal:
+      black:   '#1d1f21'
+      red:     '#cc6666'
+      green:   '#b5bd68'
+      yellow:  '#e6c547'
+      blue:    '#81a2be'
+      magenta: '#b294bb'
+      cyan:    '#70c0ba'
+      white:   '#373b41'
+    bright:
+      black:   '#666666'
+      red:     '#ff3334'
+      green:   '#9ec400'
+      yellow:  '#f0c674'
+      blue:    '#81a2be'
+      magenta: '#b77ee0'
+      cyan:    '#54ced6'
+      white:   '#282a2e'
+
+  zenburn: &zenburn
+    primary:
+      background: '#333333'
+      foreground: '#ffffff'
+      bright_foreground: '#ffffff'
+      bright_background: '#555555'
+    cursor:
+      text:    '#000000'
+      cursor:  '#00ff00'
+    normal:
+      black:   '#4d4d4d'
+      red:     '#bb0000'
+      green:   '#98f898'
+      yellow:  '#f0e68c'
+      blue:    '#96853f'
+      magenta: '#ffdead'
+      cyan:    '#ffa0a0'
+      white:   '#f5deb3'
+    bright:
+      black:   '#555555'
+      red:     '#ff5555'
+      green:   '#55ff55'
+      yellow:  '#ffff55'
+      blue:    '#87ceeb'
+      magenta: '#ff55ff'
+      cyan:    '#ffd700'
+      white:   '#ffffff'
+
+colors: *simple_dark
 
 # Colors (Tomorrow Night)
 #colors:
@@ -381,7 +512,7 @@ colors: *solarized
 # Bell
 #
 # The bell is rung every time the BEL control character is received.
-#bell:
+bell:
   # Visual Bell Animation
   #
   # Animation effect for flashing the screen when the visual bell is rung.
@@ -397,7 +528,7 @@ colors: *solarized
   #   - EaseOutExpo
   #   - EaseOutCirc
   #   - Linear
-  #animation: EaseOutExpo
+  animation: EaseOutExpo
 
   # Duration of the visual bell flash in milliseconds. A `duration` of `0` will
   # disable the visual bell animation.
@@ -423,7 +554,7 @@ colors: *solarized
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 0.97
+background_opacity: 0.95
 
 #selection:
   # This string contains all characters that are used as separators for
@@ -436,17 +567,12 @@ background_opacity: 0.97
 cursor:
   # Cursor style
   style:
-    # Cursor shape
-    #
-    # Values for `shape`:
     #   - ▇ Block
     #   - _ Underline
     #   - | Beam
     shape: Beam
 
     # Cursor blinking state
-    #
-    # Values for `blinking`:
     #   - Never: Prevent the cursor from ever blinking
     #   - Off: Disable blinking by default
     #   - On: Enable blinking by default
@@ -462,7 +588,7 @@ cursor:
   #vi_mode_style: None
 
   # Cursor blinking interval in milliseconds.
-  blink_interval: 350
+  blink_interval: 250
 
   # If this is `true`, the cursor will be rendered as a hollow box when the
   # window is not focused.
@@ -736,7 +862,7 @@ cursor:
 #   - ToggleSimpleFullscreen
 #       Enter fullscreen without occupying another space.
 #
-# - Linux/BSD exclusive actions:
+#- Linux/BSD exclusive actions:
 #
 #   - CopySelection
 #       Copy from the selection buffer.
