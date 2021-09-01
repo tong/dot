@@ -1,16 +1,10 @@
 configuration {
-	width: 16;
-	lines: 40;
-	font: "JetBrains Mono 9";
-	bw: 0;
-	padding: 4;
-	show-icons: true;
-	case-sensitive: true;
-	cycle: true;
-	sidebar-mode: true;
-	line-padding: 0;
-	color-normal: "#141419, #455A64, #141419, #455A64, #CFD8DC";
-	color-urgent: "#141419, #ff1844, #141414, #394249, #ff1844";
-	color-active: "#141419, #80cbc4, #141414, #394249, #80cbc4";
-	color-window: "#141419, #141419, #141419";
+ modi: "window,drun,ssh,combi";
+ theme: "theme/void";
+ font: "JetBrainsMono Nerd Font 9";
+ combi-modi: "window,drun,ssh";
+ show-icons: true;
+ location: 2;
+ lines: 40;
+ width: 16;
 }
