@@ -98,7 +98,7 @@ rofi.line-padding:                   0
 ! "Indicate how it match by underlining it." Set from: Default
 ! rofi.show-match:                     true
 ! "New style theme file" Set from: Default
-!rofi.theme: void.rasi
+! rofi.theme: void.rasi
 ! "Color scheme for normal row" Set from: XResources
 rofi.color-normal:                   #141419, #455A64, #141419, #455A64, #CFD8DC
 ! "Color scheme for urgent row" Set from: XResources
