@@ -41,35 +41,3 @@ alias meminfo='free -m -l -t'
 alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
 #alias psmem='ps auxf | sort -nr -k 4'
 #alias psmem10='ps auxf | sort -nr -k 4 | head -10'
-
-##
-
-alias compton-restart='killall compton && compton --config ~/.config/compton.conf -b'
-
-##
-
-alias closure-compiler='java -jar $HOME/sdk/closure-compiler-v20201006.jar'
-alias closure-stylesheets='java -jar $HOME/sdk/closure-stylesheets.jar'
-
-##
-
-#alias lessc-live='$DEV/tool/lessc-live/lessc-live $@'
-#alias lessc-live='hl $DEV/tool/lessc-live/lessc-live.hl $@'
-#alias lessc-live='hl $DEV/tool/lessc-live.0/lessc-live.hl $@'
-alias lessc-live='neko $DEV/tool/lessc-live/lessc-live.n $@'
-
-#alias tdo='hl $DEV/tool/tdo/tdo.hl $@'
-#alias 2do='hl $DEV/tool/tdo/tdo.hl $@'
-alias tdo='node $DEV/tool/tdo-node/tdo.js $@'
-
-#alias khamake='node /home/tong/sdk/armsdk/Kha/make'
-#alias vscode='$HOME/sdk/vscode/bin/codium $@'
-
-#lias dirsize='du -sh'
-
-#alias khamake='sh $ARMORY_SDK/Kha/make.sh $@'
-#alias armory='python $ARMSDK/armory/armory-cli.py $@'
-#alias armory='blender -b $@ --python $ARMSDK/armory/armory-cli.py'
-
-#alias armory='blender -b --python $ARMSDK/armory/armory-cli.py $1'
-#alias armory='echo "$1"'
