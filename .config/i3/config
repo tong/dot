@@ -1,36 +1,7 @@
 
-## --- Screen vars
-set $SCREEN1 DP-0
-#set $SCREEN2 DP-3
-
-## --- Mod1 = Alt, Mod4 = Win
 set $mod Mod4
-set $editor vscode
-set $filemanager nautilus
 
-## --- Fonts
-#font pango:JetBrains Mono 7
-font pango: Anonymous Pro 8
-# font pango: Siji 8
-# font pango:Font Awesome 5 Free 8
-#font pango:DejaVu Sans Mono, Icons 7
-#font pango:Roboto 9
-
-## --- Colors
-set $color_stage #141419
-set $color_bg #263238
-set $color_base #263238
-set $color_text #455A64
-#set $color_separator #2A373E
-set $color_separator #455A64
-set $color_white #ECEFF1
-
-set $color_select_bg #00BCD4
-set $color_select_bg_secondary #4DD0E1
-set $color_accent #4DB6AC
-set $color_accent_secondary #4DB6AC
 set $color_urgent #F44336
-
 set $color_success #00E676
 set $color_question #FFEA00
 set $color_warning #FF9800
@@ -39,266 +10,140 @@ set $color_error_bg #FF1744
 set $color_link #03A9F4
 set $color_visited #9C27B0
 
-#TODO see https://github.com/dylanaraps/pywal/wiki/Customization#i3
-#set_from_resource $fg color15
-#set_from_resource $bg color8
-#set_from_resource $color_border i3wm.border
-#set_from_resource $color_background i3wm.background
-#set_from_resource $color_test i3wm.test
+## --- Startup
 
-## -----
+exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf --experimental-backends
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id hsetroot -solid '#070707'
+# exec_always --no-startup-id nitrogen --restore
+exec_always --no-startup-id xset r rate 250 40
 
-## Hack to disable compton shadows on non floating windows
-#set $toggle_active_window_floating exec --no-startup-id /$HOME/.config/i3/script/toggle_active_window_shadow.sh, floating toggle
+exec --no-startup-id i3-sensible-terminal
+# exec --no-startup-id chromium --no-startup-window
 
-## Volume control methods
-set $volume_up amixer -q set Master 10%+ unmute && killall -SIGUSR1 i3status
-set $volume_down amixer -q set Master 10%- unmute && killall -SIGUSR1 i3status
-set $volume_mute amixer -q set Master 0% unmute && killall -SIGUSR1 i3status
-set $volume_toggle amixer set Master toggle && killall -SIGUSR1 i3status
+## --- Window
 
-## ----- Workspaces
+# font pango: JetBrainsMono Nerd Font 11
+# font pango: Anonymous Pro 8
+font pango: Frucade Small 6
 
-#focus_on_window_activation smart
-focus_on_window_activation none
-#workspace_layout default|stacking|tabbed
-#workspace_auto_back_and_forth yes
-#default_orientation horizontal|vertical|auto
-#force_display_urgency_hint 500 ms
-#popup_during_fullscreen smart #|ignore|leave_fullscreen
-#strip_workspace_numbers yes
-#strip_workspace_name no
-
-set $ws1 "1:"
-set $ws2 "2:"
-set $ws3 "3:"
-set $ws4 "4:"
-set $ws5 "5:"
-set $ws6 "6:"
-set $ws7 "7:"
-set $ws8 "8:"
-set $ws9 "9:"
-set $ws10 "10:"
-
-#workspace $ws1 output $SCREEN1
-#workspace $ws2 output $SCREEN1
-#workspace $ws3 output $SCREEN1
-
-## ----- Window
-#                       border  backgr. text    indicator child_border
-client.focused          #222D32 #222D32 #EEEEEF #2e9ef4   #222D32
-client.focused_inactive #141419 #141419 #2E3C43 #484e50   #141419
-client.unfocused        #141419 #141419 #2E3C43 #000000   #141419
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
+# class                 border  backgr. text    indicator child_border
+# client.focused        #CFD8DC #CFD8DC #ffffff #2e9ef4   #CFD8DC
+client.focused          #e0e0e0 #e0e0e0 #101010 #2e9ef4   #d0d0d0
+client.focused_inactive #000000 #000000 #ffffff #2e9ef4   #000000
+client.unfocused        #000000 #000000 #666666 #2e9ef4   #000000
+client.urgent           #FF1744 #FF1744 #000000 #2e9ef4   #FF1744
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-client.background       #ffffff
+client.background       #000000
 
-## -----
+# smart_gaps on
+# smart_borders on
+# gaps horizontal 1
+# gaps vertical 1
+# gaps outer 0
+gaps inner 0
 
-bar {
-    id bar-1
-    #output primary
-	position top
-    #status_command i3status.sh
-    status_command i3status
-    #status_command i3status --config /home/tong/.config/i3/statusbar-0.conf
-    strip_workspace_numbers yes
-    #i3bar_command i3bar --transparency
-	#separator_symbol ""
-	#mode hide
-	#hidden_state show
-    #tray_output $SCREEN1
-    tray_output primary
-    #tray_padding 10
-    #font pango:DejaVu Sans Mono 10
-	colors {
-        background $color_stage
-		statusline #78909C
-        separator #78909C
-        focused_workspace  #29353B #29353B #EEEEEF
-        inactive_workspace #141419 #141419 #78909C
-        active_workspace   #141419 #141419 #000000
-	}
-}
-
-
-## -----
+# hide_edge_borders smart
 
 floating_minimum_size 8 x 8
-floating_maximum_size 3840 x 2160
-#show_marks yes
-hide_edge_borders smart
+# floating_maximum_size 3840 x 2160
+
 popup_during_fullscreen smart
 
-# #new_window 1pixel
-# #new_window normal 1
-#new_window 1pixel
-# #new_window pixel 10
-# #new_float normal 1
-#default_border pixel 2
-#default_floating_border
+default_border pixel 2
+# default_floating_border pixel 0
 
-# for_window [class="^."] border none
-# for_window [class="^.*"] border
-# for_window [class=".*"] title_format "<span foreground='red' background='.#586e75'>%title</span>"
-# for_window [class=".*"] title_format "<span>%title</span>"
-# for_window [class=".*"] title_format "<b>%title</b>"
-#for_window [window_role="splash"] floating enable, border none
-#for_window [class="^evil-app$"] floating enable, move container to workspace 4
-#for_window [window_role="devtools"] border none floating enable
-#for_window [instance="^mpv$"] $toggle_active_window_floating, workspace video
-for_window [class="Alacritty"] border none floating enable
-for_window [class="Arandr"] border none floating enable
-for_window [class="Atom"] border noneQ
-for_window [class="Baobab"] floating enable resize set 400 800
-for_window [class="Blueman-manager"] floating enable resize set 600 600
-for_window [class="Blender"] border none
-#for_window [class="Chromium"] border none
-#for_window [class="Code"] border none
-for_window [class="Darktable"] border none floating enable
-for_window [class="darkside"] floating enable
-for_window [class="DB Browser for SQLite"] border none floating enable resize set 800 600
-for_window [class="Dconf-editor"] floating enable resize set 1000 600
-for_window [class="Eog"] border none floating enable
-for_window [class="feh"] border none floating enable
-for_window [class="File-roller"] border none floating enable
-for_window [class="Geary"] border none
-for_window [class="Gpick"] border none floating enable
-for_window [class="Gimp-2.10"] border none
-for_window [class="FKY"] border none floating enable resize set 500 720
-for_window [class="Gamma"] border none floating enable resize set 1280 720
-#for_window [class="Gnome-*"] border none floating enable
-for_window [class="Gnome-calculator"] floating enable
-for_window [class="Gnome-calendar"] floating enable
-for_window [class="Gnome-contacts"] border none floating enable
-for_window [class="Gnome-control-center"] floating enable
-for_window [class="Gnome-disks"] floating enable
-for_window [class="Gnome-font-viewer"] border none floating enable resize set 1000 1400
-for_window [class="Gnome-logs"] border none floating enable resize set 1000 1400
-for_window [class="Gnome-mplayer"] floating enable
-#for_window [class="Gnome-system-monitor"] border none floating enable resize set 1000 1400
-for_window [class="Gnome-tweaks"] floating enable resize set 800 1000
-for_window [class="Gtk-recordMyDesktop"] floating enable
-for_window [class="hl"] border none floating enable
-for_window [class="hxviz"] floating enable
-for_window [class="Hyper"] border none floating enable resize set 600 600
-for_window [class="itch"] border none floating enable
-for_window [class="KoreApplication"] border none floating enable
-for_window [class="letterspace"] border none floating enable
-#for_window [class="LD47_KincApplication"] border none floating enable
-for_window [class="org.gnome.Maps"] border none floating enable
-for_window [class="MPlayer"] border none floating enable
-for_window [class="Nautilus"] border none floating enable set 700 1000
-for_window [class="Nemo"] border none floating enable set 500 800
-for_window [class="Nm-connection-editor"] floating enable resize set 600 1000
-for_window [class="Nitrogen"] floating enable resize set 400 900
-for_window [class="Nvidia-settings"] floating enable
-for_window [class="Panzerschokolade"] border none floating enable
-for_window [class="Pavucontrol"] border none floating enable resize set 600 800
-for_window [class="Pidgin"] border none resize set 200 600
-for_window [class="Psi"] border none floating enable resize set 300 300
-#for_window [class="Rofi"] border none floating enable
-for_window [class="Seahorse"] border none floating enable resize set 720 1000
-for_window [class="SimpleScreenRecorder"] floating enable
-for_window [class="Steam"] floating enable
-#for_window [class="superposition_KincApplication"] border none floating enable
-#for_window [class="superposition"] border none floating enable
-for_window [class="Superposition_KincApplication"] border none floating enable
-for_window [title="Superposition_KincApplication"] border none floating enable
-for_window [title="Task Manager - Chromium"] border none floating enable resize set 720 500
-for_window [class="Terminator"] border none floating enable resize set 720 600
-for_window [class="Tilix"] border none floating enable resize set 600 800
-for_window [class="vlc"] border none floating enable resize set 720 1000
-#for_window [class="www.youtube.com__watch"] border none floating enable
-#for_window [title="Tasks.*"] floating enable; resize shrink width 1--0000px; resize grow width 400px; resize shrink height 10000px; resize grow height 800px;
-#for_window [class="Transmission-gtk"] floating enable; resize shrink width 200px; resize grow width 400px; resize shrink height 4000px; resize grow height 800px;
+# for_window [class=".*"] title_format "<span font='Frucade Small 6' background='#000'>%title</span>"
+# for_window [class=".*"] title_format "<span background='#ff000033'>%title</span>"
+# for_window [class="^.*"] border normal
+# for_window [class="^.*"] border normal pixel 1
+# for_window [class="^*"] border pixel 2
+for_window [class="localhost__build_test_debug_html5"] floating enable
+# for_window [class="^*_KincAppliEcation$"] floating enable
+for_window [class="gamma*"] floating enable
+for_window [class="fff*"] floating enable
+for_window [class="main_KincApplication*"] floating enable
+for_window [class="^.*_KincApplication$"] floating enable
+for_window [class="Nitrogen"] floating enable resize set 600 800
+# for_window [class="Code"] border none
+# for_window [class="Blender"] border none
+# for_window [class="feh"] floating enable
+# for_window [class="Nautilus"] floating enable set 700 1000
+# for_window [class="Sxiv"] floating enable
+# for_window [class="Terminator"] gaps inner current plus 50
+# for_window [class="Terminator"] floating enable resize set 720 600
+# for_window [class="Tilix"] floating enable resize set 720 600
+# for_window [class="vlc"] floating enable resize set 720 1000
 
-
-#assign [class="^Atom"] → $ws1
-#assign [class="^Gnome-mplayer"] → $ws7
-assign [class="^Pidgin"] → $ws9
 assign [class="^Steam"] → $ws6
-assign [class="^SoulseekQt-2016-1-17-64bit"] → $ws8
-assign [class="^Transmission-gtk"] → $ws8
 
+## --- Controls
 
-## ----- Keyboard
+focus_follows_mouse no
+# focus_wrapping yes
+# mouse_warping output
 
-#set $up l
-#set $down semicolon
-#set $left j
-#set $right k
+set $up h
+set $left j
+set $right k
+set $down l
 
-## Reload i3
-bindsym $mod+Shift+c reload
+floating_modifier $mod
 
-## Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+Shift+q kill 
+bindsym --whole-window $mod + button2 kill
 
-## Kill focused window
-bindsym $mod+q kill
-bindsym $mod+Shift+q kill
+# Launcher
+# bindsym $mod+d exec rofi -show combi #-nb "$fg" # -font "Anonymous Pro 8"
+bindsym $mod+d exec rofi -show drun -multi-selectt #-nb "$fg" # -font "Anonymous Pro 8"
+bindsym $mod+Tab exec rofi -show window # -font "Anonymous Pro 8"
+#bindsym $mod+d exec --no-startup-id /$HOME/.config/i3/script/rofi-run.sh
 
-## Exit i3 (log out of X session)
-#bindsym $mod+Shift+e exec i3-nagbar -t warning -m 'EXIT?' -b 'Exit' 'i3-msg exit' -f 'Anonymous Pro 9'
+# Change focus
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+# alternatively, you can use the cursor keys:
+# bindsym $mod+Left focus left
+# bindsym $mod+Down focus down
+# bindsym $mod+Up focus up
+# bindsym $mod+Right focus right
 
-## Change focus
-bindsym $mod+Left focus left
-bindsym $mod+Right focus right
-bindsym $mod+Up focus up
-bindsym $mod+Down focus down
-#bindsym Shift+j focus left
-#bindsym Shift+k focus right
-#bindsym $mod+$left focus left
-#bindsym $mod+$down focus down
-#bindsym $mod+$up focus up
-#bindsym $mod+$right focus right
+# Move focused container
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+# Alternatively, you can use the cursor keys:
+# bindsym $mod+Shift+Left move left
+# bindsym $mod+Shift+Down move down
+# bindsym $mod+Shift+Up move up
+# bindsym $mod+Shift+Right move right
 
-## Move focused window
-set $window_move_speed 150px
-bindsym $mod+Shift+Left move left $window_move_speed
-bindsym $mod+Shift+Right move right $window_move_speed
-bindsym $mod+Shift+Up move up $window_move_speed
-bindsym $mod+Shift+Down move down $window_move_speed
-bindsym $mod+Shift+j move left $window_move_speed
-bindsym $mod+Shift+k move right $window_move_speed
-bindsym $mod+Shift+h move up $window_move_speed
-bindsym $mod+Shift+n move down $window_move_speed
+# Split container
+bindsym Control+$mod+h split h
+bindsym Control+$mod+v split v
 
-## Resize focused window
-#bindsym $mod+Mod1+Left resize shrink width 10 px or 10 ppt
-#bindsym $mod+Mod1+Right resize grow width 10 px or 10 ppt
-#bindsym $mod+Mod1+Up resize grow height 10 px or 10 ppt
-#bindsym $mod+Mod1+Down resize resize shrink height 10 px or 10 ppt
-#bindsym $mod+Mod1+j resize shrink width 10 px or 10 ppt
-#bindsym $mod+Mod1+k resize grow width 10 px or 10 ppt
-#bindsym $mod+Mod1+h resize grow height 10 px or 10 ppt
-#bindsym $mod+Mod1+n resize shrink height 10 px or 10 ppt
+# Enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
 
-## Split container
-bindsym $mod+h split horizontal
-bindsym $mod+v split vertical
-bindsym $mod+t split toggle
-
-## Change container layout (stacked, tabbed, toggle split)
+# Change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
-## Toggle tiling/floating
+# Toggle floating window
 bindsym $mod+Shift+space floating toggle
-#bindsym $mod+Shift+space $toggle_active_window_floating
 
+# change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
-## Focus the parent container
-bindsym $mod+a focus parent
+# Focus the parent container
+bindsym $mod+p focus parent
 
-## Jump to urgent window
-#bindsym $mod+x [urgent=latest] focus
-
-## Focus the child container
-#bindsym $mod+d focus child
+# Focus the child container
+bindsym $mod+c focus child
 
 ## Switch to next/prev workspace
 bindsym $mod+Ctrl+Right workspace next
@@ -308,180 +153,96 @@ bindsym $mod+Ctrl+Left workspace prev
 bindsym $mod+Ctrl+Shift+Right move container to workspace next; workspace next
 bindsym $mod+Ctrl+Shift+Left move container to workspace prev; workspace prev
 
-## Switch to workspace
-bindsym $mod+Home workspace $ws1
-bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
-bindsym $mod+8 workspace $ws8
-bindsym $mod+9 workspace $ws9
-bindsym $mod+0 workspace $ws10
-
-## Move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $ws1
-bindsym $mod+Shift+2 move container to workspace $ws2
-bindsym $mod+Shift+3 move container to workspace $ws3
-bindsym $mod+Shift+4 move container to workspace $ws4
-bindsym $mod+Shift+5 move container to workspace $ws5
-bindsym $mod+Shift+6 move container to workspace $ws6
-bindsym $mod+Shift+7 move container to workspace $ws7
-bindsym $mod+Shift+8 move container to workspace $ws8
-bindsym $mod+Shift+9 move container to workspace $ws9
-bindsym $mod+Shift+0 move container to workspace $ws10
-
-## Move focused container to workspace and switch to it
-bindsym $mod+Ctrl+Shift+1 move container to workspace $ws1; workspace $ws1
-bindsym $mod+Ctrl+Shift+2 move container to workspace $ws2; workspace $ws2
-bindsym $mod+Ctrl+Shift+3 move container to workspace $ws3; workspace $ws3
-bindsym $mod+Ctrl+Shift+4 move container to workspace $ws4; workspace $ws4
-bindsym $mod+Ctrl+Shift+5 move container to workspace $ws5; workspace $ws5
-bindsym $mod+Ctrl+Shift+6 move container to workspace $ws6; workspace $ws6
-bindsym $mod+Ctrl+Shift+7 move container to workspace $ws7; workspace $ws7
-bindsym $mod+Ctrl+Shift+8 move container to workspace $ws8; workspace $ws8
-bindsym $mod+Ctrl+Shift+9 move container to workspace $ws9; workspace $ws9
-bindsym $mod+Ctrl+Shift+0 move container to workspace $ws10; workspace $ws10
-
-## Fullscreen
-bindsym $mod+f fullscreen toggle
-
-## Scratchpad
+# Scratchpad
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
-## Rofi
-#bindsym $mod+d exec rofi -show drun # -font "Anonymous Pro 8"
-bindsym $mod+d exec rofi -show drun # -nb "$fg" # -font "Anonymous Pro 8"
-bindsym $mod+Tab exec rofi -show window # -font "Anonymous Pro 8"
-#bindsym $mod+d exec rofi -show combi -combi-modi window,run -font "Anonymous Pro 8"
-#bindsym $mod+d exec --no-startup-id /$HOME/.config/i3/script/rofi-run.sh
+# Use pactl to adjust volume in PulseAudio
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
-#bindsym $mod+Ctrl+Tab exec --no-startup-id tilix --quake
-
-## Mediakeys
-bindsym XF86AudioMute exec --no-startup-id $volume_toggle
-bindsym XF86AudioLowerVolume exec --no-startup-id $volume_down unmute && killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id $volume_up unmute && killall -SIGUSR1 i3status
-#bindsym F3 exec --no-startup-id $volume_up unmute && killall -SIGUSR1 i3status
-#bindsym F2 exec --no-startup-id $volume_down unmute && killall -SIGUSR1 i3status
-
-## Cmus
-#bindsym XF86AudioPlay exec cmus-remote --pause
-#bindsym XF86AudioStop exec cmus-remote --stop
-#bindsym XF86AudioPrev exec cmus-remote --prev
-#bindsym XF86AudioNext exec cmus-remote --next
-##bindsym XF86AudioRaiseVolume exec cmus-remote --volume +10%
-##bindsym XF86AudioLowerVolume exec cmus-remote --volume -10%
-
-## DMenu (applications shipping a .desktop file only)
-#bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop
-
-## Filemanager
-bindsym $mod+n exec $filemanager
-
-## Screenshot
-bindsym $mod+x exec --no-startup-id gnome-screenshot -i
-
-## Terminal
+## Applications
 bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+b exec chromium # TODO
+bindsym $mod+n exec filemanager
+bindsym $mod+x exec --no-startup-id gnome-screenshot -i
+# bindsym $mod+x exec --no-startup-id scrot "$SCREENSHOTS/screenshot-%Y_%m_%d_%H_%M.png"
 
-## Browser/Chrome
-bindsym $mod+c exec chromium
+## --- Workspaces
 
-#bindsym $mod+Shift+Left move workspace to output left
-#bindsym $mod+Shift+u move workspace to output left
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+# set $ws10 "10:"
 
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
 
-#bindsym $mod+q exec --no-startup-id tilix --quake
+## Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
 
-## ----- Mouse
+## Move focused container to workspace and switch to it
+bindsym $mod+Ctrl+Shift+1 move container to workspace $WS1; workspace $WS1
+bindsym $mod+Ctrl+Shift+2 move container to workspace $WS2; workspace $WS2
+bindsym $mod+Ctrl+Shift+3 move container to workspace $WS3; workspace $WS3
+bindsym $mod+Ctrl+Shift+4 move container to workspace $WS4; workspace $WS4
+bindsym $mod+Ctrl+Shift+5 move container to workspace $WS5; workspace $WS5
+bindsym $mod+Ctrl+Shift+6 move container to workspace $WS6; workspace $WS6
+bindsym $mod+Ctrl+Shift+7 move container to workspace $WS7; workspace $WS7
+bindsym $mod+Ctrl+Shift+8 move container to workspace $WS8; workspace $WS8
+bindsym $mod+Ctrl+Shift+9 move container to workspace $WS9; workspace $WS9
+bindsym $mod+Ctrl+Shift+0 move container to workspace $WS10; workspace $WS10
 
-#focus_follows_mouse yes
-focus_follows_mouse no
-mouse_warping output
-#force_focus_wrapping force
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+#bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-## Use Mouse+$mod to drag floating windows
-floating_modifier $mod
+set $mode_resize "ﭕ  RESIZE"
+mode $mode_resize {
+    bindsym $left       resize shrink width 10 px or 10 ppt
+    bindsym $down       resize grow height 10 px or 10 ppt
+    bindsym $up         resize shrink height 10 px or 10 ppt
+    bindsym $right      resize grow width 10 px or 10 ppt
+    bindsym Left        resize shrink width 10 px or 10 ppt
+    bindsym Down        resize grow height 10 px or 10 ppt
+    bindsym Up          resize shrink height 10 px or 10 ppt
+    bindsym Right       resize grow width 10 px or 10 ppt
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode $mode_resize
 
-# Middle button and modifer over any part of the window to kill it
-bindsym --whole-window $mod + button2 kill
-#bindsym button9 move left
-#bindsym button8 move right
-
-
-## ----- Modes
-
-# Workspace movement
-# set $mode_move  MOVE
-# mode "$mode_move" {
-#     bindsym Left move workspace to output left
-#     bindsym Right move workspace to output right
-#     bindsym Left j workspace to output left
-#     bindsym Right k workspace to output right
-#     bindsym Return mode "default"
-#     bindsym Escape mode "default"
-# }
-# bindsym $mod+Shift+m mode "$mode_move"
-
-## Window resize
-#set $mode_resize_h 150
-#set $mode_resize_v 150
-#set $mode_resize  RESIZE
-#mode "$mode_resize" {
-#    bindsym Left resize shrink width $mode_resize_h px or $mode_resize_h ppt
-#    bindsym Right resize grow width $mode_resize_h px or $mode_resize_h ppt
-#    bindsym Up resize grow height $mode_resize_v px or $mode_resize_v ppt
-#    bindsym Down resize shrink height $mode_resize_v px or $mode_resize_v ppt
-#    bindsym j resize shrink width $mode_resize_h px or $mode_resize_h ppt
-#    bindsym k resize grow width $mode_resize_h px or $mode_resize_h ppt
-#    bindsym h resize grow height $mode_resize_v px or $mode_resize_v ppt
-#    bindsym n resize shrink height $mode_resize_v px or $mode_resize_v ppt
-#    bindsym Return mode "default"
-#    bindsym Escape mode "default"
-#}
-#bindsym $mod+r mode "$mode_resize"
-
-## Audio volume  L   R   M
-#set $mode_volume VOLUME   <span color='#141414'>U</span><span color='#606060'>P</span>   <span color='#141414'>D</span><span color='#606060'>OWN</span>   <span color='#141414'>M</span><span color='#606060'>UTE</span>
-#mode --pango_markup "$mode_volume" {
-#    bindsym Up exec --no-startup-id $volume_up
-#    bindsym Down exec --no-startup-id $volume_down
-#    bindsym h exec --no-startup-id $volume_up
-#    bindsym n exec --no-startup-id $volume_down
-#    bindsym m exec --no-startup-id $volume_mute
-#    bindsym Return mode "default"
-#    bindsym Escape mode "default"
-#}
-#bindsym $mod+Shift+v mode "$mode_volume"
-
-## Music               
-# 0[P]AUSE  [S]TOP [H]PREV [N]EXT [Q]UIT
-# set $mode_music   <span color='#141414'>P</span><span color='#505050'>REV</span>   <span color='#141414'>N</span><span color='#505050'>EXT</span>  <span color='#141414'>P</span><span color='#505050'>AUSE</span>  <span color='#141414'>S</span><span color='#505050'>TOP</span>  <span color='#141414'>J</span>  <span color='#141414'>K</span>
-# mode --pango_markup "$mode_music" {
-#     bindsym p exec --no-startup-id cmus-remote --pause
-#     bindsym s exec --no-startup-id cmus-remote --stop
-#     bindsym n exec --no-startup-id cmus-remote --next
-#     bindsym h exec --no-startup-id cmus-remote --prev
-#     bindsym j exec --no-startup-id cmus-remote --seek -10
-#     bindsym k exec --no-startup-id cmus-remote --seek 10
-#     bindsym Shift+j exec --no-startup-id cmus-remote --seek -60
-#     bindsym Shift+k exec --no-startup-id cmus-remote --seek 60
-#     #bindsym q exec --no-startup-id killall cmus
-#     bindsym Down exec --no-startup-id cmus-remote --next
-#     bindsym Up exec --no-startup-id cmus-remote --prev
-#     bindsym Left exec --no-startup-id cmus-remote --seek -10
-#     bindsym Right exec --no-startup-id cmus-remote --seek 10
-#     bindsym Return mode "default"
-#     bindsym Escape mode "default"
-# }
-# bindsym $mod+m mode "$mode_music"
-
-## Session management
-set $mode_system <span color='#141414'>B</span><span color='#505050'>LANK</span> <span color='#141414'>L</span><span color='#505050'>OCK</span> <span color='#141414'>S</span><span color='#505050'>USPEND</span> <span color='#141414'>H</span><span color='#505050'>IBERNATE</span> <span color='#141414'>⇧E</span><span color='#505050'>XIT</span> <span color='#141414'>⇧R</span><span color='#505050'>EBOOT</span> <span color='#141414'>⇧S</span><span color='#505050'>HUTDOWN</span>
+set $mode_system BLANK LOCK SUSPEND HIBERNATE ⇧EXIT ⇧REBOOT ⇧SHUTDOWN
+# set $mode_system <span color='#141414'>B</span><span color='#EEEEEF'>LANK</span> <span color='#141414'>L</span><span color='#505050'>OCK</span> <span color='#141414'>S</span><span color='#505050'>USPEND</span> <span color='#141414'>H</span><span color='#505050'>IBERNATE</span> <span color='#141414'>⇧E</span><span color='#505050'>XIT</span> <span color='#141414'>⇧R</span><span color='#505050'>EBOOT</span> <span color='#141414'>⇧S</span><span color='#505050'>HUTDOWN</span>
+# set $mode_system  <span color='#ff0000'>B</span><span color='#EEEEEF'>LANK LOCK SUSPEND HIBERNATE ⇧EXIT ⇧REBOOT ⇧SHUTDOWN</span>
 mode --pango_markup "$mode_system" {
     bindsym l exec --no-startup-id i3exit lock
     bindsym b exec --no-startup-id screen-blank
@@ -494,41 +255,3 @@ mode --pango_markup "$mode_system" {
     bindsym Escape mode "default"
 }
 bindsym $mod+Shift+Delete mode "$mode_system"
-
-# ## Application launcher
-# set $mode_launch  <span color='#141414'>A</span><span color='#606060'>TOM</span>   <span color='#141414'>C</span><span color='#606060'>HROME</span>   <span color='#141414'>G</span><span color='#606060'>ITHUB</span>   <span color='#141414'>F</span><span color='#606060'>IREFOX</span>   <span color='#141414'>N</span><span color='#606060'>AUTILUS</span>   <span color='#141414'>P</span><span color='#606060'>IDGIN</span>   <span color='#141414'>S</span><span color='#606060'>TEAM</span>  
-# mode --pango_markup "$mode_launch" {
-#     bindsym a exec atom, mode "default"
-#     bindsym c exec chromium, mode "default"
-#     bindsym f exec firefox, mode "default"
-#     bindsym g exec chromium https://github.com/tong, mode "default"
-#     bindsym n exec nautilus, mode "default"
-#     bindsym t exec chromium https://twitter.com/, mode "default"
-#     bindsym s exec steam, mode "default"
-#     bindsym y exec chromium --app=https://youtube.com, mode "default"
-#     bindsym Return mode "default"
-#     bindsym Escape mode "default"
-# }
-# bindsym $mod+o mode "$mode_launch"
-
-################################################################################
-
-## Startup
-
-exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh --daemonize
-
-#exec --no-startup-id nitrogen --restore
-exec_always --no-startup-id hsetroot -solid '$color_stage'
-#exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-#exec --no-startup-id conky -c $HOME/.config/i3/desktop.conky
-#exec_always --no-startup-id picom -b --config ~/.config/picom.conf
-exec_always --no-startup-id picom -b --config ~/.config/picom.conf --experimental-backends
-exec_always --no-startup-id xset r rate 250 40
-
-#exec --no-startup-id nm-applet
-#exec --no-startup-id blueman-manager
-
-exec --no-startup-id i3-sensible-terminal
-#exec --no-startup-id chromium --no-startup-window
-
-#exec --no-startup-id dbus-send --session --print-reply=literal --dest=org.gnome.SessionManager "/org/gnome/SessionManager" org.gnome.SessionManager.RegisterClient "string:i3" "string:$DESKTOP_AUTOSTART_ID"
