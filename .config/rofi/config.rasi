@@ -1,6 +1,5 @@
 configuration {
  modi: "window,drun,ssh,combi";
- theme: "theme/void";
  font: "JetBrainsMono Nerd Font 9";
  combi-modi: "window,drun,ssh";
  show-icons: true;
