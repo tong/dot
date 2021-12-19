@@ -56,7 +56,7 @@ include-directory = ~/.config/polybar/modules/
     ;line-color = #f00
     ; underline-size = 10
     ; overline-size = 1
-    padding-left = 1
+    ; padding-left = 1
     ; padding-right = 1
     ; module-margin-left = 2
     ; module-margin-right = 2
@@ -66,9 +66,9 @@ include-directory = ~/.config/polybar/modules/
     background = ${colors.background}
     foreground = ${colors.foreground}
 
-    modules-left = i3 xwindow 
+    modules-left = i3 xwindow mediaplayer
     modules-center =
-    modules-right = mpd mediaplayer player-moc cpu memory net-traffic kernel datetime
+    modules-right = player-moc mpd net-traffic cpu memory datetime
     #net-speed eth ip-public cpu memory alsa datetime
 
     tray-position = right
