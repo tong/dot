@@ -1,4 +1,3 @@
-
 schemes:
 
   blood_moon: &blood_moon
@@ -24,6 +23,116 @@ schemes:
       cyan:    '#00CCCC'
       white:   '#FFFAFA'
 
+  cyberpunk: &cyberpunk
+    primary:
+      background: '0x000b1e'
+      foreground: '0x0abdc6'
+    normal:
+      black:   '0x123e7c'
+      red:     '0xff0000'
+      green:   '0xd300c4'
+      yellow:  '0xf57800'
+      blue:    '0x123e7c'
+      magenta: '0x711c91'
+      cyan:    '0x0abdc6'
+      white:   '0xd7d7d5'
+    bright:
+      black:   '0x1c61c2'
+      red:     '0xff0000'
+      green:   '0xd300c4'
+      yellow:  '0xf57800'
+      blue:    '0x00ff00'
+      magenta: '0x711c91'
+      cyan:    '0x0abdc6'
+      white:   '0xd7d7d5'
+    dim:
+      black:   '0x1c61c2'
+      red:     '0xff0000'
+      green:   '0xd300c4'
+      yellow:  '0xf57800'
+      blue:    '0x123e7c'
+      magenta: '0x711c91'
+      cyan:    '0x0abdc6'
+      white:   '0xd7d7d5'
+  
+  gotham: &gotham
+    primary:
+      background: "#0a0f14"
+      foreground: "#98d1ce"
+    cursor:
+      text: "#0a0f14"
+      cursor: "#98d1ce"
+    normal:
+      black: "#0a0f14"
+      red: "#c33027"
+      green: "#26a98b"
+      yellow: "#edb54b"
+      blue: "#195465"
+      magenta: "#4e5165"
+      cyan: "#33859d"
+      white: "#98d1ce"
+    bright:
+      black: "#10151b"
+      red: "#d26939"
+      green: "#081f2d"
+      yellow: "#245361"
+      blue: "#093748"
+      magenta: "#888ba5"
+      cyan: "#599caa"
+      white: "#d3ebe9"
+      
+  grayscale: &grayscale
+    primary:
+      background: "#101010"
+      foreground: "#b9b9b9"
+    cursor:
+      text: "#101010"
+      cursor: "#b9b9b9"
+    normal:
+      black: "#101010"
+      red: "#7c7c7c"
+      green: "#8e8e8e"
+      yellow: "#a0a0a0"
+      blue: "#686868"
+      magenta: "#747474"
+      cyan: "#868686"
+      white: "#b9b9b9"
+    bright:
+      black: "#525252"
+      red: "#7c7c7c"
+      green: "#8e8e8e"
+      yellow: "#a0a0a0"
+      blue: "#686868"
+      magenta: "#747474"
+      cyan: "#868686"
+      white: "#f7f7f7"
+  
+  hyper: &hyper
+    primary:
+      background: '#000000'
+      foreground: '#ffffff'
+    cursor:
+      text: '#F81CE5'
+      cursor: '#ffffff'
+    normal:
+      black:   '#000000'
+      red:     '#fe0100'
+      green:   '#33ff00'
+      yellow:  '#feff00'
+      blue:    '#0066ff'
+      magenta: '#cc00ff'
+      cyan:    '#00ffff'
+      white:   '#d0d0d0'
+    bright:
+      black:   '#808080'
+      red:     '#fe0100'
+      green:   '#33ff00'
+      yellow:  '#feff00'
+      blue:    '#0066ff'
+      magenta: '#cc00ff'
+      cyan:    '#00ffff'
+      white:   '#FFFFFF'
+  
   jellybeans: &jellybeans
     primary:
       background: '#161616'
@@ -52,7 +161,33 @@ schemes:
     selection:
       text: '#5963a2'
       background: '#f6f6f6'
-  
+
+  mikado: &mikado
+    primary:
+      background: "#000000"
+      foreground: "#ffffff"
+    cursor:
+      text: "#000000"
+      cursor: "#ffffff"
+    normal:
+      black: "#322a2c"
+      red: "#a04363"
+      green: "#9b9329"
+      yellow: "#bf7a29"
+      blue: "#6a8c8c"
+      magenta: "#856774"
+      cyan: "#757978"
+      white: "#bcbcaf"
+    bright:
+      black: "#46423b"
+      red: "#ae837a"
+      green: "#b4aa30"
+      yellow: "#c7a551"
+      blue: "#74999e"
+      magenta: "#9c818e"
+      cyan: "#9fa590"
+      white: "#c1c4bc"
+
   nord: &nord
     primary:
       background: '#2E3440'
@@ -173,6 +308,29 @@ schemes:
       magenta: '#b77ee0'
       cyan:    '#54ced6'
       white:   '#282a2e'
+  
+  void: &void # TODO
+    primary:
+      background: '#000000'
+      foreground: '#B8B9B4'
+    normal:
+      black: '#0A0A0A'
+      red: '#939490'
+      green: '#5E6E5C'
+      yellow: '#B6B8B3'
+      blue: '#727370'
+      magenta: '#D1D1CB'
+      cyan: '#636361'
+      white: '#AAABA6'
+    bright:
+      black: '#2E2E2C'
+      red: '#989995'
+      green: '#636361'
+      yellow: '#BBBDB8'
+      blue: '#777875'
+      magenta: '#D6D6D0'
+      cyan: '#696966'
+      white: '#AFB0AB'
 
   zenburn: &zenburn
     primary:
@@ -202,4 +360,4 @@ schemes:
       cyan:    '#ffd700'
       white:   '#ffffff'
 
-colors: *simple_dark
+colors: *cyberpunk
