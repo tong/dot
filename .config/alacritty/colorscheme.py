@@ -58,9 +58,14 @@ class ColorSchemes:
         self.lines[self.colors_line_index] = COLOR_SCHEME_LINE_TEMPLATE.format(self.available_color_schemes[self.color_scheme_index])
         self.write_config()
 
+    def list_themes(self):
+        for theme in self.available_color_schemes:
+            print(theme)
+
 cs = ColorSchemes()
 cmd = sys.argv.pop()
 if cmd == "next": cs.set_next()
 elif cmd == "prev": cs.set_prev()
 elif cmd == "random": cs.set_random()
+elif cmd == "list": cs.list_themes()
 else: cs.set_theme(cmd)
