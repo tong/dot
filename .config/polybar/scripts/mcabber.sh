@@ -8,4 +8,6 @@ if [ -f $FILE ];then
     else
         echo "ﮠ $NUM_UNREAD"
     fi
+else
+    echo ""
 fi
