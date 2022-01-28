@@ -6,8 +6,9 @@ import random
 import re
 import yaml
 
-CONFIG_FILE_NAME = "colorschemes.yml"
 CONFIG_FILE_DIR = os.path.expanduser("~/.config/alacritty/")
+CONFIG_FILE_NAME = "colorschemes.yml"
+
 CONFIG_FILE_PATH = os.path.join(CONFIG_FILE_DIR, CONFIG_FILE_NAME)
 COLOR_SCHEME_LINE_SEARCH = "colors: \*(\S+)"
 COLOR_SCHEME_LINE_TEMPLATE = "colors: *{}\n"
@@ -51,7 +52,7 @@ class ColorSchemes:
         try:
             index = self.available_color_schemes.index(theme)
         except:
-            print('theme not found')
+            print('Theme not found')
             exit(1)
         self.current_color_scheme = theme
         self.color_scheme_index = self.available_color_schemes.index(self.current_color_scheme)
@@ -63,9 +64,11 @@ class ColorSchemes:
             print(theme)
 
 cs = ColorSchemes()
-cmd = sys.argv.pop()
-if cmd == "next": cs.set_next()
-elif cmd == "prev": cs.set_prev()
-elif cmd == "random": cs.set_random()
-elif cmd == "list": cs.list_themes()
-else: cs.set_theme(cmd)
+if len(sys.argv) == 1: cs.list_themes()
+else:
+    cmd = sys.argv.pop()
+    if cmd == "next": cs.set_next()
+    elif cmd == "prev": cs.set_prev()
+    elif cmd == "random": cs.set_random()
+    elif cmd == "list" or cmd == None: cs.list_themes()
+    else: cs.set_theme(cmd)
