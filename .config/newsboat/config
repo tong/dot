@@ -1,0 +1,3 @@
+reload-threads 10
+highlight feedlist "---.*---" red default bold
+highlight feedlist ".*0/0.." default default invis
