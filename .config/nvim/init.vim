@@ -1,13 +1,11 @@
-
 set nocompatible
 set encoding=utf-8
-
 set number
 set showmatch
 set mouse=v " middle click paste with mouse
 set hlsearch " highlight search results
 set cc=80
-set number 
+set number
 set termguicolors
 set autoindent
 set smartindent
@@ -43,6 +41,9 @@ let g:neovide_remember_window_size=v:true
 let g:neovide_cursor_trail_length=0.8
 
 call plug#begin('~/.local/share/nvim/plugged')
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'airblade/vim-gitgutter'
+Plug 'ryanoasis/vim-devicons'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tyru/open-browser.vim'  " https://github.com/tyru/open-browser.vim
 Plug 'vim-airline/vim-airline'
@@ -50,5 +51,5 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'jdonaldson/vaxe'
 Plug 'vim-syntastic/syntastic'
 Plug 'preservim/nerdtree'
+Plug 'tyru/open-browser.vim'
 call plug#end()
-
