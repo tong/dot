@@ -1,0 +1,12 @@
+#!/bin/sh
+# Suspend and wake me up playing random music
+DIR=$HOME/music/wake
+FILE=$(ls $DIR | shuf -n 1)
+MUSIC="$DIR/$FILE"
+#TIME="today 09:33"
+#TIME="tomorrow 08:00"
+#TIME="today $1"
+DATE=$(date +%s -d "today $1")
+sudo rtcwake -m mem -l -t $DATE \
+		&& sleep 3 \
+		&& mplayer "$MUSIC"
