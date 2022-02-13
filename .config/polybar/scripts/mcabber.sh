@@ -9,5 +9,7 @@ if [ -f $FILE ];then
         echo "ﮠ $NUM_UNREAD"
     fi
 else
-    echo ""
+    if [ -p $HOME/.mcabber/fifo ];then
+        echo ""
+    fi
 fi
