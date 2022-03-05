@@ -10,6 +10,8 @@ if [ -f $FILE ];then
     fi
 else
     if [ -p $HOME/.mcabber/fifo ];then
-        echo ""
+        echo "ﳽ"
+    else
+        echo "ﳤ"
     fi
 fi
