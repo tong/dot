@@ -1,4 +1,3 @@
-
 alias c='clear'
 alias e='exit'
 alias now='date +"%T"'
@@ -41,3 +40,6 @@ alias meminfo='free -m -l -t'
 alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
 #alias psmem='ps auxf | sort -nr -k 4'
 #alias psmem10='ps auxf | sort -nr -k 4 | head -10'
+
+alias paci="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
+alias pacr="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
