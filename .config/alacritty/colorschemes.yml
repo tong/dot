@@ -360,4 +360,4 @@ schemes:
       cyan:    '#ffd700'
       white:   '#ffffff'
 
-colors: *cyberpunk
+colors: *gotham
