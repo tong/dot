@@ -40,5 +40,5 @@ let g:startify_lists = [
 
 "let g:startify_bookmarks = systemlist("cut -sd' ' -f 2- ~/.NERDTreeBookmarks")
 "let g:startify_custom_header = (split(system('echo 23'), '\n'))
-let g:startify_custom_header = split('','\n')
+let g:startify_custom_header = split('   ','\n')
 
