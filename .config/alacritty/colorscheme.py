@@ -55,7 +55,7 @@ class ColorSchemes:
             print('Theme not found')
             exit(1)
         self.current_color_scheme = theme
-        self.color_scheme_index = self.available_color_schemes.index(self.current_color_scheme)
+        self.color_scheme_index = index
         self.lines[self.colors_line_index] = COLOR_SCHEME_LINE_TEMPLATE.format(self.available_color_schemes[self.color_scheme_index])
         self.write_config()
 
