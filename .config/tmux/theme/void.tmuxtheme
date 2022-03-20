@@ -1,0 +1,149 @@
+# Format options
+set -goq @status-left-area-left-format "#S"
+set -goq @status-left-area-middle-format "#(whoami)"
+set -goq @status-left-area-right-format "#I:#P"
+#set -goq @status-right-area-left-format "%H:%M:%S"
+#set -goq @status-right-area-middle-format "%d-%b-%y"
+#set -goq @status-right-area-right-format "#H"
+set -goq @status-right-area-left-format ""
+set -goq @status-right-area-middle-format ""
+set -goq @status-right-area-right-format "#H"
+set -goq @window-status-current-format "#I:#W#F"
+set -goq @window-status-format "#I:#W#F"
+
+# Customizable prefixes and suffixes for @* format options
+set -goq @status-left-area-left-prefix ""
+set -goq @status-left-area-left-suffix ""
+set -goq @status-left-area-middle-prefix ""
+set -goq @status-left-area-middle-suffix ""
+set -goq @status-left-area-right-prefix ""
+set -goq @status-left-area-right-suffix ""
+set -goq @status-right-area-left-prefix ""
+set -goq @status-right-area-left-suffix ""
+set -goq @status-right-area-middle-prefix ""
+set -goq @status-right-area-middle-suffix ""
+set -goq @status-right-area-right-prefix ""
+set -goq @status-right-area-right-suffix ""
+set -goq @window-status-current-prefix ""
+set -goq @window-status-current-suffix ""
+set -goq @window-status-prefix ""
+set -goq @window-status-suffix ""
+
+# Apply prefixes and suffixes to @* format options
+set -gqF @status-left-area-left-format "#{@status-left-area-left-prefix}#{@status-left-area-left-format}#{@status-left-area-left-suffix}"
+set -gqF @status-left-area-middle-format "#{@status-left-area-middle-prefix}#{@status-left-area-middle-format}#{@status-left-area-middle-suffix}"
+set -gqF @status-left-area-right-format "#{@status-left-area-right-prefix}#{@status-left-area-right-format}#{@status-left-area-right-suffix}"
+set -gqF @status-right-area-left-format "#{@status-right-area-left-prefix}#{@status-right-area-left-format}#{@status-right-area-left-suffix}"
+set -gqF @status-right-area-middle-format "#{@status-right-area-middle-prefix}#{@status-right-area-middle-format}#{@status-right-area-middle-suffix}"
+set -gqF @status-right-area-right-format "#{@status-right-area-right-prefix}#{@status-right-area-right-format}#{@status-right-area-right-suffix}"
+set -gqF @window-status-current-format "#{@window-status-current-prefix}#{@window-status-current-format}#{@window-status-current-suffix}"
+set -gqF @window-status-format "#{@window-status-prefix}#{@window-status-format}#{@window-status-suffix}"
+
+# Powerline color options
+set -goq @pl-color-main-1 colour245
+set -goq @pl-color-main-2 colour250
+set -goq @pl-color-main-3 colour245
+set -goq @pl-color-black-1 black
+set -goq @pl-color-grey-1 colour233
+set -goq @pl-color-grey-2 colour235
+set -goq @pl-color-grey-3 colour238
+set -goq @pl-color-grey-4 colour240
+set -goq @pl-color-grey-5 colour243
+set -goq @pl-color-grey-6 colour245
+
+# Powerline options
+set -goqF @pl-color-activity-1 "#{@pl-color-grey-6}"
+set -goqF @pl-status-bg "#{@pl-color-grey-1}"
+set -goqF @pl-status-fg "#{@pl-color-grey-4}"
+set -goqF @pl-status-left-area-left-bg "#{@pl-color-main-1}"
+set -goqF @pl-status-left-area-left-fg "#{@pl-status-bg}"
+set -goqF @pl-status-left-area-middle-bg "#{@pl-status-fg}"
+set -goqF @pl-status-left-area-middle-fg "#{@pl-status-bg}"
+set -goqF @pl-status-left-area-right-bg "#{@pl-color-grey-2}"
+set -goqF @pl-status-left-area-right-fg "#{@pl-status-fg}"
+set -goqF @pl-status-left-bg "#{@pl-color-grey-1}"
+set -goqF @pl-status-left-fg "#{@pl-color-grey-5}"
+set -goqF @pl-status-right-area-left-bg "#{@pl-color-grey-2}"
+set -goqF @pl-status-right-area-left-fg "#{@pl-status-fg}"
+set -goqF @pl-status-right-area-middle-bg "#{@pl-status-fg}"
+set -goqF @pl-status-right-area-middle-fg "#{@pl-status-bg}"
+set -goqF @pl-status-right-area-right-bg "#{@pl-color-grey-6}"
+set -goqF @pl-status-right-area-right-fg "#{@pl-status-bg}"
+set -goqF @pl-status-right-bg "#{@pl-color-grey-1}"
+set -goqF @pl-status-right-fg "#{@pl-color-grey-5}"
+
+# Theme options
+set -goqF @th-clock-mode-colour "#{@pl-color-main-1}"
+set -goq  @th-clock-mode-style 24
+set -goqF @th-display-panes-active-colour "#{@pl-color-grey-6}"
+set -goqF @th-display-panes-colour "#{@pl-color-grey-1}"
+set -goqF @th-message-bg "#{@pl-color-main-1}"
+set -goqF @th-message-command-bg "#{@pl-color-main-1}"
+set -goqF @th-message-command-fg "#{@pl-color-black-1}"
+set -goqF @th-message-fg "#{@pl-color-black-1}"
+set -goqF @th-mode-bg "#{@pl-color-main-1}"
+set -goqF @th-mode-fg "#{@pl-color-black-1}"
+set -goq  @th-pane-active-border-bg default
+set -goqF @th-pane-active-border-fg "#{@pl-color-main-1}"
+set -goq  @th-pane-border-bg default
+set -goqF @th-pane-border-fg "#{@pl-color-grey-3}"
+set -goqF @th-status-bg "#{@pl-status-bg}"
+set -goqF @th-status-fg "#{@pl-status-fg}"
+set -goq  @th-status-interval 1
+set -goq  @th-status-justify left
+set -goqF @th-status-left "#[fg=#{@pl-status-left-area-left-fg},bg=#{@pl-status-left-area-left-bg},bold] #{@status-left-area-left-format} #[fg=#{@pl-status-left-area-left-bg},bg=#{@pl-status-left-area-middle-bg},nobold]#[fg=#{@pl-status-left-area-middle-fg},bg=#{@pl-status-left-area-middle-bg}] #{@status-left-area-middle-format} #[fg=#{@pl-status-left-area-middle-bg},bg=#{@pl-status-left-area-right-bg}]#[fg=#{@pl-status-left-area-right-fg},bg=#{@pl-status-left-area-right-bg}] #{@status-left-area-right-format} #[fg=#{@pl-status-left-area-right-bg},bg=#{@th-status-bg},nobold]"
+set -goqF @th-status-left-bg "#{@pl-status-left-bg}"
+set -goqF @th-status-left-fg "#{@pl-status-left-fg}"
+set -goq  @th-status-left-length 40
+set -goqF @th-status-right "#[fg=#{@pl-status-right-area-left-bg},bg=#{@th-status-bg}]#[fg=#{@pl-status-right-area-left-fg},bg=#{@pl-status-right-area-left-bg}] #{@status-right-area-left-format} #[fg=#{@pl-status-right-area-middle-bg},bg=#{@pl-status-right-area-left-bg}]#[fg=#{@pl-status-right-area-middle-fg},bg=#{@pl-status-right-area-middle-bg}] #{@status-right-area-middle-format} #[fg=#{@pl-status-right-area-right-bg},bg=#{@pl-status-right-area-middle-bg}]#[fg=#{@pl-status-right-area-right-fg},bg=#{@pl-status-right-area-right-bg},bold] #{@status-right-area-right-format} "
+set -goqF @th-status-right-bg "#{@pl-status-right-bg}"
+set -goqF @th-status-right-fg "#{@pl-status-right-fg}"
+set -goq  @th-status-right-length 150
+set -goqF @th-window-status-activity-bg "#{@th-status-bg}"
+set -goqF @th-window-status-activity-fg "#{@pl-color-activity-1}"
+set -goq  @th-window-status-separator ""
+set -goqF @th-window-status-current-bg "#{@pl-color-black-1}"
+set -goqF @th-window-status-current-fg "#{@pl-color-main-2}"
+set -goqF @th-window-status-format "  #{@window-status-format}  "
+set -goqF @th-window-status-current-format "#[fg=#{@th-status-bg},bg=#{@th-window-status-current-bg}]#[fg=#{@th-window-status-current-fg},nobold] #{@window-status-current-format} #[fg=#{@th-status-bg},bg=#{@th-window-status-current-bg},nobold]"
+
+# Customizable prefixes and suffixes for @th-* format options
+set -goq @th-status-left-prefix ""
+set -goq @th-status-left-suffix ""
+set -goq @th-status-right-prefix ""
+set -goq @th-status-right-suffix ""
+set -goq @th-window-status-current-prefix ""
+set -goq @th-window-status-current-suffix ""
+set -goq @th-window-status-prefix ""
+set -goq @th-window-status-suffix ""
+
+# Apply prefixes and suffixes to @th-* format options
+set -gqF @th-status-left "#{@th-status-left-prefix}#{@th-status-left}#{@th-status-left-suffix}"
+set -gqF @th-status-right "#{@th-status-right-prefix}#{@th-status-right}#{@th-status-right-suffix}"
+set -gqF @th-window-status-current-format "#{@th-window-status-current-prefix}#{@th-window-status-current-format}#{@th-window-status-current-suffix}"
+set -gqF @th-window-status-format "#{@th-window-status-prefix}#{@th-window-status-format}#{@th-window-status-suffix}"
+
+# Apply @th-* options to Tmux
+set -gF  display-panes-active-colour "#{@th-display-panes-active-colour}"
+set -gF  display-panes-colour "#{@th-display-panes-colour}"
+set -gF  message-command-style "fg=#{@th-message-command-fg},bg=#{@th-message-command-bg}"
+set -gF  message-style "fg=#{@th-message-fg},bg=#{@th-message-bg}"
+set -gF  status-interval "#{@th-status-interval}"
+set -gF  status-justify "#{@th-status-justify}"
+set -gF  status-left "#{@th-status-left}"
+set -gF  status-left-length "#{@th-status-left-length}"
+set -gF  status-left-style "fg=#{@th-status-left-fg},bg=#{@th-status-left-bg}"
+set -gF  status-right "#{@th-status-right}"
+set -gF  status-right-length "#{@th-status-right-length}"
+set -gF  status-right-style "fg=#{@th-status-right-fg},bg=#{@th-status-right-bg}"
+set -gF  status-style "fg=#{@th-status-fg},bg=#{@th-status-bg}"
+set -gwF clock-mode-colour "#{@th-clock-mode-colour}"
+set -gwF clock-mode-style "#{@th-clock-mode-style}"
+set -gwF mode-style "fg=#{@th-mode-fg},bg=#{@th-mode-bg}"
+set -gwF pane-active-border-style "fg=#{@th-pane-active-border-fg},bg=#{@th-pane-active-border-bg}"
+set -gwF pane-border-style "fg=#{@th-pane-border-fg},bg=#{@th-pane-border-bg}"
+set -gwF window-status-activity-style "fg=#{@th-window-status-activity-fg},bg=#{@th-window-status-activity-bg}"
+set -gwF window-status-current-format "#{@th-window-status-current-format}"
+set -gwF window-status-current-style "fg=#{@th-window-status-current-fg},bg=#{@th-window-status-current-bg}"
+set -gwF window-status-format "#{@th-window-status-format}"
+set -gwF window-status-separator "#{@th-window-status-separator}"

@@ -40,12 +40,12 @@ window:
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
   padding:
-    x: 4
-    y: 4
+    x: 1
+    y: 1
   opacity: 0.98
 
   # Spread additional padding evenly around the terminal content.
-  # dynamic_padding: true
+  #dynamic_padding: true
 
   # Window decorations
   #
@@ -135,12 +135,6 @@ bell:
   #     args: ["Hello, World!"]
   #
   #command: None
-
-# Background opacity
-#
-# Window opacity as a floating point number from `0.0` to `1.0`.
-# The value `0.0` is completely transparent and `1.0` is opaque.
-# background_opacity: 0.97
 
 selection:
   # This string contains all characters that are used as separators for
@@ -258,7 +252,6 @@ live_config_reload: true
 # - `mods` (see key bindings)
 #mouse_bindings:
 #  - { mouse: Middle, action: PasteSelection }
-
 
 #debug:
   # Display the time it takes to redraw each frame.
