@@ -1,9 +1,24 @@
 configuration {
- modi: "window,drun,ssh,combi";
- font: "JetBrainsMono Nerd Font 9";
- combi-modi: "window,drun,ssh";
- show-icons: true;
- location: 2;
- lines: 40;
- width: 16;
+	location: 1;
+	font: "JetBrainsMono Nerd Font 9";
+	show-icons: true;
+	/*icon-theme: "Dracula";*/
+	case-sensitive: true;
+	cycle: true;
+	sidebar-mode: false;
+	window-thumbnail: true;
+    //window-format
+    yoffset: 20;
+    sidebar-mode: false;
+    timeout {
+        delay: 0;
+        action: "kb-cancel";
+    }
+    filebrowser {
+        sorting-method:    "name";
+        directories-first: true;
+    }
 }
+
+@theme "theme/void"
+
