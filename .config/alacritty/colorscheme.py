@@ -44,9 +44,10 @@ class ColorSchemes:
         self.write_config()
 
     def set_random(self):
-        self.color_scheme_index = random.randint(0, len(self.available_color_schemes))
+        self.color_scheme_index = random.randint(0, len(self.available_color_schemes)-1)
         self.lines[self.colors_line_index] = COLOR_SCHEME_LINE_TEMPLATE.format(self.available_color_schemes[self.color_scheme_index])
         self.write_config()
+        print(self.current_color_scheme)
 
     def set_theme(self,theme:str):
         try:
@@ -64,11 +65,12 @@ class ColorSchemes:
             print(theme)
 
 cs = ColorSchemes()
-if len(sys.argv) == 1: cs.list_themes()
+if len(sys.argv) == 1:
+    print(cs.current_color_scheme )
 else:
     cmd = sys.argv.pop()
     if cmd == "next": cs.set_next()
     elif cmd == "prev": cs.set_prev()
     elif cmd == "random": cs.set_random()
-    elif cmd == "list" or cmd == None: cs.list_themes()
+    elif cmd == "list": cs.list_themes()
     else: cs.set_theme(cmd)
