@@ -47,6 +47,7 @@ class ColorSchemes:
         self.color_scheme_index = random.randint(0, len(self.available_color_schemes)-1)
         self.lines[self.colors_line_index] = COLOR_SCHEME_LINE_TEMPLATE.format(self.available_color_schemes[self.color_scheme_index])
         self.write_config()
+        self.current_color_scheme = self.available_color_schemes[self.color_scheme_index]
         print(self.current_color_scheme)
 
     def set_theme(self,theme:str):
@@ -62,7 +63,10 @@ class ColorSchemes:
 
     def list_themes(self):
         for theme in self.available_color_schemes:
-            print(theme)
+            if theme == self.current_color_scheme:
+                print('\033[91m{}\033[00m'.format(theme))
+            else:
+                print(theme)
 
 cs = ColorSchemes()
 if len(sys.argv) == 1:
