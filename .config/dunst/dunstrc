@@ -1,7 +1,6 @@
 # See dunst(5) for all configuration options
 
 [global]
-    ### Display ###
 
     # Which monitor should the notifications be displayed on.
     monitor = 0
@@ -24,16 +23,16 @@
     # dynamic width from 0 to 300
     # width = (0, 300)
     # constant width of 300
-    width = (16, 600)
+    width = (16, 1024)
 
     # The maximum height of a single notification, excluding the frame.
     height = 300
 
     # Position the notification in the top right corner
-    origin = top-right
+    origin = top-center
 
     # Offset from the origin
-    offset = 16x42
+    offset = 72x72
 
     # Scale factor. It is auto-detected if value is 0.
     scale = 0
@@ -73,23 +72,23 @@
     # Draw a line of "separator_height" pixel height between two
     # notifications.
     # Set to 0 to disable.
-    separator_height = 2
+    separator_height = 1
 
     # Padding between text and separator.
-    padding = 8
+    padding = 24
 
     # Horizontal padding.
-    horizontal_padding = 8
+    horizontal_padding = 30
 
     # Padding between text and icon.
     text_icon_padding = 0
 
     # Defines width in pixels of frame around the notification window.
     # Set to 0 to disable.
-    frame_width = 1
+    frame_width = 2
 
     # Defines color of the frame around the notification window.
-    frame_color = "#212B30"
+    frame_color = "#C4c7c5"
 
     # Define a color for the separator.
     # possible values are:
@@ -111,7 +110,7 @@
 
     ### Text ###
 
-    font = Monospace 9
+    font = JetBrainsMono Nerd Font Mono 11
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
@@ -152,7 +151,9 @@
     #   %%  Literal %
     # Markup is allowed
     # format = "<b>%s</b>\n%b"
-    format = "<b>%s</b>\n%b"
+    #format = "<b>%s</b>\n%b"
+    #format = "<tt>777 ABcc efg</tt><span foreground="yellow" font_size="23pt"> </span><i>%a</i><b>%s</b>\n%b"
+    format = "<i>%a</i> <b>%s</b>\n%b"
 
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
@@ -230,7 +231,7 @@
     # corners.
     # The radius will be automatically lowered if it exceeds half of the
     # notification height to avoid clipping text and/or icons.
-    corner_radius = 2
+    corner_radius = 1
 
     # Ignore the dbus closeNotification message.
     # Useful to enforce the timeout set by dunst configuration. Without this
@@ -293,17 +294,18 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#888888"
+    background = "#505050"
     foreground = "#C4C7C5"
-    timeout = 10
+    frame_color = "#C4C7C5"
+    timeout = 5
     # Icon for notifications with low urgency, uncomment to enable
     #default_icon = /path/to/icon
     
 [urgency_normal]
-    background = "#212B30"
-    foreground = "#C4C7C5"
-    frame_color = "#C4C7C5"
-    timeout = 16
+    background = "#262626"
+    foreground = "#C4c7c5"
+    frame_color = "#C4c7c5"
+    timeout = 11
     # Icon for notifications with normal urgency, uncomment to enable
     #default_icon = /path/to/icon
 
