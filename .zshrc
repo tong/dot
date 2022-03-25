@@ -1,3 +1,7 @@
+HISTSIZE=10000000
+SAVEHIST=10000000
+HISTFILE=~/.cache/zsh/history
+
 ZSH_THEME="void"
 # if [[ -o login ]]; then
 #     ZSH_THEME="void"
@@ -32,14 +36,19 @@ plugins=(
     zsh-syntax-highlighting
 )
 
+source $HOME/.env
+
 source $ZSH/oh-my-zsh.sh
 
-source $HOME/.zsh_aliases
-source $HOME/.zsh_aliases_user
+#source $HOME/.zsh_aliases
+#source $HOME/.zsh_aliases_user
+source $HOME/.config/zsh/zsh_aliases
+source $HOME/.config/zsh/zsh_aliases_user
 
-#source $HOME/.scripts/fzf.sh
 source /usr/share/fzf/key-bindings.zsh
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source $HOME/.config/lf/icons
+
+eval "$(zoxide init zsh)"
 
 if [ -n "$RANGER_LEVEL" ]; then
     export PS1="[ranger]$PS1";
@@ -49,4 +58,20 @@ if [ $TILIX_ID ] || [ $VTE_VERSION ]; then # https://gnunn1.github.io/tilix-web/
     source /etc/profile.d/vte.sh
 fi
 
-source ~/.env
+
+lfcd () {
+    tmp="$(mktemp)"
+    lf -last-dir-path="$tmp" "$@"
+    if [ -f "$tmp" ]; then
+        dir="$(cat "$tmp")"
+        rm -f "$tmp" >/dev/null
+        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+    fi
+}
+bindkey -s '^o' 'lfcd\n'
+bindkey -s '^a' 'bc -lq\n'
+#bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'
+
+#autoload edit-command-line; zle -N edit-command-line
+#bindkey '^e' edit-command-line
+
