@@ -1,7 +1,8 @@
 * {
     background: #000;
+    foreground: #C4C7C5;
 
-    background-color: #000000;
+    background-color: #101010;
 
     normal-background: #101010; 
     normal-foreground: #C4C7C5;
@@ -78,12 +79,12 @@ element-icon {
     text-color:       inherit;
 }
 window {
-    padding:          5;
-    background-color: var(background);
-    border:           1;
+    padding:          6px 8px 6px 8px;
+    //background-color: var(background);
+    //border:           1;
     //locations: west;
     width: 48em;
-    height: 80%;
+    height: 66%;
     //anchor: west;
 }
 mainbox {
@@ -92,6 +93,7 @@ mainbox {
 }
 message {
     padding:      1px ;
+    //color:red;
     border-color: var(separatorcolor);
     border:       2px dash 0px 0px ;
 }
@@ -107,7 +109,7 @@ listview {
     border:       2px dash 0px 0px ;
 }
 scrollbar {
-    width:        1px ;
+    width:        4px ;
     padding:      0;
     handle-width: 4px ;
     border:       0;
@@ -154,7 +156,7 @@ entry {
     cursor:            text;
     spacing:           0;
     placeholder-color: Gray;
-    placeholder:       ">";
+    placeholder:       "";
 }
 prompt {
     spacing:    0;
@@ -163,6 +165,7 @@ prompt {
 textbox-prompt-colon {
     margin:     0px 0.3000em 0.0000em 0.0000em ;
     expand:     false;
+    //str:        "";
     str:        "";
     text-color: inherit;
 }

@@ -391,8 +391,8 @@
 #    fullscreen = show
 
 #[espeak]
-#    summary = "*"
-#    script = dunst_espeak.sh
+    #summary = "*"
+    #script = dunst_espeak.sh
 
 #[script-test]
 #    summary = "*script*"

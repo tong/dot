@@ -1,0 +1,28 @@
+
+alias img='sxiv $@'
+
+alias bl='blender'
+alias f='lf $@'
+alias lf='$HOME/.config/lf/lfrun'
+alias nv='neovide --multigrid $@'
+alias tt='$HOME/sdk/twtui'
+#alias v='nvim $@' 
+alias vv='nvim $@'
+alias ultraviolet='nvim -c "VimwikiIndex"'
+
+alias alacritty-theme='python $HOME/.config/alacritty/colorscheme.py $@'
+#alias armory='blender -b --python $ARMSDK/armory/armory-cli.py $1'
+#alias armory='blender -b $@ --python $ARMSDK/armory/armory-cli.py'
+#alias armory='python $ARMSDK/armory/armory-cli.py $@'
+alias armory='blender --app-template armory $@'alias v="$EDITOR $@"
+alias calculator='bc -q $@'
+alias closure-compiler='java -jar $HOME/sdk/closure-compiler-v20201006.jar'
+alias closure-stylesheets='java -jar $HOME/sdk/closure-stylesheets.jar'
+#alias khamake='node $ARMSDK/Kha/make.js $@'
+alias kincmake='node $ARMSDK/Kha/Kinc/make.js $@'
+alias krom='$ARMSDK/Krom/Krom $@'
+alias lessc-live='neko $DEV/tool/lessc-live/lessc-live.n $@'
+alias luamake='$HOME/src/lua-language-server/3rd/luamake/luamake $@'
+alias ttytheme='python $HOME/.config/alacritty/colorscheme.py $@'
+
+# alias ztheme='(){ export ZSH_THEME="$@" && source $ZSH/oh-my-zsh.sh }'

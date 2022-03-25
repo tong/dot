@@ -1,5 +1,5 @@
 configuration {
-	location: 1;
+	location: 0;
 	font: "JetBrainsMono Nerd Font 9";
 	show-icons: true;
 	/*icon-theme: "Dracula";*/
@@ -8,17 +8,25 @@ configuration {
 	sidebar-mode: false;
 	window-thumbnail: true;
     //window-format
-    yoffset: 20;
+    //yoffset: 20;
     sidebar-mode: false;
     timeout {
         delay: 0;
         action: "kb-cancel";
     }
+    combi {
+        display-name: "";
+    }
     filebrowser {
         sorting-method:    "name";
         directories-first: true;
     }
+    ssh {
+        display-name: "ssh";
+    }
+    window {
+        display-name: "win";
+    }
 }
-
 @theme "theme/void"
 

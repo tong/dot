@@ -1,34 +1,29 @@
 set $mod Mod4
 floating_modifier $mod
-
-set $term alacritty
-
 set $left h
 set $down j
 set $up k
 set $right l
 
-set $color_bg #212B30
-set $color_fg #C4C7C5
-set $color_urgent #F44336
-set $color_success #00E676
-set $color_question #FFEA00
-set $color_warning #FF9800
-set $color_error #F44336
-set $color_error_bg #FF1744
-set $color_link #03A9F4
-set $color_visited #9C27B0
+set $term alacritty
 
 set $color_background #000000
 set $color_border #9e9e9e
 set $color_indicator #FF1744
 set $color_text #00ff00
 
+set $border_width 2
+
 #  load color scheme from xresources
 #set_from_resource $color_border color0 #9E9E9E
 
 set $SCREEN1 DP-2
 set $SCREEN2 DP-5
+
+set $volume_up amixer -q set Master 10%+ unmute && killall -SIGUSR1 i3status
+set $volume_down amixer -q set Master 10%- unmute && killall -SIGUSR1 i3status
+set $volume_mute amixer -q set Master 0% unmute && killall -SIGUSR1 i3status
+set $volume_toggle amixer set Master toggle && killall -SIGUSR1 i3status
 
 exec_always --no-startup-id $HOME/.screenlayout/2-monitor.sh
 exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf --dbus --experimental-backends
@@ -41,9 +36,7 @@ exec_always --no-startup-id xset r rate 250 50
 
 ## --- Window
 
-# font pango: Frucade Small 6
-#font pango:Anonymous Pro 11
-font pango:monospace 11
+#font pango: Frucade Small 6
 
 # TODO use var
 # class                 border  backgr. text    indicator child_border
@@ -56,29 +49,26 @@ client.urgent           #FF1744 #FF1744 #000000 #2e9ef4   #FF1744
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #000000
 
+#hide_edge_borders none
 #hide_edge_borders smart
-hide_edge_borders none
 
+gaps outer 0
+gaps inner 1
 smart_gaps on
 smart_borders on
-#gaps horizontal 20
+#gaps horizontal 60
 #gaps vertical 30
-gaps outer 1
-gaps inner 0
 
 popup_during_fullscreen smart
 
-floating_minimum_size 48 x 16
+floating_minimum_size 32 x 16
 floating_maximum_size 3840 x 2160
 
-default_border pixel 4
-# default_floating_border pixel 0
-
-#for_window [class=".*"] title_format "<span font='Frucade Small 6'>%title</span>"
+default_border pixel $border_width
+default_floating_border pixel $border_width 
+for_window [class=.*] border pixel $border_width
 # for_window [class=".*"] title_format "<span background='#ff000033'>%title</span>"
-# for_window [class="^*"] border pixel 2
-# for_window [class="^.*"] border normal pixel 1
-#for_window [class="^.*"] border normal 1
+#for_window [class=".*"] title_format "<span font='Frucade Small 6'>%title</span>"
 
 for_window [class="Arandr|feh|File-roller|Gnome-calculator|Gnome-control-center|Gnome-disks|Gnome-screenshot|Gnome-tweaks|MPlayer|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|Sxiv|SimpleScreenRecorder|vlc"] floating enable
 for_window [class="fff*"] floating enable
@@ -91,48 +81,36 @@ for_window [class="^.*_KincApplication$"] floating enable
 
 assign [class="^Steam"] → $ws6
 
-set $volume_up amixer -q set Master 10%+ unmute && killall -SIGUSR1 i3status
-set $volume_down amixer -q set Master 10%- unmute && killall -SIGUSR1 i3status
-set $volume_mute amixer -q set Master 0% unmute && killall -SIGUSR1 i3status
-set $volume_toggle amixer set Master toggle && killall -SIGUSR1 i3status
 
-## --- Tile Controls
-
-# focus_wrapping yes
-# mouse_warping output
+focus_follows_mouse no
 focus_wrapping yes
 mouse_warping output
-focus_follows_mouse no
-# focus_follows_mouse yes
 
 ## -- Keymap
 
 bindsym $mod+Shift+q kill 
 bindsym --whole-window $mod + button2 kill
 
-# bindsym $mod+d exec rofi -show combi #-nb "$fg" # -font "Anonymous Pro 8"
-#bindsym $mod+d exec rofi -show drun -multi-select -theme theme/void #-nb "$fg" # -font "Anonymous Pro 8"
-bindsym $mod+d exec rofi -show combi -multi-select -theme theme/void #-nb "$fg" # -font "Anonymous Pro 8"
-bindsym $mod+Tab exec rofi -show window -theme theme/void # -font "Anonymous Pro 8"
-#bindsym $mod+d exec --no-startup-id /$HOME/.config/i3/script/rofi-run.sh
+bindsym $mod+d exec rofi -show combi -multi-select #-nb "$fg" # -font "Anonymous Pro 8"
+bindsym $mod+Tab exec rofi -show window # -font "Anonymous Pro 8"
 
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down
 bindsym $mod+$up focus up
 bindsym $mod+$right focus right
 
-bindsym $mod+Shift+$left move left 400px
-bindsym $mod+Shift+$down move down 360px
-bindsym $mod+Shift+$up move up 360px
-bindsym $mod+Shift+$right move right 400px
+bindsym $mod+Control+$left move left 400px
+bindsym $mod+Control+$down move down 360px
+bindsym $mod+Control+$up move up 360px
+bindsym $mod+Control+$right move right 400px
 
 bindsym $mod+Mod1+$left resize shrink width 180 px or 20 ppt
 bindsym $mod+Mod1+$down resize shrink height 180 px or 25 ppt
 bindsym $mod+Mod1+$up resize grow height 180 px or 25 ppt
 bindsym $mod+Mod1+$right resize grow width 180 px or 20 ppt
 
-bindsym $mod+Control+h split h
-bindsym $mod+Control+v split v
+bindsym $mod+Shift+h split h
+bindsym $mod+Shift+v split v
 
 bindsym $mod+f fullscreen toggle
 bindsym $mod+s layout stacking
@@ -236,32 +214,32 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 #bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-set $mode_move  MOVE
-mode "$mode_move" {
-    bindsym Left move workspace to output left
-    bindsym Right move workspace to output right
-    bindsym Left j workspace to output left
-    bindsym Right k workspace to output right
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-bindsym $mod+Shift+m mode "$mode_move"
+#set $mode_move  MOVE
+#mode "$mode_move" {
+    #bindsym Left move workspace to output left
+    #bindsym Right move workspace to output right
+    #bindsym Left j workspace to output left
+    #bindsym Right k workspace to output right
+    #bindsym Return mode "default"
+    #bindsym Escape mode "default"
+#}
+#bindsym $mod+Shift+m mode "$mode_move"
 
-set $mode_resize "ﭕ RESIZE"
-mode $mode_resize {
-    bindsym $up         resize shrink height 10 px or 10 ppt
-    bindsym $down       resize grow height 10 px or 10 ppt
-    bindsym $left       resize shrink width 10 px or 10 ppt
-    bindsym $right      resize grow width 10 px or 10 ppt
-    bindsym Left        resize shrink width 10 px or 10 ppt
-    bindsym Down        resize grow height 10 px or 10 ppt
-    bindsym Up          resize shrink height 10 px or 10 ppt
-    bindsym Right       resize grow width 10 px or 10 ppt
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-    bindsym $mod+r mode "default"
-}
-bindsym $mod+r mode $mode_resize
+#set $mode_resize "ﭕ RESIZE"
+#mode $mode_resize {
+    #bindsym $up         resize shrink height 10 px or 10 ppt
+    #bindsym $down       resize grow height 10 px or 10 ppt
+    #bindsym $left       resize shrink width 10 px or 10 ppt
+    #bindsym $right      resize grow width 10 px or 10 ppt
+    #bindsym Left        resize shrink width 10 px or 10 ppt
+    #bindsym Down        resize grow height 10 px or 10 ppt
+    #bindsym Up          resize shrink height 10 px or 10 ppt
+    #bindsym Right       resize grow width 10 px or 10 ppt
+    #bindsym Return mode "default"
+    #bindsym Escape mode "default"
+    #bindsym $mod+r mode "default"
+#}
+#bindsym $mod+r mode $mode_resize
 
 # set $mode_system <span color='#141414'>B</span><span color='#EEEEEF'>LANK</span> <span color='#141414'>L</span><span color='#505050'>OCK</span> <span color='#141414'>S</span><span color='#505050'>USPEND</span> <span color='#141414'>H</span><span color='#505050'>IBERNATE</span> <span color='#141414'>⇧E</span><span color='#505050'>XIT</span> <span color='#141414'>⇧R</span><span color='#505050'>EBOOT</span> <span color='#141414'>⇧S</span><span color='#505050'>HUTDOWN</span>
 set $mode_system  BLANK  LOCK  SUSPEND  HIBERNATE  EXIT  REBOOT  SHUTDOWN
