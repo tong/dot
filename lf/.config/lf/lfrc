@@ -1,0 +1,235 @@
+
+set cleaner '~/.config/lf/cleaner'
+set drawbox
+set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
+set icons
+set info size:time
+set ifs "\n"
+set number on
+set period 1
+#set promptfmt "\033[32;1m%u@%h\033[0m:\033[34;1m%d\033[0m\033[1m%f\033[0m"
+set previewer '~/.config/lf/preview'
+set ratios '1:2:5'
+set relativenumber
+set scrolloff 10
+set shell sh
+set shellopts '-eu'
+
+#cmd copyto ${{
+	#clear; tput cup $(($(tput lines)/3)); tput bold
+	#set -f
+	#clear; echo "Copy to where?"
+	#dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf | sed 's|~|$HOME|')" &&
+	#for x in $fx; do
+		#eval cp -ivr \"$x\" \"$dest\"
+	#done &&
+	#notify-send "📋 File(s) copied." "File(s) copies to $dest."
+#}}
+
+# cmd delete ${{
+#     set -f
+#     printf "$fx\n"
+#     printf "delete?[y/n]"
+#     read ans
+#     [ $ans = "y" ] && rm -rf $fx
+# }}
+
+cmd extract ${{
+    set -f
+    case $f in
+        *.tar.bz|*.tar.bz2|*.tbz|*.tbz2) tar xjvf $f;;
+        *.tar.gz|*.tgz) tar xzvf $f;;
+        *.tar.xz|*.txz) tar xJvf $f;;
+        *.zip) unzip $f;;
+        *.rar) unrar x $f;;
+        *.7z) 7z x $f;;
+    esac
+}}
+
+# y (select for copy) and P to paste soft-link
+# d (select for cut) and P to paste hard-link
+#cmd link %{{
+    #set -- $(cat ~/.local/share/lf/files)
+    #mode="$1"
+    #shift
+    #if [ "$#" -lt 1 ]; then
+        #lf -remote "send $id echo no files to link"
+        #exit 0
+    #fi
+    #case "$mode" in
+        ## symbolically copy mode is indicating a soft link
+        #copy) ln -sr -t . -- "$@";;
+        ## while a move mode is indicating a hard link
+        #move) ln -t . -- "$@";;
+    #esac
+    #rm ~/.local/share/lf/files
+    #lf -remote "send clear"
+#}}
+
+#cmd mkdir $mkdir -p "$(echo $* | tr ' ' '\ ')"
+#cmd mkdir %mkdir "$@"
+cmd mkdir %{{
+    IFS=" "
+    mkdir -p -- "$*"
+    lf -remote "send $id select \"$*\""
+}}
+
+cmd moveto ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    clear; echo "Move to where?"
+    printf "$f\n"
+    #dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf | sed 's|~|$HOME|')" &&
+    #for x in $fx; do
+        #eval mv -iv \"$x\" \"$dest\"
+    #done &&
+    #notify-send "🚚 File(s) moved." "File(s) moved to $dest."
+    notify-send "$fx File(s) moved." "File(s) moved to XXX."
+}}
+
+cmd mp3 ${{
+    set -f
+	outname=$(echo "$f" | cut -f 1 -d '.')
+	lame -V --preset standard $f "${outname}.mp3"
+}}
+
+# cmd open ${{
+#     case $(file --mime-type "$(readlink -f $f)" -b) in
+# 	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) localc $fx ;;
+# 	image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
+#         text/*|application/json|inode/x-empty) $EDITOR $fx;;
+# 	image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
+# 	image/svg+xml) display -- $f ;;
+# 	image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|tif\|ico\)\(_large\)*$" |
+# 		setsid -f sxiv -aio 2>/dev/null | while read -r file; do
+# 			[ -z "$file" ] && continue
+# 			lf -remote "send select \"$file\""
+# 			lf -remote "send toggle"
+# 		done &
+# 		;;
+# 	audio/*) mpv --audio-display=no $f ;;
+# 	video/*) setsid -f mpv $f -quiet >/dev/null 2>&1 ;;
+# 	application/pdf|application/vnd*|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
+# 	application/pgp-encrypted) $EDITOR $fx ;;
+#         *) for f in $fx; do setsid -f $OPENER $f >/dev/null 2>&1; done;;
+#     esac
+# }}
+
+cmd open ${{
+    test -L $f && f=$(readlink -f $f)
+    case $(file --mime-type $f -b) in
+        audio/*) mpv --audio-display=no $f ;;
+        video/*) setsid -f mpv $f -quiet >/dev/null 2>&1 ;;
+        image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
+        #text/x-markdown) glow $fx;;
+        text/*|application/json) $EDITOR $fx;;
+        *) for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done;;
+    esac
+}}
+
+cmd select-files ${{
+    { echo "$fs"; find -L "$(pwd)" -mindepth 1 -maxdepth 1 -type f; } |
+        if [ "$lf_hidden" = "false" ]; then
+          # remove any hidden files so you only select files you can see.
+          grep -v '/\.[^/]\+$'
+        else
+          cat
+        fi |
+        sed '/^$/d' | sort | uniq -u |
+        xargs -d '\n' -r -I{} lf -remote "send $id toggle {}"
+}}
+
+cmd select-dirs ${{
+    { echo "$fs"; find -L "$(pwd)" -mindepth 1 -maxdepth 1 -type d; } |
+        if [ "$lf_hidden" = "false" ]; then
+          grep -v '/\.[^/]\+$'
+        else
+          cat
+        fi |
+        sed '/^$/d' | sort | uniq -u |
+        xargs -d '\n' -r -I{} lf -remote "send $id toggle {}"
+}}
+
+cmd tar ${{
+    set -f
+    mkdir $1
+    cp -r $fx $1
+    tar czf $1.tar.gz $1
+    rm -rf $1
+}}
+ 
+cmd zip ${{
+    set -f
+    mkdir $1
+    cp -r $fx $1
+    zip -r $1.zip $1
+    rm -rf $1
+}}
+
+#cmd trash %set -f; mv $fx ~/.trash
+
+#cmd yank-dirname $dirname -- "$f" | head -c-1 | xclip -i -selection clipboard
+
+cmd on-cd &{{
+    source /usr/share/git/completion/git-prompt.sh
+    GIT_PS1_SHOWDIRTYSTATE=auto
+    GIT_PS1_SHOWSTASHSTATE=auto
+    GIT_PS1_SHOWUNTRACKEDFILES=auto
+    GIT_PS1_SHOWUPSTREAM=auto
+    GIT_PS1_COMPRESSSPARSESTATE=auto
+    git=$(__git_ps1 " [%s]") || true
+    fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%w\033[0m\033[33;1m$git\033[0m"
+    lf -remote "send $id set promptfmt \"$fmt\""
+}}
+
+
+#map <c-f> $lf -remote "send $id select '$(fzf)'"
+#map J $lf -remote "send $id cd $(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf)"
+
+#map gh ~
+map g top
+
+map D delete
+map E extract
+#map C copyto
+map M moveto
+
+# use '<delete>' key for either 'trash' or 'delete' command
+#map <backspace2> trash
+#map <delete> trash
+
+map <c-e> down
+map <c-y> up
+
+map <c-n> push :mkdir<space>
+map <c-r> reload
+map <c-s> set hidden!
+map <c-h> !cd ~
+#map <c-z> $ kill -STOP $PPID
+
+#map <enter> shell
+
+#map f $vi $(fzf)
+#map f $vi $(fzf)
+#cmd fzf $vi $(find . -name "$1" | fzf)
+#map f push :fzf<space>
+
+map A rename # at the very end
+map c push A<c-u> # new rename
+map I push A<c-a> # at the very beginning
+map i push A<a-b><a-b><a-f> # before extention
+map a push A<a-b> # after extention
+map B bulkrename
+
+map x $$f
+map X !$f
+map o &mimeopen $f
+map O $mimeopen --ask $f
+#map b $setbg $f
+
+map V push :!nvim<space>
+map T $setsid -f $TERMINAL >/dev/null 2>&1
+map Y $printf "%s" "$fx" | xclip -selection clipboard
+
+#source "~/.config/lf/shortcutrc"
+#source "~/.config/lf/icons

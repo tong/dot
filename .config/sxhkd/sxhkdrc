@@ -1,8 +1,0 @@
-super + b
-    chromium
-
-super + n
-    nautilus
-
-#super + KP_Enter
-#    i3-sensible-terminal

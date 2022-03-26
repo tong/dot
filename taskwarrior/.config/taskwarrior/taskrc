@@ -1,0 +1,52 @@
+data.location=~/.task
+color=on
+active.indicator=
+
+#include /usr/share/doc/task/rc/dark-256.theme
+#include /usr/share/doc/task/rc/dark-red-256.theme
+#include $HOME/.config/taskwarrior/dark-gray-256.theme
+include $HOME/.config/taskwarrior/void.theme
+
+context.work.read=+work
+context.work.write=+work
+context.armory.read=+armory
+context.armory.write=+armory
+context.plutonika.read=+plutonika
+context.plutonika.write=+plutonika
+context.fit.read=+work
+context.fit.write=+work
+
+uda.taskwarrior-tui.mark-selection.indicator=
+uda.taskwarrior-tui.unmark-selection.indicator=⦿
+uda.taskwarrior-tui.selection.indicator=
+#uda.taskwarrior-tui.selection.blink=yes
+#uda.taskwarrior-tui.selection.reverse=no
+#uda.taskwarrior-tui.selection.dim=yes
+#uda.taskwarrior-tui.task-report.list.filter=$(task show report.list.filter)
+
+#uda.taskwarrior-tui.keyconfig.quit=q
+#uda.taskwarrior-tui.keyconfig.refresh=r
+#uda.taskwarrior-tui.keyconfig.go-to-bottom=G
+#uda.taskwarrior-tui.keyconfig.go-to-top=g
+#uda.taskwarrior-tui.keyconfig.down=j
+#uda.taskwarrior-tui.keyconfig.up=k
+#uda.taskwarrior-tui.keyconfig.page-down=J
+#uda.taskwarrior-tui.keyconfig.page-up=K
+#uda.taskwarrior-tui.keyconfig.delete=x
+#uda.taskwarrior-tui.keyconfig.done=d
+#uda.taskwarrior-tui.keyconfig.start-stop=s
+#uda.taskwarrior-tui.keyconfig.quick-tag=t
+#uda.taskwarrior-tui.keyconfig.undo=u
+#uda.taskwarrior-tui.keyconfig.edit=e
+#uda.taskwarrior-tui.keyconfig.modify=m
+#uda.taskwarrior-tui.keyconfig.shell=!
+#uda.taskwarrior-tui.keyconfig.log=l
+#uda.taskwarrior-tui.keyconfig.add=a
+#uda.taskwarrior-tui.keyconfig.annotate=A
+#uda.taskwarrior-tui.keyconfig.filter=/
+#uda.taskwarrior-tui.keyconfig.zoom=z
+#uda.taskwarrior-tui.keyconfig.context-menu=c
+#uda.taskwarrior-tui.keyconfig.next-tab=]
+#uda.taskwarrior-tui.keyconfig.previous-tab=[
+
+news.version=2.6.0

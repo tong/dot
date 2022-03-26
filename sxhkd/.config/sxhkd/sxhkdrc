@@ -1,0 +1,18 @@
+
+super + d
+    rofi -show combi
+super + Tab
+    rofi -show window
+super + x
+    scrot "$HOME/screenshot-%Y_%m_%d_%H_%M.png" #TODO dmenu-screenshot
+#super + b
+#    $BROWSER
+#super + n
+#    nautilus
+
+super + m ; {p,l,h,s}
+    {$(playerctl play-pause),$(playerctl next),$(playerctl previous),$(playerctl stop)}
+
+super + o ; {b,c,f,n,t}
+    {blender,chromium,firefox,nautilus,terminal}
+
