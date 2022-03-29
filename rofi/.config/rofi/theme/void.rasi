@@ -1,5 +1,5 @@
 * {
-    background: #000;
+    background: #101010;
     foreground: #C4C7C5;
 
     background-color: #101010;
@@ -24,6 +24,16 @@
     alternate-active-foreground: #C4C7C5;
 }
 
+window {
+    padding:          6px 8px 6px 8px;
+    background-color: var(background);
+    //border:           0;
+    //locations: west;
+    width: 48em;
+    height: 48em;
+    //anchor: west;
+}
+
 element {
     padding: 1px ;
     cursor:  pointer;
@@ -33,6 +43,7 @@ element {
 element normal.normal {
     background-color: var(normal-background);
     text-color:       var(normal-foreground);
+    /*text-color:     green;*/
 }
 element normal.urgent {
     background-color: var(urgent-background);
@@ -57,6 +68,7 @@ element selected.active {
 element alternate.normal {
     background-color: var(alternate-normal-background);
     text-color:       var(alternate-normal-foreground);
+/*text-color:     blue;*/
 }
 element alternate.urgent {
     background-color: var(alternate-urgent-background);
@@ -78,22 +90,13 @@ element-icon {
     cursor:           inherit;
     text-color:       inherit;
 }
-window {
-    padding:          6px 8px 6px 8px;
-    //background-color: var(background);
-    //border:           1;
-    //locations: west;
-    width: 48em;
-    height: 66%;
-    //anchor: west;
-}
+
 mainbox {
     padding: 0;
     border:  0;
 }
 message {
     padding:      1px ;
-    //color:red;
     border-color: var(separatorcolor);
     border:       2px dash 0px 0px ;
 }
@@ -104,7 +107,7 @@ listview {
     padding:      2px 0px 0px ;
     scrollbar:    true;
     border-color: var(separatorcolor);
-    spacing:      1px ;
+    spacing:      1px;
     fixed-height: 0;
     border:       2px dash 0px 0px ;
 }
@@ -165,7 +168,6 @@ prompt {
 textbox-prompt-colon {
     margin:     0px 0.3000em 0.0000em 0.0000em ;
     expand:     false;
-    //str:        "";
-    str:        "";
+    //str:        "";
     text-color: inherit;
 }

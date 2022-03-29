@@ -16,12 +16,36 @@ context.plutonika.write=+plutonika
 context.fit.read=+work
 context.fit.write=+work
 
+report.simple.description=Simple list of open tasks by project
+report.simple.columns=id,project,description.count
+report.simple.labels=ID,Proj,Desc
+report.simple.sort=project+\/,entry+
+report.simple.filter=status:pending#
+
+report.all.description=Test report showing all possible columns
+report.all.columns=uuid,id,description.combined,start.iso,end.iso,status,tags.count,depends,due,entry,imask,last,mask,modified,parent,priority,project,recur,rtype,scheduled,tags,template,until,urgency,wait
+report.all.labels=UUID,ID,description,start,end,status,tags.count,depends,due,entry,imask,last,mask,modified,parent,priority,project,recur,rtype,scheduled,tags,template,until,urgency,wait
+report.all.sort=project+\/,entry+
+#report.all.filter=status:completed
+
+report.invoice.description=Invoice compatible list
+report.invoice.columns=uuid,id,description.combined,start.iso,end.iso,status,tags.count
+report.invoice.labels=UUID,ID,Desc,S,E,Test,Tag
+report.invoice.sort=project+\/,entry+
+#report.invoice.filter=status:completed
+
+
 uda.taskwarrior-tui.mark-selection.indicator=
 uda.taskwarrior-tui.unmark-selection.indicator=⦿
 uda.taskwarrior-tui.selection.indicator=
+uda.taskwarrior-tui.selection.bold=true
+uda.taskwarrior-tui.selection.italic=true
 #uda.taskwarrior-tui.selection.blink=yes
-#uda.taskwarrior-tui.selection.reverse=no
 #uda.taskwarrior-tui.selection.dim=yes
+uda.taskwarrior-tui.task-report.prompt-on-delete=true
+uda.taskwarrior-tui.task-report.prompt-on-done=true
+uda.taskwarrior-tui.task-report.show-info=false
+uda.taskwarrior-tui.task-report.next.filter=status:pending
 #uda.taskwarrior-tui.task-report.list.filter=$(task show report.list.filter)
 
 #uda.taskwarrior-tui.keyconfig.quit=q

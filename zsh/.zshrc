@@ -40,13 +40,11 @@ source $HOME/.env
 
 source $ZSH/oh-my-zsh.sh
 
-#source $HOME/.zsh_aliases
-#source $HOME/.zsh_aliases_user
-source $HOME/.config/zsh/zsh_aliases
-source $HOME/.config/zsh/zsh_aliases_user
+source $HOME/.config/lf/icons
+source $HOME/.config/zsh/aliases
+source $HOME/.config/zsh/aliases_user
 
 source /usr/share/fzf/key-bindings.zsh
-source $HOME/.config/lf/icons
 
 eval "$(zoxide init zsh)"
 

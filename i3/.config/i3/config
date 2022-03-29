@@ -7,8 +7,8 @@ set $right l
 
 set $term alacritty
 
-#  load color scheme from xresources
-#set_from_resource $color_border color0 #9E9E9Eset $color_background #000000
+#set_from_resource $color_border color0 #9E9E9E
+set $color_background #000000
 set $color_border #9e9e9e
 set $color_indicator #FF1744
 set $color_text #00ff00
@@ -23,15 +23,15 @@ set $volume_down amixer -q set Master 10%- unmute && killall -SIGUSR1 i3status
 set $volume_mute amixer -q set Master 0% unmute && killall -SIGUSR1 i3status
 set $volume_toggle amixer set Master toggle && killall -SIGUSR1 i3status
 
-#font pango: Frucade Small 6
+font pango: JetBrainsMono Nerd Font 1 # Frucade Small 6
 
 ## --- 
 
-exec_always --no-startup-id $HOME/.screenlayout/2-monitor.sh
 exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf --dbus --experimental-backends
+#exec_always --no-startup-id $HOME/.screenlayout/2-monitor.sh
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-exec_always --no-startup-id hsetroot -solid '#101010'
-exec_always --no-startup-id xset r rate 250 50
+#exec_always --no-startup-id hsetroot -solid '#101010'
+#exec_always --no-startup-id xset r rate 250 50
 #exec_always --no-startup-id nitrogen --restore
 #exec --no-startup-id alacritty -e tmux
 
@@ -73,8 +73,6 @@ client.urgent           #FF1744 #FF1744 #000000 #2e9ef4   #FF1744
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #000000
 
-#hide_edge_borders none
-#hide_edge_borders smart
 
 gaps outer 0
 gaps inner 1
@@ -82,6 +80,9 @@ smart_gaps on
 smart_borders on
 #gaps horizontal 60
 #gaps vertical 30
+
+#hide_edge_borders none
+#hide_edge_borders smart
 
 popup_during_fullscreen smart
 floating_minimum_size 32 x 16
@@ -95,8 +96,9 @@ for_window [class=.*] border pixel $border_width
 for_window [class="Arandr|feh|File-roller|Gnome-calculator|Gnome-control-center|Gnome-disks|Gnome-screenshot|Gnome-tweaks|MPlayer|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|Sxiv|SimpleScreenRecorder|vlc"] floating enable
 for_window [class="Surf"] floating enable move position mouse resize set 1080 1440
 for_window [class="Surf"] focus_on_window_activation focus
-for_window [class="fff*"] floating enable
+for_window [class="fff*"] floating enabl
 for_window [class="gamma*"] floating enable
+for_window [class="Rofi"] floating enable
 #for_window [class="popup"] floating enable
 for_window [class="POP$"] floating enable
 #for_window [class="Alacritty"] floating enable
@@ -113,11 +115,16 @@ mouse_warping output
 
 ## -- Keymap
 
-bindsym $mod+Shift+q kill 
-bindsym --whole-window $mod + button2 kill
+bindsym $mod+p focus parent
+bindsym $mod+c focus child
 
-#bindsym $mod+d exec rofi -show combi -multi-select
-#bindsym $mod+Tab exec rofi -show window 
+bindsym $mod+f fullscreen toggle
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+
+bindsym $mod+Shift+e layout toggle split
+bindsym $mod+Shift+h split h
+bindsym $mod+Shift+v split v
 
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down
@@ -134,43 +141,24 @@ bindsym $mod+Mod1+$down resize shrink height 180 px or 25 ppt
 bindsym $mod+Mod1+$up resize grow height 180 px or 25 ppt
 bindsym $mod+Mod1+$right resize grow width 180 px or 20 ppt
 
-bindsym $mod+Shift+h split h
-bindsym $mod+Shift+v split v
-
-bindsym $mod+f fullscreen toggle
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
-
-bindsym $mod+p focus parent
-bindsym $mod+c focus child
+bindsym $mod+shift+Left workspace prev
+bindsym $mod+shift+Right workspace next
+bindsym $mod+Ctrl+Shift+Right move container to workspace next; workspace next
+bindsym $mod+Ctrl+Shift+Left move container to workspace prev; workspace prev
 
 bindsym $mod+space focus mode_toggle
 bindsym $mod+Shift+space floating toggle
 
-#bindsym $mod+Ctrl+Right workspace next
-#bindsym $mod+Ctrl+Left workspace prev
-#bindsym $mod+Ctrl+Shift+Right move container to workspace next; workspace next
-#bindsym $mod+Ctrl+Shift+Left move container to workspace prev; workspace prev
-#bindsym $mod+Ctrl+$right workspace next
-#bindsym $mod+Ctrl+$left workspace prev
-bindsym $mod+Ctrl+Shift+$right move container to workspace next; workspace next
-bindsym $mod+Ctrl+Shift+$left move container to workspace prev; workspace prev
-
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
-# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-# bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-bindsym F10 exec --no-startup-id $volume_toggle
-bindsym F11 exec --no-startup-id $volume_down unmute
-bindsym F12 exec --no-startup-id $volume_up
+bindsym --whole-window $mod + button2 kill
+
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+q kill
 
 bindsym $mod+Return exec $term #i3-sensible-terminal
-# bindsym $mod+b exec chromium # moved to ~/.config/sxhkd/sxhkdrc
-# bindsym $mod+n exec filemanager
 #bindsym $mod+x exec --no-startup-id scrot "$HOME/screenshot-%Y_%m_%d_%H_%M.png"
 #bindsym $mod+x exec --no-startup-id scrot "$SCREENSHOTS/screenshot-%Y_%m_%d_%H_%M.png"
 
@@ -209,9 +197,13 @@ bindsym $mod+Ctrl+Shift+8 move container to workspace $WS8; workspace $WS8
 bindsym $mod+Ctrl+Shift+9 move container to workspace $WS9; workspace $WS9
 bindsym $mod+Ctrl+Shift+0 move container to workspace $WS10; workspace $WS10
 
-bindsym $mod+Shift+c reload
-bindsym $mod+Shift+r restart
-#bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym F10 exec --no-startup-id $volume_toggle
+bindsym F11 exec --no-startup-id $volume_down unmute
+bindsym F12 exec --no-startup-id $volume_up
+# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+# bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 #set $mode_move  MOVE
 #mode "$mode_move" {
@@ -241,17 +233,19 @@ bindsym $mod+Shift+r restart
 #bindsym $mod+r mode $mode_resize
 
 # set $mode_system <span color='#141414'>B</span><span color='#EEEEEF'>LANK</span> <span color='#141414'>L</span><span color='#505050'>OCK</span> <span color='#141414'>S</span><span color='#505050'>USPEND</span> <span color='#141414'>H</span><span color='#505050'>IBERNATE</span> <span color='#141414'>⇧E</span><span color='#505050'>XIT</span> <span color='#141414'>⇧R</span><span color='#505050'>EBOOT</span> <span color='#141414'>⇧S</span><span color='#505050'>HUTDOWN</span>
-set $mode_system  BLANK  LOCK  SUSPEND  HIBERNATE  EXIT  REBOOT  SHUTDOWN
-# mode --pango_markup "$mode_system" {
-mode "$mode_system" {
-    bindsym l exec --no-startup-id i3exit lock, mode "default"
-    bindsym b exec --no-startup-id screen-blank, mode "default"
-    bindsym s exec --no-startup-id i3exit suspend, mode "default"
-    bindsym h exec --no-startup-id i3exit hibernate, mode "default"
-    bindsym Shift+e exec --no-startup-id i3exit logout, mode "default"
-    bindsym Shift+r exec --no-startup-id i3exit reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-bindsym $mod+Shift+End mode "$mode_system"
+#set $mode_system  BLANK  LOCK  SUSPEND  HIBERNATE  EXIT  REBOOT  SHUTDOWN
+## mode --pango_markup "$mode_system" {
+#mode "$mode_system" {
+    #bindsym l exec --no-startup-id i3exit lock, mode "default"
+    #bindsym b exec --no-startup-id screen-blank, mode "default"
+    #bindsym s exec --no-startup-id i3exit suspend, mode "default"
+    #bindsym h exec --no-startup-id i3exit hibernate, mode "default"
+    #bindsym Shift+e exec --no-startup-id i3exit logout, mode "default"
+    #bindsym Shift+r exec --no-startup-id i3exit reboot, mode "default"
+    #bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
+    #bindsym Return mode "default"
+    #bindsym Escape mode "default"
+#}
+#bindsym $mod+Shift+End mode "$mode_system"
+#bindsym $mod+Shift+End exec --no-startup-id dmenu-exit
+#bindsym $mod+Escape exec --no-startup-id dmenu-exit

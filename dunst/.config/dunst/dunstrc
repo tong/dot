@@ -110,7 +110,7 @@
 
     ### Text ###
 
-    font = JetBrainsMono Nerd Font Mono 11
+    font = JetBrainsMono Nerd Font Mono 9
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
@@ -153,7 +153,10 @@
     # format = "<b>%s</b>\n%b"
     #format = "<b>%s</b>\n%b"
     #format = "<tt>777 ABcc efg</tt><span foreground="yellow" font_size="23pt"> </span><i>%a</i><b>%s</b>\n%b"
-    format = "<i>%a</i> <b>%s</b>\n%b"
+    #format = "<span font_size="400%" rise="100pt" baseline_shift="100pt">%i</span> <span fgcolor="red">%a\n%s</span>\n%b"
+    #format = "<span font_size="14pt">%i</span> <span font_family="Frucade Small" font_size="x-small">%a</span>\n<span>%s</span>\n<span font_size="9pt">%b</span>"
+    format = "<span font_size="16pt" rise="-3pt" alpha="50%">%I</span> <span text_transform="uppercase" alpha="50%">%a</span>\n<span>%s</span>\n<span font_size="9pt">%b</span>"
+    #format = "<span>%s</span>\n<span font_size="9pt">%b</span>"
 
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
