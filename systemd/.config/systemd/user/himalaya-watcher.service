@@ -1,0 +1,10 @@
+[Unit]
+Description=Himalaya watcher
+
+[Service]
+ExecStart=himalaya watch
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
