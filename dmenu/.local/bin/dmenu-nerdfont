@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Select nerdfont icon using rofi.
+#
+# If you run this command with an argument, it will automatically insert the character.
+# Otherwise, shows a notification that the symbol has been copied to clipboard.
+
+chosen=$(cat ~/.local/share/nerdfont.map | rofi -dmenu -p nerdfont -i | sed "s/ .*//")
+[ -z "$chosen" ] && exit
+if [ -n "$1" ]; then
+	xdotool type "$chosen"
+else
+    #printf "$chosen" | xclip -selection clipboard
+	printf "$chosen" | xclip
+	notify-send --app-name="nerdfonts" -u low --icon="" "$chosen copied to clipboard" &
+fi
+
