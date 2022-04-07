@@ -2,9 +2,6 @@ data.location=~/.task
 color=on
 active.indicator=
 
-#include /usr/share/doc/task/rc/dark-256.theme
-#include /usr/share/doc/task/rc/dark-red-256.theme
-#include $HOME/.config/taskwarrior/dark-gray-256.theme
 include $HOME/.config/taskwarrior/void.theme
 
 context.work.read=+work
@@ -33,7 +30,6 @@ report.invoice.columns=uuid,id,description.combined,start.iso,end.iso,status,tag
 report.invoice.labels=UUID,ID,Desc,S,E,Test,Tag
 report.invoice.sort=project+\/,entry+
 #report.invoice.filter=status:completed
-
 
 uda.taskwarrior-tui.mark-selection.indicator=
 uda.taskwarrior-tui.unmark-selection.indicator=⦿

@@ -43,7 +43,16 @@ if len(sys.argv) == 1:
 else:
     cmd = sys.argv.pop()
     themes = get_available_themes()
-    if cmd == "get":
+    if cmd == "help" or cmd == '--help':
+        print('dump     Print all theme files to stdout')
+        print('get      Print name of active theme')
+        print('list     List available themes')
+        print('prev     Set previous theme as active')
+        print('next     Set next theme as active')
+        print('random   Set random theme as active')
+        # print('preview  Preview theme')
+        exit(0)
+    elif cmd == "get" or cmd == "active":
         print(get_active_theme())
     elif cmd == "next":
         i = themes.index(get_active_theme())
@@ -51,17 +60,17 @@ else:
     elif cmd == "prev":
         i = themes.index(get_active_theme())
         set_active_theme(themes[ len(themes)-1 if i==0 else i-1])
-    elif cmd == "random":
+    elif cmd == "random" or cmd == "r":
         ic = themes.index(get_active_theme())
         while True:
             ir = random.randint(0, len(themes)-1)
             if ir != ic:
                 set_active_theme(themes[ir])
                 break
-    elif cmd == "list":
+    elif cmd == "list" or "l":
         ta = get_active_theme()
         for t in themes: print( '*'+t if t==ta else t)
-    elif cmd == "preview":
+    elif cmd == "preview" or cmd == "p":
         for t in themes:
             with open(os.path.join(THEME_DIR, t+'.yml' )) as f:
                 theme = yaml.safe_load(f)
@@ -70,7 +79,7 @@ else:
                     print("  "+group)
                     for color in theme["colors"][group]:
                         print("    "+color+": "+theme["colors"][group][color])
-    elif cmd == "dump":
+    elif cmd == "dump" or cmd == "d":
         for t in themes:
             with open(os.path.join(THEME_DIR, t+'.yml' )) as f:
                 print('\n# '+t+'\n'+f.read().strip()) 

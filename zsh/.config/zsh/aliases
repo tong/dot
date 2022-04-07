@@ -1,4 +1,3 @@
-
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias dir='dir --color=auto'
@@ -31,6 +30,7 @@ alias .4='cd ../../../../'
 alias .5='cd ../../../../..'
 alias .-='cd -'
 
+alias ka='killall'
 alias killa='killall'
 alias cal='cal -m'
 alias ffmpeg="ffmpeg -hide_banner"

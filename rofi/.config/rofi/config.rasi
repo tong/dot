@@ -1,5 +1,7 @@
 configuration {
-	modi: "window,run,ssh";
+	modi:
+/*  "window,run,ssh,fb:~/.config/rofi/script/filebrowser.sh";*/
+    "window,run";
 	font: "JetBrainsMono Nerd Font 9";
 	location: 0;
 /*	yoffset: -400;*/
@@ -149,6 +151,10 @@ configuration {
   }
   combi {
       display-name: "";
+  }
+  nerdfont {
+      display-name: "";
+      dmenu: true;
   }
   ssh {
       display-name: "ssh";

@@ -1,4 +1,3 @@
-
 set cleaner '~/.config/lf/cleaner'
 set drawbox
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
@@ -7,9 +6,9 @@ set info size:time
 set ifs "\n"
 set number on
 set period 1
-#set promptfmt "\033[32;1m%u@%h\033[0m:\033[34;1m%d\033[0m\033[1m%f\033[0m"
 set previewer '~/.config/lf/preview'
-set ratios '1:2:5'
+#set promptfmt "\033[32;1m%u@%h\033[0m:\033[34;1m%d\033[0m\033[1m%f\033[0m"
+set ratios '1:2:3'
 set relativenumber
 set scrolloff 10
 set shell sh
@@ -26,13 +25,13 @@ set shellopts '-eu'
 	#notify-send "📋 File(s) copied." "File(s) copies to $dest."
 #}}
 
-# cmd delete ${{
-#     set -f
-#     printf "$fx\n"
-#     printf "delete?[y/n]"
-#     read ans
-#     [ $ans = "y" ] && rm -rf $fx
-# }}
+#cmd delete ${{
+     #set -f
+     #printf "$fx\n"
+     #printf "delete?[y/n]"
+     #read ans
+     #[ $ans = "y" ] && rm -rf $fx
+#}}
 
 cmd extract ${{
     set -f
@@ -44,6 +43,13 @@ cmd extract ${{
         *.rar) unrar x $f;;
         *.7z) 7z x $f;;
     esac
+}}
+
+cmd git_branch ${{
+    git branch | fzf | xargs git checkout
+    pwd_shell=$(pwd)
+    lf -remote "send $id updir"
+    lf -remote "send $id cd \"$pwd_shell\""
 }}
 
 # y (select for copy) and P to paste soft-link
@@ -74,24 +80,26 @@ cmd mkdir %{{
     lf -remote "send $id select \"$*\""
 }}
 
-cmd moveto ${{
-    clear; tput cup $(($(tput lines)/3)); tput bold
-    set -f
-    clear; echo "Move to where?"
-    printf "$f\n"
-    #dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf | sed 's|~|$HOME|')" &&
+#cmd moveto ${{
+	#clear; tput cup $(($(tput lines)/3)); tput bold
+	#set -f
+	#clear; echo "Move to where?"
+	#dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf | sed 's|~|$HOME|')" &&
     #for x in $fx; do
         #eval mv -iv \"$x\" \"$dest\"
     #done &&
-    #notify-send "🚚 File(s) moved." "File(s) moved to $dest."
-    notify-send "$fx File(s) moved." "File(s) moved to XXX."
-}}
+	#notify-send "🚚 File(s) moved." "File(s) moved to $dest."
+#}}
 
-cmd mp3 ${{
+cmd mp3-convert ${{
     set -f
 	outname=$(echo "$f" | cut -f 1 -d '.')
 	lame -V --preset standard $f "${outname}.mp3"
 }}
+
+#cmd node_script ${{
+  #script=$(cat package.json | jq -r '.scripts | keys[] ' | sort | fzf --height 20%) && npm run $(echo "$script")
+#}}
 
 # cmd open ${{
 #     case $(file --mime-type "$(readlink -f $f)" -b) in
@@ -192,11 +200,12 @@ map g top
 map D delete
 map E extract
 #map C copyto
-map M moveto
+#map M moveto
 
 # use '<delete>' key for either 'trash' or 'delete' command
 #map <backspace2> trash
 #map <delete> trash
+map <enter> cd $1
 
 map <c-e> down
 map <c-y> up
@@ -205,7 +214,7 @@ map <c-n> push :mkdir<space>
 map <c-r> reload
 map <c-s> set hidden!
 map <c-h> !cd ~
-#map <c-z> $ kill -STOP $PPID
+map <c-z> $ kill -STOP $PPID
 
 #map <enter> shell
 
@@ -214,6 +223,11 @@ map <c-h> !cd ~
 #cmd fzf $vi $(find . -name "$1" | fzf)
 #map f push :fzf<space>
 
+#map gb :git_branch
+#map gp ${{clear; git pull --rebase || true; echo "press ENTER"; read ENTER}}
+#map gs ${{clear; git status; echo "press ENTER"; read ENTER}}
+#map gl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit}}
+
 map A rename # at the very end
 map c push A<c-u> # new rename
 map I push A<c-a> # at the very beginning
@@ -221,11 +235,12 @@ map i push A<a-b><a-b><a-f> # before extention
 map a push A<a-b> # after extention
 map B bulkrename
 
+# Execute current file (must be executable)
 map x $$f
 map X !$f
+
 map o &mimeopen $f
 map O $mimeopen --ask $f
-#map b $setbg $f
 
 map V push :!nvim<space>
 map T $setsid -f $TERMINAL >/dev/null 2>&1
