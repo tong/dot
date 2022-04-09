@@ -1,0 +1,3 @@
+```sh
+stow <config>
+```
