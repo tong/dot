@@ -7,6 +7,13 @@ set mail_check = 120
 
 source $HOME/.config/mutt/accounts/tong@disktree.net.muttrc
 
+set signature="/home/tong/.signature"
+
+#set alias_file = "~/.config/mutt/aliases"
+#set sort_alias = alias
+#set reverse_alias = yes
+#source $alias_file
+
 # -----------------------------------------------------------------------------
 
 set mailcap_path = $HOME/.config/mutt/mailcap:/usr/local/share/mutt-wizard/mailcap:$mailcap_path
@@ -15,7 +22,8 @@ set date_format="%y/%m/%d %I:%M%p"
 set index_format="%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"
 set sort = 'reverse-date'
 set smtp_authenticators = 'gssapi:login'
-set query_command = "abook --mutt-query '%s'"
+#set query_command = "abook --mutt-query '%s'"
+set query_command = "khard email --parsable %s"
 set rfc2047_parameters = yes
 set sleep_time = 0		# Pause 0 seconds for informational messages
 set markers = no		# Disables the `+` displayed at line wraps
@@ -61,7 +69,7 @@ color normal default default
 color indicator brightblack white
 color sidebar_highlight brightblack white
 color sidebar_divider brightblack black
-color sidebar_flagged red black
+color sidebar_flagged yellow black
 color sidebar_new green black
 color normal brightyellow default
 color error red default
@@ -150,6 +158,7 @@ bind index \005 next-undeleted		# Mouse wheel
 bind pager \031 previous-line		# Mouse wheel
 bind pager \005 next-line		# Mouse wheel
 bind editor <Tab> complete-query
+bind editor ^T    complete
 
 macro index,pager gi "<change-folder>=INBOX<enter>" "go to inbox"
 macro index,pager Mi ";<save-message>=INBOX<enter>" "move mail to inbox"
@@ -175,9 +184,11 @@ macro index,pager Ca ";<copy-message>=Archive<enter>" "copy mail to archive"
 #set pgp_self_encrypt = yes
 #set pgp_default_key  = 'your@gpgemailaddre.ss'
 
-macro index,pager a "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<return><pipe-message>abook --add-email<return><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<return>" "add the sender address to abook"
+#macro index,pager a "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<return><pipe-message>abook --add-email<return><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<return>" "add the sender address to abook"
+macro index,pager a "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<return><pipe-message>khard add-email<return><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<return>"
 macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
-macro index O "<shell-escape>mw -Y<enter>" "run mw -Y to sync all mail"
+macro index O "<shell-escape>mw -Y<enter>" "run mw -Y to sync all  mail"
+#macro index O "<shell-escape>mutt-wizard -Y<enter>" "run mutt-wizard -Y to sync all  mail"
 macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>printf 'Enter a search term to find with notmuch: '; read x; echo \$x >~/.cache/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat ~/.cache/mutt_terms) | head -n 600 | perl -le '@a=<>;s/\^id:// for@a;$,=\"|\";print@a' | perl -le '@a=<>; chomp@a; s/\\+/\\\\+/ for@a;print@a' \`\"<enter>" "show only messages matching a notmuch pattern"
 macro index A "<limit>all\n" "show all messages (undo limit)"
 
@@ -194,4 +205,3 @@ bind index,pager \Co sidebar-open
 bind index,pager \Cp sidebar-prev-new
 bind index,pager \Cn sidebar-next-new
 bind index,pager B sidebar-toggle-visible
-

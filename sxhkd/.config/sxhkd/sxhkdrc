@@ -1,12 +1,20 @@
-#super + d ;  {d,x}
-#    {$(rofi -show combi), $(notify-send "OKok")}
 super + d
-    rofi -show combi
+    rofi -show run
 super + Tab
     rofi -show window
+super + x ;  {c,e,i,t,w,x}
+    {clipmenu, dmenu-exit, dmenu-nerdfont, i3-sensible-terminal, $(rofi -show window), dmenu-screenshot}
 
-super + x
-    scrot "$HOME/screenshot-%Y_%m_%d_%H_%M.png" #TODO dmenu-screenshot
+super + b
+    $BROWSER
+super + n
+    nautilus
+
+#super + x
+#    scrot "$HOME/screenshot-%Y_%m_%d_%H_%M.png" #TODO dmenu-screenshot
+
+super + shift + End
+    dmenu-exit
 
 super + m ; {p,l,h,s}
     {$(playerctl play-pause),$(playerctl next),$(playerctl previous),$(playerctl stop)}
@@ -14,10 +22,3 @@ super + m ; {p,l,h,s}
 super + o ; {b,c,f,n,t}
     {blender,chromium,firefox,nautilus,terminal}
 
-super + b
-    $BROWSER
-super + n
-    nautilus
-
-super + shift + End
-    dmenu-exit

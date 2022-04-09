@@ -11,13 +11,6 @@ alias c='clear'
 alias e='exit'
 alias q='exit'
 
-alias ls="ls -hN --color=auto --group-directories-first"
-alias ll='ls -l'
-alias la='ls -A'
-alias lla='ls -la'
-alias lsla='ls -la'
-alias l='ls -CF'
-
 alias cd.='cd ..'
 alias cd..='cd ..'
 alias ..='cd ..'
@@ -30,10 +23,20 @@ alias .4='cd ../../../../'
 alias .5='cd ../../../../..'
 alias .-='cd -'
 
-alias ka='killall'
-alias killa='killall'
+alias ls="ls -hN --color=auto --group-directories-first"
+alias ll='ls -l'
+alias la='ls -A'
+alias lla='ls -la'
+alias lsla='ls -la'
+alias l='ls -CF'
+
+alias mkdir='mkdir -pv'
+alias mkd='mkdir'
+
 alias cal='cal -m'
 alias ffmpeg="ffmpeg -hide_banner"
+alias ka='killall'
+alias killa='killall'
 alias now='date +"%T"'
 alias paths='echo -e ${PATH//:/\\n}'
 alias wget='wget -c' # Resume wget by default

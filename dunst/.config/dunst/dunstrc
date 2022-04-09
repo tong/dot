@@ -16,7 +16,7 @@
     #
     # If this option is set to mouse or keyboard, the monitor option
     # will be ignored.
-    follow = none
+    follow = keyboard
 
     ### Geometry ###
 
@@ -28,16 +28,9 @@
     # The maximum height of a single notification, excluding the frame.
     height = 300
 
-    # Position the notification in the top right corner
     origin = top-center
-
-    # Offset from the origin
-    offset = 72x72
-
-    # Scale factor. It is auto-detected if value is 0.
+    offset = 0x96
     scale = 0
-
-    # Maximum number of notification (0 means no limit)
     notification_limit = 16
 
     ### Progress bar ###
@@ -59,7 +52,6 @@
     # Set the maximum width for the progress bar
     progress_bar_max_width = 300
 
-
     # Show how many messages are currently hidden (because of
     # notification_limit).
     indicate_hidden = yes
@@ -78,10 +70,10 @@
     padding = 24
 
     # Horizontal padding.
-    horizontal_padding = 30
+    horizontal_padding = 36
 
     # Padding between text and icon.
-    text_icon_padding = 0
+    text_icon_padding = 22
 
     # Defines width in pixels of frame around the notification window.
     # Set to 0 to disable.
@@ -150,13 +142,16 @@
     #   %n  progress value if set without any extra characters
     #   %%  Literal %
     # Markup is allowed
-    # format = "<b>%s</b>\n%b"
+    #format = "<b>%s</b>\n%b"
     #format = "<b>%s</b>\n%b"
     #format = "<tt>777 ABcc efg</tt><span foreground="yellow" font_size="23pt"> </span><i>%a</i><b>%s</b>\n%b"
     #format = "<span font_size="400%" rise="100pt" baseline_shift="100pt">%i</span> <span fgcolor="red">%a\n%s</span>\n%b"
     #format = "<span font_size="14pt">%i</span> <span font_family="Frucade Small" font_size="x-small">%a</span>\n<span>%s</span>\n<span font_size="9pt">%b</span>"
-    format = "<span font_size="16pt" rise="-3pt" alpha="50%">%I</span> <span text_transform="uppercase" alpha="50%">%a</span>\n<span>%s</span>\n<span font_size="9pt">%b</span>"
+    #format = "<span font_size="16pt" rise="-3pt" alpha="50%">%I</span> <span text_transform="uppercase" alpha="50%">%a</span>\n<span font_weight="bold">%s</span>\n<span font_size="9pt">%b</span>"
+    format = "<span text_transform="uppercase" alpha="70%">%a</span>\n<span font_weight="bold">%s</span>\n<span font_size="9pt" alpha="80%">%b</span>"
     #format = "<span>%s</span>\n<span font_size="9pt">%b</span>"
+    #format = "a:%a s:%s b:%b i:%i I:%I p:%p n:%n"
+    #format = "<span font_size="14pt" rise="-3pt" alpha="50%">%I</span> <span text_transform="uppercase">%a</span>\n<span>%s</span>\n<span>%b</span> i:%i I:%I p:%p n:%n"
 
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
@@ -201,7 +196,8 @@
     max_icon_size = 32
 
     # Paths to default icons.
-    icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
+    #icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
+    icon_path = /home/tong/.icons/oomox-void_3/status/scalable:/home/tong/.icons/oomox-void_3/devices/scalebale
 
     ### History ###
 
@@ -305,7 +301,7 @@
     #default_icon = /path/to/icon
     
 [urgency_normal]
-    background = "#262626"
+    background = "#101010"
     foreground = "#C4c7c5"
     frame_color = "#C4c7c5"
     timeout = 11

@@ -3,9 +3,9 @@ SAVEHIST=10000000
 HISTFILE=~/.cache/zsh/history
 
 ZSH_THEME="void"
-# if [[ -o login ]]; then
-#     ZSH_THEME="void"
-# fi
+#if [[ -o login ]]; then
+#    ZSH_THEME="lambda"
+#fi
 CASE_SENSITIVE="true"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 # HYPHEN_INSENSITIVE="true"
@@ -32,7 +32,7 @@ plugins=(
     # thefuck
     zsh-autosuggestions
     #zsh-navigation-tools
-    zsh_reload
+    #zsh_reload
     zsh-syntax-highlighting
 )
 
@@ -73,3 +73,5 @@ bindkey -s '^a' 'bc -lq\n'
 #autoload edit-command-line; zle -N edit-command-line
 #bindkey '^e' edit-command-line
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
