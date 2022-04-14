@@ -33,6 +33,7 @@ alias l='ls -CF'
 alias mkdir='mkdir -pv'
 alias mkd='mkdir'
 
+alias df='df -h'
 alias cal='cal -m'
 alias ffmpeg="ffmpeg -hide_banner"
 alias ka='killall'
