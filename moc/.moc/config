@@ -281,7 +281,7 @@ Theme = black_theme
 #
 # Example:    Keymap = my_keymap
 #
-Keymap = my_keymap
+Keymap = keymap
 
 # Use ASCII rather than graphic characters for drawing lines.  This
 # helps on some terminals.
