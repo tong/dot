@@ -24,7 +24,7 @@ CACHE="$HOME/.cache/lf/thumbnail.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(
 
 #case "$(file --dereference --brief --mime-type -- "$1")" in
 case "$(printf "%s\n" "$(readlink -f "$1")" | awk '{print tolower($0)}')" in
-    #*.md) glow $1 ;;
+    *.arm) armcat "$1" | jq .;;
     *.md) glow "$1";;
     *.tgz|*.tar.gz) tar tzf "$1" ;;
 	*.tar.bz2|*.tbz2) tar tjf "$1" ;;
