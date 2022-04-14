@@ -5,11 +5,11 @@ import random
 import sys
 import yaml
 
-# Theme switch utility for alacritty
+# Alacritty theme control
 
 CFG_DIR = os.path.expanduser("~/.config/alacritty")
 THEME_DIR = os.path.join(CFG_DIR, "theme")
-THEME_LINK = os.path.join(CFG_DIR,"theme.yml")
+THEME_LINK = os.path.join(CFG_DIR, "theme.yml")
 
 if not os.path.exists(THEME_DIR):
     print('theme directory not found')
@@ -67,7 +67,7 @@ else:
             if ir != ic:
                 set_active_theme(themes[ir])
                 break
-    elif cmd == "list" or "l":
+    elif cmd == "list" or cmd == "l":
         ta = get_active_theme()
         for t in themes: print( '*'+t if t==ta else t)
     elif cmd == "preview" or cmd == "p":
@@ -84,6 +84,8 @@ else:
             with open(os.path.join(THEME_DIR, t+'.yml' )) as f:
                 print('\n# '+t+'\n'+f.read().strip()) 
                 #theme = yaml.safe_load(f)
+    elif cmd == "test" or cmd == "t":
+        os.system('colortest')
     else:
         try:
             nindex = themes.index(cmd)

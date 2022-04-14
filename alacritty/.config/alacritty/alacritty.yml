@@ -14,9 +14,9 @@ window:
   #  columns: 0
   #  lines: 0
   padding:
-    x: 2
-    y: 2
-    #opacity: 0.98
+    x: 4
+    y: 4
+  #opacity: 0.98
   #dynamic_padding: true
   #decorations: none
   #startup_mode: Windowed
