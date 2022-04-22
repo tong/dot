@@ -1,4 +1,5 @@
-set cleaner '~/.config/lf/cleaner'
+set cleaner '~/.config/lf/script/cleaner'
+set previewer '~/.config/lf/script/preview'
 set drawbox
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set icons
@@ -6,13 +7,24 @@ set info size:time
 set ifs "\n"
 set number on
 set period 1
-set previewer '~/.config/lf/preview'
 #set promptfmt "\033[32;1m%u@%h\033[0m:\033[34;1m%d\033[0m\033[1m%f\033[0m"
 set ratios '1:2:3'
 set relativenumber
 set scrolloff 10
 set shell sh
 set shellopts '-eu'
+
+%[ $LF_LEVEL -eq 1 ] || echo "WARNING: You're in a nested lf instance!"
+
+cmd bookmark_jump ${{
+    res="$(cat $LF_BOOKMARK_PATH/$(ls $LF_BOOKMARK_PATH | fzf))"
+    lf -remote "send $id cd \"$res\""
+}}
+
+cmd bookmark_create ${{
+    read ans
+    echo $PWD > $LF_BOOKMARK_PATH/$ans
+}}
 
 #cmd copyto ${{
 	#clear; tput cup $(($(tput lines)/3)); tput bold
@@ -166,6 +178,8 @@ cmd tar ${{
     rm -rf $1
 }}
  
+#cmd trash %set -f; mv $fx ~/.trash
+
 cmd zip ${{
     set -f
     mkdir $1
@@ -174,10 +188,28 @@ cmd zip ${{
     rm -rf $1
 }}
 
-#cmd trash %set -f; mv $fx ~/.trash
+cmd yank-dirname $dirname -- "$f" | head -c-1 | xclip -i -selection clipboard
+cmd yank-path $printf '%s' "$fx" | xclip -i -selection clipboard
+cmd yank-basename $basename -a -- $fx | head -c-1 | xclip -i -selection clipboard
+cmd yank-basename-without-extension ${{
+    echo "$fx" |
+      xargs -r -d '\n' basename -a |
+      awk -e '{
+        for (i=length($0); i > 0; i--) {
+          if (substr($0, i, 1) == ".") {
+            if (i == 1) print $0
+            else print substr($0, 0, i-1)
 
-#cmd yank-dirname $dirname -- "$f" | head -c-1 | xclip -i -selection clipboard
+            break
+          }
+        }
 
+        if (i == 0)
+          print $0
+      }' |
+      if [ -n "$fs" ]; then cat; else tr -d '\n'; fi |
+      xclip -i -selection clipboard
+}}
 cmd on-cd &{{
     source /usr/share/git/completion/git-prompt.sh
     GIT_PS1_SHOWDIRTYSTATE=auto
@@ -223,17 +255,14 @@ map <c-z> $ kill -STOP $PPID
 #cmd fzf $vi $(find . -name "$1" | fzf)
 #map f push :fzf<space>
 
-#map gb :git_branch
-#map gp ${{clear; git pull --rebase || true; echo "press ENTER"; read ENTER}}
-#map gs ${{clear; git status; echo "press ENTER"; read ENTER}}
-#map gl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit}}
-
 map A rename # at the very end
+map B bulkrename
+map H set hidden!
+
 map c push A<c-u> # new rename
 map I push A<c-a> # at the very beginning
 map i push A<a-b><a-b><a-f> # before extention
 map a push A<a-b> # after extention
-map B bulkrename
 
 # Execute current file (must be executable)
 map x $$f
@@ -245,6 +274,12 @@ map O $mimeopen --ask $f
 map V push :!nvim<space>
 map T $setsid -f $TERMINAL >/dev/null 2>&1
 map Y $printf "%s" "$fx" | xclip -selection clipboard
+
+#map gb :git_branch
+#map gp ${{clear; git pull --rebase || true; echo "press ENTER"; read ENTER}}
+#map gs ${{clear; git status; echo "press ENTER"; read ENTER}}
+#map gl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit}}
+
 
 #source "~/.config/lf/shortcutrc"
 #source "~/.config/lf/icons
