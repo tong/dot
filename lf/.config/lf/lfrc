@@ -16,11 +16,10 @@ set shellopts '-eu'
 
 %[ $LF_LEVEL -eq 1 ] || echo "WARNING: You're in a nested lf instance!"
 
-cmd bookmark_jump ${{
+cmd bookmark ${{
     res="$(cat $LF_BOOKMARK_PATH/$(ls $LF_BOOKMARK_PATH | fzf))"
     lf -remote "send $id cd \"$res\""
 }}
-
 cmd bookmark_create ${{
     read ans
     echo $PWD > $LF_BOOKMARK_PATH/$ans
