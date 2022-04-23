@@ -95,9 +95,7 @@ set max_history_blocks = 8
 # See sample script in contrib/ directory.
 #set events_command = ~/.mcabber/eventcmd
 set events_command = ~/.config/mcabber/notify.sh
-#
 set events_ignore_active_window = 1
-#
 set event_log_files = 1
 set event_log_dir = ~/.config/mcabber/event_files
 
