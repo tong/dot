@@ -4,8 +4,8 @@ ICONS_DIR=$VOID/void-icons/actions
 SOUNDS_DIR=$VOID/void-sound
 
 SOUND_MSG_IN="$SOUNDS_DIR/Morse.wav"
-#SOUND_MSG_OUT=/home/tong/dev/disktree/void2/void-sound/Purr.wav
-#SOUND_STATUS=/home/tong/dev/disktree/void2/void-sound/Purr.wav
+#SOUND_MSG_OUT="$SOUNDS_DIR/Purr.wav"
+#SOUND_STATUS="$SOUNDS_DIR/Purr.wav"
 
 event=$1
 arg1=$2
@@ -38,7 +38,7 @@ if [ "$event" = "MSG" ]; then
             if [ -n "$filename" -a -f "$filename" ]; then
                 M="$(cat $filename)"
                 rm $filename
-                show_notification "$arg2" "$M"
+                show_notification "$arg2" "$M" "im-message-new"
             fi
             ;;
     OUT)
