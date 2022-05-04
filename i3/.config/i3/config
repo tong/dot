@@ -13,7 +13,7 @@ set $color_border #9e9e9e
 set $color_indicator #FFFFFF
 set $color_text #00ff00
 
-set $border_width 3
+set $border_width 4
 
 set $SCREEN1 DP-2
 set $SCREEN2 DP-5
@@ -32,8 +32,7 @@ exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf --dbus --
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 #exec_always --no-startup-id hsetroot -solid '#101010'
 #exec_always --no-startup-id xset r rate 250 50
-#exec_always --no-startup-id nitrogen --restore
-exec --no-startup-id alacritty -e echo 23
+exec_always --no-startup-id nitrogen --restore
 
 ## --- Workspaces
 
@@ -73,12 +72,11 @@ client.urgent           #FF1744 #FF1744 #000000 #2e9ef4   #FF1744
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #000000
 
-
-gaps outer 0
-gaps inner 1
+gaps outer 1
+gaps inner 5
 smart_gaps on
 smart_borders on
-#gaps horizontal 60
+gaps horizontal 2
 #gaps vertical 30
 
 #hide_edge_borders none
@@ -93,7 +91,7 @@ default_border pixel $border_width
 default_floating_border pixel $border_width 
 for_window [class=.*] border pixel $border_width
 
-for_window [class="Arandr|feh|File-roller|Gnome-calculator|Gnome-control-center|Gnome-disks|Gnome-screenshot|Gnome-tweaks|MPlayer|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|Sxiv|SimpleScreenRecorder|vlc"] floating enable
+for_window [class="Arandr|feh|File-roller|Gnome-calculator|Gnome-control-center|Gnome-disks|Gnome-screenshot|Gnome-tweaks|MPlayer|mpv|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|Sxiv|SimpleScreenRecorder|vlc"] floating enable
 for_window [class="Surf"] floating enable move position mouse resize set 1080 1440
 for_window [class="Surf"] focus_on_window_activation focus
 for_window [class="fff*"] floating enabl
@@ -138,10 +136,10 @@ bindsym $mod+Control+$down move down 360px
 bindsym $mod+Control+$up move up 360px
 bindsym $mod+Control+$right move right 400px
 
-bindsym $mod+Mod1+$left resize shrink width 180 px or 20 ppt
-bindsym $mod+Mod1+$down resize shrink height 180 px or 25 ppt
-bindsym $mod+Mod1+$up resize grow height 180 px or 25 ppt
-bindsym $mod+Mod1+$right resize grow width 180 px or 20 ppt
+bindsym $mod+Mod1+$left resize shrink width 100 px or 20 ppt
+bindsym $mod+Mod1+$down resize shrink height 100 px or 25 ppt
+bindsym $mod+Mod1+$up resize grow height 100 px or 25 ppt
+bindsym $mod+Mod1+$right resize grow width 100 px or 20 ppt
 
 bindsym $mod+shift+Left workspace prev
 bindsym $mod+shift+Right workspace next

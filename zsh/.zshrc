@@ -40,7 +40,7 @@ source $HOME/.env
 
 source $ZSH/oh-my-zsh.sh
 
-source $HOME/.config/lf/icons
+source $HOME/.config/lf/script/icons
 source $HOME/.config/zsh/aliases
 source $HOME/.config/zsh/aliases_user
 
@@ -75,3 +75,6 @@ bindkey -s '^a' 'bc -lq\n'
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+source $HOME/sdk/qmk_firmware/util/qmk_tab_complete.sh
+

@@ -34,6 +34,7 @@ alias mkdir='mkdir -pv'
 alias mkd='mkdir'
 
 alias df='df -h'
+alias du='du -h'
 alias cal='cal -m'
 alias ffmpeg="ffmpeg -hide_banner"
 alias ka='killall'
@@ -41,6 +42,8 @@ alias killa='killall'
 alias now='date +"%T"'
 alias paths='echo -e ${PATH//:/\\n}'
 alias wget='wget -c' # Resume wget by default
+
+alias dirsize='du'
 
 alias cpuinfo='lscpu'
 alias meminfo='free -m -l -t'
