@@ -236,7 +236,7 @@ map E extract
 # use '<delete>' key for either 'trash' or 'delete' command
 #map <backspace2> trash
 #map <delete> trash
-map <enter> cd $1
+map <enter> shell
 
 map <c-e> down
 map <c-y> up
