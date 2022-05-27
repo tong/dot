@@ -33,7 +33,7 @@ exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf --dbus --
 #exec_always --no-startup-id $HOME/.screenlayout/2-monitor.sh
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 #exec_always --no-startup-id hsetroot -solid '#101010'
-#exec_always --no-startup-id xset r rate 250 50
+exec_always --no-startup-id xset r rate 190 90
 exec_always --no-startup-id nitrogen --restore
 
 ## --- Workspaces
@@ -138,11 +138,11 @@ bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 
 bindsym $mod+Shift+e layout toggle split
-#bindsym $mod+Shift+h split h
-#bindsym $mod+Shift+v split v
+bindsym $mod+Shift+k split h
+bindsym $mod+Shift+j split v
 
-bindsym $mod+space focus mode_toggle
-bindsym $mod+Shift+space floating toggle
+bindsym $mod+slash focus mode_toggle
+bindsym $mod+Shift+slash floating toggle
 
 bindsym $mod+Shift+semicolon move scratchpad
 bindsym $mod+semicolon scratchpad show
@@ -197,10 +197,13 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+q kill
 
-bindsym F10 exec --no-startup-id $volume_toggle
-bindsym F11 exec --no-startup-id $volume_down unmute
-bindsym F12 exec --no-startup-id $volume_up
-# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+#bindsym F10 exec --no-startup-id $volume_toggle
+#bindsym F11 exec --no-startup-id $volume_down unmute
+#bindsym F12 exec --no-startup-id $volume_up
+#bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
+#bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
+#bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+# bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 # bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 # bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 # bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
