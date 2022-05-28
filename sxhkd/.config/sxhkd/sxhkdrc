@@ -1,3 +1,5 @@
+#super + enter
+#    i3-sensible-terminal
 super + d
     rofi -show run
 super + Tab
@@ -21,4 +23,23 @@ super + m ; {p,l,h,s}
 
 super + o ; {b,c,f,n,t}
     {blender,chromium,firefox,nautilus,terminal}
+
+#XF86Audio{Prev,Next}
+#	mpc -q {prev,next}
+XF86AudioRaiseVolume
+    pactl set-sink-volume @DEFAULT_SINK@ +10%
+XF86AudioLowerVolume
+    pactl set-sink-volume @DEFAULT_SINK@ -10%
+XF86AudioMute
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+XF86AudioPlay
+    playerctl play
+XF86AudioStop
+    playerctl stop
+XF86AudioPause
+    playerctl pause
+XF86AudioNext
+    playerctl next
+XF86AudioPrev
+    playerctl previous
 
