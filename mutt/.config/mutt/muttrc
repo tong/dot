@@ -7,8 +7,6 @@ set mail_check = 120
 
 source $HOME/.config/mutt/accounts/tong@disktree.net.muttrc
 
-set signature="/home/tong/.signature"
-
 #set alias_file = "~/.config/mutt/aliases"
 #set sort_alias = alias
 #set reverse_alias = yes
@@ -20,7 +18,8 @@ set mailcap_path = $HOME/.config/mutt/mailcap:/usr/local/share/mutt-wizard/mailc
 set mime_type_query_command = "file --mime-type -b %s"
 set date_format="%y/%m/%d %I:%M%p"
 set index_format="%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"
-set sort = 'reverse-date'
+#set sort = 'reverse-date'
+set sort=threads
 set smtp_authenticators = 'gssapi:login'
 #set query_command = "abook --mutt-query '%s'"
 set query_command = "khard email --parsable %s"
