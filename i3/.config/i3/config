@@ -11,7 +11,7 @@ set $term alacritty
 #set_from_resource $color_border color0 #9E9E9E
 set $color_background #000000
 set $color_border #9e9e9e
-set $color_indicator #ffffff
+set $color_indicator #2e9ef4
 set $color_text #00ff00
 
 set $border_width 4
@@ -72,6 +72,7 @@ client.unfocused        #00ff00 #000000 #666666 #2e9ef4   #101010
 client.urgent           #FF1744 #FF1744 #000000 #2e9ef4   #FF1744
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #000000
+
 gaps outer 1
 gaps inner 5
 smart_gaps on
@@ -124,6 +125,11 @@ bindsym $mod+Control+h move left 400px
 bindsym $mod+Control+j move down 360px
 bindsym $mod+Control+k move up 360px
 bindsym $mod+Control+l move right 400px
+
+#bindsym $mod+Mod1+h resize shrink width 100 px or 20 ppt
+#bindsym $mod+Mod1+j resize shrink height 100 px or 25 ppt
+#bindsym $mod+Mod1+k resize grow height 100 px or 25 ppt
+#bindsym $mod+Mod1+l resize grow width 100 px or 20 ppt
 
 bindsym $mod+shift+h workspace prev
 bindsym $mod+shift+l workspace next
@@ -184,18 +190,12 @@ bindsym $mod+Ctrl+Shift+8 move container to workspace $WS8; workspace $WS8
 bindsym $mod+Ctrl+Shift+9 move container to workspace $WS9; workspace $WS9
 bindsym $mod+Ctrl+Shift+0 move container to workspace $WS10; workspace $WS10
 
-bindsym $mod+Mod1+h resize shrink width 100 px or 20 ppt
-bindsym $mod+Mod1+j resize shrink height 100 px or 25 ppt
-bindsym $mod+Mod1+k resize grow height 100 px or 25 ppt
-bindsym $mod+Mod1+l resize grow width 100 px or 20 ppt
-
 bindsym --whole-window $mod + button2 kill
-
 bindsym $mod+q kill
 
-bindsym $mod+Shift+c reload
-bindsym $mod+Shift+r restart
-bindsym $mod+Shift+q kill
+#bindsym $mod+Shift+c reload
+#bindsym $mod+Shift+r restart #i3-msg restart
+#bindsym $mod+Shift+q kill
 
 #bindsym F10 exec --no-startup-id $volume_toggle
 #bindsym F11 exec --no-startup-id $volume_down unmute
@@ -203,9 +203,6 @@ bindsym $mod+Shift+q kill
 #bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
 #bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
 #bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
-# bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 # bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 #set $mode_move  MOVE
@@ -219,21 +216,17 @@ bindsym $mod+Shift+q kill
 #}
 #bindsym $mod+Shift+m mode "$mode_move"
 
-#set $mode_resize "ﭕ RESIZE"
-#mode $mode_resize {
-    #bindsym $up         resize shrink height 10 px or 10 ppt
-    #bindsym $down       resize grow height 10 px or 10 ppt
-    #bindsym $left       resize shrink width 10 px or 10 ppt
-    #bindsym $right      resize grow width 10 px or 10 ppt
-    #bindsym Left        resize shrink width 10 px or 10 ppt
-    #bindsym Down        resize grow height 10 px or 10 ppt
-    #bindsym Up          resize shrink height 10 px or 10 ppt
-    #bindsym Right       resize grow width 10 px or 10 ppt
-    #bindsym Return mode "default"
-    #bindsym Escape mode "default"
-    #bindsym $mod+r mode "default"
-#}
-#bindsym $mod+r mode $mode_resize
+set $mode_resize "ﭕ RESIZE"
+mode $mode_resize {
+    bindsym h   resize shrink width 10 px or 10 ppt
+    bindsym j   resize shrink height 10 px or 10 ppt
+    bindsym k   resize grow height 10 px or 10 ppt
+    bindsym l   resize grow width 10 px or 10 ppt
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode $mode_resize
 
 # set $mode_system <span color='#141414'>B</span><span color='#EEEEEF'>LANK</span> <span color='#141414'>L</span><span color='#505050'>OCK</span> <span color='#141414'>S</span><span color='#505050'>USPEND</span> <span color='#141414'>H</span><span color='#505050'>IBERNATE</span> <span color='#141414'>⇧E</span><span color='#505050'>XIT</span> <span color='#141414'>⇧R</span><span color='#505050'>EBOOT</span> <span color='#141414'>⇧S</span><span color='#505050'>HUTDOWN</span>
 #set $mode_system  BLANK  LOCK  SUSPEND  HIBERNATE  EXIT  REBOOT  SHUTDOWN
