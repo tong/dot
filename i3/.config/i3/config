@@ -1,28 +1,18 @@
 set $mod Mod4
 floating_modifier $mod
 
-#set $left h
-#set $down j
-#set $up k
-#set $right l
-
 set $term alacritty
 
-#set_from_resource $color_border color0 #9E9E9E
-set $color_background #000000
+
+set $color_background #00000
 set $color_border #9e9e9e
-set $color_indicator #2e9ef4
+set $color_indicator #ff00ff
+#set $color_indicator #2e9ef4
 set $color_text #00ff00
+#TODO
+set_from_resourced $color_border color0 #9E9E9E
 
 set $border_width 4
-
-set $SCREEN1 DP-2
-set $SCREEN2 DP-5
-
-set $volume_up amixer -q set Master 10%+ unmute && killall -SIGUSR1 i3status
-set $volume_down amixer -q set Master 10%- unmute && killall -SIGUSR1 i3status
-set $volume_mute amixer -q set Master 0% unmute && killall -SIGUSR1 i3status
-set $volume_toggle amixer set Master toggle && killall -SIGUSR1 i3status
 
 font pango: JetBrainsMono Nerd Font 1
 # Frucade Small 6
@@ -48,7 +38,6 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
-# set $ws10 "10:"Ee
 
 workspace $ws1 output $SCREEN1
 workspace $ws2 output $SCREEN1
@@ -66,12 +55,20 @@ workspace $ws10 output $SCREEN1
 # class                 border  backgr. text    indicator child_border
 #client.focused          #9E9E9E #9E9E9E #101010 #2e9ef4   #9E9E9E
 #client.focused          $color_border $color_background #101010 $color_indicator $color_border
-client.focused          $color_border $color_background #101010 $color_indicator #F0F0F0AA
-client.focused_inactive #0000ff #000000 #ffffff #2e9ef4   #101010
-client.unfocused        #00ff00 #000000 #666666 #2e9ef4   #101010
+#client.focused          $color_border $color_background #101010 $color_indicator #F0F0F011
+client.focused          $color_border $color_background #101010 #f0f0f0 #9e9e9eee
+client.focused_inactive #0000ff #000000 #ffffff #e0e0e0   #101010
+client.unfocused        #00ff00 #000000 #666666 #2e9ef4   #9e9e9e33
 client.urgent           #FF1744 #FF1744 #000000 #2e9ef4   #FF1744
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #000000
+
+#client.focused          #282828 #282828 #282828 #282828 $color_border
+#client.focused_inactive #0000ff #000000 #ffffff #2e9ef4   #101010
+#client.unfocused        #00ff00 #000000 #666666 #2e9ef4   #9e9e9e33
+#client.urgent           #FF1744 #FF1744 #000000 #2e9ef4   #FF1744
+#client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+#client.background       #000000
 
 gaps outer 1
 gaps inner 5
@@ -90,8 +87,8 @@ floating_maximum_size 3840 x 2160
 #default_orientation horizontal|vertical|auto
 default_border pixel $border_width
 default_floating_border pixel $border_width 
-for_window [class=.*] border pixel $border_width
 
+for_window [class=.*] border pixel $border_width
 for_window [class="Arandr|feh|File-roller|Gnome-calculator|Gnome-control-center|Gnome-disks|Gnome-screenshot|Gnome-tweaks|MPlayer|mpv|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|Sxiv|SimpleScreenRecorder|vlc"] floating enable
 for_window [class="Surf"] floating enable move position mouse resize set 1080 1440
 for_window [class="Surf"] focus_on_window_activation focus
@@ -103,7 +100,6 @@ for_window [class="POP$"] floating enable
 #for_window [class="Alacritty"] floating enable
 for_window [class="main_KincApplication*"] floating enable
 for_window [class="^.*_KincApplication$"] floating enable
-
 for_window [window_role="pop-up"] floating enable
 
 assign [class="^Steam"] → $ws6
@@ -121,10 +117,10 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
-bindsym $mod+Control+h move left 400px
-bindsym $mod+Control+j move down 360px
-bindsym $mod+Control+k move up 360px
-bindsym $mod+Control+l move right 400px
+bindsym $mod+ctrl+h move left 400px
+bindsym $mod+ctrl+j move down 360px
+bindsym $mod+ctrl+k move up 360px
+bindsym $mod+ctrl+l move right 400px
 
 #bindsym $mod+Mod1+h resize shrink width 100 px or 20 ppt
 #bindsym $mod+Mod1+j resize shrink height 100 px or 25 ppt
@@ -139,21 +135,22 @@ bindsym $mod+ctrl+shift+l move container to workspace prev; workspace prev
 bindsym $mod+p focus parent
 bindsym $mod+c focus child
 
-bindsym $mod+f fullscreen toggle
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
+bindsym $mod+shift+k split h
+bindsym $mod+shift+j split v
 
-bindsym $mod+Shift+e layout toggle split
-bindsym $mod+Shift+k split h
-bindsym $mod+Shift+j split v
+bindsym $mod+f fullscreen toggle
+#bindsym $mod+w layout tabbed
+#bindsym $mod+s layout stacking
+#bindsym $mod+e layout toggle split
+bindsym $mod+shift+w layout tabbed
+bindsym $mod+shift+s layout stacking
+bindsym $mod+shift+e layout toggle split
 
 bindsym $mod+slash focus mode_toggle
-bindsym $mod+Shift+slash floating toggle
+bindsym $mod+shift+slash floating toggle
 
-bindsym $mod+Shift+semicolon move scratchpad
 bindsym $mod+semicolon scratchpad show
-
-bindsym $mod+Return exec $term
+bindsym $mod+shift+semicolon move scratchpad
 
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
@@ -166,55 +163,32 @@ bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
 
-## Move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace number $ws1
-bindsym $mod+Shift+2 move container to workspace number $ws2
-bindsym $mod+Shift+3 move container to workspace number $ws3
-bindsym $mod+Shift+4 move container to workspace number $ws4
-bindsym $mod+Shift+5 move container to workspace number $ws5
-bindsym $mod+Shift+6 move container to workspace number $ws6
-bindsym $mod+Shift+7 move container to workspace number $ws7
-bindsym $mod+Shift+8 move container to workspace number $ws8
-bindsym $mod+Shift+9 move container to workspace number $ws9
-bindsym $mod+Shift+0 move container to workspace number $ws10
+bindsym $mod+shift+1 move container to workspace number $ws1
+bindsym $mod+shift+2 move container to workspace number $ws2
+bindsym $mod+shift+3 move container to workspace number $ws3
+bindsym $mod+shift+4 move container to workspace number $ws4
+bindsym $mod+shift+5 move container to workspace number $ws5
+bindsym $mod+shift+6 move container to workspace number $ws6
+bindsym $mod+shift+7 move container to workspace number $ws7
+bindsym $mod+shift+8 move container to workspace number $ws8
+bindsym $mod+shift+9 move container to workspace number $ws9
+bindsym $mod+shift+0 move container to workspace number $ws10
 
-## Move focused container to workspace and switch to it
-bindsym $mod+Ctrl+Shift+1 move container to workspace $WS1; workspace $WS1
-bindsym $mod+Ctrl+Shift+2 move container to workspace $WS2; workspace $WS2
-bindsym $mod+Ctrl+Shift+3 move container to workspace $WS3; workspace $WS3
-bindsym $mod+Ctrl+Shift+4 move container to workspace $WS4; workspace $WS4
-bindsym $mod+Ctrl+Shift+5 move container to workspace $WS5; workspace $WS5
-bindsym $mod+Ctrl+Shift+6 move container to workspace $WS6; workspace $WS6
-bindsym $mod+Ctrl+Shift+7 move container to workspace $WS7; workspace $WS7
-bindsym $mod+Ctrl+Shift+8 move container to workspace $WS8; workspace $WS8
-bindsym $mod+Ctrl+Shift+9 move container to workspace $WS9; workspace $WS9
-bindsym $mod+Ctrl+Shift+0 move container to workspace $WS10; workspace $WS10
+bindsym $mod+ctrl+shift+1 move container to workspace $WS1; workspace $WS1
+bindsym $mod+ctrl+shift+2 move container to workspace $WS2; workspace $WS2
+bindsym $mod+ctrl+shift+3 move container to workspace $WS3; workspace $WS3
+bindsym $mod+ctrl+shift+4 move container to workspace $WS4; workspace $WS4
+bindsym $mod+ctrl+shift+5 move container to workspace $WS5; workspace $WS5
+bindsym $mod+ctrl+shift+6 move container to workspace $WS6; workspace $WS6
+bindsym $mod+ctrl+shift+7 move container to workspace $WS7; workspace $WS7
+bindsym $mod+ctrl+shift+8 move container to workspace $WS8; workspace $WS8
+bindsym $mod+ctrl+shift+9 move container to workspace $WS9; workspace $WS9
+bindsym $mod+ctrl+shift+0 move container to workspace $WS10; workspace $WS10
 
 bindsym --whole-window $mod + button2 kill
 bindsym $mod+q kill
 
-#bindsym $mod+Shift+c reload
-#bindsym $mod+Shift+r restart #i3-msg restart
-#bindsym $mod+Shift+q kill
-
-#bindsym F10 exec --no-startup-id $volume_toggle
-#bindsym F11 exec --no-startup-id $volume_down unmute
-#bindsym F12 exec --no-startup-id $volume_up
-#bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
-#bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
-#bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
-# bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-
-#set $mode_move  MOVE
-#mode "$mode_move" {
-    #bindsym Left move workspace to output left
-    #bindsym Right move workspace to output right
-    #bindsym Left j workspace to output left
-    #bindsym Right k workspace to output right
-    #bindsym Return mode "default"
-    #bindsym Escape mode "default"
-#}
-#bindsym $mod+Shift+m mode "$mode_move"
+bindsym $mod+Return exec $term
 
 set $mode_resize "ﭕ RESIZE"
 mode $mode_resize {
@@ -228,6 +202,17 @@ mode $mode_resize {
 }
 bindsym $mod+r mode $mode_resize
 
+#set $mode_move  MOVE
+#mode "$mode_move" {
+    #bindsym Left move workspace to output left
+    #bindsym Right move workspace to output right
+    #bindsym Left j workspace to output left
+    #bindsym Right k workspace to output right
+    #bindsym Return mode "default"
+    #bindsym Escape mode "default"
+#}
+#bindsym $mod+shift+m mode "$mode_move"
+
 # set $mode_system <span color='#141414'>B</span><span color='#EEEEEF'>LANK</span> <span color='#141414'>L</span><span color='#505050'>OCK</span> <span color='#141414'>S</span><span color='#505050'>USPEND</span> <span color='#141414'>H</span><span color='#505050'>IBERNATE</span> <span color='#141414'>⇧E</span><span color='#505050'>XIT</span> <span color='#141414'>⇧R</span><span color='#505050'>EBOOT</span> <span color='#141414'>⇧S</span><span color='#505050'>HUTDOWN</span>
 #set $mode_system  BLANK  LOCK  SUSPEND  HIBERNATE  EXIT  REBOOT  SHUTDOWN
 ## mode --pango_markup "$mode_system" {
@@ -236,12 +221,12 @@ bindsym $mod+r mode $mode_resize
     #bindsym b exec --no-startup-id screen-blank, mode "default"
     #bindsym s exec --no-startup-id i3exit suspend, mode "default"
     #bindsym h exec --no-startup-id i3exit hibernate, mode "default"
-    #bindsym Shift+e exec --no-startup-id i3exit logout, mode "default"
-    #bindsym Shift+r exec --no-startup-id i3exit reboot, mode "default"
-    #bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
+    #bindsym shift+e exec --no-startup-id i3exit logout, mode "default"
+    #bindsym shift+r exec --no-startup-id i3exit reboot, mode "default"
+    #bindsym shift+s exec --no-startup-id i3exit shutdown, mode "default"
     #bindsym Return mode "default"
     #bindsym Escape mode "default"
 #}
-#bindsym $mod+Shift+End mode "$mode_system"
-#bindsym $mod+Shift+End exec --no-startup-id dmenu-exit
+#bindsym $mod+shift+End mode "$mode_system"
+#bindsym $mod+shift+End exec --no-startup-id dmenu-exit
 #bindsym $mod+Escape exec --no-startup-id dmenu-exit
