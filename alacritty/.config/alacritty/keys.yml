@@ -217,8 +217,8 @@ key_bindings:
   # - { key: Home,      mods: Shift,   mode: ~Alt,        action: ScrollToTop,   }
   # - { key: End,       mods: Shift,   mode: ~Alt,        action: ScrollToBottom }
 
-  - { key: PageUp,    mods: Control|Shift, command: {program: "/home/tong/.config/alacritty/alacritty-theme.py", args: ["next"]} }
-  - { key: PageDown,  mods: Control|Shift, command: {program: "/home/tong/.config/alacritty/alacritty-theme.py", args: ["prev"]} }
+  - { key: PageUp,    mods: Control, command: {program: "/home/tong/.config/alacritty/alacritty-theme.py", args: ["next"]} }
+  - { key: PageDown,  mods: Control, command: {program: "/home/tong/.config/alacritty/alacritty-theme.py", args: ["prev"]} }
 
   # Vi Mode
   #- { key: Space,  mods: Shift|Control, mode: Vi|~Search, action: ScrollToBottom          }

@@ -41,7 +41,7 @@ bell:
   # args: ["Hello, World!"]
 
 selection:
-   save_to_clipboard: true
+  save_to_clipboard: true
 
 #shell:
 #  program: /bin/bash
@@ -53,7 +53,7 @@ selection:
 #alt_send_esc: true
 
 mouse:
-  hide_when_typing: false
+  hide_when_typing: true
   hints:
     alphabet: "jfkdls;ahgurieowpq"
     enabled:
