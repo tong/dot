@@ -214,8 +214,10 @@ cmd on-cd &{{
     GIT_PS1_SHOWDIRTYSTATE=auto
     GIT_PS1_SHOWSTASHSTATE=auto
     GIT_PS1_SHOWUNTRACKEDFILES=auto
-    GIT_PS1_SHOWUPSTREAM=auto
+    GIT_PS1_SHOWUPSTREAM=verbose
+    GIT_PS1_SHOWCOLORHINTS=auto
     GIT_PS1_COMPRESSSPARSESTATE=auto
+    GIT_PS1_DESCRIBE_STYLE=tag
     git=$(__git_ps1 " [%s]") || true
     fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%w\033[0m\033[33;1m$git\033[0m"
     lf -remote "send $id set promptfmt \"$fmt\""
@@ -228,7 +230,7 @@ cmd on-cd &{{
 # use '<delete>' key for either 'trash' or 'delete' command
 #map <backspace2> trash
 #map <delete> trash
-map <enter> shell
+#map <enter> shell
 
 #map gh ~
 map g top
@@ -277,6 +279,8 @@ map Y $printf "%s" "$fx" | xclip -selection clipboard
 #map gs ${{clear; git status; echo "press ENTER"; read ENTER}}
 #map gl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit}}
 
-
-#source "~/.config/lf/shortcutrc"
 #source "~/.config/lf/icons
+
+# run at startup
+on-cd
+
