@@ -1,30 +1,28 @@
 set $mod Mod4
 floating_modifier $mod
 
-set $term alacritty
-
+set $DISPLAY0 DP-2
+set $DISPLAY1 DP-5
 
 set $color_background #00000
-set $color_border #9e9e9e
+#set $color_border #9e9e9e
+set $color_border #C0C0C0
 set $color_indicator #ff00ff
 #set $color_indicator #2e9ef4
 set $color_text #00ff00
-#TODO
-set_from_resourced $color_border color0 #9E9E9E
 
 set $border_width 4
 
-font pango: JetBrainsMono Nerd Font 1
+font pango: JetBrainsMono Nerd Font 1 
 # Frucade Small 6
 
 ## --- 
 
 exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf --dbus --experimental-backends
-#exec_always --no-startup-id $HOME/.screenlayout/2-monitor.sh
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-#exec_always --no-startup-id hsetroot -solid '#101010'
-exec_always --no-startup-id xset r rate 190 90
 exec_always --no-startup-id nitrogen --restore
+#exec_always --no-startup-id hsetroot -solid '#101010'
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id xset r rate 190 90
 
 ## --- Workspaces
 
@@ -37,44 +35,37 @@ set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
+set $ws0 "10"
 set $ws10 "10"
 
-workspace $ws1 output $SCREEN1
-workspace $ws2 output $SCREEN1
-workspace $ws3 output $SCREEN1
-workspace $ws4 output $SCREEN1
-workspace $ws5 output $SCREEN2
-workspace $ws6 output $SCREEN1
-workspace $ws7 output $SCREEN1
-workspace $ws8 output $SCREEN1
-workspace $ws9 output $SCREEN1
-workspace $ws10 output $SCREEN1
+#workspace $ws1 output $DISPLAY0
+#workspace $ws2 output $DISPLAY0
+#workspace $ws3 output $DISPLAY0
+#workspace $ws4 output $DISPLAY0
+workspace $ws5 output $DISPLAY1
+#workspace $ws6 output $DISPLAY0
+#workspace $ws7 output $DISPLAY0
+#workspace $ws8 output $DISPLAY0
+#workspace $ws9 output $DISPLAY0
+#workspace $ws10 output $DISPLAY0
 
 ## --- Window
 
 # class                 border  backgr. text    indicator child_border
-#client.focused          #9E9E9E #9E9E9E #101010 #2e9ef4   #9E9E9E
 #client.focused          $color_border $color_background #101010 $color_indicator $color_border
 #client.focused          $color_border $color_background #101010 $color_indicator #F0F0F011
-client.focused          $color_border $color_background #101010 #f0f0f0 #9e9e9eee
-client.focused_inactive #0000ff #000000 #ffffff #e0e0e0   #101010
-client.unfocused        #00ff00 #000000 #666666 #2e9ef4   #9e9e9e33
+client.focused          $color_border $color_background #101010 $color_border $color_border
+client.focused_inactive #0000ff #000000 #ffffff #e0e0e0   #10101000
+client.unfocused        #00ff00 #000000 #666666 #2e9ef4   #10101000
 client.urgent           #FF1744 #FF1744 #000000 #2e9ef4   #FF1744
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #000000
 
-#client.focused          #282828 #282828 #282828 #282828 $color_border
-#client.focused_inactive #0000ff #000000 #ffffff #2e9ef4   #101010
-#client.unfocused        #00ff00 #000000 #666666 #2e9ef4   #9e9e9e33
-#client.urgent           #FF1744 #FF1744 #000000 #2e9ef4   #FF1744
-#client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-#client.background       #000000
-
-gaps outer 1
-gaps inner 5
+gaps outer 2
+gaps inner 2
 smart_gaps on
 #smart_borders no
-gaps horizontal 2
+#gaps horizontal 2
 #gaps vertical 30
 
 #hide_edge_borders none
@@ -89,7 +80,7 @@ default_border pixel $border_width
 default_floating_border pixel $border_width 
 
 for_window [class=.*] border pixel $border_width
-for_window [class="Arandr|feh|File-roller|Gnome-calculator|Gnome-control-center|Gnome-disks|Gnome-screenshot|Gnome-tweaks|MPlayer|mpv|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|Sxiv|SimpleScreenRecorder|vlc"] floating enable
+for_window [class="Arandr|feh|File-roller|Gnome-calculator|Gnome-control-center|Gnome-disks|Gnome-screenshot|Gnome-tweaks|itch|MPlayer|mpv|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|Sxiv|SimpleScreenRecorder|vlc"] floating enable
 for_window [class="Surf"] floating enable move position mouse resize set 1080 1440
 for_window [class="Surf"] focus_on_window_activation focus
 for_window [class="fff*"] floating enabl
@@ -103,6 +94,7 @@ for_window [class="^.*_KincApplication$"] floating enable
 for_window [window_role="pop-up"] floating enable
 
 assign [class="^Steam"] → $ws6
+#assign [class="^Pavucontrol"] → $ws0
 
 ## --
 
@@ -111,6 +103,9 @@ focus_wrapping yes
 mouse_warping output
 
 ## -- Keymap
+
+#TODO requires i3 4.20+
+#include ~/.config/i3/keys.conf
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -174,21 +169,21 @@ bindsym $mod+shift+8 move container to workspace number $ws8
 bindsym $mod+shift+9 move container to workspace number $ws9
 bindsym $mod+shift+0 move container to workspace number $ws10
 
-bindsym $mod+ctrl+shift+1 move container to workspace $WS1; workspace $WS1
-bindsym $mod+ctrl+shift+2 move container to workspace $WS2; workspace $WS2
-bindsym $mod+ctrl+shift+3 move container to workspace $WS3; workspace $WS3
-bindsym $mod+ctrl+shift+4 move container to workspace $WS4; workspace $WS4
-bindsym $mod+ctrl+shift+5 move container to workspace $WS5; workspace $WS5
-bindsym $mod+ctrl+shift+6 move container to workspace $WS6; workspace $WS6
-bindsym $mod+ctrl+shift+7 move container to workspace $WS7; workspace $WS7
-bindsym $mod+ctrl+shift+8 move container to workspace $WS8; workspace $WS8
-bindsym $mod+ctrl+shift+9 move container to workspace $WS9; workspace $WS9
-bindsym $mod+ctrl+shift+0 move container to workspace $WS10; workspace $WS10
+bindsym $mod+ctrl+shift+1 move container to workspace $ws1; workspace $ws1
+bindsym $mod+ctrl+shift+2 move container to workspace $ws2; workspace $ws2
+bindsym $mod+ctrl+shift+3 move container to workspace $ws3; workspace $ws3
+bindsym $mod+ctrl+shift+4 move container to workspace $ws4; workspace $ws4
+bindsym $mod+ctrl+shift+5 move container to workspace $ws5; workspace $ws5
+bindsym $mod+ctrl+shift+6 move container to workspace $ws6; workspace $ws6
+bindsym $mod+ctrl+shift+7 move container to workspace $ws7; workspace $ws7
+bindsym $mod+ctrl+shift+8 move container to workspace $ws8; workspace $ws8
+bindsym $mod+ctrl+shift+9 move container to workspace $ws9; workspace $ws9
+bindsym $mod+ctrl+shift+0 move container to workspace $ws10; workspace $ws10
 
 bindsym --whole-window $mod + button2 kill
 bindsym $mod+q kill
 
-bindsym $mod+Return exec $term
+bindsym $mod+Return exec i3-sensible-terminal
 
 set $mode_resize "ﭕ RESIZE"
 mode $mode_resize {
@@ -230,3 +225,4 @@ bindsym $mod+r mode $mode_resize
 #bindsym $mod+shift+End mode "$mode_system"
 #bindsym $mod+shift+End exec --no-startup-id dmenu-exit
 #bindsym $mod+Escape exec --no-startup-id dmenu-exit
+
