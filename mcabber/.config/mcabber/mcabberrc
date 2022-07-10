@@ -39,7 +39,7 @@ set tls = 1
 #set spell_encoding = iso8859-1
 #set spell_encoding = UTF-8
 
-set cmdhistory_lines = 250
+set cmdhistory_lines = 100
 #set vi_mode = 1
 #set roster_display_filter = ofdna_
 #set roster_no_leading_space = 0
@@ -52,15 +52,12 @@ set logging = 1
 set load_logs = 1
 #set logging_dir = ~/.mcabber/histo/
 #set logging_ignore_status = 1
-
 #set log_muc_conf = 1
 #set load_muc_logs = 0
 
-#set max_history_age = 0
-
 set statefile = ~/.config/mcabber/state
-
 set max_history_blocks = 8
+#set max_history_age = 0
 
 #set iq_version_hide_os = 0
 #set iq_version_hide_version = 0
@@ -141,7 +138,6 @@ module load fifo
 # Don't forget to load the urlregex module if you plan to use this feature!
 set url_regex = "(((https?|ftps?|nntp)://)|www[.][-a-z0-9.]+|(mailto:|news:))(%[0-9A-F]{2}|[-_.!~*';/?:@&=+$,#[:alnum:]])+"
 module load urlregex
-
 
 # Traces logging
 # If you want advanced traces, please specify a file and a level here.
@@ -262,7 +258,7 @@ set escdelay = 50
 # readmark:   text color of the "read mark" line in buffers
 # timestamp:  text color in the chat window for delayed timestamps
 #
-set color_background   = black
+#set color_background   = black
 #set color_general      = white
 #set color_info         = white
 #set color_msgin        = white
@@ -303,7 +299,7 @@ set color_background   = black
 # Log window height (minimum 1, default 5)
 #set log_win_height = 5
 # Buddylist window width (minimum 2, default 24)
-set roster_width=24
+set roster_width=32
 #
 # The options 'log_win_on_top' and 'roster_win_on_right' can change the
 # position of the log window (top/bottom) and the position of the roster
@@ -430,7 +426,5 @@ bind 514 = buffer down
 
 # Sample alias to join mcabber channel with "/jmc"
 #alias jmc = room join mcabber@conf.lilotux.ne
-#
-#
 #set hook-post-connect   = source ~/.mcabber/post-connect.rc
 #set hook-pre-disconnect = source ~/.mcabber/pre-disconnect.rc
