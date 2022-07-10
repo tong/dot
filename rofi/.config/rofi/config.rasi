@@ -17,7 +17,7 @@ configuration {
 /*	window-command: "wmctrl -i -R {window}";*/
 /*	window-match-fields: "all";*/
 /*	icon-theme: ;*/
-	icon-theme: "Oomox-void_3";
+/*	icon-theme: "Oomox-void_3";*/
 /*	drun-match-fields: "name,generic,exec,categories,keywords";*/
 /*	drun-categories: ;*/
 /*	drun-show-actions: false;*/
@@ -143,7 +143,7 @@ configuration {
 /*	me-accept-custom: "Control+MouseDPrimary";*/
   timeout {
       action: "kb-cancel";
-      delay:  0;
+      delay: 15;
   }
   filebrowser {
       directories-first: true;
