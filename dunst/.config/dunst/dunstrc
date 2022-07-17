@@ -1,8 +1,5 @@
-# See dunst(5) for all configuration options
-
 [global]
 
-    # Which monitor should the notifications be displayed on.
     monitor = 0
 
     # Display notification on focused monitor.  Possible modes are:
@@ -23,13 +20,13 @@
     # dynamic width from 0 to 300
     # width = (0, 300)
     # constant width of 300
-    width = (16, 1024)
+    width = (16, 600)
 
     # The maximum height of a single notification, excluding the frame.
-    height = 300
+    height = 600
 
-    origin = top-center
-    offset = 0x96
+    origin = top-right
+    offset = 72x96
     scale = 0
     notification_limit = 16
 
