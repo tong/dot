@@ -23,12 +23,19 @@ alias .4='cd ../../../../'
 alias .5='cd ../../../../..'
 alias .-='cd -'
 
+alias uppercase="tr '[:lower:]' '[:upper:]'"
+
 alias ls="ls -hN --color=auto --group-directories-first"
 alias ll='ls -l'
 alias la='ls -A'
 alias lla='ls -la'
 alias lsla='ls -la'
 alias l='ls -CF'
+#alias ls='lsd'
+
+alias cpdir='cp -r'
+
+alias dirsize='du'
 
 alias mkdir='mkdir -pv'
 alias mkd='mkdir'
@@ -43,11 +50,10 @@ alias now='date +"%T"'
 alias paths='echo -e ${PATH//:/\\n}'
 alias wget='wget -c' # Resume wget by default
 
-alias dirsize='du'
-
 alias cpuinfo='lscpu'
 alias meminfo='free -m -l -t'
 alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
+
 #alias psmem='ps auxf | sort -nr -k 4'
 #alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 
