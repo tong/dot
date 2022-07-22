@@ -4,8 +4,8 @@ super + d
     rofi -show run
 super + Tab
     rofi -show window
-super + x ;  {c,e,i,t,w,x}
-    {clipmenu, dmenu-exit, dmenu-nerdfont, i3-sensible-terminal, $(rofi -show window), dmenu-screenshot}
+super + x ;  {c,e,i,r,t,w,x}
+    {clipmenu, dmenu-exit, dmenu-nerdfont, dmenu-record, i3-sensible-terminal, $(rofi -show window), dmenu-screenshot}
 
 super + b
     $BROWSER
@@ -14,9 +14,6 @@ super + n
 
 #super + x
 #    scrot "$HOME/screenshot-%Y_%m_%d_%H_%M.png" #TODO dmenu-screenshot
-
-super + shift + End
-    dmenu-exit
 
 super + m ; {p,l,h,s}
     {$(playerctl play-pause),$(playerctl next),$(playerctl previous),$(playerctl stop)}
@@ -27,9 +24,9 @@ super + o ; {b,c,f,n,t}
 #XF86Audio{Prev,Next}
 #	mpc -q {prev,next}
 XF86AudioRaiseVolume
-    pactl set-sink-volume @DEFAULT_SINK@ +10%
+    pactl set-sink-volume @DEFAULT_SINK@ +5%
 XF86AudioLowerVolume
-    pactl set-sink-volume @DEFAULT_SINK@ -10%
+    pactl set-sink-volume @DEFAULT_SINK@ -5%
 XF86AudioMute
     pactl set-sink-mute @DEFAULT_SINK@ toggle
 XF86AudioPlay
@@ -42,4 +39,7 @@ XF86AudioNext
     playerctl next
 XF86AudioPrev
     playerctl previous
+
+super + shift + End
+    dmenu-exit
 
