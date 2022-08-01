@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Usage:
 # bright Up or bright + to increase brightness by step value
@@ -38,4 +38,4 @@ xrandr --output "$MON" --brightness "$CurrBright" # Set new brightness
 
 # printf "Monitor $MON "
 OUT=$( xrandr --verbose --current | grep ^"$MON" -A5 | tail -n1 | cut -d':' -f 2)
-echo $OUT
+echo "$OUT"
