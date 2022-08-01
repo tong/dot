@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 if sessionlist=$(tmux ls 2>/dev/null); then
     printf ""
     echo "$sessionlist" | while read -r line; do

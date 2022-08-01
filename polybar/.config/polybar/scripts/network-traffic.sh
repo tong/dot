@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 print_bytes() {
     if [ "$1" -eq 0 ] || [ "$1" -lt 1000 ]; then
@@ -6,7 +6,7 @@ print_bytes() {
         bytes="0"
     elif [ "$1" -lt 1000000 ]; then
         #bytes="$(echo "$1/1000" | bc -l | LANG=C xargs printf "%.f\n") kB/s"
-        bytes="$(echo "$1/1000" | bc -l | LANG=C xargs printf "%.f\n")"
+        bytes="$(echo "$1/1000" | bc -l | LANG=C xargs printf "%.f\n")kb"
     else
         # bytes="$(echo "$1/1000000" | bc -l | LANG=C xargs printf "%.1f\n") MB/s"
         bytes="$(echo "$1/1000000" | bc -l | LANG=C xargs printf "%.1f\n")MB"
@@ -55,11 +55,7 @@ while true; do
         bytes[past_tx_$interface]=${bytes[now_tx_$interface]}
     done
 
-    #echo "$down/$up"
-    #echo "$(print_bytes $down) / $(print_bytes $up)"
-    # echo "$(print_bytes $down)$(print_bytes $up)"
     echo "$(print_bytes $down) $(print_bytes $up)"
-    #echo "Download: $(print_bit $down) / Upload: $(print_bit $up)"
 
     sleep $INTERVAL
 done
