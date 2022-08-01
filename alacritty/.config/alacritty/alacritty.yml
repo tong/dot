@@ -4,7 +4,7 @@ import:
   - ~/.config/alacritty/keys.yml
   - ~/.config/alacritty/theme.yml
 
-#live_config_reload: tru
+#live_config_reload: true
 
 #env:
   #TERM: alacritty
