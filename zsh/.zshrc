@@ -29,33 +29,26 @@ plugins=(
     #neko
     #nmap
     taskwarrior
-    # thefuck
+    #$thefuck
     zsh-autosuggestions
     #zsh-navigation-tools
     #zsh_reload
     zsh-syntax-highlighting
 )
 
-source $HOME/.env
-
-source $ZSH/oh-my-zsh.sh
-
-source $HOME/.config/lf/script/icons
-source $HOME/.config/zsh/aliases
-source $HOME/.config/zsh/aliases_user
-
+source "$HOME"/.env
+source "$ZSH"/oh-my-zsh.sh
+source "$HOME"/.config/lf/script/icons
+source "$HOME"/.config/zsh/aliases
+source "$HOME"/.config/zsh/aliases_user
+source "$HOME"/sdk/qmk_firmware/util/qmk_tab_complete.sh
 source /usr/share/fzf/key-bindings.zsh
 
 eval "$(zoxide init zsh)"
 
-if [ -n "$RANGER_LEVEL" ]; then
-    export PS1="[ranger]$PS1";
-fi
-
-if [ $TILIX_ID ] || [ $VTE_VERSION ]; then # https://gnunn1.github.io/tilix-web/manual/vteconfig/
+if [ "$TILIX_ID" ] || [ "$VTE_VERSION" ]; then # https://gnunn1.github.io/tilix-web/manual/vteconfig/
     source /etc/profile.d/vte.sh
 fi
-
 
 lfcd () {
     tmp="$(mktemp)"
@@ -63,7 +56,7 @@ lfcd () {
     if [ -f "$tmp" ]; then
         dir="$(cat "$tmp")"
         rm -f "$tmp" >/dev/null
-        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir" || exit
     fi
 }
 bindkey -s '^o' 'lfcd\n'
@@ -73,8 +66,7 @@ bindkey -s '^a' 'bc -lq\n'
 #autoload edit-command-line; zle -N edit-command-line
 #bindkey '^e' edit-command-line
 
+[ -f "$HOME"/.fzf.zsh ] && source "$HOME"/.fzf.zsh
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-source $HOME/sdk/qmk_firmware/util/qmk_tab_complete.sh
+export NVIM_PYTHON_LOG_FILE=$HOME/nvim_python_log
 
