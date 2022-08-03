@@ -1,4 +1,5 @@
-set cleaner '~/.config/lf/script/cleaner'
+
+set cleaner "$HOME/.config/lf/script/cleaner"
 set previewer '~/.config/lf/script/preview'
 set drawbox
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
@@ -14,10 +15,10 @@ set scrolloff 10
 set shell sh
 set shellopts '-eu'
 
-%[ $LF_LEVEL -eq 1 ] || echo "WARNING: You're in a nested lf instance!"
+%[ "$LF_LEVEL" -eq 1 ] || echo "WARNING: You're in a nested lf instance!"
 
 cmd bookmark ${{
-    res="$(cat $LF_BOOKMARK_PATH/$(ls $LF_BOOKMARK_PATH | fzf))"
+    res="$(cat "$LF_BOOKMARK_PATH"/$(ls "$LF_BOOKMARK_PATH" | fzf))"
     lf -remote "send $id cd \"$res\""
 }}
 cmd bookmark_create ${{

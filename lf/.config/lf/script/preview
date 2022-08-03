@@ -61,7 +61,7 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | awk '{print tolower($0)}')" in
     *.md) batorcat "$1" ;;
     *.o) nm "$1";;
     *.otf|*.ttf)
-        ~/.config/lf/script/preview-font $1
+        ~/.config/lf/script/preview-font "$1"
         image "/tmp/lf_fontpreview.png" "$2" "$3" "$4" "$5" 
         ;;
     #*.odt|*.ods|*.odp|*.sxw) odt2txt "$1" ;;
