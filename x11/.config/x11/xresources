@@ -11,7 +11,8 @@ Xft.lcdfilter: lcddefault
 Xft.rgba: rgb
 
 Xcursor.theme: Paper
-Xcursor.size: 24
+!Xcursor.size: 24
+Xcursor.size: 16
 
 ! Void
 *.foreground:   #c6c6c4
@@ -37,8 +38,10 @@ Xcursor.size: 24
 !rofi.font: JetBrainsMono Nerd Font-9
 
 Sxiv.font: JetBrainsMono Nerd Font-9
-Sxiv.background: #c6c6c4
-Sxiv.foreground: #10100E
+!Sxiv.background: #c6c6c4
+!Sxiv.foreground: #10100E
+Sxiv.background: #10100E
+Sxiv.foreground: #c6c6c4
 
 !TermPop.internalBorder: 30
 

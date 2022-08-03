@@ -1,16 +1,18 @@
 #!/bin/sh
 
-XRES="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources"
-[[ -f $XRES ]] && xrdb -merge -I$HOME $XRES
+#XRES="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources"
+#[[ -f $XRES ]] && xrdb -merge -I$HOME $XRES
 
-#[[ -f ~/.xmodmap ]] && xmodmap ~/.xmodmap
+XMODMAP="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xmodmap"
+[ -f "$XMODMAP" ] && xmodmap "$XMODMAP"
 
+#touch $HOME/XoXXXXXXXXXPRPFU
 # xset +fp $HOME/.local/share/fonts
 # xset fp rehash
 
-xset r rate 190 90 &
+#xset r rate 190 90 &
 
-$HOME/.screenlayout/2-monitor.sh &
+"$HOME"/.screenlayout/2-monitor.sh &
 #picom -b --config $HOME/.config/picom.conf --dbus --experimental-backends &
 # setbg &
 #xwallpaper --zoom $HOME/img/wallpaper/pills-grey3.v.jpg
@@ -21,11 +23,11 @@ $HOME/.screenlayout/2-monitor.sh &
 #remaps &		# run the remaps script, switching caps/esc and more; check it for more info
 
 #autostart="mpd xcompmgr dunst unclutter pipewire"
-autostart="sxhkd"
-for program in $autostart; do
-    pidof -s "$program" || "$program" &
-done >/dev/null 2>&1
+#autostart="sxhkd"
+#for program in $autostart; do
+#    pidof -s "$program" || "$program" &
+#done >/dev/null 2>&1
 
-# Ensure that xrdb has finished running before moving on to start the WM/DE.
+# Ensure that xrdb has finished running before moving on to start the WM.
 [ -n "$xrdbpid" ] && wait "$xrdbpid"
 
