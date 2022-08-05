@@ -1,4 +1,5 @@
 github-token
 *.fifo
+*.out
 *.save
 *.tmp
