@@ -1,0 +1,21 @@
+#!/bin/bash
+
+_make_screenshot() {
+    img_path="$SCREENSHOTS/screenshot-%Y_%m_%d_%H%M%S.png"
+    OUT=$(scrot $1 --delay 0.2 -F "$img_path" -e 'echo $f')
+    echo "$OUT"
+    notify-send --urgency low --app-name="Screenshot" "$OUT"
+}
+
+SEL=$(echo "鉶 Area| Display| Window" | rofi -dmenu -i -sep '|' -p ' Screenshot')
+case "$SEL" in
+    "鉶 Area") _make_screenshot -s;;
+    " Display")
+        #TODO auto select active display or let select display
+        #display=$(get-focused-display)
+        #DISPLAYS=$(xrandr | grep " connected " | awk '{ print$1 }')
+        _make_screenshot "-D :0"
+        ;;
+    " Window") _make_screenshot -u;;
+esac
+
