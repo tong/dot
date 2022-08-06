@@ -46,6 +46,7 @@ color signature brightgreen default
 color bold black default
 color underline black default
 color normal default default
+color progress white red
 
 # Regex highlighting
 color header blue default ".*"

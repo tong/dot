@@ -12,6 +12,7 @@ set signature="$HOME/.signature"
 #set reverse_alias = yes
 #source $alias_file
 
+set mail_check_stats
 set mailcap_path = $HOME/.config/mutt/mailcap:/usr/local/share/mutt-wizard/mailcap:$mailcap_path
 set mime_type_query_command = "file --mime-type -b %s"
 set date_format="%y/%m/%d %I:%M%p"
@@ -35,6 +36,10 @@ set forward_quote		# include message in forwards
 set reverse_name		# reply as whomever it was to
 set include			# include message in replies
 
+set pager_context=1
+set pager_index_lines=20
+set pager_stop
+
 auto_view text/html		# automatically show html (mailcap uses lynx)
 auto_view application/pgp-encrypted
 #set display_filter = "tac | sed '/\\\[-- Autoview/,+1d' | tac" # Suppress autoview messages.
@@ -45,6 +50,10 @@ alternative_order text/plain text/enriched text/html
 #set pgp_self_encrypt = yes
 #set pgp_default_key  = 'your@gpgemailaddre.ss'
 
+# --- Theme -------------------------------------------------------------------
+
+source $HOME/.config/mutt/theme
+
 # --- Keymap ------------------------------------------------------------------
 
 bind index,pager i noop
@@ -54,14 +63,13 @@ bind index,pager M noop
 bind index,pager C noop
 
 # General rebindings
-bind index gg first-entry
 bind index j next-entry
 bind index k previous-entry
+bind index gg first-entry
+bind index G last-entry
 bind attach <return> view-mailcap
 bind attach l view-mailcap
 bind editor <space> noop
-bind index G last-entry
-bind index gg first-entry
 bind pager,attach h exit
 bind pager j next-line
 bind pager k previous-line
@@ -94,7 +102,6 @@ set sidebar_visible = yes
 set sidebar_width = 20
 set sidebar_short_path = yes
 set sidebar_next_new_wrap = yes
-set mail_check_stats
 set sidebar_format = '%D%?F? [%F]?%* %?N?%N/? %?S?%S?'
 #bind index,pager \Ck sidebar-prev
 #bind index,pager \Cj sidebar-next
@@ -129,12 +136,8 @@ macro index,pager Ca ";<copy-message>=Archive<enter>" "copy mail to archive"
 macro index,pager a "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<return><pipe-message>khard add-email<return><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<return>"
 macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
 macro index O "<shell-escape>mw -Y<enter>" "run mw -Y to sync all  mail"
+#macro index <F5> "<shell-escape>mw -Y<enter>" "run mw -Y to sync all  mail"
 #macro index O "<shell-escape>mutt-wizard -Y<enter>" "run mutt-wizard -Y to sync all  mail"
 macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>printf 'Enter a search term to find with notmuch: '; read x; echo \$x >~/.cache/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat ~/.cache/mutt_terms) | head -n 600 | perl -le '@a=<>;s/\^id:// for@a;$,=\"|\";print@a' | perl -le '@a=<>; chomp@a; s/\\+/\\\\+/ for@a;print@a' \`\"<enter>" "show only messages matching a notmuch pattern"
 macro index A "<limit>all\n" "show all messages (undo limit)"
-
-# --- Theme -------------------------------------------------------------------
-
-#source $HOME/.config/mutt/themes/mutt-colors-solarized-light-256.muttrc
-source $HOME/.config/mutt/themes/default.muttrc
 
