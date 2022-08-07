@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Mortem ponders upon the inevitable
+# https://www.worldometers.info/demographics/life-expectancy/
+
+DEFAULT_LEY=70
+
+usage(){
+    printf "Usage: mortem YYYY-MM-DD [options]
+        \nOptions:
+  --ley=YEARS
+    Human life expactany in years"
+}
+
+if [ "$#" -eq  "0" ]; then
+    usage
+    exit 1
+fi
+
+birth=$1
+birth_date=$(date -d"$birth" "+%s")
+shift
+
+declare ley # human life expectancy (years)
+
+if [[ $# -eq 0 ]]; then
+    ley=$DEFAULT_LEY
+else
+    while true; do
+        case "$1" in
+            --help)
+                usage
+                exit 0
+                ;;
+            --ley)
+                shift
+                ley=$1
+                shift
+                ;;
+            --)
+                shift
+                break
+                ;;
+            *)
+                break
+                ;;
+        esac
+        #shift
+    done
+fi
+
+
+led=$((ley*365)) #TODO calculate leap years
+
+# TODO calculate with precision
+
+v=$(date '+%s')
+r=$((birth_date-v))
+ndl=$((r / 86400))
+ndl=${ndl#-}
+pro=$(echo "scale=2 ; $ndl / $led * 100" | bc)
+etr=$(echo "scale=2 ; $led - $ndl" | bc)
+eyd=$(($(date -d"$birth" "+%Y")+ley))
+
+printf "NDL: %i\nPRO: %f\nETR: %i\nEYD: %i\n" "$ndl" "$pro" "$etr" "$eyd"
+
