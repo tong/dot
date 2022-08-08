@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Mortem ponders upon the inevitable
+# Mortem ponders upon the inevitable.
+# Port of: https://gitlab.com/joshavanier/mortem
 # https://www.worldometers.info/demographics/life-expectancy/
 
 DEFAULT_LEY=70
@@ -45,22 +46,14 @@ else
                 break
                 ;;
         esac
-        #shift
     done
 fi
 
-
-led=$((ley*365)) #TODO calculate leap years
-
-# TODO calculate with precision
-
-v=$(date '+%s')
-r=$((birth_date-v))
-ndl=$((r / 86400))
+led=$((ley*365))
+ndl=$(($((birth_date-$(date '+%s'))) / 86400+70/4))
 ndl=${ndl#-}
-pro=$(echo "scale=2 ; $ndl / $led * 100" | bc)
-etr=$(echo "scale=2 ; $led - $ndl" | bc)
+pro=$(echo "scale=2; $ndl/$led*100" | bc)
+etr=$(echo "scale=2; $led-$ndl" | bc)
 eyd=$(($(date -d"$birth" "+%Y")+ley))
-
 printf "NDL: %i\nPRO: %f\nETR: %i\nEYD: %i\n" "$ndl" "$pro" "$etr" "$eyd"
 
