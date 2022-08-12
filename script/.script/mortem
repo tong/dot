@@ -49,8 +49,8 @@ else
     done
 fi
 
-led=$((ley*365))
-ndl=$(($((birth_date-$(date '+%s'))) / 86400+70/4))
+led=$((ley*365+ley/4))
+ndl=$(($((birth_date-$(date '+%s'))) / 86400))
 ndl=${ndl#-}
 pro=$(echo "scale=2; $ndl/$led*100" | bc)
 etr=$(echo "scale=2; $led-$ndl" | bc)
