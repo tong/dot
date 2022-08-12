@@ -1,7 +1,7 @@
 
 set cleaner "$HOME/.config/lf/script/cleaner"
 set previewer '~/.config/lf/script/preview'
-set drawbox
+# set drawbox
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set icons
 set info size:time
@@ -47,14 +47,9 @@ cmd copyto ${{
 
 cmd extract ${{
     set -f
-    case $f in
-        *.tar.bz|*.tar.bz2|*.tbz|*.tbz2) tar xjvf $f;;
-        *.tar.gz|*.tgz) tar xzvf $f;;
-        *.tar.xz|*.txz) tar xJvf $f;;
-        *.zip) unzip $f;;
-        *.rar) unrar x $f;;
-        *.7z) 7z x $f;;
-    esac
+    extract $f
+    outname=$(echo "$f" | cut -f 1 -d '.')
+    notify-send --app-name='archive extracted' --urgency "low" --icon="$VOID/void-icons/actions/extract-archive.svg" "$f  $outname"
 }}
 
 cmd git_branch ${{
@@ -230,24 +225,24 @@ cmd on-cd &{{
 #map <delete> trash
 #map <enter> shell
 
-#map gh ~
-map g top
-
+map C copyto
 map D delete
 map E extract
-map C copyto
 map M moveto
-#map G bottom
 
+map c push A<c-u> # new rename
+#map g top
+#map gh ~
 map x cut
 
-#map <c-e> down
-#map <c-y> up
 map <c-n> push :mkdir<space>
 map <c-r> reload
+
+map <f-2> rename
+map <f-3> search
+
 #map <c-s> set hidden!
 #map <c-h> set hidden!
-#map <c-h> !cd ~
 map <c-z> $ kill -STOP $PPID
 
 #map f $vi $(fzf)
@@ -255,12 +250,11 @@ map <c-z> $ kill -STOP $PPID
 #cmd fzf $vi $(find . -name "$1" | fzf)
 #map f push :fzf<space>
 
+## Rename
 map A rename # at the very end
 #map B bulkrename
 map H set hidden!
-
-map c push A<c-u> # new rename
-map I push A<c-a> # at the very beginning
+map I push A<c-a> # rename at the very beginning
 map i push A<a-b><a-b><a-f> # before extention
 map a push A<a-b> # after extention
 
@@ -268,8 +262,6 @@ map a push A<a-b> # after extention
 #map x $$f
 map X !$f
 
-#map o &mimeopen $f
-#map O $mimeopen --ask $f
 map o &open $f
 map O $open $f
 
@@ -284,6 +276,6 @@ map Y $printf "%s" "$fx" | xclip -selection clipboard
 
 #source "~/.config/lf/icons
 
-# run at startup
+## Run at startup
 on-cd
 
