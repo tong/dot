@@ -1,6 +1,5 @@
-
-set cleaner "$HOME/.config/lf/script/cleaner"
-set previewer '~/.config/lf/script/preview'
+stt cleaner "$HOME/.config/lf/script/cleaner"
+set previewer '$HOME/.config/lf/script/preview'
 # set drawbox
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set icons
@@ -14,6 +13,8 @@ set relativenumber
 set scrolloff 10
 set shell sh
 set shellopts '-eu'
+
+#source "~/.config/lf/icons
 
 %[ "$LF_LEVEL" -eq 1 ] || echo "WARNING: You're in a nested lf instance!"
 
@@ -230,20 +231,22 @@ map D delete
 map E extract
 map M moveto
 
-map c push A<c-u> # new rename
+# map c push A<c-u> # new rename
 #map g top
 #map gh ~
-map x cut
 
 map <c-n> push :mkdir<space>
+map <c-p> paste 
 map <c-r> reload
+map <c-x> cut
+map <c-y> copy
+map <c-z> $ kill -STOP $PPID
 
 map <f-2> rename
 map <f-3> search
 
 #map <c-s> set hidden!
-#map <c-h> set hidden!
-map <c-z> $ kill -STOP $PPID
+map <c-h> set hidden!
 
 #map f $vi $(fzf)
 #map f $vi $(fzf)
@@ -259,7 +262,7 @@ map i push A<a-b><a-b><a-f> # before extention
 map a push A<a-b> # after extention
 
 # Execute current file (must be executable)
-#map x $$f
+map x $$f
 map X !$f
 
 map o &open $f
@@ -274,8 +277,5 @@ map Y $printf "%s" "$fx" | xclip -selection clipboard
 #map gs ${{clear; git status; echo "press ENTER"; read ENTER}}
 #map gl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit}}
 
-#source "~/.config/lf/icons
-
-## Run at startup
 on-cd
 
