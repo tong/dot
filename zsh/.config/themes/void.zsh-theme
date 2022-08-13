@@ -1,1 +1,0 @@
-/home/tong/dev/disktree/void2/void-zsh-theme/void.zsh-theme
