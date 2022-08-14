@@ -2,6 +2,7 @@ stt cleaner "$HOME/.config/lf/script/cleaner"
 set previewer '$HOME/.config/lf/script/preview'
 # set drawbox
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
+set hidden
 set icons
 set info size:time
 set ifs "\n"
