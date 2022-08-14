@@ -23,6 +23,10 @@ alias .4='cd ../../../../'
 alias .5='cd ../../../../..'
 alias .-='cd -'
 
+## Directory stack
+alias d='dirs -v'
+for index ({1..9}) alias "$index"="cd +${index}"; unset index
+
 alias uppercase="tr '[:lower:]' '[:upper:]'"
 
 alias ls="ls -hN --color=auto --group-directories-first"
