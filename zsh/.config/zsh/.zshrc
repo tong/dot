@@ -1,14 +1,10 @@
-source $HOME/.env
-
-
-
 # Config
 setopt autocd
 setopt beep
 setopt extendedGlob
 setopt interactive_comments
 setopt noflowcontrol
-#stty stop undef         # Disable ctrl-s to freeze terminal.
+#stty stop undef # Disable ctrl-s to freeze terminal.
 
 ## History
 HISTSIZE='128000'
@@ -22,38 +18,39 @@ setopt hist_save_no_dups
 
 ## Prompt
 autoload -Uz promptinit && promptinit
-prompt_void_setup() {
-        PS1="%~%# "
-}
 promp_themes+=(void)
 prompt elite
 
 ## Complete
 autoload -Uz compinit
-_comp_options+=(globdots) # include hidden files
 zstyle ':complete:*' menu select
-zstyle ':completion::complete:*' gain-privileges 1
+# zstyle ':completion::complete:*' gain-privileges 1
 zmodload zsh/complist
 compinit
+_comp_options+=(globdots) # include hidden files
 
 # Extend
 source $HOME/.config/zsh/aliases
 source $HOME/.config/zsh/aliases_user.zsh
 source $HOME/.config/zsh/themes/void.zsh-theme
 source $HOME/.config/zsh/functions.zsh
-source $HOME/.config/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
-source $HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
-# source $HOME/.config/lf/icons
 #source $HOME/sdk/qmk_firmware/util/qmk_tab_complete.sh
+
+# Plugins
+source $HOME/.config/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
+source $HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 
 # Path
 if [ -d "$HOME/.script" ]; then PATH="$HOME/.script:$PATH"; fi
-# if [ -d "$HOME/.local/bin" ]; then PATH="$HOME/.local/bin:$PATH"; fi
-# PATH=$HOME/src/npm-global/bin:$PATH
+if [ -d "$HOME/.local/bin" ]; then PATH="$HOME/.local/bin:$PATH"; fi
+if [ -d "$HOME/.local/bin" ]; then PATH=$HOME/src/npm-global/bin:$PATH; fi
 
 # Keybindings
+
+export KEYTIMEOUT=1
 
 typeset -g -A key
 
@@ -109,4 +106,4 @@ export PATH=$PATH:$GOPATH/bin
 #export NEOVIDE_MULTIGRID
 
 #eval "$(zoxide init zsh)"
-#
+
