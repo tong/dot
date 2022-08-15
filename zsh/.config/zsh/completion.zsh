@@ -1,5 +1,5 @@
 # Load more completions
-#fpath=($DOTFILES/zsh/plugins/zsh-completions/src $fpath)
+fpath=($ZDOTDIR/plugins/zsh-completions/src $fpath)
 
 # Should be called before compinit
 zmodload zsh/complist
@@ -62,7 +62,6 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' complete-options true
 
 zstyle ':completion:*' file-sort modification
-
 
 zstyle ':completion:*:*:*:*:corrections' format '%F{yellow}!- %d (errors: %e) -!%f'
 zstyle ':completion:*:*:*:*:descriptions' format '%F{blue}-- %D %d --%f'

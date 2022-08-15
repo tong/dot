@@ -32,7 +32,6 @@ promp_themes+=(void)
 prompt elite
 
 ## Complete
- _comp_options+=(globdots) # include hidden files
 source $ZDOTDIR/completion.zsh
 
 # Extend
@@ -47,11 +46,8 @@ source /usr/share/fzf/completion.zsh
 
 # Plugins
 source $ZDOTDIR/plugins/bd/bd.zsh
-# source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fpath=($ZDOTDIR/plugins/zsh-completions/src $fpath)
-# fpath=($ZDOTDIR/plugins/zsh-completions/src/_chromium $fpath)
 
 # Path
 if [ -d "$HOME/.script" ]; then PATH="$HOME/.script:$PATH"; fi
