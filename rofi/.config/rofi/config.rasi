@@ -23,7 +23,7 @@ configuration {
 /*	drun-show-actions: false;*/
 /*	drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";*/
 /*	drun-url-launcher: "xdg-open";*/
-/*	disable-history: false;*/
+/*	disable-history: false; */
 /*	ignored-prefixes: "";*/
 /*	sort: false;*/
 /*	sorting-method: "normal";*/
@@ -92,7 +92,7 @@ configuration {
 /*	kb-mode-complete: "Control+l";*/
 /*	kb-row-left: "Control+Page_Up";*/
 /*	kb-row-right: "Control+Page_Down";*/
-	kb-row-up: "Up,Control+p,ISO_Left_Tab,Control+k";
+/*	kb-row-up: "Up,Control+p,ISO_Left_Tab,Control+k"; */
 	kb-row-down: "Down,Control+n,Control+j";
 /*	kb-row-tab: "Tab";*/
 /*	kb-page-prev: "Page_Up";*/

@@ -22,6 +22,15 @@
     alternate-normal-foreground: #C4C7C5;
     alternate-active-background: #101010; 
     alternate-active-foreground: #C4C7C5;
+
+    urgent-background:  #bd2c40;
+    urgent-foreground:  #000000;
+    selected-urgent-background:  #bd2c40;
+    selected-urgent-foreground:  #000000;
+    alternate-urgent-background:  #bd2c40;
+    alternate-urgent-foreground:  #000000;
+
+    separatorcolor: #101010;
 }
 
 window {
@@ -29,7 +38,7 @@ window {
     background-color: var(background);
     //border:           0;
     //locations: west;
-    width: 48em;
+    width: 40em;
     height: 48em;
     //anchor: west;
 }
