@@ -1,50 +1,64 @@
-stt cleaner "$HOME/.config/lf/script/cleaner"
-set previewer '$HOME/.config/lf/script/preview'
-# set drawbox
-set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
-set hidden
-set icons
-set info size:time
-set ifs "\n"
-set number on
-set period 1
+#%[ "$LF_LEVEL" -eq 1 ] || echo "WARNING: You're in a nested lf instance!"
+
+#set drawbox
+#set number
 #set promptfmt "\033[32;1m%u@%h\033[0m:\033[34;1m%d\033[0m\033[1m%f\033[0m"
+#set relativenumber
+set colors
+set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
+set icons
+set ifs "\n"
+set info size:time
 set ratios '1:2:3'
-set relativenumber
 set scrolloff 10
 set shell sh
 set shellopts '-eu'
+set cleaner '~/.config/lf/cleaner'
+set previewer '~/.config/lf/preview'
 
-#source "~/.config/lf/icons
-
-%[ "$LF_LEVEL" -eq 1 ] || echo "WARNING: You're in a nested lf instance!"
-
-cmd bookmark ${{
-    res="$(cat "$LF_BOOKMARK_PATH"/$(ls "$LF_BOOKMARK_PATH" | fzf))"
+cmd bookmark-jump ${{
+    res="$(cat $LF_BOOKMARK_PATH/$(ls $LF_BOOKMARK_PATH | fzf))"
     lf -remote "send $id cd \"$res\""
 }}
-cmd bookmark_create ${{
+
+cmd bookmark-create ${{
     read ans
     echo $PWD > $LF_BOOKMARK_PATH/$ans
 }}
 
-cmd copyto ${{
-    clear; tput cup $(($(tput lines)/3)); tput bold
-    set -f
-    clear; echo "Copy to where?"
-    dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf | sed 's|~|$HOME|')" &&
-    for x in $fx; do
-        eval cp -ivr \"$x\" \"$dest\"
-    done &&
-    notify-send "📋 File(s) copied." "File(s) copies to $dest."
+cmd bulk-rename ${{
+    old="$(mktemp)"
+    new="$(mktemp)"
+    if [ -n "$fs" ]; then
+        fs="$(basename -a $fs)"
+    else
+        fs="$(ls)"
+    fi
+    printf '%s\n' "$fs" >"$old"
+    printf '%s\n' "$fs" >"$new"
+    $EDITOR "$new"
+    [ "$(wc -l < "$new")" -ne "$(wc -l < "$old")" ] && exit
+    paste "$old" "$new" | while IFS= read -r names; do
+        src="$(printf '%s' "$names" | cut -f1)"
+        dst="$(printf '%s' "$names" | cut -f2)"
+        if [ "$src" = "$dst" ] || [ -e "$dst" ]; then
+            continue
+        fi
+        mv -- "$src" "$dst"
+    done
+    rm -- "$old" "$new"
+    lf -remote "send $id unselect"
 }}
 
-#cmd delete ${{
-     #set -f
-     #printf "$fx\n"
-     #printf "delete?[y/n]"
-     #read ans
-     #[ $ans = "y" ] && rm -rf $fx
+#cmd copyto ${{
+	#clear; tput cup $(($(tput lines)/3)); tput bold
+	#set -f
+	#clear; echo "Copy to where?"
+	#dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf | sed 's|~|$HOME|')" &&
+	#for x in $fx; do
+		#eval cp -ivr \"$x\" \"$dest\"
+	#done &&
+	#notify-send "📋 File(s) copied." "File(s) copies to $dest."
 #}}
 
 cmd extract ${{
@@ -54,83 +68,48 @@ cmd extract ${{
     notify-send --app-name='archive extracted' --urgency "low" --icon="$VOID/void-icons/actions/extract-archive.svg" "$f  $outname"
 }}
 
-cmd git_branch ${{
-    git branch | fzf | xargs git checkout
-    pwd_shell=$(pwd)
-    lf -remote "send $id updir"
-    lf -remote "send $id cd \"$pwd_shell\""
-}}
-
 # y (select for copy) and P to paste soft-link
 # d (select for cut) and P to paste hard-link
-#cmd link %{{
-    #set -- $(cat ~/.local/share/lf/files)
-    #mode="$1"
-    #shift
-    #if [ "$#" -lt 1 ]; then
-        #lf -remote "send $id echo no files to link"
-        #exit 0
-    #fi
-    #case "$mode" in
-        ## symbolically copy mode is indicating a soft link
-        #copy) ln -sr -t . -- "$@";;
-        ## while a move mode is indicating a hard link
-        #move) ln -t . -- "$@";;
-    #esac
-    #rm ~/.local/share/lf/files
-    #lf -remote "send clear"
-#}}
+cmd link %{{
+    set -- $(cat ~/.local/share/lf/files)
+    mode="$1"
+    shift
+    if [ "$#" -lt 1 ]; then
+        lf -remote "send $id echo no files to link"
+        exit 0
+    fi
+    case "$mode" in
+        # symbolically copy mode is indicating a soft link
+        copy) ln -sr -t . -- "$@";;
+        # while a move mode is indicating a hard link
+        move) ln -t . -- "$@";;
+    esac
+    rm ~/.local/share/lf/files
+    lf -remote "send clear"
+}}
 
-#cmd mkdir $mkdir -p "$(echo $* | tr ' ' '\ ')"
-#cmd mkdir %mkdir "$@"
 cmd mkdir %{{
     IFS=" "
     mkdir -p -- "$*"
     lf -remote "send $id select \"$*\""
 }}
 
-cmd moveto ${{
-    clear; tput cup $(($(tput lines)/3)); tput bold
-    set -f
-    clear; echo "Move to where?"
-    dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf | sed 's|~|$HOME|')" &&
-    for x in $fx; do
-        eval mv -iv \"$x\" \"$dest\"
-    done &&
-    notify-send "🚚 File(s) moved." "File(s) moved to $dest."
-}}
+#cmd moveto ${{
+	#clear; tput cup $(($(tput lines)/3)); tput bold
+	#set -f
+	#clear; echo "Move to where?"
+	#dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf | sed 's|~|$HOME|')" &&
+	#for x in $fx; do
+		#eval mv -iv \"$x\" \"$dest\"
+	#done &&
+	#notify-send "🚚 File(s) moved." "File(s) moved to $dest."
+#}}
 
 cmd mp3-convert ${{
     set -f
 	outname=$(echo "$f" | cut -f 1 -d '.')
 	lame -V --preset standard $f "${outname}.mp3"
 }}
-
-#cmd node_script ${{
-  #script=$(cat package.json | jq -r '.scripts | keys[] ' | sort | fzf --height 20%) && npm run $(echo "$script")
-#}}
-
-# cmd open ${{
-#     case $(file --mime-type "$(readlink -f $f)" -b) in
-# 	application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) localc $fx ;;
-# 	image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
-#         text/*|application/json|inode/x-empty) $EDITOR $fx;;
-# 	image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
-# 	image/svg+xml) display -- $f ;;
-# 	image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|tif\|ico\)\(_large\)*$" |
-# 		setsid -f sxiv -aio 2>/dev/null | while read -r file; do
-# 			[ -z "$file" ] && continue
-# 			lf -remote "send select \"$file\""
-# 			lf -remote "send toggle"
-# 		done &
-# 		;;
-# 	audio/*) mpv --audio-display=no $f ;;
-# 	video/*) setsid -f mpv $f -quiet >/dev/null 2>&1 ;;
-# 	application/pdf|application/vnd*|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
-# 	application/pgp-encrypted) $EDITOR $fx ;;
-#         *) for f in $fx; do setsid -f $OPENER $f >/dev/null 2>&1; done;;
-#     esac
-# }}
 
 cmd open ${{
     test -L $f && f=$(readlink -f $f)
@@ -141,6 +120,20 @@ cmd open ${{
         text/*|application/json) $EDITOR $fx;;
         *) for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done;;
     esac
+}}
+
+cmd on-cd &{{
+    source /usr/share/git/completion/git-prompt.sh
+    git_ps1_showdirtystate=auto
+    git_ps1_showstashstate=auto
+    git_ps1_showuntrackedfiles=auto
+    git_ps1_showupstream=verbose
+    git_ps1_showcolorhints=auto
+    git_ps1_compresssparsestate=auto
+    git_ps1_describe_style=tag
+    git=$(__git_ps1 " [%s]") || true
+    fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%w\033[0m\033[33;1m$git\033[0m"
+    lf -remote "send $id set promptfmt \"$fmt\""
 }}
 
 cmd select-files ${{
@@ -166,23 +159,7 @@ cmd select-dirs ${{
         xargs -d '\n' -r -I{} lf -remote "send $id toggle {}"
 }}
 
-cmd tar ${{
-    set -f
-    mkdir $1
-    cp -r $fx $1
-    tar czf $1.tar.gz $1
-    rm -rf $1
-}}
- 
-#cmd trash %set -f; mv $fx ~/.trash
-
-cmd zip ${{
-    set -f
-    mkdir $1
-    cp -r $fx $1
-    zip -r $1.zip $1
-    rm -rf $1
-}}
+cmd trash %set -f; trash-put $fx
 
 cmd yank-dirname $dirname -- "$f" | head -c-1 | xclip -i -selection clipboard
 cmd yank-path $printf '%s' "$fx" | xclip -i -selection clipboard
@@ -205,78 +182,29 @@ cmd yank-basename-without-extension ${{
       xclip -i -selection clipboard
 }}
 
-cmd on-cd &{{
-    source /usr/share/git/completion/git-prompt.sh
-    GIT_PS1_SHOWDIRTYSTATE=auto
-    GIT_PS1_SHOWSTASHSTATE=auto
-    GIT_PS1_SHOWUNTRACKEDFILES=auto
-    GIT_PS1_SHOWUPSTREAM=verbose
-    GIT_PS1_SHOWCOLORHINTS=auto
-    GIT_PS1_COMPRESSSPARSESTATE=auto
-    GIT_PS1_DESCRIBE_STYLE=tag
-    git=$(__git_ps1 " [%s]") || true
-    fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%w\033[0m\033[33;1m$git\033[0m"
-    lf -remote "send $id set promptfmt \"$fmt\""
-}}
+map <delete> trash
+map <enter> shell
 
-#map <c-f> $lf -remote "send $id select '$(fzf)'"
-#map J $lf -remote "send $id cd $(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf)"
-
-# use '<delete>' key for either 'trash' or 'delete' command
-#map <backspace2> trash
-#map <delete> trash
-#map <enter> shell
-
-map C copyto
+#map C copyto
 map D delete
 map E extract
-map M moveto
+map H set hidden!
+#map M moveto
+map P :link
+map R bulkrename
+map T trash
 
-# map c push A<c-u> # new rename
-#map g top
-#map gh ~
-
-map <c-n> push :mkdir<space>
-map <c-p> paste 
-map <c-r> reload
-map <c-x> cut
-map <c-y> copy
-map <c-z> $ kill -STOP $PPID
+map o &open $f
+map x $$f
+map X !$f
 
 map <f-2> rename
 map <f-3> search
 
-#map <c-s> set hidden!
-map <c-h> set hidden!
-
-#map f $vi $(fzf)
-#map f $vi $(fzf)
-#cmd fzf $vi $(find . -name "$1" | fzf)
-#map f push :fzf<space>
-
-## Rename
-map A rename # at the very end
-#map B bulkrename
-map H set hidden!
-map I push A<c-a> # rename at the very beginning
-map i push A<a-b><a-b><a-f> # before extention
-map a push A<a-b> # after extention
-
-# Execute current file (must be executable)
-map x $$f
-map X !$f
-
-map o &open $f
-map O $open $f
-
-map V push :!nvim<space>
-map T $setsid -f $TERMINAL >/dev/null 2>&1
-map Y $printf "%s" "$fx" | xclip -selection clipboard
-
-#map gb :git_branch
-#map gp ${{clear; git pull --rebase || true; echo "press ENTER"; read ENTER}}
-#map gs ${{clear; git status; echo "press ENTER"; read ENTER}}
-#map gl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit}}
+#map <c-h> set hidden!
+map <c-n> push :mkdir<space>
+#map <c-t> push %date<enter>
+map <c-z> $ kill -STOP $PPID
 
 on-cd
 
