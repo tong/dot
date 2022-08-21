@@ -81,7 +81,7 @@ bind index h noop
 bind index l display-message
 bind index,query <space> tag-entry
 #bind browser h goto-parent
-macro browser h '<change-dir><kill-line>..<enter>' "Go to parent folder"
+macro browser h '<change-dir><kill-line>..<enter>' "go to parent folder"
 bind index,pager H view-raw-message
 bind browser l select-entry
 bind pager,browser gg top-page
@@ -119,9 +119,9 @@ macro index,pager Ci ";<copy-message>=INBOX<enter>" "copy mail to inbox"
 macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
 macro index,pager Md ";<save-message>=Drafts<enter>" "move mail to drafts"
 macro index,pager Cd ";<copy-message>=Drafts<enter>" "copy mail to drafts"
-macro index,pager gj "<change-folder>=Junk<enter>" "go to junk"
-macro index,pager Mj ";<save-message>=Junk<enter>" "move mail to junk"
-macro index,pager Cj ";<copy-message>=Junk<enter>" "copy mail to junk"
+macro index,pager gj "<change-folder>=spambucket<enter>" "go to junk"
+macro index,pager Mj ";<save-message>=spambucket<enter>" "move mail to junk"
+macro index,pager Cj ";<copy-message>=spambucket<enter>" "copy mail to junk"
 macro index,pager gt "<change-folder>=Trash<enter>" "go to trash"
 macro index,pager Mt ";<save-message>=Trash<enter>" "move mail to trash"
 macro index,pager Ct ";<copy-message>=Trash<enter>" "copy mail to trash"
