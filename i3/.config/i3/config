@@ -18,9 +18,9 @@ font pango: JetBrainsMono Nerd Font 1
 
 ## --- 
 
-exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf --dbus --experimental-backends
+exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf
 exec_always --no-startup-id nitrogen --restore
-#exec_always --no-startup-id hsetroot -solid '#101010'
+exec_always --no-startup-id hsetroot -solid '#101010'
 exec_always --no-startup-id $HOME/.config/polybar/run.sh
 exec_always --no-startup-id xset r rate 190 90
 
@@ -38,16 +38,16 @@ set $ws9 "9"
 set $ws0 "10"
 set $ws10 "10"
 
-#workspace $ws1 output $DISPLAY0
-#workspace $ws2 output $DISPLAY0
-#workspace $ws3 output $DISPLAY0
-#workspace $ws4 output $DISPLAY0
+workspace $ws1 output $DISPLAY0
+workspace $ws2 output $DISPLAY0
+workspace $ws3 output $DISPLAY0
+workspace $ws4 output $DISPLAY0
 workspace $ws5 output $DISPLAY1
-#workspace $ws6 output $DISPLAY0
-#workspace $ws7 output $DISPLAY0
-#workspace $ws8 output $DISPLAY0
-#workspace $ws9 output $DISPLAY0
-#workspace $ws10 output $DISPLAY0
+workspace $ws6 output $DISPLAY0
+workspace $ws7 output $DISPLAY0
+workspace $ws8 output $DISPLAY0
+workspace $ws9 output $DISPLAY0
+workspace $ws10 output $DISPLAY0
 
 ## --- Window
 
@@ -80,7 +80,7 @@ default_border pixel $border_width
 default_floating_border pixel $border_width 
 
 for_window [class=.*] border pixel $border_width
-for_window [class="Arandr|feh|File-roller|Gnome-calculator|Gnome-control-center|Gnome-disks|Gnome-screenshot|Gnome-tweaks|itch|MPlayer|mpv|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|Sxiv|SimpleScreenRecorder|vlc"] floating enable
+for_window [class="Arandr|baobab|feh|File-roller|Gnome-calculator|Gnome-control-center|Gnome-disks|Gnome-screenshot|Gnome-tweaks|itch|MPlayer|mpv|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|Sxiv|SimpleScreenRecorder|Vimiv|vlc|Xfce4-settings-manager"] floating enable
 for_window [class="Surf"] floating enable move position mouse resize set 1080 1440
 for_window [class="Surf"] focus_on_window_activation focus
 for_window [class="fff*"] floating enabl
@@ -191,8 +191,9 @@ mode $mode_resize {
     bindsym j   resize shrink height 10 px or 10 ppt
     bindsym k   resize grow height 10 px or 10 ppt
     bindsym l   resize grow width 10 px or 10 ppt
-    bindsym Return mode "default"
     bindsym Escape mode "default"
+    bindsym Return mode "default"
+    bindsym Space mode "default"
     bindsym $mod+r mode "default"
 }
 bindsym $mod+r mode $mode_resize
