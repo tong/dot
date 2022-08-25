@@ -1,4 +1,3 @@
- 
 cd() {
     if (( $+2 )); then
         builtin cd "$@"
@@ -11,7 +10,7 @@ cd() {
         builtin cd "${@}"
     fi
 }
- 
+
 reload () {
     exec "${SHELL}" "$@"
 }

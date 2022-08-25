@@ -7,11 +7,6 @@ setopt noflowcontrol
 #stty stop undef # Disable ctrl-s to freeze terminal.
 
 ## History
-# setopt hist_expire_dups_first
-# setopt hist_ignore_dups
-# setopt hist_ignore_all_dups
-# setopt hist_find_no_dups
-# setopt hist_save_no_dups
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
 setopt SHARE_HISTORY             # Share history between all sessions.
 setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
@@ -85,11 +80,11 @@ key[Shift-Tab]="${terminfo[kcbt]}"
 [[ -n "${key[Shift-Tab]}" ]] && bindkey -- "${key[Shift-Tab]}"  reverse-menu-complete
 
 if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
-        autoload -Uz add-zle-hook-widget
-        function zle_application_mode_start { echoti smkx }
-        function zle_application_mode_stop { echoti rmkx }
-        add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
-        add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
+    autoload -Uz add-zle-hook-widget
+    function zle_application_mode_start { echoti smkx }
+    function zle_application_mode_stop { echoti rmkx }
+    add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
+    add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
 fi
 
 autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
@@ -171,4 +166,7 @@ export PATH=$PATH:$GOPATH/bin
 #export NEOVIDE_MULTIGRID
 
 #eval "$(zoxide init zsh)"
+
+export PATH=$PATH:$HOME/sdk/lua-language-server/bin
+
 
