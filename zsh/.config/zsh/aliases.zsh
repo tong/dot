@@ -37,6 +37,10 @@ alias .9='cd -9'
 alias d='dirs -v'
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
+alias h='history 1'
+alias hs='history | grep'
+alias hsi='history | grep -i'
+
 alias uppercase="tr '[:lower:]' '[:upper:]'"
 
 alias ls="ls -hN --color=auto --group-directories-first"
