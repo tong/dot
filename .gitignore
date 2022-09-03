@@ -1,4 +1,5 @@
 github-token
+*.bak
 *.fifo
 *.out
 *.save
