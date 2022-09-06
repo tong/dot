@@ -4,51 +4,37 @@
 # Port of: https://gitlab.com/joshavanier/mortem
 # https://www.worldometers.info/demographics/life-expectancy/
 
-DEFAULT_LEY=70
-
 usage(){
-    printf "Usage: mortem YYYY-MM-DD [options]
-        \nOptions:
-  --ley=YEARS
-    Human life expactany in years"
+    echo -e "Usage: mortem YYYY-MM-DD [options]\n" \
+"Options:\n   --ley|--life-expectancy=YEARS"
 }
 
 if [ "$#" -eq  "0" ]; then
     usage
     exit 1
 fi
-
+if [ "$1" =  "--help" ]; then
+    usage
+    exit 0
+fi
 birth=$1
 birth_date=$(date -d"$birth" "+%s")
 shift
-
-declare ley # human life expectancy (years)
-
-if [[ $# -eq 0 ]]; then
-    ley=$DEFAULT_LEY
-else
-    while true; do
-        case "$1" in
-            --help)
+ley=70
+while true; do
+    case "$1" in
+        --ley|--life-expectancy)
+            shift
+            if [ "$#" -eq  "0" ]; then
                 usage
-                exit 0
-                ;;
-            --ley)
-                shift
-                ley=$1
-                shift
-                ;;
-            --)
-                shift
-                break
-                ;;
-            *)
-                break
-                ;;
-        esac
-    done
-fi
-
+                exit 1
+            fi
+            ley=$1
+            shift
+            ;;
+        *) break;;
+    esac
+done
 led=$((ley*365+ley/4))
 ndl=$(($((birth_date-$(date '+%s'))) / 86400))
 ndl=${ndl#-}
