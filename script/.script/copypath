@@ -1,0 +1,8 @@
+#!/bin/sh
+PTH="$1"
+if [ -z "$PTH" ]; then
+    PTH="$(pwd)"
+fi
+#echo "$PTH"
+realpath "$PTH" | xclip -selection c
+#pwd | awk '{printf $0}' | xclip -selection clipboard
