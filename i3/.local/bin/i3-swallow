@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+
+# Splits the current terminal into a tab layout, runs a command, then restores the original layout.
+# Handy for opening images and videos "inside" a terminal.
+
+# To be super minimal, configure i3 to use a 0px font size to hide the tab title bars.
+# With the unfortunate caveat that this will cause i3 error messages to become unreadable.
+
+# Set an alias to make use this script by default (fe: alias='i3-swallow sxiv')
+
+from i3ipc import Connection
+import sys
+import subprocess
+
+if len(sys.argv) < 2:
+    print("Usage: %s <command>" % sys.argv[0])
+    sys.exit(1)
+
+i3 = Connection()
+orig = i3.get_tree().find_focused()
+layout = orig.parent.layout
+if layout == "splith":
+    orig.command("split v")
+    orig.command("layout tabbed")
+elif layout == "splitv":
+    orig.command("split h")
+    orig.command("layout tabbed")
+
+try:
+    code = subprocess.run(sys.argv[1:]).returncode
+finally:
+    if layout == "splith":
+        orig.command("layout default")
+        orig.command("move left")
+    elif layout == "splitv":
+        orig.command("layout default")
+        orig.command("move up")
+sys.exit(code)
+
