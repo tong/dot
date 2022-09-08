@@ -1,0 +1,3 @@
+#!/bin/sh
+i3-msg -t subscribe -m '["window"]' | jq -r .container.window_properties.instance
+
