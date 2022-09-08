@@ -1,15 +1,13 @@
-#!/bin/sh
-rgb () {
+#!/bin/bash
+hex_to_rgb () {
     declare g
     declare b
     case ${#1} in
         6) r=$"0x${1:0:2}"; g=$"0x${1:2:2}"; b=$"0x${1:4:2}";;
-        3) rgb "${1:0:1}${1:0:1}${1:1:1}${1:1:1}${1:2:1}${1:2:1}"
-            return;;
+        3) rgb "${1:0:1}${1:0:1}${1:1:1}${1:1:1}${1:2:1}${1:2:1}"; return;;
         1) rgb "$1$1$1"; return;;
         *) return 1;;
     esac
-    #printf '\033[38;2;%i;%i;%im' $r $g $b 
-    printf "%i, %i, %i\n" "$r" "$g" "$b"
+    printf "%i %i %i\n" "$r" "$g" "$b"
 }
-rgb "$*"
+hex_to_rgb "$*"
