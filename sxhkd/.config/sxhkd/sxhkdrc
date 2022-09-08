@@ -1,25 +1,23 @@
-#super + enter
-#    i3-sensible-terminal
-super + d
-    rofi -show run
-super + Tab
-    rofi -show window
-super + x ;  {c,e,i,r,t,w,x}
-    {clipmenu, dmenu-exit, dmenu-nerdfont, dmenu-record, i3-sensible-terminal, $(rofi -show window), dmenu-screenshot}
-
+super + Return
+    $TERMINAL
 super + b
     $BROWSER
 super + n
     nautilus
 
-#super + x
-#    scrot "$HOME/screenshot-%Y_%m_%d_%H_%M.png" #TODO dmenu-screenshot
+super + d
+    rofi -show run
+super + Tab
+    rofi -show window
+
+super + x ;  {c,e,i,r,t,w,x}
+    {clipmenu, dmenu-exit, dmenu-nerdfont, dmenu-record, i3-sensible-terminal, $(rofi -show window), dmenu-screenshot}
+
+super + shift + x
+    scrot "$HOME/screenshot-%Y_%m_%d_%H_%M.png" #TODO dmenu-screenshot
 
 super + m ; {p,l,h,s}
     {$(playerctl play-pause),$(playerctl next),$(playerctl previous),$(playerctl stop)}
-
-super + o ; {b,c,f,n,t}
-    {blender,chromium,firefox,nautilus,terminal}
 
 #XF86Audio{Prev,Next}
 #	mpc -q {prev,next}
@@ -40,6 +38,6 @@ XF86AudioNext
 XF86AudioPrev
     playerctl previous
 
-super + shift + End
-    dmenu-exit
+super + o ; {b,c,f,n,t}
+    {blender,chromium,firefox,nautilus,terminal}
 
