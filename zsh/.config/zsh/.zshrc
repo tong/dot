@@ -40,10 +40,13 @@ source $ZDOTDIR/completion.zsh
 source $ZDOTDIR/aliases.zsh
 source $ZDOTDIR/aliases_user.zsh
 
+source $ZDOTDIR/z.sh
+
 # Functions
 source $ZDOTDIR/functions.zsh
 source $ZDOTDIR/functions/archive.zsh
 source $ZDOTDIR/functions/fzf.zsh
+source $ZDOTDIR/functions/take.zsh
 
 # Plugins
 source $ZDOTDIR/plugins/bd/bd.zsh
