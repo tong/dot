@@ -41,6 +41,8 @@ alias h='history 1'
 alias hs='history | grep'
 alias hsi='history | grep -i'
 
+alias -g G='| grep' # Pipe commands output to grep (fe: history G nmap)
+
 alias uppercase="tr '[:lower:]' '[:upper:]'"
 
 alias ls="ls -hN --color=auto --group-directories-first"
@@ -50,7 +52,7 @@ alias lla='ls -la'
 alias lsla='ls -la'
 # alias l='/usr/bin/ls -CF'
 
-alias lsd='lsd --group-directories-first'
+alias lsd='lsd --group-directories-first --color=auto'
 alias ls='lsd'
 alias l='ls -F'
 
@@ -97,3 +99,4 @@ alias pacr="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo
 
 alias logout='xfce4-session-logout --logout'
 
+alias zshconfig='$EDITOR $ZDOTDIR'
