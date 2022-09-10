@@ -11,5 +11,5 @@ if pidof mpv > /dev/null; then
     _print_time '|' $((position/3600)) $((position%3600/60)) $((position%60))
     _print_time '-' $((remaining/3600)) $((remaining%3600/60)) $((remaining%60))
 else
-    exit 0
+    echo ""
 fi
