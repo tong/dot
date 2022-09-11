@@ -1,0 +1,27 @@
+#!/bin/bash
+DIR="$HOME/.config"
+BROWSER="chromium"
+PROFILE="Default"
+SORT="desc"
+SEP='{::}'
+FIELDS="url, title, visit_count, last_visit_time"
+declare -i LIMIT
+while true; do
+    case "$1" in
+        --browser,-b) BROWSER=$2; shift 2;;
+        --fields|-f) FIELDS="$2"; shift 2;;
+        --limit|-l) LIMIT=$2; shift 2;;
+        --profile|-p) PROFILE=$2; shift 2;;
+        --sort|-s) SORT=$2; shift 2;;
+        --separator|-sep) SEP=$2; shift 2;;
+        *) break;;
+    esac
+done
+DB="$DIR/$BROWSER/$PROFILE/History"
+[ ! -f "$DB" ] && exit 1
+TMP="/tmp/${BROWSER}_history"
+cp -f "$DB" "$TMP"
+SQL="select $FIELDS from urls order by last_visit_time $SORT"
+[ "$LIMIT" -gt 0 ] && SQL+=" limit $LIMIT"
+sqlite3 -separator "$SEP" "$TMP" "$SQL"
+
