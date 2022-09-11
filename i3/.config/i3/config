@@ -1,26 +1,26 @@
 set $mod Mod4
 floating_modifier $mod
 
-set $DISPLAY0 DP-2
-set $DISPLAY1 DP-5
-
 set $color_background #00000
-#set $color_border #9e9e9e
 set $color_border #C0C0C0
 set $color_indicator #ff00ff
-#set $color_indicator #2e9ef4
 set $color_text #00ff00
 
-set $border_width 4
+set $border_width 2
+
+set $DISPLAY0 DP-2
+set $DISPLAY1 DP-5
 
 font pango: JetBrainsMono Nerd Font 1 
 # Frucade Small 6
 
+#include ~/.config/i3/keys.conf
+
 ## --- 
 
-exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf
-exec_always --no-startup-id nitrogen --restore
-exec_always --no-startup-id hsetroot -solid '#101010'
+#exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf
+#exec_always --no-startup-id nitrogen --restore
+#exec_always --no-startup-id hsetroot -solid '#101010'
 exec_always --no-startup-id $HOME/.config/polybar/run.sh
 exec_always --no-startup-id xset r rate 190 90
 
@@ -52,22 +52,20 @@ workspace $ws10 output $DISPLAY0
 ## --- Window
 
 # class                 border  backgr. text    indicator child_border
-#client.focused          $color_border $color_background #101010 $color_indicator $color_border
-#client.focused          $color_border $color_background #101010 $color_indicator #F0F0F011
 client.focused          $color_border $color_background #101010 $color_border $color_border
-client.focused_inactive #0000ff #000000 #ffffff #e0e0e0   #10101000
-client.unfocused        #00ff00 #000000 #666666 #2e9ef4   #10101000
+client.focused_inactive #0000ff #00f0f0 #ffffff #e0e0e0   #ff000000
+client.unfocused        #00ff00 #000000 #666666 #2e9ef4   #101010
 client.urgent           #FF1744 #FF1744 #000000 #2e9ef4   #FF1744
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #000000
 
-gaps outer 2
-gaps inner 2
+gaps top 0
+gaps inner 3
 smart_gaps on
-#smart_borders no
+#smart_borders on
 #gaps horizontal 2
 #gaps vertical 30
-
+#hide_edge_borders smart_no_gaps
 #hide_edge_borders none
 #hide_edge_borders smart
 
@@ -79,8 +77,9 @@ floating_maximum_size 3840 x 2160
 default_border pixel $border_width
 default_floating_border pixel $border_width 
 
+#for_window [class=.*] border pixel 0
 for_window [class=.*] border pixel $border_width
-for_window [class="Arandr|baobab|feh|File-roller|Gnome-calculator|Gnome-control-center|Gnome-disks|Gnome-screenshot|Gnome-tweaks|itch|MPlayer|mpv|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|Sxiv|SimpleScreenRecorder|Vimiv|vlc|Xfce4-settings-manager"] floating enable
+for_window [class="Arandr|baobab|feh|File-roller|Gnome-calculator|Gnome-control-center|Gnome-disks|Gnome-screenshot|Gnome-tweaks|itch|MPlayer|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|SimpleScreenRecorder|Vimiv|vlc"] floating enable
 for_window [class="Surf"] floating enable move position mouse resize set 1080 1440
 for_window [class="Surf"] focus_on_window_activation focus
 for_window [class="fff*"] floating enabl
@@ -104,9 +103,6 @@ mouse_warping output
 
 ## -- Keymap
 
-#TODO requires i3 4.20+
-#include ~/.config/i3/keys.conf
-
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
@@ -126,6 +122,8 @@ bindsym $mod+shift+h workspace prev
 bindsym $mod+shift+l workspace next
 bindsym $mod+ctrl+shift+h move container to workspace next; workspace next
 bindsym $mod+ctrl+shift+l move container to workspace prev; workspace prev
+
+bindsym $mod+shift+p exec --no-startup-id i3-promote-window
 
 bindsym $mod+p focus parent
 bindsym $mod+c focus child
@@ -182,48 +180,18 @@ bindsym $mod+ctrl+shift+0 move container to workspace $ws10; workspace $ws10
 
 bindsym --whole-window $mod + button2 kill
 bindsym $mod+q kill
+#bindsym $mod+Return exec i3-sensible-terminal
 
-bindsym $mod+Return exec i3-sensible-terminal
-
-set $mode_resize "ﭕ RESIZE"
+set $mode_resize " RESIZE"
 mode $mode_resize {
-    bindsym h   resize shrink width 10 px or 10 ppt
-    bindsym j   resize shrink height 10 px or 10 ppt
-    bindsym k   resize grow height 10 px or 10 ppt
-    bindsym l   resize grow width 10 px or 10 ppt
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize shrink height 10 px or 10 ppt
+    bindsym k resize grow height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
     bindsym Escape mode "default"
     bindsym Return mode "default"
     bindsym Space mode "default"
     bindsym $mod+r mode "default"
 }
 bindsym $mod+r mode $mode_resize
-
-#set $mode_move  MOVE
-#mode "$mode_move" {
-    #bindsym Left move workspace to output left
-    #bindsym Right move workspace to output right
-    #bindsym Left j workspace to output left
-    #bindsym Right k workspace to output right
-    #bindsym Return mode "default"
-    #bindsym Escape mode "default"
-#}
-#bindsym $mod+shift+m mode "$mode_move"
-
-# set $mode_system <span color='#141414'>B</span><span color='#EEEEEF'>LANK</span> <span color='#141414'>L</span><span color='#505050'>OCK</span> <span color='#141414'>S</span><span color='#505050'>USPEND</span> <span color='#141414'>H</span><span color='#505050'>IBERNATE</span> <span color='#141414'>⇧E</span><span color='#505050'>XIT</span> <span color='#141414'>⇧R</span><span color='#505050'>EBOOT</span> <span color='#141414'>⇧S</span><span color='#505050'>HUTDOWN</span>
-#set $mode_system  BLANK  LOCK  SUSPEND  HIBERNATE  EXIT  REBOOT  SHUTDOWN
-## mode --pango_markup "$mode_system" {
-#mode "$mode_system" {
-    #bindsym l exec --no-startup-id i3exit lock, mode "default"
-    #bindsym b exec --no-startup-id screen-blank, mode "default"
-    #bindsym s exec --no-startup-id i3exit suspend, mode "default"
-    #bindsym h exec --no-startup-id i3exit hibernate, mode "default"
-    #bindsym shift+e exec --no-startup-id i3exit logout, mode "default"
-    #bindsym shift+r exec --no-startup-id i3exit reboot, mode "default"
-    #bindsym shift+s exec --no-startup-id i3exit shutdown, mode "default"
-    #bindsym Return mode "default"
-    #bindsym Escape mode "default"
-#}
-#bindsym $mod+shift+End mode "$mode_system"
-#bindsym $mod+shift+End exec --no-startup-id dmenu-exit
-#bindsym $mod+Escape exec --no-startup-id dmenu-exit
 
