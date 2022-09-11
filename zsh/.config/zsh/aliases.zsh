@@ -49,14 +49,14 @@ alias ls="ls -hN --color=auto --group-directories-first"
 alias ll='ls -l'
 alias la='ls -A'
 alias lla='ls -la'
-alias lsla='ls -la'
-# alias l='/usr/bin/ls -CF'
+alias l='ls -CF'
 
 alias lsd='lsd --group-directories-first --color=auto'
-alias ls='lsd'
-alias l='ls -F'
+#alias ls='lsd'
 
 alias cpdir='cp -r'
+
+alias diff='diff --color'
 
 alias dirsize='du'
 alias diskspace='du -S | sort -n -r | more'
@@ -100,3 +100,5 @@ alias pacr="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo
 alias logout='xfce4-session-logout --logout'
 
 alias zshconfig='$EDITOR $ZDOTDIR'
+alias zshsource='source $ZDOTDIR/.zshrc'
+
