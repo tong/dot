@@ -6,6 +6,7 @@ color=on
 active.indicator=
 
 include $HOME/.config/taskwarrior/void.theme
+#include $HOME/.config/taskwarrior/dark-256.theme
 
 context.work.read=+work
 context.work.write=+work
@@ -40,22 +41,33 @@ report.polybar.description=Single active task to be shown in polybar
 report.polybar.columns=id,project,description.oneline,urgency
 report.polybar.labels=id,project,description,urgency
 #report.polbar.sort=project+\/,entry+
-#report.polybar.filter=status:active
 report.polybar.filter=status:pending
 #report.polybar.limit=1
 
+report.tui.description=Default report for taskwarrior-tui
+report.tui.columns=project,description,tags,due,urgency,id
+report.tui.labels=Project,Description,Tags,Due,Urg,ID
+report.tui.sort=urgency-\/,project+\/,entry+
+report.tui.filter=status:pending
+
+#uda.taskwarrior-tui.report.next.filter=(status:pending or status:waiting)
 uda.taskwarrior-tui.mark-selection.indicator=
-uda.taskwarrior-tui.unmark-selection.indicator=⦿
-uda.taskwarrior-tui.selection.indicator=
+uda.taskwarrior-tui.report.next.filter=(status:pending)
+uda.taskwarrior-tui.selection.blink=yes
 uda.taskwarrior-tui.selection.bold=true
+uda.taskwarrior-tui.selection.dim=yes
+uda.taskwarrior-tui.selection.indicator=
 uda.taskwarrior-tui.selection.italic=true
-#uda.taskwarrior-tui.selection.blink=yes
-#uda.taskwarrior-tui.selection.dim=yes
+uda.taskwarrior-tui.style.report.scrollbar.area=black
+uda.taskwarrior-tui.style.report.scrollbar=white
+#uda.taskwarrior-tui.task-report.list.filter=$(task show report.list.filter)
+uda.taskwarrior-tui.task-report.list.filter=$(task show report.list.filter)
+uda.taskwarrior-tui.task-report.next.filter=status:pending
 uda.taskwarrior-tui.task-report.prompt-on-delete=true
 uda.taskwarrior-tui.task-report.prompt-on-done=true
 uda.taskwarrior-tui.task-report.show-info=false
-uda.taskwarrior-tui.task-report.next.filter=status:pending
-#uda.taskwarrior-tui.task-report.list.filter=$(task show report.list.filter)
+uda.taskwarrior-tui.task-report.looping=false
+uda.taskwarrior-tui.unmark-selection.indicator=⦿
 
 #uda.taskwarrior-tui.keyconfig.quit=q
 #uda.taskwarrior-tui.keyconfig.refresh=r
