@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2016,SC2059
 
+# Measure keyboard typing speed.
+
 # cpm: characters per minute
 # wpm: words per minute (1 word = 5 characters)
 
-KEYBOARD_ID="16"
-LAYOUT=qwerty
-METRIC=wpm
-FORMAT="%d"
-INTERVAL='1'
+declare KEYBOARD_ID
+declare LAYOUT=qwerty
+declare METRIC=wpm
+declare FORMAT="%d"
+declare INTERVAL='1'
 
 while true; do
     case "$1" in
-    --keyboard_id) KEYBOARD_ID="$2"; shift 2;;
+    --keyboard) KEYBOARD_ID="$2"; shift 2;;
     --interval) INTERVAL=$2; shift 2;;
     --cpm) METRIC="cpm"; shift;;
     --wpm) METRIC="wpm"; shift;;
@@ -22,6 +24,14 @@ while true; do
     *) break;;
     esac
 done
+
+if [ -z "$KEYBOARD_ID" ]; then
+    [ "$KEYBOARD_NAME" ] && KEYBOARD_ID=$(xinput list --id-only "$KEYBOARD_NAME")
+    if [ -z "$KEYBOARD_ID" ]; then
+        echo "No keyboard found"
+        exit 1
+    fi
+fi
 
 # If you have a keyboard layout that is not listed here yet, create a condition
 # yourself. $3 is the key index. Use `xinput test "AT Translated Set 2 keyboard"`
