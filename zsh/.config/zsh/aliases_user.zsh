@@ -1,6 +1,9 @@
+
 alias lf='$HOME/.config/lf/lfrun'
+alias lynx='lynx -vikeys -accept_all_cookies'
 alias lynx='lynx -cfg $HOME/.config/lynx/lynx.cfg'
 alias mpv='i3-swallow mpv'
+alias neovide='i3-swallow neovide'
 alias sxiv='i3-swallow sxiv'
 
 alias alacritty-theme='python $HOME/.config/alacritty/alacritty-theme.py $@'
@@ -17,9 +20,11 @@ alias screenshot='scrot -u $SCREENSHOTS/screenshot-%Y_%m_%d_%H_%M.png'
 alias screen-off='xset dpms force off'
 alias weather='curl -L wttr.in'
 alias web='lynx'
+alias ydl-mp3='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio --audio-format mp3 "$@"'
 
 alias '?'='duckduckgo'
 alias bc="bc -ql"
+alias ddg="duckduckgo"
 alias ext='extract'
 alias fm='lf'
 alias tt='taskwarrior-tui'
@@ -29,15 +34,25 @@ alias ultraviolet='$EDITOR -c "VimwikiIndex"'
 alias v='$EDITOR' 
 alias vv='$EDITOR .'
 alias x='extract'
-alias ytdl='yt-dlp'
+
+##alias doc='$EDITOR -c "VimwikiGoto Doc'
+
+alias ydl='yt-dlp'
+alias ydl-mp3='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio --audio-format mp3 "$@"'
 
 alias closure-stylesheets='java -jar $HOME/sdk/closure-stylesheets.jar'
-alias krom='$ARMSDK/Krom/Krom $@'
 alias lessc-live='neko $DEV/tool/lessc-live/lessc-live.n $@'
 alias luamake='$HOME/src/lua-language-server/3rd/luamake/luamake $@'
-alias ytdl-audio='ytdl --ignore-errors --output "%(title)s.%(ext)s" --extract-audio --audio-format mp3 "$@"'
 
+alias krom='$ARMSDK/Krom/Krom'
+alias khamake='node $ARMSDK/Kha/Tools/khamake/khamake.js'
+alias kmake='$ARMSDK/Kha/Kinc/Tools/linux_x64/kmake'
 #alias armory='blender -b --python $ARMSDK/armory/armory-cli.py $1'
 #alias armory='blender -b $@ --python $ARMSDK/armory/armory-cli.py'
 #alias armory='python $ARMSDK/armory/armory-cli.py $@'
 #alias armory='blender --app-template armory $@'alias v="$EDITOR $@"
+
+alias arm='cd $HOME/dev/armory3d/'
+alias dev='cd $HOME/dev'
+alias downloads='cd $HOME/downloads'
+

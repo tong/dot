@@ -7,6 +7,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+
 alias c='clear'
 alias e='exit'
 alias q='exit'
@@ -73,15 +74,30 @@ alias ffmpeg="ffmpeg -hide_banner"
 alias ka='killall'
 alias killa='killall'
 alias now='date +"%T"'
-alias paths='echo -e ${PATH//:/\\n}'
+#alias paths='echo -e ${PATH//:/\\n}'
 
-alias wget='wget -c' # Resume wget by default
+# alias 'sc-show'='systemctl show'
+# alias 'sc-status'='systemctl status'
+# alias 'sc-start'='systemctl start'
+# alias 'sc-stop'='systemctl stop'
+# alias 'sc-restart'='systemctl restart'
+# alias 'sc-enable'='systemctl enable'
+# alias 'sc-disable'='systemctl disable'
+
+alias ta='tmux attach -t'
+alias tad='tmux attach -d -t'
+alias ts='tmux new-session -s'
+alias tl='tmux list-sessions'
+alias tka='tmux kill-server'
+alias tks='tmux kill-session -t'
 
 alias amend='git commit -a --amend'
 alias clone='git clone'
 alias checkout='git checkout'
 alias pull='git pull'
 alias push='git push'
+
+alias wget='wget -c' # Resume wget by default
 
 alias cpuinfo='lscpu'
 alias meminfo='free -m -l -t'
@@ -94,8 +110,8 @@ alias ip='ip addr show'
 alias ports='netstat -tulanp' # List open tcp/udp ports
 alias checkroute='mtr $1 -tez -Q1 --ipinfo 1'
 
-alias paci="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
-alias pacr="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
+alias paci="pacman -Slq | fzf --multi --prompt ' ' --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
+alias pacr="pacman -Qq | fzf --multi --prompt ' ' --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
 
 alias logout='xfce4-session-logout --logout'
 
