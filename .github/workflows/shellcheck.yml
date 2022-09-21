@@ -9,7 +9,7 @@ on:
 
 jobs:
   shellcheck:
-    name: Run shellcheck
+    name: shellcheck
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,4 +17,4 @@ jobs:
       - name: Shellcheck
         uses: ludeeus/action-shellcheck@1.1.0
         with:
-          scandir: './scripts'
+          scandir: './script'
