@@ -1,11 +1,14 @@
 #!/bin/bash
 
+STEP=5 # Step Up/Down brightnes by: 5 = ".05", 10 = ".10", etc.
+QUIET="false" #TODO
+
 current_brightness() {
     xrandr --verbose --current | grep ^"$SCREEN" -A5 | tail -n1
 }
 
 if [ "$#" -eq  "0" ]; then
-    current_brightness | cut -d':' -f 2
+    current_brightness | cut -d':' -f 2 | xargs
     exit 0
 fi
 
@@ -17,12 +20,15 @@ usage() {
             "  -    Decrease brightness"
 }
 
-if [ "$1" =  "--help" ]; then
-    usage
-    exit 0
-fi
-
-STEP=5 # Step Up/Down brightnes by: 5 = ".05", 10 = ".10", etc.
+while true; do
+    case "$1" in
+        --quiet) QUIET="true"; shift ;;
+        --help) usage; exit 0 ;;
+        #up|down) shift; continue ;;
+        #+|-) shift; continue ;;
+        *) break;;
+    esac
+done
 
 cbright=$(current_brightness)
 cbright="${cbright##* }" # Get brightness level with decimal place
@@ -50,4 +56,6 @@ else
 fi
 
 xrandr --output "$SCREEN" --brightness "$cbright" # Set new brightness
-current_brightness | cut -d':' -f 2
+if [[ $QUIET != "true" ]]; then
+    current_brightness | cut -d':' -f 2 | xargs
+fi
