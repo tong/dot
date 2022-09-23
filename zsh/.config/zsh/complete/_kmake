@@ -1,0 +1,33 @@
+#compdef kmake
+
+_arguments \
+    "--from[Location of your project]" \
+    "--to[build location]" \
+    {-t,--target}"[Target platform]" \
+    "--vr[Target VR device]" \
+    "--pch[Use precompiled headers for C++ targets]" \
+    {-g,--graphics}"[Graphics api to use]" \
+    "--arch[Target architecture for compilation]" \
+    {-a,--audio}"[Audio api to use]" \
+    {-v,--visualstudio}"[Version of Visual Studio to use]" \
+    "--compile[Compile executable]" \
+    "--run[Run executable]" \
+    "--update[Update Kinc and it's submodules]" \
+    "--debug[Compile in debug mode]" \
+    "--server[Run local http server for html5 target]" \
+    "--port[Running port for the server]" \
+    "--noshaders[Do not compile shaders]" \
+    {-k,--kinc}"[Location of Kinc directory]" \
+    "--init[Init a Kinc project inside the current directory]" \
+    "--name[Project name to use when initializing a project]" \
+    "--kfile[Name of your kfile, defaults to \"kfile.js\"]" \
+    "--compiler[Use a specific compiler]" \
+    "--onlyshaders[Compile only shader]" \
+    "--nosigning[Disable code signing for iOS]" \
+    "--lib[Compile to a static library]" \
+    "--dynlib[Compile to a dynamic library]" \
+    "--vscode[Create a vscode project - this is used automatically by the vscode Kinc extension]" \
+    "--toLanguage[Export IDL specified in kincfile to wrapper for specified language]" \
+    "--json[Export a json-file that describes the project]" \
+    "--cores[Specify how many cores are used (by default all available cores are used)]" \
+    "--nosymlinks[Do not follow symbolic links when searching for files]" \
