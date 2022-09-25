@@ -1,30 +1,26 @@
 set $mod Mod4
 floating_modifier $mod
 
-set $color_background #00000
-set $color_border #C0C0C0
-set $color_indicator #ff00ff
-set $color_text #00ff00
-
-set $border_width 2
-
 set $DISPLAY0 DP-2
 set $DISPLAY1 DP-5
 
-font pango: JetBrainsMono Nerd Font 1 
-# Frucade Small 6
+set $border_width 4
+
+# set $color_background #00000
+# set $color_border #C0C0C0
+# set $color_indicator #ff00ff
+# set $color_text #00ff00
+
+font pango: JetBrainsMono Nerd Font 0
 
 #include ~/.config/i3/keys.conf
 
-## --- 
-
-#exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf
+exec_always --no-startup-id $HOME/.screenlayout/2-monitor.sh
 #exec_always --no-startup-id nitrogen --restore
-#exec_always --no-startup-id hsetroot -solid '#101010'
+#exec_always --no-startup-id hsetroot -solid '#101010
 exec_always --no-startup-id $HOME/.config/polybar/run.sh
+#exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf
 exec_always --no-startup-id xset r rate 190 90
-
-## --- Workspaces
 
 set $ws1 "1"
 set $ws2 "2"
@@ -49,22 +45,26 @@ workspace $ws8 output $DISPLAY0
 workspace $ws9 output $DISPLAY0
 workspace $ws10 output $DISPLAY0
 
-## --- Window
-
 # class                 border  backgr. text    indicator child_border
-client.focused          $color_border $color_background #101010 $color_border $color_border
-client.focused_inactive #0000ff #00f0f0 #ffffff #e0e0e0   #ff000000
-client.unfocused        #00ff00 #000000 #666666 #2e9ef4   #101010
-client.urgent           #FF1744 #FF1744 #000000 #2e9ef4   #FF1744
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-client.background       #000000
+# Default colors
+# client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
+# client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+# client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+# client.urgent           #2f343a #900000 #ffffff #900000   #900000
+# client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+# client.background       #ffffff
+client.focused          #0000ff #000000 #000000 #ff1744 #a0a0a0
 
-gaps top 0
-gaps inner 3
-smart_gaps on
+gaps vertical 0
+gaps inner 8
+gaps top -6
+gaps bottom -2
+gaps left -4
+gaps right -4
+
 #smart_borders on
-#gaps horizontal 2
-#gaps vertical 30
+smart_gaps on
+
 #hide_edge_borders smart_no_gaps
 #hide_edge_borders none
 #hide_edge_borders smart
@@ -74,20 +74,19 @@ floating_minimum_size 32 x 16
 floating_maximum_size 3840 x 2160
 
 #default_orientation horizontal|vertical|auto
-default_border pixel $border_width
-default_floating_border pixel $border_width 
+#default_border pixel $border_width
+#default_floating_border pixel $border_width 
 
-#for_window [class=.*] border pixel 0
+# for_window [class=".*"] title_format "<b>%title</b>"
 for_window [class=.*] border pixel $border_width
 for_window [class="Arandr|baobab|feh|File-roller|Gnome-calculator|Gnome-control-center|Gnome-disks|Gnome-screenshot|Gnome-tweaks|itch|MPlayer|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|SimpleScreenRecorder|Vimiv|vlc"] floating enable
 for_window [class="Surf"] floating enable move position mouse resize set 1080 1440
 for_window [class="Surf"] focus_on_window_activation focus
-for_window [class="fff*"] floating enabl
+for_window [class="fff*"] floating enable
 for_window [class="gamma*"] floating enable
 for_window [class="Rofi"] floating enable
 #for_window [class="popup"] floating enable
 for_window [class="POP$"] floating enable
-#for_window [class="Alacritty"] floating enable
 for_window [class="main_KincApplication*"] floating enable
 for_window [class="^.*_KincApplication$"] floating enable
 for_window [window_role="pop-up"] floating enable
@@ -95,13 +94,9 @@ for_window [window_role="pop-up"] floating enable
 assign [class="^Steam"] → $ws6
 #assign [class="^Pavucontrol"] → $ws0
 
-## --
-
 focus_follows_mouse no
 focus_wrapping yes
 mouse_warping output
-
-## -- Keymap
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -125,16 +120,16 @@ bindsym $mod+ctrl+shift+l move container to workspace prev; workspace prev
 
 bindsym $mod+shift+p exec --no-startup-id i3-promote-window
 
-bindsym $mod+p focus parent
+bindsym $mod+f fullscreen toggle
+
 bindsym $mod+c focus child
+bindsym $mod+p focus parent
+
+bindsym $mod+q kill
 
 bindsym $mod+shift+k split h
 bindsym $mod+shift+j split v
 
-bindsym $mod+f fullscreen toggle
-#bindsym $mod+w layout tabbed
-#bindsym $mod+s layout stacking
-#bindsym $mod+e layout toggle split
 bindsym $mod+shift+w layout tabbed
 bindsym $mod+shift+s layout stacking
 bindsym $mod+shift+e layout toggle split
@@ -179,8 +174,6 @@ bindsym $mod+ctrl+shift+9 move container to workspace $ws9; workspace $ws9
 bindsym $mod+ctrl+shift+0 move container to workspace $ws10; workspace $ws10
 
 bindsym --whole-window $mod + button2 kill
-bindsym $mod+q kill
-#bindsym $mod+Return exec i3-sensible-terminal
 
 set $mode_resize " RESIZE"
 mode $mode_resize {
