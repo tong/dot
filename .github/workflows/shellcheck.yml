@@ -2,10 +2,8 @@ name: shellcheck
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-  workflow_dispatch:
+    paths:
+      - 'script/**'
 
 jobs:
   shellcheck:
