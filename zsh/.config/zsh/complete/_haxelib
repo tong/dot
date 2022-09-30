@@ -41,13 +41,43 @@ _haxelib_cmds() {
     _describe 'command' cmd_basic -- cmf_information -- cmd_development -- cmd_misc
 }
 
-_arguments -C \
-    '--flat[do not use --recursive cloning for git]' \
-    '--always[answer all questions with yes]' \
-    '--debug[run in debug mode, imply not --quiet]' \
-    '--quiet[print less messages, imply not --debug]' \
-    '--system[run bundled haxelib version instead of latest update]' \
-    '--skip-dependencies[do not install dependencies]' \
-    '--never[answer all questions with no]' \
-    '--global[force global repo if a local one exists]' \
-    '*: :_haxelib_cmds'
+#_alternative 'cmds:commands:_haxelib_cmds'
+
+_haxelib() {
+    local ret=-1
+    _arguments -C \
+        '--flat[do not use --recursive cloning for git]' \
+        '--always[answer all questions with yes]' \
+        '--debug[run in debug mode, imply not --quiet]' \
+        '--quiet[print less messages, imply not --debug]' \
+        '--system[run bundled haxelib version instead of latest update]' \
+        '--skip-dependencies[do not install dependencies]' \
+        '--never[answer all questions with no]' \
+        '--global[force global repo if a local one exists]' \
+        '1: :_haxelib_cmds' \
+        '*::arg:->args' \
+    && ret=0
+#        '*: :_haxelib_cmds'
+    #'*: :_haxelib_cmds'
+    case "$state" in
+        (args)
+            case $words[1] in
+                (remove)
+                    _alternative \
+                        '1:library:($(ls $HAXELIB_PATH))' \
+                    && ret=0
+                    ;;
+                (**)
+                    ret=0
+                    ;;
+            esac
+            ;;
+        (**)
+            ret=0
+            ;;
+    esac
+    return ret
+}
+
+_haxelib "$@"
+
