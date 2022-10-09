@@ -1,10 +1,10 @@
 #!/bin/bash
 
 current_context=$(task _get rc.context)
-n_active=$(task +ACTIVE count)
-n_pending=$(task status:pending count)
-n_next=$(task status:pending +next count)
-n_overdue=$(task +READY +OVERDUE count)
+n_active=$(task +ACTIVE count 2>/dev/null)
+n_pending=$(task status:pending count 2>/dev/null)
+n_next=$(task status:pending +next count 2>/dev/null)
+n_overdue=$(task +READY +OVERDUE count 2>/dev/null)
 #n_duetoday=$(task +READY +DUETODAY count)
 
 #if [ $n_overdue -eq 0 ]; then
