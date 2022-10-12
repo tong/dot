@@ -5,13 +5,17 @@ super + b
 super + n
     nautilus
 
+super + o ; {b,t}
+    {$BROWSER,$TERMINAL}
+
 super + d
-    rofi -show run
+    rofi -show drun
+
 super + Tab
     rofi -show window
 
-super + x ;  {c,e,i,r,t,w,x}
-    {clipmenu, dmenu-exit, dmenu-nerdfont, dmenu-record, i3-sensible-terminal, $(rofi -show window), dmenu-screenshot}
+super + x ;  {c,e,i,r,w,x}
+    {clipmenu, dmenu-exit, dmenu-nerdfont, dmenu-record, $(rofi -show window), dmenu-screenshot}
 
 super + shift + x
     scrot "$HOME/screenshot-%Y_%m_%d_%H_%M.png" #TODO dmenu-screenshot
@@ -38,6 +42,8 @@ XF86AudioNext
 XF86AudioPrev
     playerctl previous
 
-super + o ; {b,c,f,n,t}
-    {blender,chromium,firefox,nautilus,terminal}
+XF86MonBrightnessUp
+    backlight --quiet +
+XF86MonBrightnessDown
+    backlight --quiet -
 
