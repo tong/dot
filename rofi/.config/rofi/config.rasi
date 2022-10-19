@@ -1,7 +1,7 @@
 configuration {
 	modi:
 /*  "window,run,ssh,fb:~/.config/rofi/script/filebrowser.sh";*/
-    "window,run";
+    "window,run,drun";
 	font: "JetBrainsMono Nerd Font 9";
 	location: 0;
 /*	yoffset: -400;*/
