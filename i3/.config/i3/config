@@ -11,13 +11,11 @@ set $border_width 4
 # set $color_indicator #ff00ff
 # set $color_text #00ff00
 
-font pango: JetBrainsMono Nerd Font 0
+font pango: JetBrainsMono Nerd Font 5
 
 #include ~/.config/i3/keys.conf
 
 exec_always --no-startup-id $HOME/.screenlayout/2-monitor.sh
-#exec_always --no-startup-id nitrogen --restore
-#exec_always --no-startup-id hsetroot -solid '#101010
 exec_always --no-startup-id $HOME/.config/polybar/run.sh
 #exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf
 exec_always --no-startup-id xset r rate 190 90
@@ -31,8 +29,8 @@ set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
-set $ws0 "10"
 set $ws10 "10"
+set $ws0 "0"
 
 workspace $ws1 output $DISPLAY0
 workspace $ws2 output $DISPLAY0
@@ -53,14 +51,36 @@ workspace $ws10 output $DISPLAY0
 # client.urgent           #2f343a #900000 #ffffff #900000   #900000
 # client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 # client.background       #ffffff
-client.focused          #0000ff #000000 #000000 #ff1744 #a0a0a0
+#client.focused          #0000ff #000000 #000000 #ffffff #a0a0a0
+#
+# client.focused          #ff00ff #099920 #ffffff #ffffff #a0a0a0
+# #client.focused_inactive #99ff99 #5f676a #ffffff #484e50 #ff0000
+# #client.unfocused        #333333 #222222 #888888 #292d2e #050505
+# client.urgent           #2f343a #900000 #ffffff #900000 #900000
+# client.background       #050505
+
+#client.focused          #4c7899 #285577 #ffffff #2e9ef4   #c6c6c4
+#client.focused          #4c7899 #285577 #ffffff #2e9ef4   #c6c6c400
+# client.focused_inactive #333333 #5f676a #ffffff #484e50   #404040
+# client.unfocused        #333333 #222222 #888888 #292d2e   #404040
+# client.urgent           #2f343a #900000 #ffffff #900000   #900000
+# client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+# client.background       #ffffff
+client.focused          #000000 #000000 #ffffff #b0b0b0   #909090
+client.focused_inactive #000000 #000000 #ffffff #484e50   #303030
+client.unfocused        #000000 #000000 #ffffff #292d2e   #404040
+# client.focused #FF000000 #FF000000 #FF000000 #FF000000 #FF000000 
+# client.focused_inactive #FF000000 #FF000000 #FF000000 #FF000000 #FF000000 
+# client.unfocused #FF000000 #FF000000 #FF000000 #FF000000 #FF000000 
+# client.placeholder #FF000000 #FF000000 #FF000000 #FF000000 #FF000000 
+# client.background  #FF000000 
 
 gaps vertical 0
 gaps inner 8
-gaps top -6
+gaps top -4
 gaps bottom -2
-gaps left -4
-gaps right -4
+gaps left -2
+gaps right -2
 
 #smart_borders on
 smart_gaps on
@@ -79,20 +99,23 @@ floating_maximum_size 3840 x 2160
 
 # for_window [class=".*"] title_format "<b>%title</b>"
 for_window [class=.*] border pixel $border_width
-for_window [class="Arandr|baobab|feh|File-roller|Gnome-calculator|Gnome-control-center|Gnome-disks|Gnome-screenshot|Gnome-tweaks|itch|MPlayer|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|SimpleScreenRecorder|Vimiv|vlc"] floating enable
+for_window [class="Arandr|baobab|feh|File-roller|Gnome-calculator|Gnome-disks|Gnome-tweaks|itch|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|SimpleScreenRecorder|Vimiv|vlc"] floating enable
 for_window [class="Surf"] floating enable move position mouse resize set 1080 1440
 for_window [class="Surf"] focus_on_window_activation focus
-for_window [class="fff*"] floating enable
-for_window [class="gamma*"] floating enable
 for_window [class="Rofi"] floating enable
-#for_window [class="popup"] floating enable
-for_window [class="POP$"] floating enable
+
 for_window [class="main_KincApplication*"] floating enable
 for_window [class="^.*_KincApplication$"] floating enable
+
+for_window [class="popup"] floating enable
+for_window [class="POP$"] floating enable
 for_window [window_role="pop-up"] floating enable
 
 assign [class="^Steam"] → $ws6
 #assign [class="^Pavucontrol"] → $ws0
+
+for_window [class="fff*"] floating enable
+for_window [class="gamma*"] floating enable
 
 focus_follows_mouse no
 focus_wrapping yes
@@ -102,6 +125,13 @@ bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
+
+bindsym $mod+f fullscreen toggle
+
+bindsym $mod+c focus child
+bindsym $mod+p focus parent
+
+bindsym $mod+q kill
 
 bindsym $mod+ctrl+h move left 400px
 bindsym $mod+ctrl+j move down 360px
@@ -113,6 +143,12 @@ bindsym $mod+ctrl+l move right 400px
 #bindsym $mod+Mod1+k resize grow height 100 px or 25 ppt
 #bindsym $mod+Mod1+l resize grow width 100 px or 20 ppt
 
+bindsym $mod+semicolon scratchpad show
+bindsym $mod+shift+semicolon move scratchpad
+
+bindsym $mod+slash focus mode_toggle
+bindsym $mod+shift+slash floating toggle
+
 bindsym $mod+shift+h workspace prev
 bindsym $mod+shift+l workspace next
 bindsym $mod+ctrl+shift+h move container to workspace next; workspace next
@@ -120,25 +156,12 @@ bindsym $mod+ctrl+shift+l move container to workspace prev; workspace prev
 
 bindsym $mod+shift+p exec --no-startup-id i3-promote-window
 
-bindsym $mod+f fullscreen toggle
-
-bindsym $mod+c focus child
-bindsym $mod+p focus parent
-
-bindsym $mod+q kill
-
 bindsym $mod+shift+k split h
 bindsym $mod+shift+j split v
 
 bindsym $mod+shift+w layout tabbed
 bindsym $mod+shift+s layout stacking
 bindsym $mod+shift+e layout toggle split
-
-bindsym $mod+slash focus mode_toggle
-bindsym $mod+shift+slash floating toggle
-
-bindsym $mod+semicolon scratchpad show
-bindsym $mod+shift+semicolon move scratchpad
 
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
@@ -174,6 +197,11 @@ bindsym $mod+ctrl+shift+9 move container to workspace $ws9; workspace $ws9
 bindsym $mod+ctrl+shift+0 move container to workspace $ws10; workspace $ws10
 
 bindsym --whole-window $mod + button2 kill
+
+bindsym $mod+Mod1+h resize shrink width 10 px or 10 ppt
+bindsym $mod+Mod1+l resize grow width 10 px or 10 ppt
+bindsym $mod+Mod1+j resize shrink height 10 px or 10 ppt
+bindsym $mod+Mod1+k resize grow height 10 px or 10 ppt
 
 set $mode_resize " RESIZE"
 mode $mode_resize {
