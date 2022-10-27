@@ -1,3 +1,8 @@
+super + d
+    rofi -show drun
+super + Tab
+    rofi -show window
+
 super + Return
     $TERMINAL
 super + b
@@ -7,24 +12,14 @@ super + n
 
 super + o ; {b,t}
     {$BROWSER,$TERMINAL}
-
-super + d
-    rofi -show drun
-
-super + Tab
-    rofi -show window
-
 super + x ;  {c,e,i,r,w,x}
     {clipmenu, dmenu-exit, dmenu-nerdfont, dmenu-record, $(rofi -show window), dmenu-screenshot}
+super + m ; {p,l,h,s}
+    {$(playerctl play-pause),$(playerctl next),$(playerctl previous),$(playerctl stop)}
 
 super + shift + x
     scrot "$HOME/screenshot-%Y_%m_%d_%H_%M.png" #TODO dmenu-screenshot
 
-super + m ; {p,l,h,s}
-    {$(playerctl play-pause),$(playerctl next),$(playerctl previous),$(playerctl stop)}
-
-#XF86Audio{Prev,Next}
-#	mpc -q {prev,next}
 XF86AudioRaiseVolume
     pactl set-sink-volume @DEFAULT_SINK@ +5%
 XF86AudioLowerVolume
