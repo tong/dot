@@ -65,17 +65,17 @@
     separator_height = 1
 
     # Padding between text and separator.
-    padding = 12
+    padding = 24
 
     # Horizontal padding.
-    horizontal_padding = 24
+    horizontal_padding = 32
 
     # Padding between text and icon.
     text_icon_padding = 10
 
     # Defines width in pixels of frame around the notification window.
     # Set to 0 to disable.
-    frame_width = 2
+    frame_width = 3
 
     # Defines color of the frame around the notification window.
     #frame_color = "#C4c7c5"
@@ -88,6 +88,7 @@
     #  * frame: use the same color as the frame;
     #  * anything else will be interpreted as a X color.
     separator_color = frame
+    
 
     # Sort messages by urgency.
     sort = yes
@@ -300,7 +301,8 @@
     #default_icon = /path/to/icon
     
 [urgency_normal]
-    background = "#101010"
+    #background = "#101010"
+    background = "#050505"
     foreground = "#9e9e9e"
     frame_color = "#000000"
     timeout = 11
