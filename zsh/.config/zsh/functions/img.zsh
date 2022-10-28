@@ -2,6 +2,17 @@ imgsize() {
     identify -format "%w %h" "$1"
     echo
 }
+
+imgrotate() {
+    local src=$1
+    local dst=$src
+    local val=90
+    if [ ! -z $2 ]; then; val=$2; fi
+    if [ ! -z $3 ]; then; dst=$3; fi
+ 	convert -rotate $val "$src" "$dst"
+    #echo "$src $val° $dst" 
+}
+
 # imgresize() {
 #     local filename=${1%\.*}
 #     local extension="${1##*.}"
@@ -57,16 +68,14 @@ imgsize() {
 # }
 
 img2jpg() {
-    for f in "$@"
-    do
+    for f in "$@"; do
         local fn=${f%\.*}
         convert -quality 100 $f "${fn}.jpg"
     done
 }
 
 img2webp() {
-    for f in "$@"
-    do
+    for f in "$@"; do
         local fn=${f%\.*}
         cwebp -q 100 $f -o $(basename ${fn}).webp
     done
