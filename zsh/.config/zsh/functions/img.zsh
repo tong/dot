@@ -81,3 +81,9 @@ img2webp() {
     done
 }
 
+svg2png() {
+    for f in "$@"; do
+        local fn=${f%\.*}
+        inkscape -o "$fn.png" $f
+    done
+}
