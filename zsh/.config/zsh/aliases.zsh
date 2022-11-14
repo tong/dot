@@ -7,10 +7,8 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-
 alias c='clear'
 alias e='exit'
-alias q='exit'
 
 # alias cd.='cd ..'
 # alias cd..='cd ..'
@@ -76,20 +74,12 @@ alias killa='killall'
 alias now='date +"%T"'
 #alias paths='echo -e ${PATH//:/\\n}'
 
-# alias 'sc-show'='systemctl show'
-# alias 'sc-status'='systemctl status'
-# alias 'sc-start'='systemctl start'
-# alias 'sc-stop'='systemctl stop'
-# alias 'sc-restart'='systemctl restart'
-# alias 'sc-enable'='systemctl enable'
-# alias 'sc-disable'='systemctl disable'
-
-alias ta='tmux attach -t'
-alias tad='tmux attach -d -t'
-alias ts='tmux new-session -s'
-alias tl='tmux list-sessions'
-alias tka='tmux kill-server'
-alias tks='tmux kill-session -t'
+# alias ta='tmux attach -t'
+# alias tad='tmux attach -d -t'
+# alias ts='tmux new-session -s'
+# alias tl='tmux list-sessions'
+# alias tka='tmux kill-server'
+# alias tks='tmux kill-session -t'
 
 alias amend='git commit -a --amend'
 alias clone='git clone'
@@ -97,7 +87,7 @@ alias checkout='git checkout'
 alias pull='git pull'
 alias push='git push'
 
-alias wget='wget -c' # Resume wget by default
+#alias wget='wget -c' # Resume wget by default
 
 alias cpuinfo='lscpu'
 alias meminfo='free -m -l -t'
@@ -115,6 +105,8 @@ alias pacr="pacman -Qq | fzf --multi --prompt ' ' --preview 'pacman -Qi {1}' 
 
 alias logout='xfce4-session-logout --logout'
 
-alias zshconfig='$EDITOR $ZDOTDIR'
-alias zshsource='source $ZDOTDIR/.zshrc'
+alias zconfig='$EDITOR $ZDOTDIR'
+alias zreload='zshreload'
+alias zsource='source $ZDOTDIR/.zshrc'
+alias zstats='zshstats'
 

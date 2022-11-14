@@ -8,3 +8,4 @@ zshstats() {
 zshreload () {
     exec "${SHELL}" "$@"
 }
+

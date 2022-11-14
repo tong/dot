@@ -1,6 +1,6 @@
 #alias mpv='i3-swallow mpv'
 alias neovide='i3-swallow neovide'
-alias sxiv='i3-swallow sxiv'
+#alias sxiv='i3-swallow sxiv'
 
 alias lf='$HOME/.config/lf/lfrun'
 alias lynx='lynx -vikeys -accept_all_cookies'
@@ -12,15 +12,17 @@ alias cheat='cht.sh'
 alias contacts='khard'
 alias email='neomutt'
 alias gist='gh gist'
-alias img='vimiv'
+alias img='i3-swallow sxiv'
+#alias img='vimiv'
 alias notify='notify-send'
 alias pdf='zathura'
 alias screenshot='scrot -u $SCREENSHOTS/screenshot-%Y_%m_%d_%H_%M.png'
 alias screen-off='xset dpms force off'
-alias ultraviolet='$EDITOR -c "VimwikiIndex"'
+alias ultraviolet='nvim -c "VimwikiIndex"'
 alias weather='curl -L wttr.in'
 alias web='lynx'
-alias ydl-mp3='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio --audio-format mp3 "$@"'
+alias webserver='hl $HOME/dev/lib/wtri/wtri.hl'
+alias ytdl-mp3='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio --audio-format mp3 "$@"'
 
 alias bc="bc -ql"
 #alias ddg="duckduckgo"
@@ -37,6 +39,8 @@ alias x='extract'
 alias '?'='ddg'
 ##alias doc='$EDITOR -c "VimwikiGoto Doc'
 
+alias fchrome='fzf-chrome-history'
+
 alias ydl='yt-dlp'
 alias ydl-mp3='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio --audio-format mp3 "$@"'
 
@@ -46,6 +50,7 @@ alias -s js=node
 alias closure-stylesheets='java -jar $HOME/sdk/closure-stylesheets.jar'
 alias lessc-live='neko $DEV/tool/lessc-live/lessc-live.n $@'
 alias luamake='$HOME/src/lua-language-server/3rd/luamake/luamake $@'
+alias vscode='~/sdk/vscode/bin/code'
 
 alias armory='blender --app-template armory'
 alias krom='$ARMSDK/Krom/Krom'
