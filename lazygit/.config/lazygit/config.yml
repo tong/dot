@@ -1,0 +1,20 @@
+gui:
+  showFileTree: false
+  theme:
+    activeBorderColor:
+      - white
+      - bold
+    inactiveBorderColor:
+      - black
+    optionsTextColor:
+      - blue
+    selectedLineBgColor:
+      - reverse # set to `default` to have no background colour
+    selectedRangeBgColor:
+      - reverse
+    cherryPickedCommitBgColor:
+      - cyan
+    cherryPickedCommitFgColor:
+      - blue
+    unstagedChangesColor:
+      - red
