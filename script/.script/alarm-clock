@@ -1,9 +1,0 @@
-#!/bin/sh
-# Suspend and wake me up playing random music
-dir=$HOME/music
-music=$(find "$dir" -type f | shuf -n 1)
-time=$(date +%s -d "$1")
-sudo rtcwake -m mem -l -t "$time" \
-	&& sleep 3 \
-	&& mplayer "$music"
-
