@@ -18,6 +18,7 @@ alias gist='gh gist'
 alias getip='curl http://getip.disktree.net; echo'
 alias img='i3-swallow sxiv'
 #alias img='vimiv'
+alias keymap='i3-swallow sxiv $HOME/doc/keymap.png'
 alias notify='notify-send'
 alias pdf='zathura'
 alias screenshot='scrot -u $SCREENSHOTS/screenshot-%Y_%m_%d_%H_%M.png'
@@ -30,7 +31,6 @@ alias ytdl-mp3='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-au
 
 alias a='archive'
 alias bc="bc -ql"
-alias cpr="cp -r"
 #alias ddg="duckduckgo"
 alias ddg="ddgr"
 alias ext='extract'
