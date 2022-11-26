@@ -1,7 +1,3 @@
-!*.font: monospace:size=11
-*.font: JetBrainsMono Nerd Font-9
-!*.alpha: 0.8
-
 Xft.antialias: true
 Xft.autohint: false
 Xft.dpi: 96
@@ -11,10 +7,12 @@ Xft.lcdfilter: lcddefault
 Xft.rgba: rgb
 
 Xcursor.theme: Paper
-!Xcursor.size: 24
 Xcursor.size: 16
 
-! Void
+*.font: JetBrainsMono Nerd Font-9
+
+!*.alpha: 0.8
+
 *.foreground:   #c6c6c4
 *.background:   #10100e
 *.cursorColor:  #c6c6c4
@@ -38,10 +36,6 @@ Xcursor.size: 16
 !rofi.font: JetBrainsMono Nerd Font-9
 
 Sxiv.font: JetBrainsMono Nerd Font-9
-!Sxiv.background: #c6c6c4
-!Sxiv.foreground: #10100E
 Sxiv.background: #10100E
 Sxiv.foreground: #c6c6c4
-
-!TermPop.internalBorder: 30
 

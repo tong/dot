@@ -6,14 +6,14 @@ XRES="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources"
 XMODMAP="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xmodmap"
 [ -f "$XMODMAP" ] && xmodmap "$XMODMAP"
 
-"$HOME/.screenlayout/2-monitor.sh" &
+#"$HOME/.screenlayout/2-monitor.sh" &
 
 # xset +fp $HOME/.local/share/fonts
 # xset fp rehash
 
 hsetroot -solid '#101010'
-nitrogen --restore
-
+wallpaper --image "$HOME/.local/share/wallpaper/space1.jpg"
+#nitrogen --restore
 picom -b --config "$HOME/.config/picom.conf" --dbus
 
 #autostart="mpd xcompmgr dunst unclutter pipewire"
@@ -22,8 +22,6 @@ picom -b --config "$HOME/.config/picom.conf" --dbus
 # for program in $autostart; do
 #     pidof -s "$program" || "$program" &
 # done >/dev/null 2>&1
-
-xset r rate 190 90
 
 [ -n "$xrdbpid" ] && wait "$xrdbpid"
 
