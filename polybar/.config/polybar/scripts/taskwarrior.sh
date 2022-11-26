@@ -33,13 +33,13 @@ if [ "$n_active" -ne 0 ]; then
     time_start=$(date -d "${in:0:4}-${in:4:2}-${in:6:2} ${in:9:2}:${in:11:2}:${in:13:2}" +%s)
     time_now=$(date +%s)
     #secs=$((time_now - (time_start+7200))) # TODO HACK for wrong timew config (+2h)
-    secs=$((time_now - (time_start))) # TODO HACK for wrong timew config (+2h)
+    secs=$((time_now - time_start - 3600)) # TODO HACK for wrong timew config (+2h)
     #time_elapsed=$(printf '%02d:%02d:%02d' $((secs/3600)) $((secs%3600/60)) $((secs%60)))
     time_elapsed=$(printf '%02d:%02d' $((secs/3600)) $((secs%3600/60)))
-    str+=" $time_elapsed"
-
+    
+    #str+=" | "
+    [ "$active_project" ] && str+="  %{F#9E9E9E}project:$active_project"
     str+=" %{F#f0f0f0} $active_description "
-    [ "$active_project" ] && str+=" %{F#9E9E9E}$active_project"
     if [[ -n $active_tags ]]; then
         str+="%{F#9E9E9E}"
         IFS=' ' read -ra tags <<< "$active_tags"
@@ -48,6 +48,7 @@ if [ "$n_active" -ne 0 ]; then
             str+=" +$i"
         done
     fi
+    str+=" $time_elapsed"
     #printf '%s %s' "$str" "$(print_next_tasks)"
     #printf '%s' "$str"
 fi
