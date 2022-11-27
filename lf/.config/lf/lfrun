@@ -6,8 +6,8 @@ cleanup() {
 	rm "$FIFO_UEBERZUG"
 }
 
-source $HOME/.config/lf/colors
-source $HOME/.config/lf/icons
+source "$HOME/.config/lf/colors"
+source "$HOME/.config/lf/icons"
 
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
 	lf "$@"

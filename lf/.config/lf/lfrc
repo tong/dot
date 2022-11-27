@@ -1,10 +1,9 @@
-#%[ "$LF_LEVEL" -eq 1 ] || echo "WARNING: You're in a nested lf instance!"
+%[ "$LF_LEVEL" -eq 1 ] || echo "WARNING: You're in a nested lf instance!"
 
 #set drawbox
-#set number
-#set promptfmt "\033[32;1m%u@%h\033[0m:\033[34;1m%d\033[0m\033[1m%f\033[0m"
+set number
 #set relativenumber
-set colors
+#set colors
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set icons
 set ifs "\n"
@@ -15,6 +14,7 @@ set shell sh
 set shellopts '-eu'
 set cleaner '~/.config/lf/cleaner'
 set previewer '~/.config/lf/preview'
+#set promptfmt "\033[32;1m%u@%h\033[0m:\033[34;1m%d\033[0m\033[1m%f\033[0m"
 
 cmd bookmark-jump ${{
     res="$(cat $LF_BOOKMARK_PATH/$(ls $LF_BOOKMARK_PATH | fzf))"
@@ -53,15 +53,30 @@ cmd bulk-rename ${{
 #cmd paste $cp-p --lf-paste $id
 
 cmd copyto ${{
+	# clear; tput cup $(($(tput lines)/3)); tput bold
+	# set -f
+	# clear; echo "Copy to where?"
+	# dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf | sed 's|~|$HOME|')" &&
+	# for x in $fx; do
+	# 	eval cp -ivr \"$x\" \"$dest\"
+	# done &&
+	# notify-send "📋 File(s) copied." "File(s) copies to $dest."
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -f
 	clear; echo "Copy to where?"
-	dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf | sed 's|~|$HOME|')" &&
+#dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf | sed 's|~|$HOME|')" &&
+    dest="$1" &&
 	for x in $fx; do
 		eval cp -ivr \"$x\" \"$dest\"
 	done &&
 	notify-send "📋 File(s) copied." "File(s) copies to $dest."
 }}
+
+# cmd archive ${{
+#     set -f
+#     outname=$(archive zip "$f")
+#     notify-send --app-name='archive created' --urgency "low" --icon="$VOID/void-icons/actions/extract-archive.svg" "$f  $outname"
+# }}
 
 cmd extract ${{
     set -f
@@ -225,7 +240,13 @@ cmd yank-basename-without-extension ${{
       xclip -i -selection clipboard
 }}
 
-
+set mouse on
+#map <m-1> open
+#map <m-2> cut
+# map <m-3> open
+# map <m-4> up
+map <m-up> up
+map <m-down> down
 map <delete> trash
 map <enter> shell
 
@@ -260,6 +281,7 @@ map <f-3> search
 map <c-n> push :mkdir<space>
 map <c-r> reload
 map <c-s> set hidden!
+
 #map <c-t> push %date<enter>
 map <c-z> $ kill -STOP $PPID
 
@@ -267,14 +289,6 @@ cmap <tab> cmd-menu-complete
 cmap <backtab> cmd-menu-complete-back
 cmap <up> cmd-history-prev
 cmap <down> cmd-history-next
-
-set mouse on
-#map <m-1> open
-#map <m-2> cut
-# map <m-3> open
-# map <m-4> up
-map <m-up> up
-map <m-down> down
 
 on-cd
 
