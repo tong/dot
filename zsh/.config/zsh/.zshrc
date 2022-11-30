@@ -24,13 +24,13 @@ setopt HIST_VERIFY               # Do not execute immediately upon history expan
 autoload -Uz promptinit && promptinit
 promp_themes+=(void)
 prompt elite
+source $ZDOTDIR/prompt/void.zsh-theme
 
 ## Complete
 source $ZDOTDIR/completion.zsh
 
-# Alias
-source $ZDOTDIR/aliases.zsh
-source $ZDOTDIR/aliases_user.zsh
+# Network
+[ -f "$ZDOTDIR/network.zsh" ] && source $ZDOTDIR/network.zsh
 
 # Functions
 source $ZDOTDIR/functions/archive.zsh
@@ -39,12 +39,12 @@ source $ZDOTDIR/functions/fzf.zsh
 source $ZDOTDIR/functions/git.zsh
 source $ZDOTDIR/functions/img.zsh
 source $ZDOTDIR/functions/lfcd.zsh
+source $ZDOTDIR/functions/mail.zsh
 source $ZDOTDIR/functions/take.zsh
 source $ZDOTDIR/functions/zsh.zsh
 #source $ZDOTDIR/z.sh #TODO conflict with complete
 
 # Plugins
-source $ZDOTDIR/plugins/bd/bd.zsh
 source $ZDOTDIR/plugins/bd/bd.zsh
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -54,14 +54,15 @@ source /usr/share/fzf/completion.zsh
 source /usr/share/fzf/key-bindings.zsh
 #source $HOME/sdk/qmk_firmware/util/qmk_tab_complete.sh
 
+# Alias
+source $ZDOTDIR/aliases.zsh
+source $ZDOTDIR/aliases_user.zsh
+
 # Path
 if [ -d "$HOME/.script" ]; then PATH="$HOME/.script:$PATH"; fi
 if [ -d "$HOME/.bin" ]; then PATH="$HOME/.bin:$PATH"; fi
 if [ -d "$HOME/.local/bin" ]; then PATH="$HOME/.local/bin:$PATH"; fi
 if [ -d "$HOME/src/npm-global/bin" ]; then PATH=$HOME/src/npm-global/bin:$PATH; fi
-
-# Theme
-source $ZDOTDIR/themes/void.zsh-theme
 
 # Keybindings
 # ctrl+l used for tmux (switch pane)
@@ -186,12 +187,33 @@ bindkey -s '^o' 'lfcd\n'
 # bindkey -M vicmd ys add-surround
 # bindkey -M visual S add-surround
 
+## Filemanager style key
+
+cdUndoKey() {
+  popd
+  zle       reset-prompt
+  print
+  ls
+  zle       reset-prompt
+}
+
+cdParentKey() {
+  pushd ..
+  zle      reset-prompt
+  print
+  ls
+  zle       reset-prompt
+}
+
+zle -N                 cdParentKey
+zle -N                 cdUndoKey
+bindkey '^[[1;3A'      cdParentKey
+bindkey '^[[1;3D'      cdUndoKey
+
 # Extra
 #eval "$(zoxide init zsh)"
 
 #[ -s ~/.luaver/luaver ] && . ~/.luaver/luaver
-
-#source $ZDOTDIR/env
 
 export HAXE_STD_PATH=/usr/local/share/haxe/std
 

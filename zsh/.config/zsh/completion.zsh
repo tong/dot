@@ -62,10 +62,11 @@ zstyle ':completion:*' menu select
 # Autocomplete options for cd instead of directory stack
 zstyle ':completion:*' complete-options true
 
-zstyle ':completion:*' file-sort modification
+zstyle ':completion:*' file-sort name
+#zstyle ':completion:*' file-list all
 
 zstyle ':completion:*:*:*:*:corrections' format '%F{yellow}!- %d (errors: %e) -!%f'
-zstyle ':completion:*:*:*:*:descriptions' format '%F{blue}-- %D %d --%f'
+zstyle ':completion:*:*:*:*:descriptions' format '%F{blue}--- %D %d ---%f'
 zstyle ':completion:*:*:*:*:messages' format ' %F{purple} -- %d --%f'
 zstyle ':completion:*:*:*:*:warnings' format ' %F{red}-- no matches found --%f'
 # zstyle ':completion:*:default' list-prompt '%S%M matches%s'
@@ -88,8 +89,3 @@ zstyle ':completion:*' keep-prefix true
 
 zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 
-##
-## For kubernetes
-#source $DOTFILES/zsh/plugins/kubectl-completion/_kubectl
-#zstyle ':completion:*:*:kubectl:*' list-grouped false
-#

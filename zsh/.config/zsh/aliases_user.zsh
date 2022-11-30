@@ -45,21 +45,18 @@ alias vv='$EDITOR .'
 alias x='extract'
 alias '?'='ddg'
 
-alias fchrome='fzf-chrome-history'
-
 alias -s hxml=haxe
 alias -s js=node
 
-alias closure-stylesheets='java -jar $HOME/sdk/closure-stylesheets.jar'
-alias lessc-live='neko $DEV/tool/lessc-live/lessc-live.n $@'
-alias luamake='$HOME/src/lua-language-server/3rd/luamake/luamake $@'
-alias vscode='~/sdk/vscode/bin/code'
+alias fchrome='fzf-chrome-history'
+alias fscreenlayout='ls "$HOME/.screenlayout/" | fzf --prompt="  " | $@'
 
-alias armory='blender --app-template armory'
+alias closure-stylesheets='java -jar $HOME/sdk/closure-stylesheets.jar'
+#alias lessc-live='neko $DEV/tool/lessc-live/lessc-live.n $@'
+#alias luamake='$HOME/src/lua-language-server/3rd/luamake/luamake $@'
+
+#alias armory='blender --app-template armory'
 alias krom='$ARMSDK/Krom/Krom'
 alias khamake='node $ARMSDK/Kha/Tools/khamake/khamake.js'
 alias kmake='$ARMSDK/Kha/Kinc/Tools/linux_x64/kmake'
-#alias armory='blender -b --python $ARMSDK/armory/armory-cli.py $1'
-#alias armory='blender -b $@ --python $ARMSDK/armory/armory-cli.py'
-#alias armory='python $ARMSDK/armory/armory-cli.py $@'
 
