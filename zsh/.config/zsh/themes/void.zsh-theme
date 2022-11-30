@@ -49,7 +49,7 @@ prompt_context() {
     #local user=`whoami`
     # if [[ "$user" != "$DEFAULT_USER" || -n "$SSH_CONNECTION" ]]; then
     #prompt_segment $PRIMARY_FG default "  %(!.%{%F{yellow}%}.)$user@%m "
-    prompt_segment $PRIMARY_FG default " %(!.%{%F{yellow}%}.) "
+    prompt_segment $PRIMARY_FG default "  %(!.%{%F{yellow}%}.)"
     # fi
 }
 
@@ -101,9 +101,9 @@ prompt_dir() {
         #$HOME/doc*)
             #prompt_segment blue $PRIMARY_FG ' ◆ %~'
         #;;
-        #$HOME/img*)
-            #prompt_segment blue $PRIMARY_FG '  %~'
-        #;;
+        $HOME/img*)
+            prompt_segment blue $PRIMARY_FG '  %~'
+        ;;
         *)
             #prompt_segment white black '%~'
             prompt_segment blue $PRIMARY_FG ' %~ '
@@ -127,6 +127,10 @@ prompt_status() {
     [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}$LIGHTNING"
     [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}$GEAR"
     [[ -n "$symbols" ]] && prompt_segment $PRIMARY_FG default " $symbols "
+}
+
+prompt_bg() {
+    prompt_segment $PRIMARY_FG default " XXXX "
 }
 
 prompt_taskwarrior() {
@@ -154,6 +158,7 @@ prompt_void_main() {
     prompt_context
     prompt_dir
     prompt_git
+    prompt_bg
     prompt_end
 }
 
@@ -173,5 +178,6 @@ prompt_void_setup() {
     zstyle ':vcs_info:git*' actionformats '%b (%a)'
 }
 prompt_void_setup "$@"
+
 #RPROMPT="$(date +%R:%S)"
  
