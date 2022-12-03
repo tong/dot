@@ -100,21 +100,20 @@ bind editor <Tab> complete-query
 bind editor ^T    complete
 
 # Sidebar mappings
-set sidebar_visible = yes
+set sidebar_visible = no
 set sidebar_width = 20
 set sidebar_short_path = yes
 set sidebar_next_new_wrap = yes
 set sidebar_format = '%D%?F? [%F]?%* %?N?%N/? %?S?%S?'
-#bind index,pager \Ck sidebar-prev
-#bind index,pager \Cj sidebar-next
-bind index,pager <up> sidebar-prev
-bind index,pager <down> sidebar-next
+bind index,pager \Ck sidebar-prev
+bind index,pager \Cj sidebar-next
+#bind index,pager <up> sidebar-prev
+#bind index,pager <down> sidebar-next
 bind index,pager \Co sidebar-open
 #bind index,pager \Cp sidebar-prev-new
 #bind index,pager \Cn sidebar-next-new
 #bind index,pager B sidebar-toggle-visible
 bind index,pager \Cn sidebar-toggle-visible
-
 
 macro index,pager gi "<change-folder>=INBOX<enter>" "go to inbox"
 macro index,pager Mi ";<save-message>=INBOX<enter>" "move mail to inbox"
@@ -134,12 +133,14 @@ macro index,pager Cs ";<copy-message>=Sent<enter>" "copy mail to sent"
 macro index,pager ga "<change-folder>=Archive<enter>" "go to archive"
 macro index,pager Ma ";<save-message>=Archive<enter>" "move mail to archive"
 macro index,pager Ca ";<copy-message>=Archive<enter>" "copy mail to archive"
+macro index,pager gw "<change-folder>=Work<enter>" "go to work"
+macro index,pager Mw ";<save-message>=Work<enter>" "move mail to work"
+macro index,pager Cw ";<copy-message>=Work<enter>" "copy mail to work"
 
-#macro index,pager a "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<return><pipe-message>abook --add-email<return><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<return>" "add the sender address to abook"
-macro index,pager a "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<return><pipe-message>khard add-email<return><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<return>"
+macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>printf 'Enter a search term to find with notmuch: '; read x; echo \$x >~/.cache/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat ~/.cache/mutt_terms) | head -n 600 | perl -le '@a=<>;s/\^id:// for@a;$,=\"|\";print@a' | perl -le '@a=<>; chomp@a; s/\\+/\\\\+/ for@a;print@a' \`\"<enter>" "show only messages matching a notmuch pattern"
 macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
+macro index A "<limit>all\n" "show all messages (undo limit)"
+macro index,pager a "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<return><pipe-message>khard add-email<return><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<return>"
 macro index o "<shell-escape>mailsync<enter>"
 macro index O "<shell-escape>mw -Y<enter>" "run mw -Y to sync all mail"
-macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>printf 'Enter a search term to find with notmuch: '; read x; echo \$x >~/.cache/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat ~/.cache/mutt_terms) | head -n 600 | perl -le '@a=<>;s/\^id:// for@a;$,=\"|\";print@a' | perl -le '@a=<>; chomp@a; s/\\+/\\\\+/ for@a;print@a' \`\"<enter>" "show only messages matching a notmuch pattern"
-macro index A "<limit>all\n" "show all messages (undo limit)"
 
