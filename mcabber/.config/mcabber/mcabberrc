@@ -258,20 +258,20 @@ set escdelay = 50
 # readmark:   text color of the "read mark" line in buffers
 # timestamp:  text color in the chat window for delayed timestamps
 #
-#set color_background   = black
+set color_background   = black
 #set color_general      = white
 #set color_info         = white
-#set color_msgin        = white
-#set color_msgout       = cyan
+set color_msgin        = green
+set color_msgout       = blue
 #set color_msghl        = yellow
-#set color_bgstatus     = blue
-#set color_status       = white
+set color_bgstatus     = white
+set color_status       = black
 #set color_log          = white
-#set color_roster       = green
-#set color_bgrostersel  = cyan
-#set color_rostersel    = blue
+set color_roster       = white
+set color_bgrostersel  = cyan
+set color_rostersel    = black
 #set color_rosterselmsg = red
-#set color_rosternewmsg = red
+set color_rosternewmsg = red
 #set color_readmark     = red
 #set color_timestamp    = brightblue
 
@@ -279,7 +279,7 @@ set escdelay = 50
 # all roster items white, just all contacts from jabber.org that are away,
 # not available or do not disturb yellow, you do this:
 #
-#color roster * * white
+color roster * * white
 #color roster adn *@jabber.org yellow
 
 # You can let mcabber color nicks in MUC.
