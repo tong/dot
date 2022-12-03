@@ -8,19 +8,17 @@ ifub() {
 }
 
 image() {
-    # if [[ $TERM = "xterm-kitty" ]]; then
-    #     echo 23
-    #     #kitty +kitten icat --clear --z-index -1 --place "100x100@$4x$5" "$1"
-    #     kitty +kitten icat  --z-index -1 --place "100x100@$4x$5" "$1"
-    #     #kitty +kitten icat --clear --z-index -1 "$1"
-    # else
-     #TODO: show mediainfo below image
-    #for ((i=0;i<(h-20);i++)) do printf "\n"; done;
-    if ifub; then
-        #y="$(($5+16))"
-        #y="$(($5))"
-        #h="$(($3-1))"
-        printf '{"action": "add", "identifier": "PREVIEW", "x": "%s", "y": "%s", "width": "%s", "height": "%s", "scaler": "contain", "path": "%s"}\n' "$4" "$5" "$(($2-1))" "$(($3-1))" "$1" > "$FIFO_UEBERZUG"
+    #if [[ "$( file -Lb --mime-type "$file")" =~ ^image ]]; then
+    file=$1
+    w=$2
+    h=$3
+    x=$4
+    y=$5
+    if [[ $TERM = "xterm-kitty" ]]; then
+        kitty +icat --silent --transfer-mode file --place "${w}x${h}@${x}x${y}" "$file"
+        exit 1
+    elif ifub; then
+        printf '{"action": "add", "identifier": "PREVIEW", "x": "%s", "y": "%s", "width": "%s", "height": "%s", "scaler": "contain", "path": "%s"}\n' "$x" "$y" "$(($w-1))" "$(($h-1))" "$file" > "$FIFO_UEBERZUG"
     else
         mediainfo "$1"
     fi
@@ -104,8 +102,6 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | awk '{print tolower($0)}')" in
 	#*.[1-8]) man "$1" | col -b ;;
 		#ssconvert --export-type=Gnumeric_stf:stf_csv "$1" "fd://1" | batorcat --language=csv
 		#;;
-	*)
-        ;;
-        #batorcat "$1" ;;
+	*) batorcat "$1" ;;
 esac
 exit 1
