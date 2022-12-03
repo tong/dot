@@ -1,10 +1,10 @@
 # vim: filetype=neomuttrc
 
 # Default index colors
-color index yellow default '.*'
+color index cyan default '.*'
 color index_author red default '.*'
-color index_number blue default
-color index_subject cyan default '.*'
+color index_number cyan black 
+color index_subject yellow default '.*'
 
 # New mail is boldened
 color index brightyellow black "~N"
@@ -12,9 +12,9 @@ color index_author brightred black "~N"
 color index_subject brightcyan black "~N"
 
 # Tagged mail is highlighted
-color index brightyellow blue "~T"
-color index_author brightred blue "~T"
-color index_subject brightcyan blue "~T"
+color index brightblack cyan "~T"
+color index_author brightblack cyan "~T"
+color index_subject brightblack cyan "~T"
 
 # Other colors and aesthetic settings
 mono bold bold
@@ -22,8 +22,8 @@ mono underline underline
 mono indicator reverse
 mono error bold
 color normal default default
-color indicator brightblack white
-color sidebar_highlight brightblack white
+color indicator brightblack cyan
+color sidebar_highlight brightblack cyan
 color sidebar_divider brightblack black
 color sidebar_flagged yellow black
 color sidebar_new green black
@@ -34,7 +34,7 @@ color message cyan default
 color markers red white
 color attachment white default
 color search brightmagenta default
-color status brightyellow black
+color status cyan black
 color hdrdefault brightgreen default
 color quoted green default
 color quoted1 blue default
