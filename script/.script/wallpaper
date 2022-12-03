@@ -1,7 +1,8 @@
 #!/bin/bash
+# Wallpaper management
 
 wallpapers="$HOME/.local/share/wallpaper/"
-mode="tile"
+mode="stretch"
 out="$SCREEN"
 
 random_file() {
@@ -10,6 +11,10 @@ random_file() {
 
 while true; do
     case "$1" in
+        select)
+            img=$(i3-swallow sxiv -t -r -o "$wallpapers")
+            break
+            ;;
         --random|-r) img=$(random_file "$wallpapers") shift;;
         --image|-i) shift; img=$1; shift ;;
         --output|-o) shift; out=$1; shift ;;
