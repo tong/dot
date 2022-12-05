@@ -18,8 +18,7 @@ alias lla='ls -la'
 alias l='ls -CF'
 alias lsd='lsd --group-directories-first --color=auto'
 
-alias clipcopy='cat "${1:-/dev/stdin}" | xsel --clipboard --input;'
-alias clippaste='xsel --clipboard --output;'
+
 
 alias diskspace='du -S | sort -n -r | more'
 
@@ -89,3 +88,5 @@ alias zstats='zshstats'
 
 alias logout='xfce4-session-logout --logout'
 
+alias clipcopy='cat "${1:-/dev/stdin}" | xsel --clipboard --input;'
+alias clippaste='xsel --clipboard --output;'
