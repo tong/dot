@@ -1,0 +1,4 @@
+#!/bin/sh
+SEL=$(echo -e " lock\n鈴suspend\n exit\n鈴hibernate\n reboot\n shutdown" | fzf --prompt=' ')
+i3-exit "${SEL:2}"
+
