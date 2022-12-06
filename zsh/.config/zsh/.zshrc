@@ -24,13 +24,13 @@ setopt HIST_VERIFY               # Do not execute immediately upon history expan
 autoload -Uz promptinit && promptinit
 promp_themes+=(void)
 prompt elite
-source $ZDOTDIR/prompt/void.zsh-theme
+source $ZDOTDIR/prompt/void.zsh
 
 ## Complete
 source $ZDOTDIR/completion.zsh
 
 # Network
-[ -f "$ZDOTDIR/network.zsh" ] && source $ZDOTDIR/network.zsh
+#[ -f "$ZDOTDIR/network.zsh" ] && source $ZDOTDIR/network.zsh
 
 # Functions
 source $ZDOTDIR/functions/archive.zsh
@@ -55,12 +55,13 @@ source /usr/share/fzf/key-bindings.zsh
 #source $HOME/sdk/qmk_firmware/util/qmk_tab_complete.sh
 
 # Alias
-source $ZDOTDIR/aliases.zsh
-source $ZDOTDIR/aliases_user.zsh
+source $ZDOTDIR/aliases/sys.zsh
+source $ZDOTDIR/aliases/user.zsh
 
 # Path
-if [ -d "$HOME/.script" ]; then PATH="$HOME/.script:$PATH"; fi
+if [ -d "$GOPATH/bin" ]; then PATH=$GOPATH/bin:$PATH; fi
 if [ -d "$HOME/.bin" ]; then PATH="$HOME/.bin:$PATH"; fi
+if [ -d "$HOME/.script" ]; then PATH="$HOME/.script:$PATH"; fi
 if [ -d "$HOME/.local/bin" ]; then PATH="$HOME/.local/bin:$PATH"; fi
 if [ -d "$HOME/src/npm-global/bin" ]; then PATH=$HOME/src/npm-global/bin:$PATH; fi
 
@@ -189,31 +190,34 @@ bindkey -s '^o' 'lfcd\n'
 
 ## Filemanager style key
 
-cdUndoKey() {
-  popd
-  zle       reset-prompt
-  print
-  ls
-  zle       reset-prompt
-}
-
-cdParentKey() {
-  pushd ..
-  zle      reset-prompt
-  print
-  ls
-  zle       reset-prompt
-}
-
-zle -N                 cdParentKey
-zle -N                 cdUndoKey
-bindkey '^[[1;3A'      cdParentKey
-bindkey '^[[1;3D'      cdUndoKey
-
+# cdUndoKey() {
+#   popd
+#   zle       reset-prompt
+#   print
+#   ls
+#   zle       reset-prompt
+# }
+#
+# cdParentKey() {
+#   pushd ..
+#   zle      reset-prompt
+#   print
+#   ls
+#   zle       reset-prompt
+# }
+#
+# zle -N                 cdParentKey
+# zle -N                 cdUndoKey
+# bindkey '^[[1;3A'      cdParentKey
+# bindkey '^[[1;3D'      cdUndoKey
+#
 # Extra
 #eval "$(zoxide init zsh)"
 
-#[ -s ~/.luaver/luaver ] && . ~/.luaver/luaver
-
 export HAXE_STD_PATH=/usr/local/share/haxe/std
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH=$PATH:$GOPATH/bin
+#export PATH=$HOME/sdk/depot_tools/:$PATH
+#export PATH=$PATH:$HOME/sdk/lua-language-server/bin
+#export PATH="$HOME/src/v8/v8/out/linux:$PATH"
 
