@@ -15,7 +15,7 @@ set signature="$HOME/.signature"
 #source $alias_file
 
 set mail_check_stats
-set mailcap_path = $HOME/.config/mutt/mailcap:/usr/local/share/mutt-wizard/mailcap:$mailcap_path
+set mailcap_path = $HOME/.config/mutt/mailcap:$mailcap_path
 set mime_type_query_command = "file --mime-type -b %s"
 set date_format="%y/%m/%d %I:%M%p"
 set index_format="%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"
@@ -104,7 +104,8 @@ set sidebar_visible = no
 set sidebar_width = 20
 set sidebar_short_path = yes
 set sidebar_next_new_wrap = yes
-set sidebar_format = '%D%?F? [%F]?%* %?N?%N/? %?S?%S?'
+set sidebar_sort_method = alpha
+set sidebar_format = '%D%?F? [%F]?%* %?N?%N/?%?S?%S?'
 bind index,pager \Ck sidebar-prev
 bind index,pager \Cj sidebar-next
 #bind index,pager <up> sidebar-prev
