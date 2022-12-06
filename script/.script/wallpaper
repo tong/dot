@@ -1,12 +1,19 @@
 #!/bin/bash
-# Wallpaper management
+# Wallpaper manager
 
-[[ -z $WALLPAPERS ]] && WALLPAPERS="$HOME/.local/share/wallpaper/"
+usage(){
+    echo -e "Usage: $0 color|random|select|set\n" \
+        "Options:\n" \
+        "  color     Set single color\n" \
+        "  random    Set random image\n"
+}
+
+[[ -z $WALLPAPERS ]] && WALLPAPERS="$HOME/.local/share/wallpapers/"
 MODE="stretch"
 OUT="$SCREEN"
 
 random_file() {
-    find "$1" -type f | shuf -n 1
+    find "$WALLPAPERS/" -type f | shuf -n 1
 }
 
 while true; do
@@ -14,19 +21,21 @@ while true; do
         path) echo "$WALLPAPERS"; exit 0 ;;
         select) IMG=$(i3-swallow sxiv -t -r -o "$WALLPAPERS"); break ;;
         random) IMG="random" break;;
+        color) hsetroot -solid "#$2"; exit 0;;
+        color-name) hsetroot -solid "$2"; exit 0;;
         --image|-i) shift; IMG=$1; shift ;;
         --output|-o) shift; OUT=$1; shift ;;
         --mode|-m) shift; MODE=$1; shift ;;
         --wallpapers|-w) shift; WALLPAPERS=$1; shift ;;
+        --help) usage; exit 0 ;;
         *) break;;
     esac
 done
 if [ -z "$IMG" ] || [ "$IMG" == "random" ]; then
-    IMG=$(random_file "$WALLPAPERS")
+    IMG=$(random_file)
 fi
 if [ -z "$OUT" ]; then
-    xwallpaper --stretch --"$MODE" "$IMG"
+    xwallpaper --"$MODE" "$IMG"
 else
     xwallpaper --output "$OUT" --"$MODE" "$IMG"
 fi
-
