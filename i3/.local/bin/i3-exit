@@ -1,6 +1,6 @@
 #!/bin/sh
 lock() {
-    i3lock -c 000000 -i ~/img/wallpaper/lock_process.png
+    i3lock -c 000000
 }
 case "$1" in
     lock) lock;;
