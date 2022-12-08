@@ -25,9 +25,9 @@
     # The maximum height of a single notification, excluding the frame.
     height = 600
 
-    origin = top-center
+    origin = top-right
     #offset = 72x96
-    offset = 0x96
+    offset = 48x92
     scale = 0
     notification_limit = 23
 
@@ -45,10 +45,10 @@
     progress_bar_frame_width = 1
 
     # Set the minimum width for the progress bar
-    progress_bar_min_width = 150
+    progress_bar_min_width = 24
 
     # Set the maximum width for the progress bar
-    progress_bar_max_width = 300
+    progress_bar_max_width = 480
 
     # Show how many messages are currently hidden (because of
     # notification_limit).
@@ -61,8 +61,8 @@
 
     separator_height = 4
 
-    padding = 32
-    horizontal_padding = 36
+    padding = 48
+    horizontal_padding = 40
     text_icon_padding = 30
 
     frame_width = 3
@@ -131,15 +131,8 @@
     # Markup is allowed
     #format = "<b>%s</b>\n%b"
     #format = "<b>%s</b>\n%b"
-    #format = "<tt>777 ABcc efg</tt><span foreground="yellow" font_size="23pt"> </span><i>%a</i><b>%s</b>\n%b"
-    #format = "<span font_size="400%" rise="100pt" baseline_shift="100pt">%i</span> <span fgcolor="red">%a\n%s</span>\n%b"
-    #format = "<span font_size="14pt">%i</span> <span font_family="Frucade Small" font_size="x-small">%a</span>\n<span>%s</span>\n<span font_size="9pt">%b</span>"
-    #format = "<span font_size="16pt" rise="-3pt" alpha="50%">%I</span> <span text_transform="uppercase" alpha="50%">%a</span>\n<span font_weight="bold">%s</span>\n<span font_size="9pt">%b</span>"
     format = "<span text_transform="uppercase" font_size="7pt" alpha="100%">%a</span>\n<span font_weight="bold" font_style="italic">%s</span>\n<span font_size="9pt" alpha="100%">%b</span>"
-    #format = "<span>%s</span>\n<span font_size="9pt">%b</span>"
-    #format = "a:%a s:%s b:%b i:%i I:%I p:%p n:%n"
-    #format = "<span font_size="14pt" rise="-3pt" alpha="50%">%I</span> <span text_transform="uppercase">%a</span>\n<span>%s</span>\n<span>%b</span> i:%i I:%I p:%p n:%n"
-
+   
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
     alignment = left
@@ -151,7 +144,7 @@
     # Show age of message if message is older than show_age_threshold
     # seconds.
     # Set to -1 to disable.
-    show_age_threshold = 60
+    show_age_threshold = 120
 
     # Specify where to make an ellipsis in long lines.
     # Possible values are "start", "middle" and "end".
@@ -161,7 +154,7 @@
     ignore_newline = no
 
     # Stack together notifications with the same content
-    stack_duplicates = false
+    stack_duplicates = true
 
     # Hide the count of stacked notifications with the same content
     hide_duplicate_count = false
