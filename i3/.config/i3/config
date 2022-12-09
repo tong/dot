@@ -1,20 +1,17 @@
-
 set $DISPLAY0 DP-2
 set $DISPLAY1 DP-5
 
-
-set $border_width 4
-
+set $border_width 3
 # set $color_background #00000
 
 font pango: JetBrainsMono Nerd Font 5
 
-#include ~/.config/i3/keys.conf
-
-exec_always --no-startup-id $HOME/.screenlayout/2-monitor.sh
+#exec_always --no-startup-id wallpaper
+# exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf
+#exec_always --no-startup-id $HOME/.screenlayout/default
+exec_always --no-startup-id xset r rate 190 90 && xmodmap ~/.config/x11/xmodmap
+exec_always --no-startup-id hsetroot -solid '#101010'
 exec_always --no-startup-id $HOME/.config/polybar/run.sh
-#exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf
-exec_always --no-startup-id xset r rate 190 90
 
 set $ws1 "1"
 set $ws2 "2"
@@ -32,64 +29,53 @@ workspace $ws1 output $DISPLAY0
 workspace $ws2 output $DISPLAY0
 workspace $ws3 output $DISPLAY0
 workspace $ws4 output $DISPLAY0
-workspace $ws5 output $DISPLAY1
+workspace $ws5 output $DISPLAY0
 workspace $ws6 output $DISPLAY0
 workspace $ws7 output $DISPLAY0
 workspace $ws8 output $DISPLAY0
 workspace $ws9 output $DISPLAY0
-workspace $ws10 output $DISPLAY0
+workspace $ws10 output $DISPLAY1
 
 # class                 border  backgr. text    indicator child_border
-#client.focused          #4c7899 #285577 #ffffff #2e9ef4   #c6c6c4
-#client.focused          #4c7899 #285577 #ffffff #2e9ef4   #c6c6c400
-# client.focused_inactive #333333 #5f676a #ffffff #484e50   #404040
-# client.unfocused        #333333 #222222 #888888 #292d2e   #404040
-# client.urgent           #2f343a #900000 #ffffff #900000   #900000
-# client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-# client.background       #ffffff
 client.focused          #000000 #000000 #ffffff #b0b0b0   #909090
 client.focused_inactive #000000 #000000 #ffffff #484e50   #303030
 client.unfocused        #000000 #000000 #ffffff #292d2e   #404040
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 
 gaps vertical 0
-gaps inner 8
-gaps top -4
+gaps inner 14
+gaps top -10
 gaps bottom -2
 gaps left -2
 gaps right -2
 
 #smart_borders on
-smart_gaps on
+#smart_gaps on
 #hide_edge_borders smart_no_gaps
 #hide_edge_borders none
 #hide_edge_borders smart
+
 popup_during_fullscreen smart
-floating_minimum_size 32 x 16
+floating_minimum_size 24 x 24
 floating_maximum_size 3840 x 2160
 
-#default_orientation horizontal|vertical|auto
 #default_border pixel $border_width
 #default_floating_border pixel $border_width 
 
 # for_window [class=".*"] title_format "<b>%title</b>"
 for_window [class=.*] border pixel $border_width
 for_window [class="Arandr|baobab|feh|File-roller|Gnome-calculator|Gnome-disks|Gnome-tweaks|itch|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|SimpleScreenRecorder|Vimiv|vlc"] floating enable
-for_window [class="Surf"] floating enable, move position mouse, resize set 1080 1440
-for_window [class="Surf"] focus_on_window_activation focus
-for_window [class="Rofi"] floating enable
-for_window [class="main_KincApplication*"] floating enable
+# for_window [class="Surf"] floating enable, move position mouse, resize set 1080 1440
+# for_window [class="Rofi"] floating enable
+# for_window [class="main_KincApplication*"] floating enable
 for_window [class="^.*_KincApplication$"] floating enable
-
-for_window [class="popup"] floating enable
-for_window [class="POP$"] floating enable
+#for_window [class="fff*"] floating enable
+#for_window [class="gamma*"] floating enable
+#for_window [class="popup"] floating enable
+#for_window [class="POP$"] floating enable
 for_window [window_role="pop-up"] floating enable
 
 assign [class="^Steam"] → $ws6
-
-for_window [class="fff*"] floating enable
-for_window [class="gamma*"] floating enable
-
-focus_follows_mouse no
 focus_wrapping yes
 mouse_warping output
 
