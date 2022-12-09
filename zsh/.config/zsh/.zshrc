@@ -29,9 +29,6 @@ source $ZDOTDIR/prompt/void.zsh
 ## Complete
 source $ZDOTDIR/completion.zsh
 
-# Network
-#[ -f "$ZDOTDIR/network.zsh" ] && source $ZDOTDIR/network.zsh
-
 # Functions
 source $ZDOTDIR/functions/archive.zsh
 source $ZDOTDIR/functions/confirm.zsh
@@ -41,6 +38,7 @@ source $ZDOTDIR/functions/img.zsh
 source $ZDOTDIR/functions/lfcd.zsh
 source $ZDOTDIR/functions/mail.zsh
 source $ZDOTDIR/functions/take.zsh
+source $ZDOTDIR/functions/url.zsh
 source $ZDOTDIR/functions/zsh.zsh
 #source $ZDOTDIR/z.sh #TODO conflict with complete
 
@@ -55,7 +53,10 @@ source /usr/share/fzf/key-bindings.zsh
 #source $HOME/sdk/qmk_firmware/util/qmk_tab_complete.sh
 
 # Alias
-source $ZDOTDIR/aliases/sys.zsh
+source $ZDOTDIR/aliases/core.zsh
+source $ZDOTDIR/aliases/git.zsh
+source $ZDOTDIR/aliases/nmap.zsh
+source $ZDOTDIR/aliases/tmux.zsh
 source $ZDOTDIR/aliases/user.zsh
 
 # Path
@@ -213,6 +214,12 @@ bindkey -s '^o' 'lfcd\n'
 #
 # Extra
 #eval "$(zoxide init zsh)"
+
+#export CRON_BIN=$HOME/.local/bin/cron
+
+export ARMSDK=$HOME/dev/armory3d/armsdk
+export ARMORY_PLAY_HTML5='chromium --app=$url --new-window --window-size=$width,$height --auto-open-devtools-for-tabs'
+#export ARMORY_PLAY_KROM='$ARMSDK/Krom/Krom $path $resources --consolepid $pid'
 
 export HAXE_STD_PATH=/usr/local/share/haxe/std
 export PATH="$HOME/.cargo/bin:$PATH"

@@ -7,10 +7,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-alias diff='diff --color'
-
-alias ffmpeg="ffmpeg -hide_banner"
-
 alias ls="ls -hN --color=auto --group-directories-first"
 alias ll='ls -l'
 alias la='ls -A'
@@ -18,8 +14,8 @@ alias lla='ls -la'
 alias l='ls -CF'
 alias lsd='lsd --group-directories-first --color=auto'
 
-
-
+alias diff='diff --color'
+alias dirsize='du'
 alias diskspace='du -S | sort -n -r | more'
 
 alias uppercase="tr '[:lower:]' '[:upper:]'"
@@ -39,8 +35,6 @@ alias hsi='history | grep -i'
 
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
-alias dirsize='du'
-
 alias df='df -h'
 alias du='du -h'
 alias cal='cal -m'
@@ -50,22 +44,7 @@ alias md='mkdir -p'
 alias now='date +"%T"'
 #alias paths='echo -e ${PATH//:/\\n}'
 
-# alias ta='tmux attach -t'
-# alias tad='tmux attach -d -t'
-# alias ts='tmux new-session -s'
-# alias tl='tmux list-sessions'
-# alias tka='tmux kill-server'
-# alias tks='tmux kill-session -t'
-
-alias amend='git commit -a --amend'
-alias branch='git branch'
-alias checkout='git checkout'
-alias clone='git clone'
-alias commit='git commit'
-alias fetch='git fetch'
-alias pull='git pull'
-alias push='git push'
-alias status='git status'
+alias ffmpeg="ffmpeg -hide_banner"
 
 alias cpuinfo='lscpu'
 alias meminfo='free -m -l -t'
@@ -86,7 +65,7 @@ alias zreload='zshreload'
 alias zsource='source $ZDOTDIR/.zshrc'
 alias zstats='zshstats'
 
-alias logout='xfce4-session-logout --logout'
-
 alias clipcopy='cat "${1:-/dev/stdin}" | xsel --clipboard --input;'
 alias clippaste='xsel --clipboard --output;'
+
+alias logout='xfce4-session-logout --logout'

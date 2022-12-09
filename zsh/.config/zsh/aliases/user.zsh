@@ -1,7 +1,7 @@
 #alias dev='cd $HOME/dev'
 #alias downloads='cd $HOME/downloads'
 
-#alias mpv='i3-swallow mpv'
+alias mpv='i3-swallow mpv'
 #alias neovide='i3-swallow neovide'
 #alias sxiv='i3-swallow sxiv'
 
