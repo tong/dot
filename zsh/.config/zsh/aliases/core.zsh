@@ -7,32 +7,24 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+
+alias c='clear'
+alias e='exit'
+
 alias ls="ls -hN --color=auto --group-directories-first"
 alias ll='ls -l'
 alias la='ls -A'
 alias lla='ls -la'
 alias l='ls -CF'
+alias lla='ls -la'
+
 alias lsd='lsd --group-directories-first --color=auto'
 
-alias diff='diff --color'
-alias dirsize='du'
-alias diskspace='du -S | sort -n -r | more'
+alias md="mkdir -p"
+alias rd="rmdir"
+alias cr="cp -r"
 
-alias uppercase="tr '[:lower:]' '[:upper:]'"
-alias lowercase="tr '[:upper:]' '[:lower:]'"
-
-alias c='clear'
 alias d='dirs -v'
-alias e='exit'
-
-alias cpr="cp -r"
-
-alias -g G='| grep' # Pipe commands output to grep (fe: history G nmap)
-
-alias h='history 1'
-alias hs='history | grep'
-alias hsi='history | grep -i'
-
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
 alias df='df -h'
@@ -40,16 +32,27 @@ alias du='du -h'
 alias cal='cal -m'
 alias ka='killall'
 alias killa='killall'
-alias md='mkdir -p'
 alias now='date +"%T"'
 #alias paths='echo -e ${PATH//:/\\n}'
 
-alias ffmpeg="ffmpeg -hide_banner"
+alias h='history 1'
+alias hs='history | grep'
+alias hsi='history | grep -i'
+
+alias -g G='| grep' # Pipe commands output to grep (fe: history G nmap)
+
+alias diff='diff --color'
+
+alias uppercase="tr '[:lower:]' '[:upper:]'"
+alias lowercase="tr '[:upper:]' '[:lower:]'"
+
+alias dirsize='du'
+alias diskspace='du -S | sort -n -r | more'
 
 alias cpuinfo='lscpu'
 alias meminfo='free -m -l -t'
 alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
-
+alias gpuutilization='nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits'
 #alias psmem='ps auxf | sort -nr -k 4'
 #alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 
@@ -68,4 +71,7 @@ alias zstats='zshstats'
 alias clipcopy='cat "${1:-/dev/stdin}" | xsel --clipboard --input;'
 alias clippaste='xsel --clipboard --output;'
 
-alias logout='xfce4-session-logout --logout'
+alias ffmpeg="ffmpeg -hide_banner"
+
+#alias logout='xfce4-session-logout --logout'
+

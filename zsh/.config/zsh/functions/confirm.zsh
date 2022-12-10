@@ -2,7 +2,7 @@ confirm() {
     local answer
     echo -ne "zsh: sure you want to run '${YELLOW}$*${NC}' [yN]? "
     read -q answer
-        echo
+    echo
     if [[ "${answer}" =~ ^[Yy]$ ]]; then
         command "${@}"
     else
@@ -22,6 +22,7 @@ confirm_wrapper() {
     confirm ${prefix} "$@"
 }
 
+hibernate() { confirm_wrapper --root $0 "$@"; }
 poweroff() { confirm_wrapper --root $0 "$@"; }
 reboot() { confirm_wrapper --root $0 "$@"; }
-hibernate() { confirm_wrapper --root $0 "$@"; }
+

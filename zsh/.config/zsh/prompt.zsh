@@ -217,7 +217,8 @@ prompt_void_setup() {
     prompt_opts=(cr subst percent)
     add-zsh-hook precmd prompt_void_precmd
     zstyle ':vcs_info:*' enable git
-    zstyle ':vcs_info:*' check-for-changes false
+    #zstyle ':vcs_info:*' check-for-changes false
+    zstyle ':vcs_info:*' check-for-changes true
     zstyle ':vcs_info:git*' formats '%b'
     zstyle ':vcs_info:git*' actionformats '%b (%a)'
 }
@@ -242,12 +243,10 @@ prompt_void_setup "$@"
 #     # zstyle ':vcs_info:git*' formats '%b'
 #     # zstyle ':vcs_info:git*' actionformats '%b (%a)'
 # }
-#prompt_void_setup "$@"
 
 #gitstatus_stop 'MY' && gitstatus_start -s -1 -u -1 -c -1 -d -1 'MY'
 #autoload -Uz add-zsh-hook
-#add-zsh-hook precmd prompt_gitstatus
-
+# add-zsh-hook precmd prompt_gitstatus
 
 #RPROMPT="$(date +%R:%S)"
-#
+
