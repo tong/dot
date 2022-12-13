@@ -1,4 +1,5 @@
 if [ -x /usr/bin/dircolors ]; then
+
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias dir='dir --color=auto'
     alias vdir='vdir --color=auto'
@@ -7,6 +8,14 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+setopt auto_pushd
+setopt pushd_ignore_dups
+setopt pushdminus
+
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias -g ......='../../../../..'
 
 alias c='clear'
 alias e='exit'
@@ -17,8 +26,6 @@ alias la='ls -A'
 alias lla='ls -la'
 alias l='ls -CF'
 alias lla='ls -la'
-
-alias lsd='lsd --group-directories-first --color=auto'
 
 alias md="mkdir -p"
 alias rd="rmdir"
@@ -67,11 +74,4 @@ alias zconfig='$EDITOR $ZDOTDIR'
 alias zreload='zshreload'
 alias zsource='source $ZDOTDIR/.zshrc'
 alias zstats='zshstats'
-
-alias clipcopy='cat "${1:-/dev/stdin}" | xsel --clipboard --input;'
-alias clippaste='xsel --clipboard --output;'
-
-alias ffmpeg="ffmpeg -hide_banner"
-
-#alias logout='xfce4-session-logout --logout'
 

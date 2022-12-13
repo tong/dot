@@ -22,16 +22,12 @@ setopt HIST_VERIFY               # Do not execute immediately upon history expan
 
 ## Prompt
 autoload -Uz promptinit && promptinit
-promp_themes+=(void)
+#promp_themes+=(void)
 prompt elite
-source $ZDOTDIR/prompt.zsh
+#source $ZDOTDIR/prompt.zsh
 
 ## Complete
 source $ZDOTDIR/completion.zsh
-
-# Keybindings
-source $ZDOTDIR/keybindings.zsh
-bindkey -s '^o' 'lfcd\n'
 
 # Functions
 source $ZDOTDIR/functions/archive.zsh
@@ -50,19 +46,14 @@ source $ZDOTDIR/functions/zsh.zsh
 source $ZDOTDIR/plugins/bd/bd.zsh
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source $ZDOTDIR/plugins/zsh-vi-mode/zsh-vi-mode.zsh
+# source $ZDOTDIR/plugins/zsh-vi-mode/zsh-vi-mode.zsh
 
-ZVM_MODE_INIT_MODE=ZVM_MODE_INSERT
+# ZVM_MODE_INIT_MODE=ZVM_MODE_INSERT
 #ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
 
-ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BEAM
-ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BLOCK
-ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
-
-# Extend
-source /usr/share/fzf/completion.zsh
-source /usr/share/fzf/key-bindings.zsh
-#source $HOME/sdk/qmk_firmware/util/qmk_tab_complete.sh
+# ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BEAM
+# ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BLOCK
+# ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
 
 # Alias
 source $ZDOTDIR/aliases/core.zsh
@@ -78,9 +69,6 @@ if [ -d "$HOME/.script" ]; then PATH="$HOME/.script:$PATH"; fi
 if [ -d "$HOME/.local/bin" ]; then PATH="$HOME/.local/bin:$PATH"; fi
 if [ -d "$HOME/src/npm-global/bin" ]; then PATH=$HOME/src/npm-global/bin:$PATH; fi
 
-# Extra
-#eval "$(zoxide init zsh)"
-
 # Variables
 #export CRON_BIN=$HOME/.local/bin/cron
 #export ARMORY_PLAY_KROM='$ARMSDK/Krom/Krom $path $resources --consolepid $pid'
@@ -95,3 +83,11 @@ export PATH=$PATH:$GOPATH/bin
 #export PATH=$PATH:$HOME/sdk/lua-language-server/bin
 #export PATH="$HOME/src/v8/v8/out/linux:$PATH"
 
+# Prompt
+source "$ZDOTDIR/prompt.zsh"
+
+# Keybindings
+source "$ZDOTDIR/keybindings.zsh"
+
+# Extra
+#eval "$(zoxide init zsh)"
