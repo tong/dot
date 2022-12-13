@@ -1,19 +1,19 @@
 #!/bin/sh
-# - Syncs mail for all accounts, or a single account given as an argument.
-#
-# - Displays a notification showing the number of new mails.
-# - Displays a notification for each new mail with its subject displayed.
+# - Syncs (imap) mail for all accounts, or a single account given as an argument.
+# - Displays a notification for each new mail with its sender and subject displayed.
 # - Runs notmuch to index new mail.
-# - This script can be set up as a cron job for automated mail syncing.
+#
+# This script can be set up as a cron job for automated mail syncing.
 
 pgrep mbsync >/dev/null && {
     echo "mbsync is already running"
     exit
 }
 
-export GPG_TTY="$(tty)"
+#GPG_TTY="$(tty)"
+#export ${GPG_TTY}
 
-[ -n "$MBSYNCRC" ] && alias mbsync="mbsync -c $MBSYNCRC" || MBSYNCRC="$HOME/.mbsyncrc"
+[ -n "$MBSYNCRC" ] && alias mbsync='mbsync -c $MBSYNCRC' || MBSYNCRC="$HOME/.mbsyncrc"
 #[ -n "$MPOPRC" ] || MPOPRC="$HOME/.config/mpop/config"
 
 lastrun="${XDG_CONFIG_HOME:-$HOME/.config}/mutt/.mailsynclastrun"
