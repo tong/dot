@@ -7,11 +7,10 @@ set $border_width 3
 font pango: JetBrainsMono Nerd Font 5
 
 #exec_always --no-startup-id wallpaper
-# exec_always --no-startup-id picom -b --config $HOME/.config/picom.conf
 #exec_always --no-startup-id $HOME/.screenlayout/default
-exec_always --no-startup-id xset r rate 190 90 && xmodmap ~/.config/x11/xmodmap
-exec_always --no-startup-id hsetroot -solid '#101010'
+exec_always --no-startup-id picom -b --experimental-backend --config $HOME/.config/picom.conf
 exec_always --no-startup-id $HOME/.config/polybar/run.sh
+exec_always --no-startup-id xset r rate 190 90 && xmodmap ~/.config/x11/xmodmap
 
 set $ws1 "1"
 set $ws2 "2"
@@ -29,25 +28,25 @@ workspace $ws1 output $DISPLAY0
 workspace $ws2 output $DISPLAY0
 workspace $ws3 output $DISPLAY0
 workspace $ws4 output $DISPLAY0
-workspace $ws5 output $DISPLAY0
+workspace $ws5 output $DISPLAY1
 workspace $ws6 output $DISPLAY0
 workspace $ws7 output $DISPLAY0
 workspace $ws8 output $DISPLAY0
 workspace $ws9 output $DISPLAY0
-workspace $ws10 output $DISPLAY1
+workspace $ws10 output $DISPLAY0
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #000000 #000000 #ffffff #b0b0b0   #909090
+client.focused          #000000 #000000 #ffffff #ffffff   #909090
 client.focused_inactive #000000 #000000 #ffffff #484e50   #303030
 client.unfocused        #000000 #000000 #ffffff #292d2e   #404040
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 
 gaps vertical 0
 gaps inner 14
-gaps top -10
-gaps bottom -2
-gaps left -2
-gaps right -2
+gaps top -12
+gaps bottom -8
+gaps left -4
+gaps right -4
 
 #smart_borders on
 #smart_gaps on
