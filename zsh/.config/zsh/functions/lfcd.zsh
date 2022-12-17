@@ -1,4 +1,6 @@
 lfcd() {
+    source "$HOME/.config/lf/colors"
+    source "$HOME/.config/lf/icons"
     tmp="$(mktemp)"
     lf -last-dir-path="$tmp" "$@"
     if [ -f "$tmp" ]; then
