@@ -8,12 +8,14 @@ super + Return
 super + b
     $BROWSER
 super + n
-    nautilus
+    $FILEMANAGER_GUI
 
-super + o ; {b,t}
-    {$BROWSER,$TERMINAL}
+super + o ; {b,t,n}
+    {$BROWSER,$TERMINAL,$FILEMANAGER_GUI}
+
 super + x ;  {c,e,i,r,w,x}
     {clipmenu, dmenu-exit, dmenu-nerdfont, dmenu-record, $(rofi -show window), dmenu-screenshot}
+
 super + m ; {p,l,h,s}
     {$(playerctl play-pause),$(playerctl next),$(playerctl previous),$(playerctl stop)}
 
