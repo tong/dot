@@ -10,6 +10,7 @@ pgrep mbsync >/dev/null && {
     exit
 }
 
+NOTFICATION_ICON="/usr/share/icons/Paper/scalable/places/mail-folder-inbox-symbolic.svg"
 #GPG_TTY="$(tty)"
 #export ${GPG_TTY}
 
@@ -30,8 +31,8 @@ displays="$(echo "$pgrepoutput" | grep -wo "[0-9]*:[0-9]\+" | sort -u)"
 notify() {
     [ -n "$pgrepoutput" ] &&
     for x in ${displays:-0:}; do
-        export DISPLAY=$x
-        notify-send --app-name="email" --icon="/usr/share/icons/Paper/scalable/places/mail-folder-inbox-symbolic.svg" "$2" "$3"
+        export DISPLAY="$x"
+        notify-send --app-name="email" --icon="$NOTFICATION_ICON" "$2" "$3"
     done
 }
 
@@ -47,14 +48,23 @@ syncandnotify() {
 		"$MAILDIR/"[Ii][Nn][Bb][Oo][Xx]/new/ \
 		"$MAILDIR/"[Ii][Nn][Bb][Oo][Xx]/cur/ \
 		-type f -newer "$lastrun" 2> /dev/null)
+    # new=$(find\
+    #     "$MAILDIR/INBOX/new"\
+    #     "$MAILDIR/INBOX/cur"\
+    #     -type f -newer "$lastrun" 2> /dev/null)
 	newcount=$(echo "$new" | sed '/^\s*$/d' | wc -l)
-    if [ -z "$MAILSYNC_MUTE" ] && [ "$newcount" -gt 0 ]; then
-        #TODO: check max file size
-        raw=$(cat "$new")
-        from=$(echo "$raw" | grep "From: ")
-        subject=$(echo "$raw" | grep "Subject: ")
-        #subject=${subject:9}
-        notify "$acc" "${from:6}" "${subject:9}"
+    if [ "$newcount" -eq 0 ]; then
+        polybar-msg action '#email.module_hide' > /dev/null
+    else
+        polybar-msg action '#email.module_show' > /dev/null
+        if [ -z "$MAILSYNC_MUTE" ]; then
+            #TODO: check max file size
+            raw=$(cat "$new")
+            from=$(echo "$raw" | grep "From: ")
+            subject=$(echo "$raw" | grep "Subject: ")
+            #subject=${subject:9}
+            notify "$acc" "${from:6}" "${subject:9}"
+        fi
     fi
 }
 
@@ -73,7 +83,6 @@ fi
 for account in $accounts; do
 	syncandnotify "imap" &
 done
-
 wait
 notmuch new --quiet
 touch "$lastrun"
