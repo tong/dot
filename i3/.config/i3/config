@@ -4,7 +4,10 @@ set $DISPLAY1 DP-5
 set $border_width 3
 # set $color_background #00000
 
-font pango: JetBrainsMono Nerd Font 5
+set_from_resource $background *.background #000000
+set_from_resource $foreground *.foreground #ffffff
+
+font pango: JetBrainsMono Nerd Font 9
 
 #exec_always --no-startup-id wallpaper
 #exec_always --no-startup-id $HOME/.screenlayout/default
@@ -36,17 +39,17 @@ workspace $ws9 output $DISPLAY0
 workspace $ws10 output $DISPLAY0
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #000000 #000000 #ffffff #ffffff   #909090
-client.focused_inactive #000000 #000000 #ffffff #484e50   #303030
-client.unfocused        #000000 #000000 #ffffff #292d2e   #404040
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.focused          #000000 #000000 #e0e0e0 #c0c0c0 #909090
+client.focused_inactive #000000 #000000 #696969 #707070 #393939
+client.unfocused        #000000 #000000 #696969 #292d2e #202020
+client.placeholder      #000000 #0c0c0c #c6v6v4 #000000 #0c0c0c
 
 gaps vertical 0
-gaps inner 14
-gaps top -12
-gaps bottom -8
-gaps left -4
-gaps right -4
+gaps inner 16
+gaps top -10
+gaps bottom -4
+gaps left -2
+gaps right -2
 
 #smart_borders on
 #smart_gaps on
@@ -62,12 +65,17 @@ floating_maximum_size 3840 x 2160
 #default_floating_border pixel $border_width 
 
 # for_window [class=".*"] title_format "<b>%title</b>"
+#for_window [all] title_window_icon padding 10px
+for_window [all] title_window_icon on
+
 for_window [class=.*] border pixel $border_width
 for_window [class="Arandr|baobab|feh|File-roller|Gnome-calculator|Gnome-disks|Gnome-tweaks|itch|Nemo|Nitrogen|Nvidia-settings|Pavucontrol|SimpleScreenRecorder|Vimiv|vlc"] floating enable
 # for_window [class="Surf"] floating enable, move position mouse, resize set 1080 1440
 # for_window [class="Rofi"] floating enable
 # for_window [class="main_KincApplication*"] floating enable
 for_window [class="^.*_KincApplication$"] floating enable
+#for_window [class="^armory_html5_player$"] floating enable
+for_window [class="^armory-electron-runtime$"] floating enable
 #for_window [class="fff*"] floating enable
 #for_window [class="gamma*"] floating enable
 #for_window [class="popup"] floating enable
@@ -75,8 +83,9 @@ for_window [class="^.*_KincApplication$"] floating enable
 for_window [window_role="pop-up"] floating enable
 
 assign [class="^Steam"] → $ws6
-focus_wrapping yes
-mouse_warping output
+
+#focus_wrapping yes
+#mouse_warping output
 
 set $mod Mod4
 floating_modifier $mod
@@ -85,12 +94,9 @@ bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
-
-bindsym $mod+f fullscreen toggle
-
 bindsym $mod+c focus child
 bindsym $mod+p focus parent
-
+bindsym $mod+f fullscreen toggle
 bindsym $mod+q kill
 
 bindsym $mod+ctrl+h move left 400px
