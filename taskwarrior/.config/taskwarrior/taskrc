@@ -4,17 +4,8 @@ active.indicator=
 alias.burndown=burndown.weekly
 color=on
 data.location=~/.task
+news.version=2.6.0
 verbose=affected,blank,context,edit,footnote,label,new-id,project,special,sync,override,recur
-
-# --- Context
-
-context.armory.read=project:armory or +armory
-context.armory.write=+armory
-#context.armory.write=+armory
-context.dot.read=+dot
-context.dot.write=+dot
-context.work.read=+work
-context.work.write=+work
 
 # --- Reports
 
@@ -46,8 +37,8 @@ report.polybar.filter=status:pending
 #report.polybar.limit=1
 
 report.tui.description=Default report for taskwarrior-tui
-report.tui.labels=ID,Project,Description,Tags,Due,Est
-report.tui.columns=id,project,description,tags,due,estimate
+report.tui.labels=ID,Project,Description,Tags,Due,Est,GH
+report.tui.columns=id,project,description,tags,due,estimate,gh
 report.tui.sort=urgency-\/,project+\/,entry+
 report.tui.filter=status:pending
 
@@ -57,6 +48,9 @@ report.tui.filter=status:pending
 #report.workspace.filter=status:pending -workspace:
 
 # --- UDA
+
+uda.gh.type=numeric
+uda.gh.label=Github
 
 uda.estimate.type=numeric
 uda.estimate.label=Estimate
@@ -88,9 +82,19 @@ uda.taskwarrior-tui.task-report.show-info=false
 
 # --- Theme
 
-#include $HOME/.config/taskwarrior/void2.theme
 include $HOME/.config/taskwarrior/dark-gray-256.theme
 
-news.version=2.6.0
+# --- Context
 
-context=armory
+context.armory.read=project:armory or +armory
+context.armory.write=+armory
+
+context.dot.read=+dot
+context.dot.write=+dot
+
+context.work.read=+work
+context.work.write=+work
+
+context.plutonika.read=+plutonika
+context.plutonika.write=+plutonika +work
+
