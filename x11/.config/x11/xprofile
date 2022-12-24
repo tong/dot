@@ -1,10 +1,10 @@
 #!/bin/sh
 
 XRES="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources"
-[ -f "$XRES" ] && xrdb -merge -I"$HOME" "$XRES"
+[ -f "$XRES" ] && xrdb -merge -I"$HOME" "$XRES" &
 
 XMODMAP="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xmodmap"
-[ -f "$XMODMAP" ] && xmodmap "$XMODMAP"
+[ -f "$XMODMAP" ] && xmodmap "$XMODMAP" &
 
 #"$HOME/.screenlayout/2-monitor.sh" &
 
@@ -12,11 +12,11 @@ XMODMAP="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xmodmap"
 # xset fp rehash
 
 hsetroot -solid '#151515'
-xwallpaper --zoom ~/.local/share/wallpapers/space1.jpg
-picom -b --config "$HOME/.config/picom.conf" --dbus
-~/.screenlayout/default
-xmodmap ~/.config/x11/xmodmap
-xset r rate 190 90
+#xwallpaper --zoom ~/.local/share/wallpapers/space1.jpg
+#picom -b --config "$HOME/.config/picom.conf" --dbus
+#~/.screenlayout/default
+#xmodmap ~/.config/x11/xmodmap
+#xset r rate 190 90
 
 #autostart="mpd xcompmgr dunst unclutter pipewire"
 #autostart="sxhkd"
