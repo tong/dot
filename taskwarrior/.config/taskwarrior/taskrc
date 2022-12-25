@@ -49,8 +49,8 @@ report.tui.filter=status:pending
 
 # --- UDA
 
-uda.gh.type=numeric
-uda.gh.label=Github
+uda.github.type=string
+uda.github.label=Github
 
 uda.estimate.type=numeric
 uda.estimate.label=Estimate
