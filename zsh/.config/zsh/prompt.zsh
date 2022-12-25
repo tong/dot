@@ -6,11 +6,15 @@ SEGMENT_SEPARATOR=""
 
 BRANCH=""
 CIRCLE=""
-CROSS=""
+#CROSS=""
+CROSS=""
 DETACHED="\u27a6"
 GEAR=""
 LIGHTNING="⚡"
 PLUSMINUS="\u00b1"
+
+#ICON_VIM=""
+#ICON_VIM=""
 
 TASKWARRIOR_URGENT=""
 TASKWARRIOR_DUETOMORROW=""
@@ -49,8 +53,7 @@ prompt_status() {
     symbols=()
     #[[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}$CROSS"
     if [[ $RETVAL -ne 0 ]]; then
-        #symbols+="%{%K{black}%F{foreground}%}$CROSS"
-        symbols+="$CROSS"
+        symbols+="%{%K{black}%F{red}%}$CROSS"
         if [[ $RETVAL -ne 130 ]]; then
             symbols+="$RETVAL"
         fi
@@ -164,9 +167,8 @@ prompt_dir() {
     case "$PWD" in
         $HOME/img*) prompt_segment blue $PRIMARY_FG '   %~' ;;
         $HOME/.config*) prompt_segment cyan black '  %~ ' ;;
-        #*) prompt_segment blue $PRIMARY_FG ' %~ '
-        *) prompt_segment white black ' %~ '
-        ;;
+        #*) prompt_segment blue $PRIMARY_FG ' %~ ' ;;
+        *) prompt_segment white black ' %~ ' ;;
     esac
     #[[ -f "package.json" ]] && prompt_segment red white '   '
 }
@@ -191,12 +193,31 @@ prompt_tasks() {
     fi
 }
 
+prompt_vimode() {
+    
+    case "$ZVM_MODE" in
+        n) 
+            printf " "
+            prompt_segment blue black ' NORMAL ' ;;
+        #i) 
+            #prompt_segment green black ''
+            #;;
+        v) prompt_segment magenta black ' VISUAL ' ;;
+        vl) prompt_segment magenta black ' V-LINE ' ;;
+        # *)
+        #     prompt_segment cyan green
+        #     printf ' %s ' $ZVM_MODE
+        #     ;;
+    esac 
+}
+
 prompt_void_main() {
     RETVAL=$?
     CURRENT_BG='NONE'
     prompt_virtualenv
     #prompt_history
     prompt_status
+    prompt_vimode
     #prompt_tasks
     prompt_context
     prompt_dir

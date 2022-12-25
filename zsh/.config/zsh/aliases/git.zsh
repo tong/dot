@@ -1,4 +1,4 @@
-alias amend='git commit -a --amend'
+alias amend='git commit --amend'
 alias branch='git branch'
 alias checkout='git checkout'
 alias clone='git clone'
