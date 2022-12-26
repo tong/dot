@@ -2,6 +2,11 @@ CURRENT_BG='NONE'
 PRIMARY_FG=black
 
 SEGMENT_SEPARATOR=""
+SEGMENT_SEPARATOR_START=""
+SEGMENT_SEPARATOR_END=""
+# SEGMENT_SEPARATOR_END=""
+# SEGMENT_SEPARATOR_START=""
+# SEGMENT_SEPARATOR_END=""
 #SEGMENT_SEPARATOR=""
 
 BRANCH=""
@@ -30,7 +35,8 @@ prompt_segment() {
     [[ -n $1 ]] && bg="%K{$1}" || bg="%k"
     [[ -n $2 ]] && fg="%F{$2}" || fg="%f"
     if [[ $CURRENT_BG != 'NONE' && $1 != $CURRENT_BG ]]; then
-        print -n "%{$bg%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR%{$fg%}"
+        #print -n "%{$bg%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR%{$fg%}"
+        print -n "%{$bg%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR_START%{$fg%}"
     else
         print -n "%{$bg%}%{$fg%}"
     fi
@@ -40,7 +46,8 @@ prompt_segment() {
 
 prompt_end() {
     if [[ -n $CURRENT_BG ]]; then
-        print -n "%{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR"
+        #print -n "%{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR"
+        print -n "%{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR_END"
     else
         print -n "%{%k%}"
     fi
@@ -58,11 +65,13 @@ prompt_status() {
             symbols+="$RETVAL"
         fi
     else
-        symbols+="$CIRCLE"
+       symbols+="$CIRCLE"
     fi
     [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}$LIGHTNING"
     [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}$GEAR"
-    [[ -n "$symbols" ]] && prompt_segment $PRIMARY_FG white "$symbols"
+    #[[ -n "$symbols" ]] && prompt_segment $PRIMARY_FG white "$symbols"
+    ##prompt_segment red green ""
+    [[ -n "$symbols" ]] && prompt_segment $PRIMARY_FG white "$symbols" 
 }
 
 prompt_context() {
@@ -166,6 +175,7 @@ prompt_virtualenv() {
 prompt_dir() {
     case "$PWD" in
         $HOME/img*) prompt_segment blue $PRIMARY_FG '   %~' ;;
+        $HOME/.config/nvim*) prompt_segment cyan black '  %~ ' ;;
         $HOME/.config*) prompt_segment cyan black '  %~ ' ;;
         #*) prompt_segment blue $PRIMARY_FG ' %~ ' ;;
         *) prompt_segment white black ' %~ ' ;;
@@ -193,58 +203,68 @@ prompt_tasks() {
     fi
 }
 
-prompt_vimode() {
-    
+prompt_vi() {
     case "$ZVM_MODE" in
         n) 
+            SEGMENT_SEPARATOR_START=""
+            SEGMENT_SEPARATOR_END=""
             printf " "
-            prompt_segment blue black ' NORMAL ' ;;
-        #i) 
-            #prompt_segment green black ''
-            #;;
-        v) prompt_segment magenta black ' VISUAL ' ;;
-        vl) prompt_segment magenta black ' V-LINE ' ;;
-        # *)
-        #     prompt_segment cyan green
-        #     printf ' %s ' $ZVM_MODE
-        #     ;;
+            prompt_segment cyan black ' NORMAL ' ;;
+        i) 
+            ##prompt_segment magenta magenta '  '
+            ;;
+        r)
+            prompt_segment red black ' REPLACE '
+            printf "";;
+        v)
+            SEGMENT_SEPARATOR_END=""
+            prompt_segment magenta black ' VISUAL ' ;;
+        vl)
+            SEGMENT_SEPARATOR_END=""
+            prompt_segment magenta black ' V-LINE ' ;;
+        *)
+            prompt_segment cyan green
+            printf ' %s ' $ZVM_MODE
+            ;;
     esac 
 }
 
-prompt_void_main() {
+prompt_main() {
     RETVAL=$?
     CURRENT_BG='NONE'
     prompt_virtualenv
     #prompt_history
     prompt_status
-    prompt_vimode
     #prompt_tasks
     prompt_context
     prompt_dir
     prompt_git
     #prompt_gitstatus
+    prompt_vi
     #prompt_time
     prompt_end
 }
-
-prompt_void_precmd() {
+prompt_precmd() {
     vcs_info
-    PROMPT='%{%f%b%k%}$(prompt_void_main)'
+    PROMPT='%{%f%b%k%}$(prompt_main)'
+    #PROMPT='$(prompt_main)'
 }
-
-prompt_void_setup() {
+prompt_setup() {
     autoload -Uz add-zsh-hook
     autoload -Uz vcs_info
     prompt_opts=(cr subst percent)
-    add-zsh-hook precmd prompt_void_precmd
+    add-zsh-hook precmd prompt_precmd
     zstyle ':vcs_info:*' enable git
     #zstyle ':vcs_info:*' check-for-changes false
     zstyle ':vcs_info:*' check-for-changes true
     zstyle ':vcs_info:git*' formats '%b'
     zstyle ':vcs_info:git*' actionformats '%b (%a)'
 }
-prompt_void_setup "$@"
+prompt_setup "$@"
 
+#RPROMPT="$(date +%H%M)"
+
+#RPROMPT="$(date +%R:%S)"
 #PROMPT='%{%f%b%k%}$(prompt_void_main)'
 
 # prompt_void_setup() {
@@ -269,5 +289,4 @@ prompt_void_setup "$@"
 #autoload -Uz add-zsh-hook
 # add-zsh-hook precmd prompt_gitstatus
 
-#RPROMPT="$(date +%R:%S)"
 
