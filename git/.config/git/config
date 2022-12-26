@@ -4,6 +4,14 @@
 [user]
     name = tong 
     email = tong@disktree.net
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[init]
+	defaultBranch = main
 [color]
 	ui = true
 [credential]
