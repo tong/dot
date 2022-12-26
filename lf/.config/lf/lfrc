@@ -160,20 +160,6 @@ cmd open ${{
     esac
 }}
 
-cmd on-cd &{{
-    source /usr/share/git/completion/git-prompt.sh
-    git_ps1_showdirtystate=auto
-    git_ps1_showstashstate=auto
-    git_ps1_showuntrackedfiles=auto
-    git_ps1_showupstream=verbose
-    git_ps1_showcolorhints=auto
-    git_ps1_compresssparsestate=auto
-    git_ps1_describe_style=tag
-    git=$(__git_ps1 " [%s]") || true
-    fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%w\033[0m\033[33;1m$git\033[0m"
-    lf -remote "send $id set promptfmt \"$fmt\""
-}}
-
 cmd open-with %"$@" "$fx"
 
 ##cmd paste &{{
@@ -247,48 +233,73 @@ set mouse on
 # map <m-4> up
 map <m-up> up
 map <m-down> down
+
+# map <up>
+# map <down>
+# map <up> updir
+
+cmap <tab> cmd-menu-complete
+cmap <backtab> cmd-menu-complete-back
+cmap <up> cmd-history-prev
+cmap <down> cmd-history-next
+
 map <delete> trash
 map <enter> shell
+
+map o &mimeopen $f
+#map p paste
 
 map C copyto
 map D delete
 map E extract
 map H set hidden!
+map J push 10j
+map K push 10k
 map M moveto
+map O $mimeopen --ask $f
 #map P :link
 map R bulkrename
 map T trash
 map X cut
 map Y $printf "%s" "$fx" | xclip -selection clipboard
 
-#map p paste
-
-#map o &open $f
-map o &mimeopen $f
-map O $mimeopen --ask $f
-
-# map <up>
-# map <down>
-# map <up> updir
-
 #map x $$f
 #map X !$f
-
-map <f-2> rename
-map <f-3> search
 
 #map <c-h> set hidden!
 map <c-n> push :mkdir<space>
 map <c-r> reload
 map <c-s> set hidden!
-
 #map <c-t> push %date<enter>
 map <c-z> $ kill -STOP $PPID
 
-cmap <tab> cmd-menu-complete
-cmap <backtab> cmd-menu-complete-back
-cmap <up> cmd-history-prev
-cmap <down> cmd-history-next
+map <f-2> rename
+map <f-3> search
+
+cmd git_branch ${{
+    git branch | fzf --prompt=" " | xargs git checkout
+    pwd_shell=$(pwd)
+    lf -remote "send $id updir"
+    lf -remote "send $id cd \"$pwd_shell\""
+}}
+map gb :git_branch
+map gp ${{clear; git pull --rebase || true; echo "press ENTER"; read ENTER}}
+map gs ${{clear; git status; echo "press ENTER"; read ENTER}}
+map gl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit}}
+
+# cmd on-cd &{{
+#     source /usr/share/git/completion/git-prompt.sh
+#     git_ps1_showdirtystate=auto
+#     git_ps1_showstashstate=auto
+#     git_ps1_showuntrackedfiles=auto
+#     git_ps1_showupstream=verbose
+#     git_ps1_showcolorhints=auto
+#     git_ps1_compresssparsestate=auto
+#     git_ps1_describe_style=tag
+#     git=$(__git_ps1 " [%s]") || true
+#     fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%w\033[0m\033[33;1m$git\033[0m"
+#     lf -remote "send $id set promptfmt \"$fmt\""
+# }}
 
 on-cd
 
