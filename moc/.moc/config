@@ -219,7 +219,7 @@ MusicDir = "$HOME/music"
 #
 # Example:    Theme = laras_theme
 #
-Theme = black_theme
+Theme = transparent-background
 
 # The theme used when running on an xterm.
 #
