@@ -1,6 +1,19 @@
 [core]
     editor = nvim
     pager = delta --$([ -f ~/.background-light ] && echo light || echo dark)
+[init]
+	defaultBranch = main
+[alias]
+    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+[color]
+    branch = auto
+    diff = auto
+    interactive = auto
+    status = auto
+    ui = auto
+[commit]
+    verbose = true
 [user]
     name = tong 
     email = tong@disktree.net
@@ -10,42 +23,3 @@
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential
-[init]
-	defaultBranch = main
-[color]
-	ui = true
-[credential]
-	helper = store
-[commit]
-    verbose = true
-[delta]
-    line-numbers = true
-    line-numbers-left-format = ""
-    line-numbers-plus-style = ""
-    line-numbers-zero-style = ""
-    hunk-header-style = "omit"
-    file-style = ""
-    file-modified-label = "modified:"
-    syntax-theme = none
-    features = villsau
-[delta "villsau"]
-    # author: https://github.com/torarnv
-    # via https://github.com/dandavison/delta/blob/master/themes.gitconfig
-    dark = true
-    file-style = omit
-    hunk-header-decoration-style = omit
-    hunk-header-file-style = magenta
-    hunk-header-line-number-style = dim magenta
-    hunk-header-style = file line-number syntax
-    line-numbers = false
-    minus-emph-style = red 52
-    minus-empty-line-marker-style = normal "#3f0001"
-    minus-non-emph-style = dim red
-    minus-style = red
-    plus-emph-style = green 22
-    plus-empty-line-marker-style = normal "#002800"
-    plus-non-emph-style = dim green
-    plus-style = green
-    syntax-theme = OneHalfDark
-    whitespace-error-style = reverse red
-    zero-style = dim syntax
