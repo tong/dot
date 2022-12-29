@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+function _haxerunner {
+    local hx=$1 ; shift
+    haxe -p $(realpath $(dirname ${hx})) --run $(basename ${hx}) $*
+}
+_haxerunner ${1:?'expecting an .hx file'} $@
+
