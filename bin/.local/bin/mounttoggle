@@ -1,22 +1,19 @@
 #!/bin/sh
-# HOST="pi"
-# SRC="/mnt/hd4"
-# DST="@hd4"
-# MOUNT_SRC="$USER@$HOST:$SRC"
-# MOUNT_DST="$HOME/$DST"
-MOUNT_SRC=$1
-MOUNT_DST=$2
-if [ -d "$MOUNT_DST" ]; then
-    if [ -z "$(ls -A "$MOUNT_DST")" ]; then
-        echo "Mounting $MOUNT_DST <- $MOUNT_SRC"
-        sshfs "$MOUNT_SRC" "$MOUNT_DST"
-    else
-        echo "Unmounting $MOUNT_DST"
-        umount "$MOUNT_DST"
-        rm -r "$MOUNT_DST"
-    fi
+_mount() {
+    mkdir -p "$1"
+    echo "Mounting $1 -> $2"
+    sshfs "$1" "$2"
+}
+_unmount() {
+    echo "Unmounting $1"
+    umount "$1"
+    rm -r "$1"
+}
+if [ "$#" -eq 1 ]; then
+    [ ! -d "$1" ] && exit 1
+    _unmount "$1"
+elif [ "$#" -eq 2 ]; then
+   _mount "$1" "$2"
 else
-    echo "Mounting $MOUNT_DST <- $MOUNT_SRC"
-    mkdir -p "$MOUNT_DST"
-    sshfs "$MOUNT_SRC" "$MOUNT_DST"
+    exit 1
 fi
