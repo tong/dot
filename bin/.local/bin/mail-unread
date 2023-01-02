@@ -1,0 +1,17 @@
+#!/bin/bash
+account=$EMAIL
+[ -n "$1" ] && account="$1"
+[ -z "$account" ] && exit 1
+maildir="$HOME/.local/share/mail/$account"
+[ ! -d "$maildir" ] && exit 1
+lastrun="${XDG_CONFIG_HOME:-$HOME/.config}/mutt/.mailsynclastrun"
+new=$(find\
+    "$maildir/"[Ii][Nn][Bb][Oo][Xx]/new/ \
+    "$maildir/"[Ii][Nn][Bb][Oo][Xx]/cur/ \
+    -type f -newer "$lastrun" 2> /dev/null)
+if [ -z "$new" ]; then
+    echo "0"
+else
+    echo "$new" | sed '/^\s*$/d' | wc -l
+fi
+
