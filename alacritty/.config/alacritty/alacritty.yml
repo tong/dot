@@ -14,8 +14,8 @@ window:
   #  columns: 0
   #  lines: 0
   padding:
-    x: 2
-    y: 2
+    x: 14
+    y: 14
   #opacity: 0.98
   #dynamic_padding: true
   #decorations: none
