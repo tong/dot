@@ -49,10 +49,9 @@ function zvm_after_lazy_keybindings() {
 
 source $ZDOTDIR/plugins/bd/bd.zsh
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+#source $ZDOTDIR/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $ZDOTDIR/plugins/zsh-vi-mode/zsh-vi-mode.zsh
-
-#eval "$(zoxide init zsh)"
 
 source $ZDOTDIR/aliases/core.zsh
 source $ZDOTDIR/aliases/git.zsh
@@ -66,19 +65,28 @@ source "$ZDOTDIR/prompt.zsh"
 
 source "$ZDOTDIR/keybindings.zsh"
 
-[ -d "$GOPATH/bin" ] && PATH=$GOPATH/bin:$PATH
 [ -d "$HOME/src/npm-global/bin" ] && PATH=$HOME/src/npm-global/bin:$PATH
 [ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
 [ -d "$HOME/.bin" ] && PATH="$HOME/.bin:$PATH"
-
 [ -d "$HOME/.cargo/bin" ] && PATH="$HOME/.cargo/bin:$PATH"
-[ -d "$GOPATH/bin" ] && PATH=$PATH:$GOPATH/bin
-#
+[ -d "$HOME/.luarocks/bin" ] && PATH="$HOME/.luarocks/bin:$PATH"
+
+export GOPATH="$HOME/.go"
+[ -d "$GOPATH/bin" ] && PATH="$GOPATH/bin:$PATH"
+
+export WASMTIME_HOME="$HOME/.wasmtime"
+[ -d "$WASMTIME_HOME/bin" ] && PATH="$WASMTIME_HOME/bin:$PATH"
+
 #export CRON_BIN=$HOME/.local/bin/cron
 #export ARMORY_PLAY_KROM='$ARMSDK/Krom/Krom $path $resources --consolepid $pid'
 #export ARMORY_PLAY_HTML5='chromium --app=$url --new-window --window-size=$width,$height --auto-open-devtools-for-tabs'
 export ARMSDK=$HOME/dev/armory3d/armsdk
 export HAXE_STD_PATH=/usr/local/share/haxe/std
-
 export COLORTHEME="onedark"
+
+. /home/tong/.wasmedge/env
+
+#eval "$(atuin init zsh)"
+eval "$(zoxide init zsh)"
+
 

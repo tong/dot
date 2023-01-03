@@ -22,10 +22,9 @@ n_overdue=$(task +READY +OVERDUE count 2>/dev/null)
 bg=$(xrdb -get background)
 fg=$(xrdb -get foreground)
 
-str="%{F$fg}"
-#str+="$n_pending~$n_active+$n_next!$n_overdue"
-[ "$current_context" ] && str="$str $current_context:"
-str+="$n_pending!$n_overdue~$n_next"
+out="%{F$fg}"
+#out+="$n_pending~$n_active+$n_next!$n_overdue"
+[ "$current_context" ] && out="$str $current_context:"
 
 if [ "$n_active" -ne 0 ]; then
 

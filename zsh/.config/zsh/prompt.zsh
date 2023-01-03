@@ -209,19 +209,23 @@ prompt_vi() {
             SEGMENT_SEPARATOR_START=""
             SEGMENT_SEPARATOR_END=""
             printf " "
-            prompt_segment cyan black ' NORMAL ' ;;
-        i) 
-            ##prompt_segment magenta magenta '  '
+            prompt_segment cyan black ' N '
             ;;
+        #i) 
+            ##prompt_segment magenta magenta '  '
+        #    ;;
         r)
-            prompt_segment red black ' REPLACE '
-            printf "";;
+            prompt_segment red black ' R '
+            printf ""
+            ;;
         v)
             SEGMENT_SEPARATOR_END=""
-            prompt_segment magenta black ' VISUAL ' ;;
+            prompt_segment magenta black ' V '
+            ;;
         vl)
             SEGMENT_SEPARATOR_END=""
-            prompt_segment magenta black ' V-LINE ' ;;
+            prompt_segment magenta black ' VL '
+            ;;
         *)
             prompt_segment cyan green
             printf ' %s ' $ZVM_MODE
