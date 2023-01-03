@@ -14,19 +14,21 @@ n_overdue=$(task +READY +OVERDUE count 2>/dev/null)
 #fi
 
 # function print_next_tasks() {
+    #jq -r '.[] | "\(.id): \(.description)"'
+    #jq -r '.[] | select(.priority == "H") | .description'
 #     descriptions=$(task status:pending +next export | jq -r '.[].description')
 #     printf '%s' "$descriptions"
 # }
-
 
 bg=$(xrdb -get background)
 fg=$(xrdb -get foreground)
 
 out="%{F$fg}"
-#out+="$n_pending~$n_active+$n_next!$n_overdue"
-[ "$current_context" ] && out="$str $current_context:"
+[ "$current_context" ] && out+="$current_context:"
 
 if [ "$n_active" -ne 0 ]; then
+
+    out+="$n_pending!$n_overdue~$n_next"
 
     active_project=$(task active rc.color:off rc.verbose: rc.report.active.columns:project rc.report.active.labels:1)
     active_description=$(task active rc.color:off rc.verbose: rc.report.active.columns:description rc.report.active.labels:1)
@@ -39,25 +41,33 @@ if [ "$n_active" -ne 0 ]; then
     secs=$((time_now - time_start - 3600)) # TODO HACK for wrong timew config (+2h)
     #time_elapsed=$(printf '%02d:%02d:%02d' $((secs/3600)) $((secs%3600/60)) $((secs%60)))
     time_elapsed=$(printf '%02d:%02d:%02d' $((secs/3600)) $((secs%3600/60)) $((secs%60)))
-    
-    #str+=" | "
-    [ "$active_project" ] && str+="  %{F$fg}project:$active_project"
-    #str+=" %{B#f0f0f0} $active_description  %{B#}"
-    str+="  %{B$fg}%{F$bg}%{B$fg}%{F$bg}  $active_description  %{B#00}"
+
+    #out+=" | "
+    [ "$active_project" ] && out+="  %{F$fg}project:$active_project"
+    #out+=" %{B#f0f0f0} $active_description  %{B#}"
+    out+="  %{B$fg}%{F$bg}%{B$fg}%{F$bg}  $active_description  %{B#00}"
     if [[ -n $active_tags ]]; then
-        str+="%{F$fg}"
+        out+="%{F$fg}"
         IFS=' ' read -ra tags <<< "$active_tags"
         for i in "${tags[@]}"
         do
-            str+=" +$i"
+            out+=" +$i"
         done
     fi
-    str+=" $time_elapsed"
-    #printf '%s %s' "$str" "$(print_next_tasks)"
-    #printf '%s' "$str"
-#else
-    #echo "TODO show upcoming (next) tasks"
-    #next=$(task +next export) | jq -r
+    out+=" $time_elapsed"
+else
+    out+="$n_pending!$n_overdue~$n_next"
+    next=$(task +next export)
+    project="$(echo "$next" | jq -r '.[0].project')"
+    description="$(echo "$next" | jq -r '.[0].description')"
+    out+="%{F#505050}  "
+    [ "$project" ] && out+="$project: "
+    [ "$description" ] && out+="$description"
+    out+=" +$n_next"
+    # task +next export | jq -r '.[] | .description' | while read description; do
+    #   #echo "Task: $description"
+    #     out+=" $description"
+    # done
 fi
 
-printf '%s' "$str"
+printf '%s' "$out"
