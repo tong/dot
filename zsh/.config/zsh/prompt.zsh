@@ -209,22 +209,24 @@ prompt_vi() {
             SEGMENT_SEPARATOR_START=""
             SEGMENT_SEPARATOR_END=""
             printf " "
-            prompt_segment cyan black ' N '
+            prompt_segment green black ' N '
             ;;
-        #i) 
-            ##prompt_segment magenta magenta '  '
-        #    ;;
+        i) 
+            ;;
         r)
-            prompt_segment red black ' R '
+            SEGMENT_SEPARATOR_START=""
+            prompt_segment red black ' REPLACE '
             printf ""
             ;;
         v)
+            SEGMENT_SEPARATOR_START=""
             SEGMENT_SEPARATOR_END=""
             prompt_segment magenta black ' V '
             ;;
         vl)
+            SEGMENT_SEPARATOR_START=""
             SEGMENT_SEPARATOR_END=""
-            prompt_segment magenta black ' VL '
+            prompt_segment magenta black ' V-LINE '
             ;;
         *)
             prompt_segment cyan green
