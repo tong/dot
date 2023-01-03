@@ -1,5 +1,5 @@
 #!/bin/sh
 SEL=$(echo "鈴 suspend| exit| lock|鈴 hibernate| reboot| shutdown" | rofi -dmenu -sep '|' -i -p '')
-i3exit ${SEL:2}
+i3-exit ${SEL:2}
 #exit $?
 exit 0
