@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - Syncs (imap) mail for all accounts, or a single account given as an argument.
 # - Displays a notification for each new mail with its sender and subject displayed.
 # - Runs notmuch to index new mail.
@@ -10,7 +10,7 @@ pgrep mbsync >/dev/null && {
     exit
 }
 
-NOTFICATION_ICON="/usr/share/icons/Paper/scalable/places/mail-folder-inbox-symbolic.svg"
+ICON_NOTFICATION="/usr/share/icons/Paper/scalable/places/mail-folder-inbox-symbolic.svg"
 #GPG_TTY="$(tty)"
 #export ${GPG_TTY}
 
@@ -32,7 +32,7 @@ notify() {
     [ -n "$pgrepoutput" ] &&
     for x in ${displays:-0:}; do
         export DISPLAY="$x"
-        notify-send --app-name="email" --icon="$NOTFICATION_ICON" "$2" "$3"
+        notify-send --app-name="email" --icon="$ICON_NOTFICATION" "$2" "$3"
     done
 }
 
@@ -41,34 +41,38 @@ syncandnotify() {
 	if [ -z "$opts" ]; then # Handle IMAP
         mbsync "$acc"
     else
-        mbsync "$opts" "$acc";
+        mbsync "$opts" "$acc"
     fi
-    MAILDIR="$HOME/.local/share/mail/$acc"
-	new=$(find\
-		"$MAILDIR/"[Ii][Nn][Bb][Oo][Xx]/new/ \
-		"$MAILDIR/"[Ii][Nn][Bb][Oo][Xx]/cur/ \
-		-type f -newer "$lastrun" 2> /dev/null)
+    maildir="$HOME/.local/share/mail/$acc"
+	# new=$(find\
+	# 	"$MAILDIR/"[Ii][Nn][Bb][Oo][Xx]/new/ \
+	# 	"$MAILDIR/"[Ii][Nn][Bb][Oo][Xx]/cur/ \
+	# 	-type f -newer "$lastrun" 2> /dev/null)
     # new=$(find\
     #     "$MAILDIR/INBOX/new"\
     #     "$MAILDIR/INBOX/cur"\
     #     -type f -newer "$lastrun" 2> /dev/null)
-	newcount=$(echo "$new" | sed '/^\s*$/d' | wc -l)
-    if [ "$newcount" -eq 0 ]; then
-        polybar-msg action '#email.module_hide' > /dev/null
+    new=$(find\
+        "$maildir/"[Ii][Nn][Bb][Oo][Xx]/new/ \
+        "$maildir/"[Ii][Nn][Bb][Oo][Xx]/cur/ \
+        -type f -newer "$lastrun" 2> /dev/null)
+    if [ -z "$new" ]; then
+        echo "No new mails"
+        polybar-msg action '#mail.module_hide' > /dev/null
     else
-        polybar-msg action '#email.module_show' > /dev/null
         if [ -z "$MAILSYNC_MUTE" ]; then
-            #TODO: check max file size
+	        newcount=$(echo "$new" | sed '/^\s*$/d' | wc -l)
+            echo "$newcount unread mails"
             raw=$(cat "$new")
             from=$(echo "$raw" | grep "From: ")
             subject=$(echo "$raw" | grep "Subject: ")
-            #subject=${subject:9}
             notify "$acc" "${from:6}" "${subject:9}"
+            polybar-msg action '#mail.module_show' > /dev/null
         fi
     fi
 }
 
-## Sync accounts passed as argument or all.
+# Sync accounts passed as argument or all.
 if [ "$#" -gt "0" ]; then
 	for arg in "$@"; do
 		[ "${arg%${arg#?}}" = '-' ] && opts="${opts:+${opts} }${arg}" && shift 1
