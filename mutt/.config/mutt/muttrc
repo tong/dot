@@ -1,4 +1,4 @@
-# vim: filetype=muttrc
+# vim: filetype=neomuttrc
 
 set ssl_starttls=yes
 set ssl_force_tls=yes
@@ -49,6 +49,5 @@ alternative_order text/plain text/enriched text/html
 source $HOME/.config/mutt/keymap
 source $HOME/.config/mutt/colors/gruvbox
 source $HOME/.config/mutt/themes/powerline
-
 source $HOME/.config/mutt/accounts/$EMAIL.muttrc
 

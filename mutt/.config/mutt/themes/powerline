@@ -6,9 +6,9 @@ set status_format = " %f%?r? %r?   %m %?n?  %n ?  %?d?  %d ?%?t? 
 set vfolder_format = " %N %?n?%3n&   ?  %8m  · %f"
 set attach_format = "%u%D  %T%-75.75d %?T?%&   ? %5s · %m/%M"
 
-# no addressed to me, to me, group, cc, sent by me, mailing list
+# No addressed to me, to me, group, cc, sent by me, mailing list
 set to_chars=""
-# unchanged mailbox, changed, read only, attach mode
+# Unchanged mailbox, changed, read only, attach mode
 set status_chars = " "
 ifdef crypt_chars set crypt_chars = " "
 set flag_chars = "      "
@@ -26,7 +26,6 @@ tag-formats "replied" "GR" \
             "attachment" "GA" \
 
 color status white black
-# powerline status bar hack
 color status green black ''
 color status yellow black ''
 color status red black ''
