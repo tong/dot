@@ -38,7 +38,7 @@ report.polybar.filter=status:pending
 
 report.tui.description=Default report for taskwarrior-tui
 report.tui.labels=ID,Project,Description,Tags,Due,Est,GH
-report.tui.columns=id,project,description,tags,due,estimate,gh
+report.tui.columns=id,project,description,tags,due,estimate,github
 report.tui.sort=urgency-\/,project+\/,entry+
 report.tui.filter=status:pending
 
@@ -49,10 +49,10 @@ report.tui.filter=status:pending
 
 # --- UDA
 
-uda.github.type=string
+uda.github.type=numeric
 uda.github.label=Github
 
-uda.estimate.type=numeric
+uda.estimate.type=duration
 uda.estimate.label=Estimate
 
 uda.workspace.type=string
