@@ -1,8 +1,8 @@
-#!/bin/sh
-#N=$(find $HOME/.local/share/mail/$EMAIL/INBOX/new -type f -newer "${XDG_CONFIG_HOME:-$HOME/.config}/mutt/.mailsynclastrun" 2> /dev/null)
-UNREAD=$(find "$HOME/.local/share/mail/$EMAIL/INBOX/new" -type f | wc -l)
+#!/bin/zsh
+UNREAD=$(mail-unread)
 if [ "$UNREAD" = "0" ]; then
-    echo ""
+    echo
 else
-    echo " $UNREAD"
+    echo " $UNREAD"
 fi
+
