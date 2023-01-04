@@ -72,7 +72,7 @@ alias pacr="pacman -Qq | fzf --multi --prompt ' ' --preview 'pacman -Qi {1}' 
 
 alias vconfig='$EDITOR $HOME/.config/nvim'
 
-alias zconfig='cd $ZDOTDIR $$ $EDITOR .zshrc'
+alias zconfig='cd $ZDOTDIR && $EDITOR .zshrc'
 alias zreload='zshreload'
 alias zsource='source $ZDOTDIR/.zshrc'
 alias zstats='zshstats'
