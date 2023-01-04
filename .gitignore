@@ -1,6 +1,7 @@
 github-token
 *.bak
 *.fifo
+*.gpgrc
 *.out
 *.save
 *.tmp
