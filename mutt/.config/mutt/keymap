@@ -39,7 +39,7 @@ bind index \005 next-undeleted		# Mouse wheel
 bind pager \031 previous-line		# Mouse wheel
 bind pager \005 next-line		# Mouse wheel
 bind editor <Tab> complete-query
-bind editor ^T    complete
+bind editor ^T complete
 
 set sidebar_visible = no
 set sidebar_width = 18
@@ -58,27 +58,27 @@ bind index,pager \Cj sidebar-next
 #bind index,pager \Cn sidebar-next-new
 #bind index,pager B sidebar-toggle-visible
 
-macro index,pager gi "<change-folder>=INBOX<enter>" "go to inbox"
-macro index,pager Mi ";<save-message>=INBOX<enter>" "move mail to inbox"
-macro index,pager Ci ";<copy-message>=INBOX<enter>" "copy mail to inbox"
-macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
-macro index,pager Md ";<save-message>=Drafts<enter>" "move mail to drafts"
-macro index,pager Cd ";<copy-message>=Drafts<enter>" "copy mail to drafts"
-macro index,pager gj "<change-folder>=spambucket<enter>" "go to junk"
-macro index,pager Mj ";<save-message>=spambucket<enter>" "move mail to junk"
-macro index,pager Cj ";<copy-message>=spambucket<enter>" "copy mail to junk"
-macro index,pager gt "<change-folder>=Trash<enter>" "go to trash"
-macro index,pager Mt ";<save-message>=Trash<enter>" "move mail to trash"
-macro index,pager Ct ";<copy-message>=Trash<enter>" "copy mail to trash"
-macro index,pager gs "<change-folder>=Sent<enter>" "go to sent"
-macro index,pager Ms ";<save-message>=Sent<enter>" "move mail to sent"
-macro index,pager Cs ";<copy-message>=Sent<enter>" "copy mail to sent"
-macro index,pager ga "<change-folder>=Archive<enter>" "go to archive"
-macro index,pager Ma ";<save-message>=Archive<enter>" "move mail to archive"
 macro index,pager Ca ";<copy-message>=Archive<enter>" "copy mail to archive"
-macro index,pager gw "<change-folder>=Work<enter>" "go to work"
-macro index,pager Mw ";<save-message>=Work<enter>" "move mail to work"
+macro index,pager Cd ";<copy-message>=Drafts<enter>" "copy mail to drafts"
+macro index,pager Ci ";<copy-message>=INBOX<enter>" "copy mail to inbox"
+macro index,pager Cj ";<copy-message>=spambucket<enter>" "copy mail to junk"
+macro index,pager Cs ";<copy-message>=Sent<enter>" "copy mail to sent"
+macro index,pager Ct ";<copy-message>=Trash<enter>" "copy mail to trash"
 macro index,pager Cw ";<copy-message>=Work<enter>" "copy mail to work"
+macro index,pager Ma ";<save-message>=Archive<enter>" "move mail to archive"
+macro index,pager Md ";<save-message>=Drafts<enter>" "move mail to drafts"
+macro index,pager Mi ";<save-message>=INBOX<enter>" "move mail to inbox"
+macro index,pager Mj ";<save-message>=spambucket<enter>" "move mail to junk"
+macro index,pager Ms ";<save-message>=Sent<enter>" "move mail to sent"
+macro index,pager Mt ";<save-message>=Trash<enter>" "move mail to trash"
+macro index,pager Mw ";<save-message>=Work<enter>" "move mail to work"
+macro index,pager ga "<change-folder>=Archive<enter>" "go to archive"
+macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
+macro index,pager gi "<change-folder>=INBOX<enter>" "go to inbox"
+macro index,pager gj "<change-folder>=spambucket<enter>" "go to junk"
+macro index,pager gs "<change-folder>=Sent<enter>" "go to sent"
+macro index,pager gt "<change-folder>=Trash<enter>" "go to trash"
+macro index,pager gw "<change-folder>=Work<enter>" "go to work"
 
 macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>printf 'Enter a search term to find with notmuch: '; read x; echo \$x >~/.cache/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat ~/.cache/mutt_terms) | head -n 600 | perl -le '@a=<>;s/\^id:// for@a;$,=\"|\";print@a' | perl -le '@a=<>; chomp@a; s/\\+/\\\\+/ for@a;print@a' \`\"<enter>" "show only messages matching a notmuch pattern"
 macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
