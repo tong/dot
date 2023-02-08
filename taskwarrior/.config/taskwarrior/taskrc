@@ -3,7 +3,7 @@
 active.indicator=
 alias.burndown=burndown.weekly
 color=on
-data.location=~/.task
+#data.location=~/.task
 news.version=2.6.0
 verbose=affected,blank,context,edit,footnote,label,new-id,project,special,sync,override,recur
 
@@ -37,8 +37,8 @@ report.polybar.filter=status:pending
 #report.polybar.limit=1
 
 report.tui.description=Default report for taskwarrior-tui
-report.tui.labels=ID,Project,Description,Tags,Due,Est,GH
-report.tui.columns=id,project,description,tags,due,estimate,github
+report.tui.labels=ID,Project,Description,Tags,Due,Est,Github,Job
+report.tui.columns=id,project,description,tags,due,estimate,github,job
 report.tui.sort=urgency-\/,project+\/,entry+
 report.tui.filter=status:pending
 
@@ -49,14 +49,24 @@ report.tui.filter=status:pending
 
 # --- UDA
 
-uda.github.type=numeric
+# biz invoice id
+uda.job.label=Job
+uda.job.type=numeric
+
+uda.client.label=Client
+uda.client.type=string
+
+#uda.job.label=client
+#uda.job.type=string
+
 uda.github.label=Github
+uda.github.type=numeric
 
-uda.estimate.type=duration
 uda.estimate.label=Estimate
+uda.estimate.type=numeric
 
-uda.workspace.type=string
 uda.workdspace.label=Workspace
+uda.workspace.type=string
 
 #uda.taskwarrior-tui.report.next.filter=(status:pending or status:waiting)
 #uda.taskwarrior-tui.selection.indicator=
