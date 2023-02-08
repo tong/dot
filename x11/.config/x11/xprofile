@@ -6,17 +6,18 @@ XRES="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources"
 XMODMAP="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xmodmap"
 [ -f "$XMODMAP" ] && xmodmap "$XMODMAP" &
 
-XCOLORVARS="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xcolorvars"
-[ -f "$XCOLORVARS" ] && source "$XCOLORVARS" &
+#XCOLORVARS="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xcolorvars"
+#[ -f "$XCOLORVARS" ] && source "$XCOLORVARS" &
 
 #"$HOME/.screenlayout/2-monitor.sh" &
 
 # xset +fp $HOME/.local/share/fonts
 # xset fp rehash
 
-unclutter &
+"$HOME/.local/share/screenlayout/1" &
 picom -b --config "$HOME/.config/picom.conf" &
 hsetroot -solid '#101010' &
+unclutter &
 
 #xwallpaper --zoom ~/.local/share/wallpapers/space1.jpg
 #~/.screenlayout/default
