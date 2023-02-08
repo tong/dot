@@ -11,10 +11,10 @@ font pango: JetBrainsMono Nerd Font 9
 
 #exec_always --no-startup-id wallpaper
 #exec_always --no-startup-id $HOME/.screenlayout/default
-exec_always --no-startup-id picom -b --experimental-backend --config $HOME/.config/picom.conf
 exec_always --no-startup-id $HOME/.config/polybar/run.sh
 exec_always --no-startup-id xset r rate 190 90 && xmodmap ~/.config/x11/xmodmap
 
+#set $ws0 "0"
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -25,8 +25,8 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
-set $ws0 "0"
 
+#workspace $ws0 output $DISPLAY0
 workspace $ws1 output $DISPLAY0
 workspace $ws2 output $DISPLAY0
 workspace $ws3 output $DISPLAY0
@@ -40,13 +40,13 @@ workspace $ws10 output $DISPLAY0
 
 # class                 border  backgr. text    indicator child_border
 client.focused          #000000 #000000 #e0e0e0 #c0c0c0 #909090
-client.focused_inactive #000000 #000000 #696969 #707070 #393939
-client.unfocused        #000000 #000000 #696969 #292d2e #202020
+client.focused_inactive #000000 #000000 #696969 #757575 #202020
+client.unfocused        #000000 #000000 #696969 #292d2e #191919
 client.placeholder      #000000 #0c0c0c #c6v6v4 #000000 #0c0c0c
 
 gaps vertical 0
 gaps inner 16
-gaps top -10
+gaps top -12
 gaps bottom -4
 gaps left -2
 gaps right -2
@@ -83,6 +83,10 @@ for_window [class="^armory-electron-runtime$"] floating enable
 for_window [window_role="pop-up"] floating enable
 
 assign [class="^Steam"] → $ws6
+
+# -----------------------------------------------------------------------------
+
+workspace_auto_back_and_forth yes
 
 #focus_wrapping yes
 #mouse_warping output
