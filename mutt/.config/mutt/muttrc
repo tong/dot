@@ -26,6 +26,7 @@ set forward_format = "Fwd: %s"	# format of subject when forwarding
 set forward_quote		# include message in forwards
 set reverse_name		# reply as whomever it was to
 set include			# include message in replies
+set recall = no
 
 set pager_context=1
 set pager_index_lines=20
