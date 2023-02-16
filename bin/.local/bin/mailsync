@@ -33,6 +33,7 @@ notify() {
     for x in ${displays:-0:}; do
         export DISPLAY="$x"
         notify-send --app-name="email" --icon="$ICON_NOTFICATION" "$2" "$3"
+        canberra-gtk-play -i message
     done
 }
 
@@ -57,7 +58,7 @@ syncandnotify() {
         "$maildir/"[Ii][Nn][Bb][Oo][Xx]/cur/ \
         -type f -newer "$lastrun" 2> /dev/null)
     if [ -z "$new" ]; then
-        echo "No new mails"
+        echo "No new mail"
         polybar-msg action '#mail.module_hide' > /dev/null
     else
         if [ -z "$MAILSYNC_MUTE" ]; then
