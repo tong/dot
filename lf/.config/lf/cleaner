@@ -1,6 +1,6 @@
 #!/bin/sh
-if [[ $TERM = "xterm-kitty" ]]; then
-    kitty +icat --clear --silent --transfer-mode file
+if [ "$TERM" = "xterm-kitty" ]; then
+    kitty +kitten icat --clear --stdin no --silent --transfer-mode file < /dev/null > /dev/tty
 elif [ -n "$FIFO_UEBERZUG" ]; then
 	printf '{"action": "remove", "identifier": "PREVIEW"}\n' > "$FIFO_UEBERZUG"
 fi

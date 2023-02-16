@@ -1,27 +1,23 @@
-#!/bin/sh
+#!/bin/bash
 
 set -C -f
 IFS="$(printf '%b_' '\n')"; IFS="${IFS%_}"
 
-ifub() {
-	[ -n "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && command -V ueberzug >/dev/null 2>&1
-}
+# ifub() {
+# 	[ -n "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && command -V ueberzug >/dev/null 2>&1
+# }
 
-image() {
+preview_image() {
+    file=$1; w=$2; h=$3; x=$4; y=$5
     #if [[ "$( file -Lb --mime-type "$file")" =~ ^image ]]; then
-    file=$1
-    w=$2
-    h=$3
-    x=$4
-    y=$5
-    if [[ $TERM = "xterm-kitty" ]]; then
-        kitty +icat --silent --transfer-mode file --place "${w}x${h}@${x}x${y}" "$file"
-        exit 1
-    elif ifub; then
-        printf '{"action": "add", "identifier": "PREVIEW", "x": "%s", "y": "%s", "width": "%s", "height": "%s", "scaler": "contain", "path": "%s"}\n' "$x" "$y" "$(($w-1))" "$(($h-1))" "$file" > "$FIFO_UEBERZUG"
-    else
-        mediainfo "$1"
-    fi
+    #read -r LINES COLUMNS < <(stty size); echo "$LINES $COLUMNS"
+    kitty +kitten icat --silent --stdin no --transfer-mode file --place "${w}x${h}@${x}x${y}" "$file" < /dev/null > /dev/tty
+    #mediainfo --full "$file"
+    # elif ifub; then
+    #     printf '{"action": "add", "identifier": "PREVIEW", "x": "%s", "y": "%s", "width": "%s", "height": "%s", "scaler": "contain", "path": "%s"}\n' "$x" "$y" "$(($w-1))" "$(($h-1))" "$file" > "$FIFO_UEBERZUG"
+    # else
+    #     mediainfo "$1"
+    #fi
 }
 
 batorcat() {
@@ -42,12 +38,11 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | awk '{print tolower($0)}')" in
         armcat "$1" | bat --file-name "$1" --language json --color=always
         ;;
 	*.avi|*.mp4|*.wmv|*.dat|*.3gp|*.ogv|*.mkv|*.mpg|*.mpeg|*.vob|*.fl[icv]|*.m2v|*.mov|*.webm|*.mts|*.m4v|*.r[am]|*.qt|*.divx)
-		[ ! -f "${CACHE}.jpg" ] && \
-			ffmpegthumbnailer -i "$1" -o "${CACHE}.jpg" -s 0 -q 5
-		image "${CACHE}.jpg" "$2" "$3" "$4" "$5"
+		[ ! -f "${CACHE}.jpg" ] && ffmpegthumbnailer -i "$1" -o "${CACHE}.jpg" -s 0 -q 5
+        preview_image "${CACHE}.jpg" "$2" "$3" "$4" "$5"
 		;;
 	*.bmp|*.jpg|*.jpeg|*.png|*.xpm|*.webp|*.gif|*.jfif)
-		image "$1" "$2" "$3" "$4" "$5"
+		preview_image "$1" "$2" "$3" "$4" "$5"
 		;;
 	#*.cbz|*.cbr|*.cbt)
 		#[ ! -f "$CACHE" ] && \
@@ -75,18 +70,17 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | awk '{print tolower($0)}')" in
     *.o) nm "$1";;
     *.otf|*.ttf|*.woff|*.woff2)
         ~/.config/lf/preview-font "$1"
-        image "/tmp/lf_fontpreview.png" "$2" "$3" "$4" "$5"
-        #for ((i=0;i<(26);i++)) do printf "\n"; done;
+        preview_image "/tmp/lf_fontpreview.png" "$2" "$3" "$4" "$5"
         #mediainfo "$1"
         ;;
 	*.pdf)
 		[ ! -f "${CACHE}.jpg" ] && pdftoppm -jpeg -f 1 -singlefile "$1" "$CACHE"
-		image "${CACHE}.jpg" "$2" "$3" "$4" "$5"
+		preview_image "${CACHE}.jpg" "$2" "$3" "$4" "$5"
 		;;
     *.rar) unrar l "$1" ;;
     *.svg)
 		[ ! -f "${CACHE}.png" ] && inkscape "$1" -o "$CACHE.png"
-		image "${CACHE}.png" "$2" "$3" "$4" "$5"
+		preview_image "${CACHE}.png" "$2" "$3" "$4" "$5"
         ;;
     *.tar) tar tf "$1" ;;
 	*.tar.bz2|*.tbz2) tar tjf "$1" ;;
