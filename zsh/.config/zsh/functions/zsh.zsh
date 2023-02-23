@@ -15,3 +15,8 @@ zshstats() {
         | grep -v "./" | sort -nr | head -n $num | column -c3 -s " " -t | nl
 }
 
+# Measure shell load time
+ztime() {
+	sh=${1-$SHELL}
+	for i in $(seq 1 10); do time $sh -i -c exit; done
+}
