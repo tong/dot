@@ -53,6 +53,8 @@ alias diff='diff --color'
 alias uppercase="tr '[:lower:]' '[:upper:]'"
 alias lowercase="tr '[:upper:]' '[:lower:]'"
 
+alias chmox='chmod +x'
+
 alias dirsize='du'
 alias diskspace='du -S | sort -n -r | more'
 

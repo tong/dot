@@ -31,7 +31,7 @@ source $ZDOTDIR/functions/img.zsh
 source $ZDOTDIR/functions/lfcd.zsh
 source $ZDOTDIR/functions/mail.zsh
 source $ZDOTDIR/functions/take.zsh
-source $ZDOTDIR/functions/url.zsh
+#source $ZDOTDIR/functions/url.zsh
 source $ZDOTDIR/functions/zsh.zsh
 #source $ZDOTDIR/z.sh #TODO conflict with complete
 
@@ -70,6 +70,7 @@ source "$ZDOTDIR/keybindings.zsh"
 [ -d "$HOME/.bin" ] && PATH="$HOME/.bin:$PATH"
 [ -d "$HOME/.cargo/bin" ] && PATH="$HOME/.cargo/bin:$PATH"
 [ -d "$HOME/.luarocks/bin" ] && PATH="$HOME/.luarocks/bin:$PATH"
+[ -d "$HOME/.config/yarn/global/node_modules/.bin" ] && PATH=$HOME/.config/yarn/global/node_modules/.bin:$PATH
 
 export GOPATH="$HOME/.go"
 [ -d "$GOPATH/bin" ] && PATH="$GOPATH/bin:$PATH"
@@ -88,5 +89,4 @@ export COLORTHEME="onedark"
 
 #eval "$(atuin init zsh)"
 eval "$(zoxide init zsh)"
-
 

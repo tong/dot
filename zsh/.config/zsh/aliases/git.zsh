@@ -9,8 +9,7 @@ alias pull='git pull'
 alias push='git push'
 alias status='git status'
 alias stash='git stash'
-
-alias g='git'
+#alias g='git'
 
 # alias ga='git add'
 # alias gaa='git add --all'
