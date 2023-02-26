@@ -9,22 +9,21 @@ XMODMAP="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xmodmap"
 #XCOLORVARS="${XDG_CONFIG_HOME:-$HOME/.config}/x11/xcolorvars"
 #[ -f "$XCOLORVARS" ] && source "$XCOLORVARS" &
 
-#"$HOME/.screenlayout/2-monitor.sh" &
-
 # xset +fp $HOME/.local/share/fonts
 # xset fp rehash
 
-"$HOME/.local/share/screenlayout/1" &
+#"$HOME/.local/share/screenlayout/2" &
+
 picom -b --config "$HOME/.config/picom.conf" &
+
 hsetroot -solid '#101010' &
+#xwallpaper --zoom ~/.local/share/wallpapers/space1.jpg
+
+xmodmap ~/.config/x11/xmodmap &
+xset r rate 190 90 &
 unclutter &
 
-#xwallpaper --zoom ~/.local/share/wallpapers/space1.jpg
-#~/.screenlayout/default
-#xmodmap ~/.config/x11/xmodmap
-#xset r rate 190 90
-
-#autostart="mpd xcompmgr dunst unclutter pipewire"
+#autostart="mpd dunst unclutter pipewire"
 #autostart="sxhkd"
 # autostart="pipewire"
 # for program in $autostart; do
