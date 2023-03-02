@@ -9,55 +9,87 @@ verbose=affected,blank,context,edit,footnote,label,new-id,project,special,sync,o
 
 # --- Reports
 
+report.notes.columns=id,description
+report.notes.labels=id,description
+report.notes.description=Only show annotations
+
+## Report: Due 
+# report.due.label=ID,Description,Due
+# report.due.columns=id,description,project
+# report.due.filter=status:pending due:
+
+## Report:  Next
+# #report.next.labels=ID,Project,tags,scheduled.countdown,Due,until.remaining,Mission,Time
+# report.next.labels=ID,Project,scheduled.countdown,Due,Remaining,Tags,Description
+# #report.next.columns=id,project,tags.indicator,scheduled.countdown,due.relative,until.remaining,description.count,totalactivetime
+# report.next.columns=id,project,scheduled,due.relative,until.remaining,tags,description
+# #report.next.sort=due+,id+,
+# #report.next.filter=status:pending limit:page +READY -BLOCKED -stash -reading project.not:study project.not:reading or (+ACTIVE)
+# report.next.filter=status:pending +next limit:page +READY -BLOCKED or (+ACTIVE)
+# #report.next.filter=status:pending limit:page +READY -BLOCKED or (+ACTIVE)
+# #report.next.project=indented
+
+##
+# report.timespent.columns=uuid.short,end,entry.age,project,description,totalactivetime
+# report.timespent.labels=UUID,Completed,Age,Project,Description,Time
+# report.timespent.sort=end+
+# report.timespent.filter=status:completed
+# report.timespent.description=List of time spent on each task via totalactivetime
+
+## Report: Simple
 report.simple.description=Simple list of open tasks by project
 report.simple.columns=id,project,description.count
 report.simple.labels=ID,Proj,Desc
 report.simple.sort=project+\/,entry+
 report.simple.filter=status:pending
 
+## 
 report.all.description=Test report showing all possible columns
 report.all.columns=uuid,id,description.combined,start.iso,end.iso,status,tags.count,depends,due,entry,imask,last,mask,modified,parent,priority,project,recur,rtype,scheduled,tags,template,until,urgency,wait
 report.all.labels=UUID,ID,description,start,end,status,tags.count,depends,due,entry,imask,last,mask,modified,parent,priority,project,recur,rtype,scheduled,tags,template,until,urgency,wait
 report.all.sort=project+\/,entry+
 #report.all.filter=status:completed
 
-#TODO
-report.invoice.description=Invoice compatible list
-report.invoice.columns=uuid,id,description.combined,start.iso,end.iso,status,tags.count
-report.invoice.labels=UUID,ID,Desc,S,E,Test,Tag
-report.invoice.sort=project+\/,entry+
-#report.invoice.filter=status:completed
+## TODO
+# report.invoice.description=Invoice compatible list
+# report.invoice.columns=uuid,id,description.combined,start.iso,end.iso,status,tags.count
+# report.invoice.labels=UUID,ID,Desc,S,E,Test,Tag
+# report.invoice.sort=project+\/,entry+
+# #report.invoice.filter=status:completed
 
-#TODO
+## TODO
 report.polybar.description=Single active task to be shown in polybar
 report.polybar.columns=id,project,description.oneline,urgency
 report.polybar.labels=id,project,description,urgency
-#report.polbar.sort=project+\/,entry+
 report.polybar.filter=status:pending
+#report.polbar.sort=project+\/,entry+
 #report.polybar.limit=1
 
+##
 report.tui.description=Default report for taskwarrior-tui
-report.tui.labels=ID,Project,Description,Tags,Due,Est,Github,Job
-report.tui.columns=id,project,description,tags,due,estimate,github,job
+report.tui.labels=ID,Project,Description,Tags,Due,Est,Job,NTags
+report.tui.columns=id,project,description,tags,due,estimate,job,anotations.count
 report.tui.sort=urgency-\/,project+\/,entry+
 report.tui.filter=status:pending
 
-#report.workspace.description=Show workspace paths
-#report.workspace.labels=ID,Workspace,Description
-#report.workspace.columns=id,workspace,description.oneline
-#report.workspace.filter=status:pending -workspace:
+# ---
+
+alias.open=execute echo "Opening Task";taskopen
+#alias.to=execute taskopen -A -n
+# alias.n=next
+# alias.s=stash
+# alias.st=study
+# alias.r=reading
+# alias.attach=execute '~/Dev/cli_app/taskwarrior/taskopen/scripts/attach_vifm' -t
+#Recurrence config
 
 # --- UDA
 
-# biz invoice id
 uda.job.label=Job
 uda.job.type=numeric
 
 uda.client.label=Client
 uda.client.type=string
-
-#uda.job.label=client
-#uda.job.type=string
 
 uda.github.label=Github
 uda.github.type=numeric
@@ -65,25 +97,18 @@ uda.github.type=numeric
 uda.estimate.label=Estimate
 uda.estimate.type=numeric
 
-uda.workdspace.label=Workspace
-uda.workspace.type=string
-
-#uda.taskwarrior-tui.report.next.filter=(status:pending or status:waiting)
-#uda.taskwarrior-tui.selection.indicator=
-#uda.taskwarrior-tui.task-report.list.filter=$(task show report.list.filter)
+uda.taskwarrior-tui.selection.indicator=
 uda.taskwarrior-tui.mark-selection.indicator=
 uda.taskwarrior-tui.unmark-selection.indicator=⦿
-uda.taskwarrior-tui.selection.indicator=
-#uda.taskwarrior-tui.report.next.filter=(status:pending)
-uda.taskwarrior-tui.report.next.filter=simple
+#uda.taskwarrior-tui.report.next.filter=simple
 uda.taskwarrior-tui.selection.blink=yes
 uda.taskwarrior-tui.selection.bold=true
 uda.taskwarrior-tui.selection.italic=false
 uda.taskwarrior-tui.selection.reverse=yes
-#:wuda.taskwarrior-tui.selection.dim=yes
+#uda.taskwarrior-tui.selection.dim=yes
 uda.taskwarrior-tui.style.report.scrollbar.area=black
 uda.taskwarrior-tui.style.report.scrollbar=white
-uda.taskwarrior-tui.task-report.list.filter=$(task show report.list.filter)
+#uda.taskwarrior-tui.task-report.list.filter=$(task show report.list.filter)
 uda.taskwarrior-tui.task-report.looping=false
 uda.taskwarrior-tui.task-report.next.filter=status:pending
 uda.taskwarrior-tui.task-report.prompt-on-delete=true
@@ -92,7 +117,8 @@ uda.taskwarrior-tui.task-report.show-info=false
 
 # --- Theme
 
-include $HOME/.config/taskwarrior/dark-gray-256.theme
+#include $HOME/.config/taskwarrior/dark-gray-256.theme
+include $HOME/.config/taskwarrior/hez.theme
 
 # --- Context
 
@@ -105,6 +131,6 @@ context.dot.write=+dot
 context.work.read=+work
 context.work.write=+work
 
-context.plutonika.read=+plutonika
-context.plutonika.write=+plutonika +work
+context.plutonika.read=client:plutonika +plutonika
+context.plutonika.write=client:plutonika +work +plutonika
 
