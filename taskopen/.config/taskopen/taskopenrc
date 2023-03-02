@@ -7,6 +7,7 @@ task_attributes="priority,project,tags,description"
 --active-tasks:"+PENDING"
 EDITOR=nvim
 path_ext=/usr/share/taskopen/scripts
+
 [Actions]
 files.target=annotations
 files.labelregex=".*"
@@ -16,7 +17,7 @@ files.modes="batch,any,normal"
 notes.target=annotations
 notes.labelregex=".*"
 notes.regex="^Notes(\\..*)?"
-notes.command="""editnote ~/Notes/tasknotes/$UUID$LAST_MATCH "$TASK_DESCRIPTION" $UUID"""
+notes.command="""editnote ~/notes/$UUID$LAST_MATCH "$TASK_DESCRIPTION" $UUID"""
 notes.modes="batch,any,normal"
 url.target=annotations
 url.labelregex=".*"
