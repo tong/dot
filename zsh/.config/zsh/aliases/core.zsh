@@ -72,10 +72,8 @@ alias checkroute='mtr $1 -tez -Q1 --ipinfo 1'
 alias paci="pacman -Slq | fzf --multi --prompt ' ' --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
 alias pacr="pacman -Qq | fzf --multi --prompt ' ' --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
 
-alias vconfig='$EDITOR $HOME/.config/nvim'
-
 alias zconfig='cd $ZDOTDIR && $EDITOR .zshrc'
 alias zreload='zshreload'
-alias zsource='source $ZDOTDIR/.zshrc'
+alias zsource='source $ZDOTDIR/.zshrc && source $HOME/.zshenv'
 alias zstats='zshstats'
 

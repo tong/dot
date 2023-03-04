@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-# | Git |
-
 fgitlog() {
     git log --graph --color=always --format="%C(auto)%h%d %s %C(red)%C(bold)%an %C(black)%cr - %cD" "$@" |
         fzf --prompt=" " --height 80% --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
@@ -12,8 +10,6 @@ fgitlog() {
 FZF-EOF"
 }
 
-# | Pacman |
-
 # TODO can improve that with a bind to switch to what was installed
 # fpac() {
 #     pacman -Slq | fzf --multi --reverse --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S
@@ -22,8 +18,6 @@ FZF-EOF"
 # fyay() {
 #     yay -Slq | fzf --multi --reverse --preview 'yay -Si {1}' | xargs -ro yay -S
 # }
-
-# | tmux |
 
 ftmux() {
     if [[ ! -n $TMUX ]]; then

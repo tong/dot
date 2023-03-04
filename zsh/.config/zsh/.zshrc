@@ -31,9 +31,7 @@ source $ZDOTDIR/functions/img.zsh
 source $ZDOTDIR/functions/lfcd.zsh
 source $ZDOTDIR/functions/mail.zsh
 source $ZDOTDIR/functions/take.zsh
-#source $ZDOTDIR/functions/url.zsh
 source $ZDOTDIR/functions/zsh.zsh
-#source $ZDOTDIR/z.sh #TODO conflict with complete
 
 function zvm_config() {
     ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
@@ -78,7 +76,6 @@ export GOPATH="$HOME/.go"
 export WASMTIME_HOME="$HOME/.wasmtime"
 [ -d "$WASMTIME_HOME/bin" ] && PATH="$WASMTIME_HOME/bin:$PATH"
 
-#export CRON_BIN=$HOME/.local/bin/cron
 #export ARMORY_PLAY_KROM='$ARMSDK/Krom/Krom $path $resources --consolepid $pid'
 #export ARMORY_PLAY_HTML5='chromium --app=$url --new-window --window-size=$width,$height --auto-open-devtools-for-tabs'
 export ARMSDK=$HOME/dev/armory3d/armsdk
