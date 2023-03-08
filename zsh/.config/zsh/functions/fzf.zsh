@@ -1,13 +1,9 @@
-#!/usr/bin/env zsh
-
 fgitlog() {
-    git log --graph --color=always --format="%C(auto)%h%d %s %C(red)%C(bold)%an %C(black)%cr - %cD" "$@" |
-        fzf --prompt=" " --height 80% --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
-        --bind "ctrl-m:execute:
-                (grep -o '[a-f0-9]\{7\}' | head -1 |
-                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
-                {}
-FZF-EOF"
+    log=$(git log --graph --color=always --format="%C(auto)%h%d %s %C(red)%C(bold)%an %C(black)%cr - %cD" "$@")
+    if (( $? )) ; then
+        return 1
+    fi
+    echo $log | fzf --prompt=" " --height 80% --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort --bind "ctrl-m:execute:(grep -o '[a-f0-9]\{7\}' | head -1 | xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF {} FZF-EOF"
 }
 
 # TODO can improve that with a bind to switch to what was installed
