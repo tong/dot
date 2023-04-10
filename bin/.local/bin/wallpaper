@@ -1,7 +1,8 @@
 #!/bin/bash
+
 # Wallpaper manager
 
-set -o xtrace
+#set -o xtrace
 
 usage(){
     echo -e "Usage: $0 color|random|select|set\n" \
@@ -19,12 +20,11 @@ random_file() {
 }
 
 while true; do
-    echo ">>>>>>>>>>>>>>>>>>> $1"
     case "$1" in
         path) echo "$WALLPAPERS"; exit 0 ;;
         select) IMG=$(i3-swallow sxiv -t -r -o "$WALLPAPERS"); break ;;
         random) IMG="random" break;;
-        color) hsetroot -solid "#$2"; exit 0;;
+        color|-c) hsetroot -solid "#$2"; exit 0;;
         color-name) hsetroot -solid "$2"; exit 0;;
         --image|-i) shift; IMG=$1; ;;
         --output|-o) shift; OUT=$1; shift ;;
@@ -48,6 +48,6 @@ wallpaper() {
     local OPTIND
     [ -f "$HOME/.netrc" ] && opts='-n'
     while getopts ":hd:i:n:" x; do
-        echo $x
+        echo "$x" 
     done
 }
