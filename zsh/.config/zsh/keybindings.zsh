@@ -44,6 +44,3 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 
 bindkey -s '^o' 'lfcd\n'
 
-source /usr/share/fzf/completion.zsh
-source /usr/share/fzf/key-bindings.zsh
-#source $HOME/sdk/qmk_firmware/util/qmk_tab_complete.sh

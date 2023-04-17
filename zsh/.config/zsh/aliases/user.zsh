@@ -13,6 +13,7 @@ alias alacritty-theme='python $HOME/.config/alacritty/alacritty-theme.py $@'
 alias calc='bc -q $@'
 alias chat='mcabber'
 alias cheat='cht.sh'
+alias contact='khard'
 alias contacts='khard'
 alias email='neomutt'
 alias gist='gh gist'
@@ -58,6 +59,9 @@ alias vv='$EDITOR .'
 alias x='extract'
 alias '?'='ddg'
 
+alias logout='xfce4-session-logout --logout'
+alias lock='i3lock'
+
 alias -s hxml='haxe'
 alias -s js='node'
 
@@ -72,21 +76,21 @@ alias clipcopy='cat "${1:-/dev/stdin}" | xsel --clipboard --input;'
 alias clippaste='xsel --clipboard --output;'
 alias ffmpeg="ffmpeg -hide_banner"
 
-alias logout='xfce4-session-logout --logout'
-alias lock='i3lock'
-
-#alias armory='blender --app-template armory'
-alias krom='$ARMSDK/Krom/Krom'
-alias khamake='node $ARMSDK/Kha/Tools/khamake/khamake.js'
-alias kmake='$ARMSDK/Kha/Kinc/Tools/linux_x64/kmake'
-
-#alias armory-electron-runtime='/home/tong/dev/armory3d/armory_electron_runtime/armory-electron-runtime-linux-x64/armory-electron-runtime'
-
-## TODO: really? maybe: cdev, cmusic,..
 alias dev='cd $DEV;exa'
 alias disktree='cd $DT;exa'
 alias dl='cd $HOME/downloads;exa'
 alias music='cd $HOME/downloads;exa'
 alias work='cd $HOME/work;task +work $@'
 alias video='cd $HOME/video;ls'
+
+alias blender3_3='$HOME/sdk/blender-3.3.4/blender'
+alias flipper='$HOME/sdk/qFlipper-x86_64-1.2.2.AppImage'
+alias reaper='$HOME/sdk/reaper/reaper'
+alias vcvrack='(cd $HOME/sdk/vcvrack/ && ./Rack)'
+
+#alias armory='blender --app-template armory'
+#alias armory-electron-runtime='/home/tong/dev/armory3d/armory_electron_runtime/armory-electron-runtime-linux-x64/armory-electron-runtime'
+alias krom='$ARMSDK/Krom/Krom'
+alias khamake='node $ARMSDK/Kha/Tools/khamake/khamake.js'
+alias kmake='$ARMSDK/Kha/Kinc/Tools/linux_x64/kmake'
 
