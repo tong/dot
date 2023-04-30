@@ -1,29 +1,37 @@
 {
-    "layer": "top", // Waybar at top layer
+    "output": ["DP-2"],
     "position": "top", // Waybar position (top|bottom|left|right)
-    "height": 20, // Waybar height (to be removed for auto height)
+    "layer": "top", // Waybar at top layer
+    //"mode": "dock",
+    // "height": 26, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
-    "spacing": 4, // Gaps between modules (4px)
+    //"margin": 0,
+    "fixed-center": true,
+    //"margin-right": 13,
+    "spacing": 0, // Gaps between modules (4px)
     "modules-left": [
         //"custom/mail",
-        "clock",
-        "custom/taskwarrior",
         "custom/tmux",
-        "hyprland/window"
-    ],
-    "modules-center": [
         "wlr/workspaces",
+        "custom/taskwarrior",
     ],
+    "modules-center": ["hyprland/window"],
     "modules-right": [
         "custom/mpv",
-        // "mpris",
+        // "mpd",
+        //"mpris",
         "network",
+        "custom/gpu",
+        "custom/ssh",
         "cpu",
         "memory",
         "disk",
+        "temperature",
         // "keyboard-state",
         "pulseaudio",
+        "clock",
         "tray"
+        // "backlight"
     ],
     // "custom/media": {
     //     "format": "{icon} {}",
@@ -37,23 +45,37 @@
     //     "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
     //     // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
     // },
-    "custom/mpv": {
+    "custom/gpu": {
+        "exec": "$HOME/.config/waybar/modules/gpu.sh",
+        "interval": 1,
         "format": "{icon} {}",
-        "format-icons": {
-            "default": "奈"
-        },
-        "max-length": 256,
-        "exec": "$HOME/.config/waybar/modules/mpv.sh 2> /dev/null"
+        "format-icons": { "default": "󰢩" }
+    },
+    "custom/mpv": {
+        "exec": "mpv-currently-playing",
+        "interval": 3,
+        "format": "{icon} {}",
+        "format-icons": { "default": "奈" },
+        "max-length": 128
+    },
+    "custom/ssh": {
+        "exec": "$HOME/.config/waybar/modules/ssh.sh",
+        "interval": 3,
+        "format": "{icon} {}",
+        "format-icons": { "default": "󰢩" },
+        "tooltip": false,
+        "max-length": 128
     },
     "custom/tmux": {
+        "exec": "$HOME/.config/waybar/modules/tmux.sh",
         "format": "{}",
         "format-icons": {
-            "default": ""
+            "default": ""
         },
-        "max-length": 256,
-        "exec": "$HOME/.config/waybar/modules/tmux.sh 2> /dev/null"
+        "max-length": 128
     },
     "custom/taskwarrior": {
+        "exec": "$HOME/.config/waybar/modules/taskwarrior.sh"
         //"return-type": "json",
         //"format": "TODO:  {percentage} {due} {} ",
         // "format": "{}",
@@ -62,44 +84,45 @@
         //"exec": "task export active | jq -r '.[0].description",
         //"exec": "python $HOME/.config/waybar/modules/taskwarrior.py"
         //"exec": "python $HOME/.config/waybar/modules/taskwarrior.py"
-        "exec": "$HOME/.config/waybar/modules/taskwarrior.sh"
     },
     "custom/mail": {
+        "exec": "mail-unread",
         "format": "{icon} {}",
-        "format-icons": {
-            "default": ""
-        },
-        "exec": "mail-unread"
+        "format-icons": { "default": "" }
     },
     "backlight": {
         "device": "acpi_video1",
+        "interval": 1,
         "format": "{percent}% {icon}",
-        "format-icons": [
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        ]
+        "format-icons": ["", "", "", "", "", "", "", "", ""]
     },
     "clock": {
-        // "timezone": "America/New_York",
-        "tooltip-format": "<big>{:%a %d %B %Y}</big>\n\n<tt><small>{calendar}</small></tt>",
-        "format": "{:%H:%M}",
-        "format-alt": "{:%s %Y-%m-%d %H:%M:%S}"
+        "interval": 30,
+        "timezone": "Europe/Vienna",
+        "format": "{:%a %H:%M}",
+        "format-alt": "{:%Y-%m-%d %a %H:%M:%S}",
+        "tooltip-format": "<big>{:%a %d %B %Y}</big>\n\n<tt><small>{calendar}</small></tt>"
     },
     "cpu": {
-        "format": "{usage}%",
-        "interval": 1
-        // "tooltip": false
+        "format": "{icon} {usage}%",
+        "format-icons": ["﬙"],
+        "interval": 1.0,
+        "on-click": "kitty -e btop"
+    },
+    "memory": {
+        "interval": 2,
+        "format": "{icon} {}",
+        "format-icons": { "default": "󰍛" },
+        "tooltip-format": " {used:0.1f}G/{total:0.1f}gb - {}%",
+        "on-click": "kitty -e btop"
     },
     "disk": {
-        "format": "{percentage_used}%",
+        "format": "󰋊 {percentage_used}",
         "interval": 10
+    },
+    "hyprland/window": {
+        "format": "{}",
+        "separate-outputs": true
     },
     "keyboard-state": {
         "numlock": true,
@@ -116,10 +139,6 @@
             "activated": "",
             "deactivated": ""
         }
-    },
-    "memory": {
-        "format": "{}%",
-        "interval": 3
     },
     "mpd": {
         "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
@@ -163,7 +182,7 @@
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
         //"format-ethernet": "{ipaddr}  {bandwidthDownBytes}  {bandwidthUpBits}",
-        "format-ethernet": "{bandwidthDownBytes} {bandwidthUpBits}",
+        "format-ethernet": "{bandwidthDownBytes} {bandwidthUpBytes}",
         "format-wifi": "{essid} ({signalStrength}%) ",
         "tooltip-format": "{ifname} {gwaddr}",
         "format-linked": "{ifname} (No IP) ",
@@ -171,12 +190,11 @@
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
     "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
         // "format": "{icon} {volume}% {format_source}",
         "format": "{icon}{volume}",
         "format-bluetooth": "{volume}% {icon} {format_source}",
         "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {format_source}",
+        "format-muted": "A̶U̶D̶I̶O̶",
         "format-source": " {volume}%",
         "format-source-muted": "",
         "format-icons": {
@@ -186,30 +204,30 @@
             "phone": "",
             "portable": "",
             "car": "",
-            "default": [
-                "",
-                "",
-                ""
-            ]
+            "default": ["", "", ""]
         },
-        "on-click": "pavucontrol"
+        "on-click": "pavucontrol",
+        "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "scroll-step": 5 // %, can be a float
     },
     "temperature": {
-        // "thermal-zone": 2,
+        "thermal-zone": 2,
         // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
         "critical-threshold": 80,
         // "format-critical": "{temperatureC}°C {icon}",
         //"format": "{icon} {temperatureC}°C",
         "format": "{temperatureC}°C",
-        "format-icons": [
-            "",
-            "",
-            ""
-        ]
+        "format-icons": ["", "", ""],
+        "tooltip": false
     },
     "tray": {
         // "icon-size": 21,
         "spacing": 10
+    },
+    "wireplumber": {
+        "format": "{volume}%",
+        "format-muted": "",
+        "on-click": "helvum"
     },
     "wlr/workspaces": {
         "format": "{name}",
@@ -220,8 +238,8 @@
             "4": "",
             "5": "",
             "urgent": "",
-            "active": "",
-            "default": ""
+            "active": "",
+            "default": ""
         },
         "on-click": "activate"
     }
