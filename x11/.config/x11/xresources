@@ -33,6 +33,12 @@ Xcursor.size: 16
 *.color7:       #c6c6c4
 *.color15:      #fffafa
 
+i3.color0: #10100e
+i3.color1: #909090
+i3.color2: #fffafa
+i3.color3: #696969
+i3.color4: #282a2e
+
 !rofi.font: JetBrainsMono Nerd Font-9
 
 Sxiv.font: JetBrainsMono Nerd Font-9
