@@ -1,7 +1,7 @@
 #!/bin/zsh
 UNREAD=$(mail-unread)
 if [ "$UNREAD" = "0" ]; then
-    echo
+    echo ""
 else
     echo " $UNREAD"
 fi
