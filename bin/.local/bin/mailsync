@@ -45,21 +45,12 @@ syncandnotify() {
         mbsync "$opts" "$acc"
     fi
     maildir="$HOME/.local/share/mail/$acc"
-	# new=$(find\
-	# 	"$MAILDIR/"[Ii][Nn][Bb][Oo][Xx]/new/ \
-	# 	"$MAILDIR/"[Ii][Nn][Bb][Oo][Xx]/cur/ \
-	# 	-type f -newer "$lastrun" 2> /dev/null)
-    # new=$(find\
-    #     "$MAILDIR/INBOX/new"\
-    #     "$MAILDIR/INBOX/cur"\
-    #     -type f -newer "$lastrun" 2> /dev/null)
     new=$(find\
         "$maildir/"[Ii][Nn][Bb][Oo][Xx]/new/ \
         "$maildir/"[Ii][Nn][Bb][Oo][Xx]/cur/ \
         -type f -newer "$lastrun" 2> /dev/null)
     if [ -z "$new" ]; then
         echo "No new mail"
-        polybar-msg action '#mail.module_hide' > /dev/null
     else
         if [ -z "$MAILSYNC_MUTE" ]; then
 	        newcount=$(echo "$new" | sed '/^\s*$/d' | wc -l)
@@ -68,12 +59,10 @@ syncandnotify() {
             from=$(echo "$raw" | grep "From: ")
             subject=$(echo "$raw" | grep "Subject: ")
             notify "$acc" "${from:6}" "${subject:9}"
-            polybar-msg action '#mail.module_show' > /dev/null
         fi
     fi
 }
 
-# Sync accounts passed as argument or all.
 if [ "$#" -gt "0" ]; then
 	for arg in "$@"; do
 		[ "${arg%${arg#?}}" = '-' ] && opts="${opts:+${opts} }${arg}" && shift 1
