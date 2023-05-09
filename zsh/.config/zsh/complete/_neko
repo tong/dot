@@ -1,0 +1,4 @@
+#compdef neko
+
+args=(`fd *.n`)
+_describe -t commands "neko subcommand" args
