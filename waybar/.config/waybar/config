@@ -1,7 +1,5 @@
 {
-    "output": [
-        "DP-2"
-    ],
+    "output": ["DP-2"],
     "position": "top", // Waybar position (top|bottom|left|right)
     "layer": "top", // Waybar at top layer
     //"mode": "dock",
@@ -10,20 +8,22 @@
     //"margin": 0,
     "fixed-center": true,
     //"margin-right": 13,
-    "spacing": 0, // Gaps between modules (4px)
+    "spacing": 0, 
     "modules-left": [
         "custom/mail",
         "custom/tmux",
-        "wlr/workspaces",
-        "custom/taskwarrior"
+        "custom/taskwarrior",
+        "custom/github",
+        "wlr/workspaces"
     ],
     "modules-center": [
+        //"custom/window",
         "hyprland/window"
     ],
     "modules-right": [
-        "custom/mpv",
         // "mpd",
         //"mpris",
+        "custom/mpv",
         "custom/ssh",
         "network",
         //"custom/gpu",
@@ -33,6 +33,7 @@
         "temperature",
         // "keyboard-state",
         "pulseaudio",
+        //"custom/pacman",
         "clock",
         "tray"
         // "backlight"
@@ -49,8 +50,20 @@
     //     "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
     //     // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
     // },
+    "custom/window": {
+        "exec": "$HOME/.config/waybar/modules/window.sh",
+        "format": "{}"
+    },
+    "custom/github": {
+        "format": "{icon} {}",
+        "format-icons": { "default": "" },
+        "return-type": "json",
+        "interval": 60,
+        "exec": "$HOME/.config/waybar/modules/github.sh",
+        "on-click": "xdg-open https://github.com/notifications"
+    },
     "custom/gpu": {
-        "exec": "$HOME/.config/waybar/modules/gpu.sh",
+        "exec": "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits",
         "interval": 3,
         "format": "{icon} {}",
         "format-icons": {
@@ -74,6 +87,15 @@
         },
         "max-length": 128
     },
+    "custom/pacman": {
+        "format": "{icon} {}",
+        "format-icons": { "default": "" },
+        "interval": 3600,
+        "exec": "checkupdates | wc -l",
+        "exec-if": "exit 0", // always run; consider advanced run conditions
+        "on-click": "kitty -e 'sudo pacman -Syu'; pkill -SIGRTMIN+8 waybar", // update system
+        "signal": 8
+    },
     "custom/ssh": {
         "exec": "$HOME/.config/waybar/modules/ssh.sh",
         "interval": 3,
@@ -86,23 +108,18 @@
     },
     "custom/tmux": {
         "exec": "$HOME/.config/waybar/modules/tmux.sh",
+        "interval": 3,
+        // "return-type": "json",
         "format": "{}",
-        "format-icons": {
-            "default": ""
-        },
-        "max-length": 128
+        "max-length": 128,
+        "format-icons": { "default": "" }
     },
     "custom/taskwarrior": {
         "exec": "python $HOME/.config/waybar/modules/taskwarrior.py",
-        "interval": 2
+        "interval": 2,
         //"return-type": "json",
-        //"format": "TODO:  {percentage} {due} {} ",
         // "format": "{}",
-        // "max-length": 256,
-        //"exec": "$HOME/.config/waybar/modules/taskwarrior.sh"
-        //"exec": "task export active | jq -r '.[0].description",
-        //"exec": "python $HOME/.config/waybar/modules/taskwarrior.py"
-        //"exec": "python $HOME/.config/waybar/modules/taskwarrior.py"
+        "max-length": 256
     },
     "backlight": {
         "device": "acpi_video1",
@@ -128,7 +145,7 @@
         // "tooltip-format": "<big>{:%a %d %B %Y}</big>\n\n<tt><small>{calendar}</small></tt>",
         "format": "{:%H:%M}",
         "format-alt": "{:%Y %A %d %B %R}",
-        "tooltip-format": "<span size='48pt' font='Inter Bold'></span>\n<span size='24pt' font='Inter Bold'>{:%A %d %B %Y}</span>\n\n<span>{calendar}</span>",
+        "tooltip-format": "<span size='24pt' font='Inter Bold'>{:%A %d %B %Y\n%H:%M}</span>\n\n<span>{calendar}</span>",
         "calendar": {
             "mode": "year",
             "mode-mon-col": 3,
@@ -172,7 +189,8 @@
         "interval": 10,
         "format": "󰋊 {percentage_used}",
         "tooltip-format": "󰋊\nUSED: {percentage_used}%\nFREE: {percentage_free}%",
-        "path": "/"
+        "path": "/",
+        "on-click": "kitty -e btop"
     },
     "hyprland/window": {
         "format": "{}",
@@ -270,7 +288,7 @@
     },
     "temperature": {
         "thermal-zone": 2,
-        "critical-threshold": 75,
+        "critical-threshold": 80,
         // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
         //"format": "{icon} {temperatureC}°C",
         //"format": "{temperatureC}°C",

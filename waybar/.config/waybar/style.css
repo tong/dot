@@ -1,0 +1,219 @@
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+        color: #000000;
+    }
+}
+
+* {
+    font-family: JetBrainsMono Nerd Font;
+    font-size: 12px;
+    color: #d0d0d0;
+}
+
+window {
+    background: none;
+}
+
+/* window#waybar { */
+    /* background: none; */
+    /* border-bottom: 3px solid rgba(100, 114, 125, 0.5); */
+    /* color: #eee; */
+    /* transition-property: background-color; */
+    /* transition-duration: .5s; */
+/* } */
+/* window#waybar.hidden { */
+    /* opacity: 0.2; */
+/* } */
+/*
+window#waybar.empty {
+    background-color: transparent;
+}
+window#waybar.solo {
+    background-color: #FFFFFF;
+}
+window#waybar.termite {
+    background-color: #3F3F3F;
+}
+window#waybar.chromium {
+    background-color: #000000;
+    border: none;
+}
+*/
+
+window.DP-2 * {
+}
+
+.modules-left {
+    margin-left: 0.5rem;
+}
+.modules-left > widget:first-child {
+    /* background: green; */
+    /* margin-left: 20px; */
+}
+/* If workspaces is the leftmost module, omit left margin */
+.modules-left > widget:first-child > #workspaces {
+    /* margin-left: 0; */
+}
+
+.modules-right {
+    margin-right: 0.5rem;
+}
+/* If workspaces is the rightmost module, omit right margin */
+.modules-right > widget:last-child > #workspaces {
+    /* margin-right: 0; */
+}
+
+widget > * {
+    padding: 4px 0.5rem 0 0.5rem;
+}
+button {
+    /* Use box-shadow instead of border so the text isn't offset */
+    /* box-shadow: inset 0 -3px transparent; */
+    /* box-shadow: inset 0 -1px white; */
+    /* Avoid rounded borders under each button name */
+    /* border: none; */
+    border-radius: 0;
+}
+button:hover {
+    color: black;
+    background: #303030;
+    /* background: inherit; */
+    /* box-shadow: inset 0 -3px #ffffff; */
+}
+
+tooltip {
+    border-radius: 0;
+    border: none;
+}
+tooltip label {
+    padding: 1rem 1.5rem;
+    /* background: #141414; */
+    border: none;
+}
+
+#mode {
+    background-color: #64727D;
+}
+
+/*
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#tray,
+#mode,
+#idle_inhibitor,
+#scratchpad,
+#mpd,
+#workspaces,
+#window,
+#custom-mpv,
+#custom-taskwarrior,
+#custom-tmux {
+}
+*/
+
+
+/*
+#cpu, #memory, #disk {
+    padding: 1px 0 0 0;
+}
+*/
+
+/*
+#cpu {}
+
+#memory {}
+
+#disk {}
+*/
+
+#network.disconnected {
+    background-color: #f53c3c;
+}
+
+#pulseaudio.muted {
+    background: #a0a0a0;
+    color: #141414;
+}
+
+/*
+#custom-media {}
+#custom-media.custom-spotify {}
+#custom-media.custom-vlc {}
+
+
+#idle_inhibitor {}
+#idle_inhibitor.activated {}
+
+#mpd {}
+#mpd.disconnected {}
+
+#keyboard-state {}
+#keyboard-state > label {}
+#keyboard-state > label.locked {}
+
+#language {}
+*/
+
+/*
+#mpd.stopped {}
+#mpd.paused {}
+*/
+
+#scratchpad {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#scratchpad.empty {
+	background-color: transparent;
+}
+
+#temperature.critical {
+    font-weight: bold;
+    /* padding: 0 1rem; */
+    background: #f53c3c;
+    color: #000;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: #eb4d4b;
+}
+
+/*
+#wireplumber.muted {
+}
+*/
+
+/* #window { */
+
+#workspaces button {
+    margin: 0;
+    padding: 0;
+}
+
+#workspaces button:hover {
+    box-shadow: inset 0 -8px white;
+}
+
+#workspaces button.active {
+    box-shadow: inset 0 -1px #ddd;
+}
+
+#workspaces button.urgent {
+    background: #f53c3c;
+}
+
