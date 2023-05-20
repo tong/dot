@@ -7,7 +7,7 @@ hr() {
     local WORD="$1"
     local LINE=''
     [[ -z "$WORD" ]] && return
-    printf -v LINE '%*s' "$COLS"
+    printf -v LINE '%*s' "$COLS" ""
     LINE="${LINE// /${WORD}}"
     echo "${LINE:0:${COLS}}"
 }
