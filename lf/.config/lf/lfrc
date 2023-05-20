@@ -12,6 +12,7 @@ set ratios '1:3:4'
 set scrolloff 10
 set shell sh
 set shellopts '-eu'
+set hidden
 
 set previewer '~/.config/lf/preview/preview'
 set cleaner '~/.config/lf/preview/cleaner'
@@ -249,7 +250,7 @@ cmd zi ${{
     lf -remote "send ${id} cd '${result}'"
 }}
 
-set mouse on
+set mouse true
 #map <m-1> open
 #map <m-2> cut
 # map <m-3> open
