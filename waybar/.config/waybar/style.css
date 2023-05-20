@@ -4,7 +4,6 @@
         color: #000000;
     }
 }
-
 * {
     font-family: JetBrainsMono Nerd Font;
     font-size: 12px;
@@ -14,6 +13,12 @@
 window {
     background: none;
 }
+
+/* window#waybar { */
+/*     background: @theme_base_color; */
+/*     border-bottom: 1px solid @unfocused_borders; */
+/*     color: @theme_text_color; */
+/* } */
 
 /* window#waybar { */
     /* background: none; */
@@ -65,7 +70,7 @@ window.DP-2 * {
 }
 
 widget > * {
-    padding: 4px 0.5rem 0 0.5rem;
+   padding: 0px 0.5rem 0 0.5rem;
 }
 button {
     /* Use box-shadow instead of border so the text isn't offset */
@@ -199,6 +204,9 @@ tooltip label {
 */
 
 /* #window { */
+
+#workspaces {
+}
 
 #workspaces button {
     margin: 0;

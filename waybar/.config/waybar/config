@@ -10,10 +10,12 @@
     //"margin-right": 13,
     "spacing": 0, 
     "modules-left": [
+        //"custom/user",
+        //"custom/github",
+        "custom/taskwarrior",
+        "custom/ssh",
         "custom/mail",
         "custom/tmux",
-        "custom/taskwarrior",
-        "custom/github",
         "wlr/workspaces"
     ],
     "modules-center": [
@@ -24,7 +26,6 @@
         // "mpd",
         //"mpris",
         "custom/mpv",
-        "custom/ssh",
         "network",
         //"custom/gpu",
         "cpu",
@@ -34,6 +35,7 @@
         // "keyboard-state",
         "pulseaudio",
         //"custom/pacman",
+        // "user",
         "clock",
         "tray"
         // "backlight"
@@ -60,7 +62,8 @@
         "return-type": "json",
         "interval": 60,
         "exec": "$HOME/.config/waybar/modules/github.sh",
-        "on-click": "xdg-open https://github.com/notifications"
+        "on-click": "xdg-open https://github.com/notifications",
+        "on-click-right": "xdg-open https://github.com/notifications"
     },
     "custom/gpu": {
         "exec": "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits",
@@ -112,7 +115,7 @@
         // "return-type": "json",
         "format": "{}",
         "max-length": 128,
-        "format-icons": { "default": "" }
+        //"format-icons": { "default": "" }
     },
     "custom/taskwarrior": {
         "exec": "python $HOME/.config/waybar/modules/taskwarrior.py",
@@ -120,6 +123,12 @@
         //"return-type": "json",
         // "format": "{}",
         "max-length": 256
+    },
+    "custom/user": {
+        "exec": "$HOME/.config/waybar/modules/user.sh",
+        "interval": 60,
+        "return-type": "json",
+        // "format": "{}",
     },
     "backlight": {
         "device": "acpi_video1",
