@@ -11,6 +11,7 @@ alias calc='bc -q $@'
 alias chat='profanity'
 alias cheat='cht.sh'
 alias chmox='chmod +x'
+alias clipboard='kitty +kitten clipboard'GG
 alias contact='khard'
 alias contacts='khard'
 alias dirsize='du'
@@ -35,11 +36,13 @@ alias pdf='zathura'
 #alias screenshot='scrot -u $SCREENSHOTS/screenshot-%Y_%m_%d_%H_%M.png'
 #alias screen-off='xset dpms force off'
 alias ultraviolet='cd $ULTRAVIOLET && nvim -c "VimwikiIndex"'
-alias weather='curl -L wttr.in'
+alias unzipall="fd -e zip -X unzip {} \;"
+alias weather='curl -L wttr.in/Vienna'
+alias webcam-snapshot='mpv av://v4l2:/dev/video0 --profile=low-latency --untimed'
 alias wtri='hl $HOME/dev/lib/wtri/wtri.hl'
 alias wtric='$HOME/dev/lib/wtri/wtri'
 alias ytdl='yt-dlp'
-alias ytdl-mp3='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio --audio-format mp3 "$@"'
+alias ytdl-mp3='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio -f bestaudio --add-metadata --embed-thumbnail --audio-format mp3 "$@"'
 
 alias cpuinfo='lscpu'
 alias meminfo='free -m -l -t'
@@ -56,7 +59,7 @@ alias flipper='$HOME/sdk/qFlipper-x86_64-1.2.2.AppImage'
 alias reaper='$HOME/sdk/reaper/reaper'
 alias vcvrack='(cd $HOME/sdk/vcvrack/ && ./Rack)'
 
-alias blender-armory='blender3_3 --app-template armory'
+alias blender-armory='$HOME/sdk/blender-3.3.6/blender --app-template armory'
 #alias blender3_3='$HOME/sdk/blender-3.3.6/blender'
 #alias armory-electron-runtime='/home/tong/dev/armory3d/armory_electron_runtime/armory-electron-runtime-linux-x64/armory-electron-runtime'
 alias krom='$ARMSDK/Krom/Krom'
@@ -85,17 +88,14 @@ alias tt='taskwarrior-tui --report tui'
 alias tx='tmux'
 alias v='$EDITOR' 
 alias vv='$EDITOR .'
+alias vvv='$EDITOR .'
 alias x='extract'
 alias '?'='ddg'
 
 alias -s hxml='haxe'
 alias -s js='node'
 
-alias fchrome='fzf-chrome-history'
-alias fscreenlayout='ls "$HOME/.local/share/screenlayout/" | fzf --prompt="  " | $@'
-
-alias paci="pacman -Slq | fzf --multi --prompt ' ' --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
-alias pacr="pacman -Qq | fzf --multi --prompt ' ' --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
+alias vconf='nvim $HOME/.config/nvim'
 
 alias zconfig='cd $ZDOTDIR && $EDITOR .zshrc'
 alias zreload='zshreload'
@@ -109,4 +109,9 @@ alias zstats='zshstats'
 #alias clipcopy='cat "${1:-/dev/stdin}" | xsel --clipboard --input;'
 #alias clippaste='xsel --clipboard --output;'
 
+alias paci="pacman -Slq | fzf --multi --prompt ' ' --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
+alias pacr="pacman -Qq | fzf --multi --prompt ' ' --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
 
+#alias fzchrome='fzf-chrome-history'
+#alias fzscreenlayout='ls "$HOME/.local/share/screenlayout/" | fzf --prompt="  " | $@'
+alias fzf-nerdfont='ic=$(cat ~/.local/share/nerdfont.map | fzf --prompt=" ") && echo "${ic:0:1}"'
