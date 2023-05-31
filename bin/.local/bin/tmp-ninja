@@ -1,4 +1,0 @@
-#!/bin/sh
-# Upload files to https://tmp.ninja/api.html
-curl -F "files[]=@$1" https://tmp.ninja/upload.php?output=text
-
