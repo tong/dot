@@ -42,7 +42,7 @@ bind editor <Tab> complete-query
 bind editor ^T complete
 
 set sidebar_visible = no
-set sidebar_width = 18
+set sidebar_width = 20
 set sidebar_short_path = yes
 set sidebar_next_new_wrap = yes
 set sidebar_sort_method = alpha
