@@ -1,35 +1,34 @@
 # Load more completions
 fpath=($ZDOTDIR/plugins/zsh-completions/src $fpath)
-#fpath=($ZDOTDIR/complete/ $fpath)
+fpath=($ZDOTDIR/complete/ $fpath)
 
 # Should be called before compinit
 zmodload zsh/complist
 
 # Use hjlk in menu selection (during completion)
 # Doesn't work well with interactive mode
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'j' vi-down-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-
-bindkey -M menuselect '^xg' clear-screen
-bindkey -M menuselect '^xi' vi-insert                      # Insert
-bindkey -M menuselect '^xh' accept-and-hold                # Hold
-bindkey -M menuselect '^xn' accept-and-infer-next-history  # Next
-bindkey -M menuselect '^xu' undo                           # Undo
+# bindkey -M menuselect 'h' vi-backward-char
+# bindkey -M menuselect 'k' vi-up-line-or-history
+# bindkey -M menuselect 'j' vi-down-line-or-history
+# bindkey -M menuselect 'l' vi-forward-char
+#
+# bindkey -M menuselect '^xg' clear-screen
+# bindkey -M menuselect '^xi' vi-insert                      # Insert
+# bindkey -M menuselect '^xh' accept-and-hold                # Hold
+# bindkey -M menuselect '^xn' accept-and-infer-next-history  # Next
+# bindkey -M menuselect '^xu' undo                           # Undo
 
 autoload -U compinit; compinit
 _comp_options+=(globdots) # With hidden files
 
 # Only work with the Zsh function vman
-# See $DOTFILES/zsh/scripts.zsh
 compdef vman="man"
 
 # +---------+
 # | Options |
 # +---------+
 
-# setopt GLOB_COMPLETE      # Show autocompletion menu with globs
+#setopt GLOB_COMPLETE      # Show autocompletion menu with globs
 setopt MENU_COMPLETE        # Automatically highlight first element of completion menu
 setopt AUTO_LIST            # Automatically list choices on ambiguous completion.
 setopt COMPLETE_IN_WORD     # Complete from both ends of a word.

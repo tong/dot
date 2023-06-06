@@ -20,25 +20,8 @@ setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
 setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
 setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
 
-function zvm_config() {
-    ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
-    #ZVM_VI_ESCAPE_BINDKEY=ESC
-    #ZVM_VI_INSERT_ESCAPE_BINDKEY=ESC
-    #ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
-    ZVM_KEYTIMEOUT=0.05
-}
-function zvm_after_lazy_keybindings() {
-    source /usr/share/fzf/completion.zsh
-    source /usr/share/fzf/key-bindings.zsh
-}
-
-source $ZDOTDIR/plugins/bd/bd.zsh
-source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-#source $ZDOTDIR/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source $ZDOTDIR/plugins/zsh-vi-mode/zsh-vi-mode.zsh
-
 source $ZDOTDIR/completion.zsh
+
 source $ZDOTDIR/functions/archive.zsh
 source $ZDOTDIR/functions/autosource.zsh
 source $ZDOTDIR/functions/confirm.zsh
@@ -56,36 +39,61 @@ source $ZDOTDIR/aliases/nmap.zsh
 source $ZDOTDIR/aliases/tmux.zsh
 source $ZDOTDIR/aliases/user.zsh
 
-autoload -Uz promptinit && promptinit
-prompt elite
+autoload -Uz promptinit
+promptinit
+prompt fire
 source "$ZDOTDIR/prompt.zsh"
 
 source "$ZDOTDIR/keybindings.zsh"
 #source $HOME/sdk/qmk_firmware/util/qmk_tab_complete.sh
 
-## ---
+function zvm_config() {
+    #ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+    #ZVM_VI_ESCAPE_BINDKEY=ESC
+    #ZVM_VI_ESCAPE_BINDKEY=jj
+    #ZVM_VI_INSERT_ESCAPE_BINDKEY=ESC
+}
+function zvm_after_init() {
+    source /usr/share/fzf/completion.zsh
+    source /usr/share/fzf/key-bindings.zsh
+}
 
-[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
-#[ -d "$HOME/.bin" ] && PATH="$HOME/.bin:$PATH"
-[ -d "$HOME/.cargo/bin" ] && PATH="$HOME/.cargo/bin:$PATH"
-[ -d "$HOME/.luarocks/bin" ] && PATH="$HOME/.luarocks/bin:$PATH"
-[ -d "$HOME/src/npm-global/bin" ] && PATH=$HOME/src/npm-global/bin:$PATH
-[ -d "$HOME/.config/yarn/global/node_modules/.bin" ] && PATH=$HOME/.config/yarn/global/node_modules/.bin:$PATH
+#source $ZDOTDIR/plugins/bd/bd.zsh
+source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+#source $ZDOTDIR/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $ZDOTDIR/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+source $ZDOTDIR/plugins/k/k.sh
 
-export GOPATH="$HOME/.go"
-[ -d "$GOPATH/bin" ] && PATH="$GOPATH/bin:$PATH"
-
-#export WASMTIME_HOME="$HOME/.wasmtime"
-#[ -d "$WASMTIME_HOME/bin" ] && PATH="$WASMTIME_HOME/bin:$PATH"
+################################################################################
 
 #export ARMORY_PLAY_KROM='$ARMSDK/Krom/Krom $path $resources --consolepid $pid'
 #export ARMORY_PLAY_HTML5='chromium --app=$url --new-window --window-size=$width,$height --auto-open-devtools-for-tabs'
-export ARMSDK=$HOME/dev/armory3d/armsdk
+export ARMSDK=$HOME/armory/armsdk
+export GOPATH="$HOME/.go"
 export HAXE_STD_PATH=/usr/local/share/haxe/std
 export COLORTHEME="onedark"
 
-#. /home/tong/.wasmedge/env
+[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
+[ -d "$HOME/.cargo/bin" ] && PATH="$HOME/.cargo/bin:$PATH"
+[ -d "$HOME/.luarocks/bin" ] && PATH="$HOME/.luarocks/bin:$PATH"
+[ -d "$HOME/.npm-packages/bin" ] && PATH=$HOME/.npm-packages/bin:$PATH
+[ -d "$HOME/.config/yarn/global/node_modules/.bin" ] && PATH=$HOME/.config/yarn/global/node_modules/.bin:$PATH
+[ -d "$GOPATH/bin" ] && PATH="$GOPATH/bin:$PATH"
+
+[[ ! -r /home/tong/.opam/opam-init/init.zsh ]] || source /home/tong/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
 #eval "$(atuin init zsh)"
 eval "$(zoxide init zsh)"
+
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    #ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
+    #eval $(ssh-agent)
+    ssh-agent -s > "$XDG_RUNTIME_DIR/ssh-agent.env" > /dev/null
+    source "$XDG_RUNTIME_DIR/ssh-agent.env"
+    ssh-add ~/.ssh/id_rsa
+fi
+if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+    source "$XDG_RUNTIME_DIR/ssh-agent.env" > /dev/null
+fi
 

@@ -4,14 +4,9 @@ PRIMARY_FG=black
 SEGMENT_SEPARATOR=""
 SEGMENT_SEPARATOR_START=""
 SEGMENT_SEPARATOR_END=""
-# SEGMENT_SEPARATOR_END=""
-# SEGMENT_SEPARATOR_START=""
-# SEGMENT_SEPARATOR_END=""
-#SEGMENT_SEPARATOR=""
 
 BRANCH=""
 CIRCLE=""
-#CROSS=""
 CROSS=""
 DETACHED="\u27a6"
 GEAR=""
@@ -21,15 +16,15 @@ PLUSMINUS="\u00b1"
 #ICON_VIM=""
 #ICON_VIM=""
 
-TASKWARRIOR_URGENT=""
-TASKWARRIOR_DUETOMORROW=""
-TASKWARRIOR_DUETODAY=""
-TASKWARRIOR_OVERDUE=""
-TASKWARRIOR_OK=""
+# TASKWARRIOR_URGENT=""
+# TASKWARRIOR_DUETOMORROW=""
+# TASKWARRIOR_DUETODAY=""
+# TASKWARRIOR_OVERDUE=""
+# TASKWARRIOR_OK=""
 
 ## Begin a segment
 # Takes two arguments, background and foreground.
-# Both can be omitted, rendering default background/foreground.
+# Both can be omitted, falling back to default background/foreground.
 prompt_segment() {
     local bg fg
     [[ -n $1 ]] && bg="%K{$1}" || bg="%k"
@@ -162,7 +157,7 @@ prompt_git() {
 }
 
 prompt_time() {
-    prompt_segment white black "$(date +%H%M)"
+    prompt_segment black white "$(date +%H%M) "
 }
 
 prompt_virtualenv() {
@@ -235,25 +230,97 @@ prompt_vi() {
     esac 
 }
 
+
+function zvm_after_select_vi_mode() {
+  case $ZVM_MODE in
+    $ZVM_MODE_NORMAL)
+        #PROMP_VI_MODE=
+        #mpv music/mxxx/CC/A1\ \ \ Koma.mp3
+    ;;
+    $ZVM_MODE_INSERT)
+      # Something you want to do...
+    ;;
+    $ZVM_MODE_VISUAL)
+      # Something you want to do...
+    ;;
+    $ZVM_MODE_VISUAL_LINE)
+      # Something you want to do...
+    ;;
+    $ZVM_MODE_REPLACE)
+      # Something you want to do...
+    ;;
+  esac
+    #prompt_vi
+    #printf "%s" $ZVM_MODE
+    #RPROMPT="$ZVM_MODE"
+    #notify-send "MODE" "$ZVM_MODE"
+}
+
+
+# function zle-line-init zle-keymap-select {
+#     RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
+#     RPS2=$RPS1
+#     zle reset-prompt
+# }
+# zle -N zle-line-init
+# zle -N zle-keymap-select
+#
+# setopt PROMPT_SUBST
+#
+# vim_ins_mode="[INS]"
+# vim_cmd_mode="[CMD]"
+# vim_mode=$vim_ins_mode
+#
+# function zle-keymap-select {
+#   vim_mode="${${KEYMAP/vicmd/${vim_cmd_mode}}/(main|viins)/${vim_ins_mode}}"
+#   zle reset-prompt
+# }
+# zle -N zle-keymap-select
+#
+# function zle-line-finish {
+#   vim_mode=$vim_ins_mode
+# }
+# zle -N zle-line-finish
+
+
+# setopt PROMPT_SUBST
+#
+# vim_ins_mode="[INS]"
+# vim_cmd_mode="[CMD]"
+# vim_mode=$vim_ins_mode
+#
+# function zle-keymap-select {
+#   vim_mode="${${KEYMAP/vicmd/${vim_cmd_mode}}/(main|viins)/${vim_ins_mode}}"
+#   zle reset-prompt
+# }
+# zle -N zle-keymap-select
+#
+# function zle-line-finish {
+#   vim_mode=$vim_ins_mode
+# }
+# zle -N zle-line-finish
+
+
 prompt_main() {
     RETVAL=$?
     CURRENT_BG='NONE'
-    prompt_virtualenv
+    #prompt_virtualenv
     #prompt_history
+    #prompt_time
     prompt_status
     #prompt_tasks
     prompt_context
     prompt_dir
     prompt_git
     #prompt_gitstatus
-    prompt_vi
+    #prompt_vi
     #prompt_time
     prompt_end
 }
 prompt_precmd() {
     vcs_info
+    setopt prompt_subst
     PROMPT='%{%f%b%k%}$(prompt_main)'
-    #PROMPT='$(prompt_main)'
 }
 prompt_setup() {
     autoload -Uz add-zsh-hook
@@ -261,38 +328,10 @@ prompt_setup() {
     prompt_opts=(cr subst percent)
     add-zsh-hook precmd prompt_precmd
     zstyle ':vcs_info:*' enable git
-    #zstyle ':vcs_info:*' check-for-changes false
     zstyle ':vcs_info:*' check-for-changes true
     zstyle ':vcs_info:git*' formats '%b'
     zstyle ':vcs_info:git*' actionformats '%b (%a)'
 }
 prompt_setup "$@"
 
-#RPROMPT="$(date +%H%M)"
-
-#RPROMPT="$(date +%R:%S)"
-#PROMPT='%{%f%b%k%}$(prompt_void_main)'
-
-# prompt_void_setup() {
-#
-#     gitstatus_stop 'MY' && gitstatus_start -s -1 -u -1 -c -1 -d -1 'MY'
-#     autoload -Uz add-zsh-hook
-#     add-zsh-hook precmd prompt_gitstatus
-#
-#     PROMPT='%{%f%b%k%}$(prompt_void_main)'
-#
-#     # autoload -Uz add-zsh-hook
-#     # autoload -Uz vcs_info
-#     # prompt_opts=(cr subst percent)
-#     # add-zsh-hook precmd prompt_void_precmd
-#     # zstyle ':vcs_info:*' enable git
-#     # zstyle ':vcs_info:*' check-for-changes true
-#     # zstyle ':vcs_info:git*' formats '%b'
-#     # zstyle ':vcs_info:git*' actionformats '%b (%a)'
-# }
-
-#gitstatus_stop 'MY' && gitstatus_start -s -1 -u -1 -c -1 -d -1 'MY'
-#autoload -Uz add-zsh-hook
-# add-zsh-hook precmd prompt_gitstatus
-
-
+# #RPROMPT="$(date +%H%M)"
