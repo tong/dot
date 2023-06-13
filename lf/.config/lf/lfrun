@@ -1,4 +1,4 @@
 #!/bin/sh
 source "$HOME/.config/lf/colors"
 source "$HOME/.config/lf/icons"
-lf "$@"
+/usr/bin/lf "$@"

@@ -1,21 +1,17 @@
 #!/bin/bash
 
 set -C -f
+
 IFS="$(printf '%b_' '\n')"; IFS="${IFS%_}"
 
-# ifub() {
-# 	[ -n "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && command -V ueberzug >/dev/null 2>&1
-# }
+SVG_PREVIEW_MAX_W=1280
+SVG_PREVIEW_MAX_H=1080
 
 preview_image() {
     file=$1; w=$2; h=$3; x=$4; y=$5
     #if [[ "$( file -Lb --mime-type "$file")" =~ ^image ]]; then
     #read -r LINES COLUMNS < <(stty size); echo "$LINES $COLUMNS"
     kitty +kitten icat --silent --stdin no --transfer-mode file --place "${w}x${h}@${x}x${y}" "$file" < /dev/null > /dev/tty
-    #mediainfo --full "$file"
-    # else
-    #     mediainfo "$1"
-    #fi
 }
 
 batorcat() {
@@ -39,15 +35,21 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | awk '{print tolower($0)}')" in
         ;;
 	*.avi|*.mp4|*.wmv|*.dat|*.3gp|*.ogv|*.mkv|*.mpg|*.mpeg|*.vob|*.fl[icv]|*.m2v|*.mov|*.webm|*.mts|*.m4v|*.r[am]|*.qt|*.divx)
         CACHE="$(thumbnail_cache_path "$1")"
-		[ ! -f "${CACHE}.jpg" ] && ffmpegthumbnailer -i "$1" -o "${CACHE}.jpg" -s 0 -q 5
+		if [ ! -f "${CACHE}.jpg" ]; then
+            size=0 #TODO: use a max size value to avoid creating big ass thumbs
+            ffmpegthumbnailer -i "$1" -o "${CACHE}.jpg" -s $size -q 5
+        fi
         preview_image "${CACHE}.jpg" "$2" "$3" "$4" "$5"
+        #TODO show media info below thumb, need to get img height
+        #br $3
+        #mediainfo "$1"
 		;;
 	*.bmp|*.jpg|*.jpeg|*.png|*.xpm|*.webp|*.gif|*.jfif)
 		preview_image "$1" "$2" "$3" "$4" "$5"
 		;;
     *.blend)
         CACHE="$(get_cache_id "$1")"
-        blender-thumbnailer "$1" "${CACHE}.png"
+        [ ! -f "$CACHE.png" ] && blender-thumbnailer "$1" "${CACHE}.png"
 		preview_image "$CACHE.png" "$2" "$3" "$4" "$5"
         ;;
 	#*.cbz|*.cbr|*.cbt)
@@ -55,8 +57,6 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | awk '{print tolower($0)}')" in
 			#comicthumb "$1" "$CACHE" 1024
 		#image "$CACHE" "$2" "$3" "$4" "$5"
 		#;;
-    #*.doc) catdoc "$1" ;;
-	#*.docx) docx2txt "$1" - ;;
 	#*.epub)
 		#[ ! -f "$CACHE" ] && \
 			#epub-thumbnailer "$1" "$CACHE" 1024
@@ -75,8 +75,8 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | awk '{print tolower($0)}')" in
         #glow "$1" ;; # TODO
     *.o) nm "$1";;
     *.otf|*.ttf|*.woff|*.woff2)
-        #TODO: proper caching
-        ~/.config/lf/preview/font "$1"
+        CACHE="$(get_cache_id "$1")"
+        [ ! -f "$CACHE.png" ] && ~/.config/lf/preview/font "$1"
         preview_image "/tmp/lf_fontpreview.png" "$2" "$3" "$4" "$5"
         #mediainfo "$1"
         ;;
@@ -87,10 +87,11 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | awk '{print tolower($0)}')" in
 		;;
     *.rar) unrar l "$1" ;;
     *.svg)
+        mediainfo "$1"
         CACHE="$(thumbnail_cache_path "$1")"
-        #TODO: always shows cached version
-		[ ! -f "$CACHE.png" ] && inkscape "$1" -o "$CACHE.png"
-		preview_image "$CACHE.png" "$2" "$3" "$4" "$5"
+        [ ! -f "$CACHE.png" ] && svg2png -i "$1" -o "$CACHE.png" --max-width $SVG_PREVIEW_MAX_W --max-height $SVG_PREVIEW_MAX_H
+		#[ ! -f "$CACHE.png" ] && inkscape "$1" -o "$CACHE.png"
+		preview_image "$CACHE.png" "$2" "$3" "$4" "6"
         ;;
     *.tar) tar tf "$1" ;;
 	*.tar.bz2|*.tbz2) tar tjf "$1" ;;
@@ -100,7 +101,6 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | awk '{print tolower($0)}')" in
     *.wav|*.mp3|*.flac|*.m4a|*.wma|*.ape|*.ac3|*.og[agx]|*.spx|*.opus|*.as[fx]|*.mka)
         exiftool "$1"
         ;;
-    #*.xls|*.xlsx)
 	*.zip|*.jar|*.war|*.ear|*.oxt) unzip -l "$1" ;;
 	*.7z) 7z l "$1" ;;
 	#*.[1-8]) man "$1" | col -b ;;

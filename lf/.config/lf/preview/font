@@ -13,7 +13,7 @@ FONTPREVIEW_DIR="/tmp"
 FONT_PREVIEW="$FONTPREVIEW_DIR/lf_fontpreview.png"
 
 pre_exit() {
-    kill -9 "$(cat "$PIDFILE" 2>/dev/null)" &> /dev/null
+    kill -9 "$(cat "$PIDFILE" 2>/dev/null)" > /dev/null
     #rm -rf "$FONTPREVIEW_DIR"
     #rm -f $FONT_PREVIEW
 }

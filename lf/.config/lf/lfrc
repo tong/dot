@@ -272,11 +272,13 @@ map <enter> shell
 
 map o &mimeopen $f
 #map p paste
+#map x $$f
 
 map C copyto
 map D delete
 map E extract
 map H set hidden!
+#map I $printf "%s\n" $(mediainfo $f)
 map J push 10j
 map K push 10k
 map M moveto
@@ -285,11 +287,11 @@ map O $mimeopen --ask $f
 map R bulkrename
 map T trash
 map X cut
+#map X !$f
 map Y $printf "%s" "$fx" | xclip -selection clipboard
 
-#map x $$f
-#map X !$f
 
+#map <c-i> $mediainfo $f
 #map <c-h> set hidden!
 map <c-n> push :mkdir<space>
 map <c-r> reload
