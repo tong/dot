@@ -6,35 +6,38 @@
 # This script can be set up as a cron job for automated mail syncing.
 
 pgrep mbsync >/dev/null && {
-    echo "mbsync is already running"
+    echo "mbsync already running"
     exit
 }
 
-ICON_NOTFICATION="/usr/share/icons/Paper/scalable/places/mail-folder-inbox-symbolic.svg"
+lastrun="${XDG_CONFIG_HOME:-$HOME/.config}/mutt/.mailsynclastrun"
+notify_id=0
+ICON_NOTFICATION="/usr/share/icons/ePapirus/16x16/actions/mail-unread.svg"
+
 #GPG_TTY="$(tty)"
 #export ${GPG_TTY}
 
 [ -n "$MBSYNCRC" ] && alias mbsync='mbsync -c $MBSYNCRC' || MBSYNCRC="$HOME/.mbsyncrc"
 #[ -n "$MPOPRC" ] || MPOPRC="$HOME/.config/mpop/config"
 
-lastrun="${XDG_CONFIG_HOME:-$HOME/.config}/mutt/.mailsynclastrun"
-
 case "$(readlink -f /sbin/init)" in
     *systemd*|*openrc*)
-        export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus
-        ;;
+        export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus;;
 esac
 
 # Remember if a display server is running since `ps` doesn't always contain a display
-pgrepoutput="$(pgrep -ax X\(\|org\|wayland\))"
-displays="$(echo "$pgrepoutput" | grep -wo "[0-9]*:[0-9]\+" | sort -u)"
+# pgrepoutput="$(pgrep -ax X\(\|org\|wayland\))"
+# displays="$(echo "$pgrepoutput" | grep -wo "[0-9]*:[0-9]\+" | sort -u)"
+# notify() {
+#     [ -n "$pgrepoutput" ] &&
+#     for x in ${displays:-0:}; do
+#         export DISPLAY="$x"
+#         notify_id=$(notify-send --app-name="mail" --icon="$ICON_NOTFICATION" "$2" "$3" -r "$notify_id" -p)
+#     done
+# }
 notify() {
-    [ -n "$pgrepoutput" ] &&
-    for x in ${displays:-0:}; do
-        export DISPLAY="$x"
-        notify-send --app-name="email" --icon="$ICON_NOTFICATION" "$2" "$3"
-        canberra-gtk-play -i message
-    done
+    export XDG_RUNTIME_DIR="/run/user/1000"
+    notify_id=$(notify-send --app-name="mail" --icon="$ICON_NOTFICATION" "$2" "$3" -r "$notify_id" -p)
 }
 
 syncandnotify() {
@@ -51,14 +54,17 @@ syncandnotify() {
         -type f -newer "$lastrun" 2> /dev/null)
     if [ -z "$new" ]; then
         echo "No new mail"
+        #notify "$acc" "No new mail"
     else
+        echo "$new"
         if [ -z "$MAILSYNC_MUTE" ]; then
 	        newcount=$(echo "$new" | sed '/^\s*$/d' | wc -l)
-            echo "$newcount unread mails"
+            echo "$newcount new mails"
             raw=$(cat "$new")
             from=$(echo "$raw" | grep "From: ")
             subject=$(echo "$raw" | grep "Subject: ")
             notify "$acc" "${from:6}" "${subject:9}"
+            canberra-gtk-play -i message
         fi
     fi
 }
