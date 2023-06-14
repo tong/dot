@@ -1,44 +1,49 @@
 {
-    "output": ["DP-2"],
-    "position": "top", // Waybar position (top|bottom|left|right)
-    "layer": "top", // Waybar at top layer
+    "output": [ "DP-2"],
+    "position": "top",
+    "layer": "top",
     //"mode": "dock",
     // "height": 26, // Waybar height (to be removed for auto height)
-    // "width": 1280, // Waybar width
     //"margin": 0,
-    "fixed-center": true,
     //"margin-right": 13,
-    "spacing": 0, 
+    "fixed-center": true,
+    "spacing": 0,
+    //"mode": "hide",
+    //"hidden_state": "show",
+    "ipc": true,
+    "id": "waybar",
     "modules-left": [
+        //"image#motd",
         //"custom/user",
         //"custom/github",
+        //"custom/mail",
         "custom/taskwarrior",
-        "custom/ssh",
-        "custom/mail",
         "custom/tmux",
+        //"image",
         "wlr/workspaces"
+        //"custom/workspaces"
     ],
     "modules-center": [
         //"custom/window",
         "hyprland/window"
     ],
     "modules-right": [
-        // "mpd",
-        //"mpris",
+         //"mpd",
+        "mpris",
         "custom/mpv",
         "network",
+        "custom/ssh",
         //"custom/gpu",
         "cpu",
         "memory",
-        "disk",
+        // "disk",
         "temperature",
-        // "keyboard-state",
+        //"keyboard-state",
+        //"cava",
         "pulseaudio",
         //"custom/pacman",
-        // "user",
-        "clock",
-        "tray"
-        // "backlight"
+        "tray",
+        "clock"
     ],
     // "custom/media": {
     //     "format": "{icon} {}",
@@ -52,13 +57,27 @@
     //     "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
     //     // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
     // },
-    "custom/window": {
-        "exec": "$HOME/.config/waybar/modules/window.sh",
-        "format": "{}"
+    "image#motd": {
+        "path": "/home/tong/img/vector/ftl.white.svg",
+        "size": 16,
+        "interval": 3600
+        //"on-click": "mpc toggle"
+    },
+    // "image": {
+    //      "exec":"~/.config/waybar/modules/album-art.sh",
+    //      "size": 16,
+    //      "interval": 2
+    // },
+    "custom/workspaces": {
+        "exec": "$HOME/.config/waybar/modules/workspaces.sh",
+        "format": " {} ",
+        "return-type": "json"
     },
     "custom/github": {
         "format": "{icon} {}",
-        "format-icons": { "default": "" },
+        "format-icons": {
+            "default": ""
+        },
         "return-type": "json",
         "interval": 60,
         "exec": "$HOME/.config/waybar/modules/github.sh",
@@ -77,8 +96,9 @@
         "exec": "$HOME/.config/waybar/modules/mail.sh",
         "interval": 60,
         "format": "{icon} {}",
+        "format-alt": "{icon} UNREAD:{}",
         "format-icons": {
-            "default": ""
+            "default": ""
         }
     },
     "custom/mpv": {
@@ -86,13 +106,15 @@
         "interval": 3,
         "format": "{icon} {}",
         "format-icons": {
-            "default": "奈"
+            "default": ""
         },
         "max-length": 128
     },
     "custom/pacman": {
         "format": "{icon} {}",
-        "format-icons": { "default": "" },
+        "format-icons": {
+            "default": ""
+        },
         "interval": 3600,
         "exec": "checkupdates | wc -l",
         "exec-if": "exit 0", // always run; consider advanced run conditions
@@ -111,18 +133,20 @@
     },
     "custom/tmux": {
         "exec": "$HOME/.config/waybar/modules/tmux.sh",
-        "interval": 3,
+        "interval": 5,
         // "return-type": "json",
-        "format": "{}",
-        "max-length": 128,
+        // "format": " {} ",
+        "max-length": 128
         //"format-icons": { "default": "" }
     },
     "custom/taskwarrior": {
         "exec": "python $HOME/.config/waybar/modules/taskwarrior.py",
         "interval": 2,
-        //"return-type": "json",
-        // "format": "{}",
-        "max-length": 256
+        "format": "{}",
+        "max-length": 256,
+        "actions": {
+            "on-click-right": "mode"
+        }
     },
     "custom/user": {
         "exec": "$HOME/.config/waybar/modules/user.sh",
@@ -131,7 +155,7 @@
         // "format": "{}",
     },
     "backlight": {
-        "device": "acpi_video1",
+        // "device": "intel_backlight",
         "interval": 1,
         "format": "{percent}% {icon}",
         "format-icons": [
@@ -146,6 +170,38 @@
             ""
         ]
     },
+    "cava": {
+        "cava_config": "$XDG_CONFIG_HOME/cava/config",
+        "framerate": 60,
+        "autosens": 1,
+        "sensitivity": 100,
+        "bars": 8,
+        "lower_cutoff_freq": 50,
+        "higher_cutoff_freq": 10000,
+        "method": "pulse",
+        "source": "auto",
+        "stereo": false,
+        "reverse": false,
+        "bar_delimiter": 0,
+        "monstercat": false,
+        "waves": false,
+        "noise_reduction": 0.77,
+        "input_delay": 2,
+        "format-icons": [
+            " ",
+            "▁",
+            "▂",
+            "▃",
+            "▄",
+            "▅",
+            "▆",
+            "▇",
+            "█"
+        ],
+        "actions": {
+            "on-click-right": "mode"
+        }
+    },
     "clock": {
         "interval": 30,
         "timezone": "Europe/Vienna",
@@ -153,8 +209,9 @@
         // "format-alt": "{:%Y-%m-%d %a %H:%M:%S}",
         // "tooltip-format": "<big>{:%a %d %B %Y}</big>\n\n<tt><small>{calendar}</small></tt>",
         "format": "{:%H:%M}",
-        "format-alt": "{:%Y %A %d %B %R}",
+        "format-alt": "{:%Y %A %d %B %R:%S}",
         "tooltip-format": "<span size='24pt' font='Inter Bold'>{:%A %d %B %Y\n%H:%M}</span>\n\n<span>{calendar}</span>",
+
         "calendar": {
             "mode": "year",
             "mode-mon-col": 3,
@@ -179,15 +236,19 @@
     },
     "cpu": {
         "interval": 1.0,
-        "format": "{icon} {usage}",
+        "format": "{load} {usage}%",
+        // "format-alt": "{load}",
         "format-icons": [
-            "﬙"
+            ""
         ],
-        "on-click": "kitty -e btop"
+        "on-click-right": "kitty -e btop",
+        "actions": {
+            // "on-click": "mode"
+        }
     },
     "memory": {
         "interval": 2,
-        "format": "{icon} {}",
+        "format": "{}",
         "format-icons": {
             "default": "󰍛"
         },
@@ -202,7 +263,7 @@
         "on-click": "kitty -e btop"
     },
     "hyprland/window": {
-        "format": "{}",
+        "format": " {} ",
         "separate-outputs": true
     },
     "keyboard-state": {
@@ -223,7 +284,7 @@
     },
     "mpd": {
         "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
-        "format-disconnected": "Disconnected ",
+        "format-disconnected": " MPD DISCONNECTED",
         "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
         "unknown-tag": "N/A",
         "interval": 2,
@@ -248,17 +309,19 @@
         "tooltip-format-disconnected": "MPD (disconnected)"
     },
     "mpris": {
-        "format": "{player_icon}",
-        //"format-paused": "{status_icon} <i>{dynamic}</i>",
-        "format-paused": "{status_icon}",
+        "format": "{status_icon} {player_icon} {dynamic}",
+        "format-paused": "{status_icon} {dynamic}",
         "player-icons": {
             "default": "▶",
+            // "chrome": "",
+            // "brave": "",
+            // "firefox": "",
             "mpv": "🎵"
         },
         "status-icons": {
-            "paused": "⏸"
+            "paused": "󰏤"
         }
-        // "ignored-players": ["firefox"]
+        //"ignored-players": ["firefox"]
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
@@ -267,8 +330,9 @@
         "format-wifi": "{essid} ({signalStrength}%) ",
         "tooltip-format": "{ifname} {gwaddr}",
         "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "Disconnected ⚠",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}"
+        "format-disconnected": "⚠ NETWORK DISCONNECTED",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
+        "interval": 1
     },
     "pulseaudio": {
         // "format": "{icon} {volume}% {format_source}",
@@ -313,6 +377,13 @@
     "tray": {
         "spacing": 10
         // "icon-size": 21,
+    },
+    "user": {
+        "format": "{user} (up {work_d} days ↑)",
+        "interval": 60,
+        "height": 30,
+        "width": 30,
+        "icon": true
     },
     "wireplumber": {
         "format": "{volume}%",

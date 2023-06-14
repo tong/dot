@@ -4,6 +4,7 @@
         color: #000000;
     }
 }
+
 * {
     font-family: JetBrainsMono Nerd Font;
     font-size: 12px;
@@ -51,10 +52,14 @@ window.DP-2 * {
 
 .modules-left {
     margin-left: 0.5rem;
+    /* background: red; */
 }
 .modules-left > widget:first-child {
     /* background: green; */
     /* margin-left: 20px; */
+}
+.modules-left > widget:last-child {
+    /* background: blue; */
 }
 /* If workspaces is the leftmost module, omit left margin */
 .modules-left > widget:first-child > #workspaces {
@@ -70,7 +75,7 @@ window.DP-2 * {
 }
 
 widget > * {
-   padding: 0px 0.5rem 0 0.5rem;
+   padding: 2px 0.25rem 0 0.5rem;
 }
 button {
     /* Use box-shadow instead of border so the text isn't offset */
@@ -131,13 +136,8 @@ tooltip label {
 #cpu, #memory, #disk {
     padding: 1px 0 0 0;
 }
-*/
-
-/*
 #cpu {}
-
 #memory {}
-
 #disk {}
 */
 
@@ -184,44 +184,50 @@ tooltip label {
 
 #temperature.critical {
     font-weight: bold;
-    /* padding: 0 1rem; */
     background: #f53c3c;
     color: #000;
 }
 
 #tray > .passive {
-    -gtk-icon-effect: dim;
+    /* -gtk-icon-effect: dim; */
 }
 
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
-    background-color: #eb4d4b;
-}
-
-/*
-#wireplumber.muted {
-}
-*/
-
-/* #window { */
-
-#workspaces {
+    /* background-color: #eb4d4b; */
 }
 
 #workspaces button {
     margin: 0;
     padding: 0;
+    transition: none;
 }
-
 #workspaces button:hover {
-    box-shadow: inset 0 -8px white;
+    background: #ddd;
+    /* box-shadow: inset 0 -8px white; */
 }
-
 #workspaces button.active {
-    box-shadow: inset 0 -1px #ddd;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    /* background: #aaa; */
+    /* color: #000; */
+    /* box-shadow: inset 0 -1px #ddd; */
 }
-
 #workspaces button.urgent {
     background: #f53c3c;
 }
 
+#custom-taskwarrior {
+    /* background: red; */
+    /* font-size: 14px; */
+}
+#custom-taskwarrior .test {
+    /* background: green; */
+}
+
+#custom-tmux {
+    /* background: blue; */
+}
+
+#image {
+}

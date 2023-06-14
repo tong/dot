@@ -10,7 +10,8 @@ if list=$(tmux ls 2>/dev/null); then
             #printf " "
         # fi
         if echo "$line" | grep -q "(attached)"; then
-            out="&lt;$out&gt;"
+            #out="&lt;$out&gt;"
+            out="$out"
             color="#d0d0d0"
         else
             color="#888"
