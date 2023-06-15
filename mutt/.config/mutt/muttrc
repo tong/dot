@@ -49,8 +49,10 @@ alternative_order text/plain text/enriched text/html
 #set pgp_default_key  = 'your@gpgemailaddre.ss'
 
 source $HOME/.config/mutt/keymap
-source $HOME/.config/mutt/colors/default
-source $HOME/.config/mutt/colors/gruvbox
+#source $HOME/.config/mutt/colors/default
+source $HOME/.config/mutt/colors/void
+#source $HOME/.config/mutt/colors/gruvbox
 source $HOME/.config/mutt/themes/powerline
 source $HOME/.config/mutt/accounts/$EMAIL.muttrc
 
+startup-hook 'echo `touch "$HOME/.local/state/mutt-lastview"`'
