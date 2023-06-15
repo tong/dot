@@ -56,10 +56,9 @@ syncandnotify() {
         echo "No new mail"
         #notify "$acc" "No new mail"
     else
-        echo "$new"
+	    newcount=$(echo "$new" | sed '/^\s*$/d' | wc -l)
+        echo "$newcount new mails"
         if [ -z "$MAILSYNC_MUTE" ]; then
-	        newcount=$(echo "$new" | sed '/^\s*$/d' | wc -l)
-            echo "$newcount new mails"
             raw=$(cat "$new")
             from=$(echo "$raw" | grep "From: ")
             subject=$(echo "$raw" | grep "Subject: ")
@@ -86,4 +85,3 @@ done
 wait
 notmuch new --quiet
 touch "$lastrun"
-
