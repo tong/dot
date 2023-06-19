@@ -1,8 +1,6 @@
 #!/bin/bash
-
 COLS="$(tput cols)"
 (( COLS <= 0 )) && COLS="${COLUMNS:-80}"
-
 hr() {
     local WORD="$1"
     local LINE=''
@@ -11,5 +9,4 @@ hr() {
     LINE="${LINE// /${WORD}}"
     echo "${LINE:0:${COLS}}"
 }
-
 for WORD in "${@:-#}"; do hr "$WORD"; done
