@@ -1,3 +1,4 @@
+newsboat/**/urls
 github-token
 *.bak
 *.fifo
