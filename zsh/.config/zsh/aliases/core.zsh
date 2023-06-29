@@ -16,9 +16,6 @@ alias -g ....='../../..'
 alias -g .....='../../../..'
 alias -g ......='../../../../..'
 
-alias c='clear'
-alias e='exit'
-
 alias ls="ls -hN --color=auto --group-directories-first"
 alias ll='ls -l'
 alias la='ls -A'
