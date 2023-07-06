@@ -67,8 +67,8 @@ report.polybar.filter=status:pending
 
 ##
 report.tui.description=Default report for taskwarrior-tui
-report.tui.labels=ID,Project,Description,Tags,Due,Est,Job,NTags
-report.tui.columns=id,project,description,tags,due,estimate,job,anotations.count
+report.tui.labels=ID,Project,Description,Tags,Due,Est,Job,NTags,Github
+report.tui.columns=id,project,description,tags,due,estimate,job,anotations.count,github
 report.tui.sort=urgency-\/,project+\/,entry+
 report.tui.filter=status:pending
 
@@ -84,6 +84,10 @@ alias.open=execute echo "Opening Task";taskopen
 #Recurrence config
 
 # --- UDA
+
+## N workspace of wm
+uda.job.label=Workspace
+uda.job.type=numeric
 
 uda.job.label=Job
 uda.job.type=numeric
@@ -122,15 +126,22 @@ include $HOME/.config/taskwarrior/hez.theme
 
 # --- Context
 
+
 context.armory.read=project:armory or +armory
 context.armory.write=+armory
 
 context.dot.read=+dot
 context.dot.write=+dot
 
-context.work.read=+work
-context.work.write=+work
+context.hxmpp.read=project:hxmpp or +xmpp
+context.hxmpp.write=project:hxmpp +xmpp +haxe
+
+context.norc.read=project:norc
+context.norc.write=project:norc +xmpp +haxe
 
 context.plutonika.read=client:plutonika +plutonika
 context.plutonika.write=client:plutonika +work +plutonika
+
+context.work.read=+work
+context.work.write=+work
 
