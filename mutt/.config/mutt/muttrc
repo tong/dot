@@ -1,27 +1,36 @@
 # vim: filetype=neomuttrc
 
+startup-hook 'echo `touch "$HOME/.local/state/mutt-lastview"`'
+
 set ssl_starttls=yes
 set ssl_force_tls=yes
+
 unset imap_passive
 set imap_keepalive = 30
 set mail_check_stats
+set sleep_time = 0		# Pause 0 seconds for informational messages
+set mail_check = 120
+set smtp_authenticators = 'gssapi:login'
+set rfc2047_parameters = yes
 set mailcap_path = $HOME/.config/mutt/mailcap:$mailcap_path
+set mime_forward = yes	# attachments are forwarded with mail
+
+#set crypt_autosign = yes
+#set crypt_opportunistic_encrypt = yes
+#set pgp_self_encrypt = yes
+#set pgp_default_key  = 'your@gpgemailaddre.ss'
+
 set mime_type_query_command = "file --mime-type -b %s"
-set date_format="%y/%m/%d %I:%M%p"
+set query_command = "khard email --parsable %s"
+
+set date_format="%Y/%m/%d %I:%M%p"
 set index_format="%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"
 set use_threads=yes
 set sort=reverse-date
 set sort_aux=date
-set smtp_authenticators = 'gssapi:login'
-set query_command = "khard email --parsable %s"
-set rfc2047_parameters = yes
-set sleep_time = 0		# Pause 0 seconds for informational messages
-set mail_check = 120
 set markers = no		# Disables the `+` displayed at line wraps
 set mark_old = no		# Unread mail stay unread until read
-set mime_forward = yes	# attachments are forwarded with mail
-set wait_key = no		# mutt won't ask "press key to continue"
-set fast_reply			# skip to compose when replying
+
 set fcc_attach			# save attachments with the body
 set forward_format = "Fwd: %s"	# format of subject when forwarding
 set forward_quote		# include message in forwards
@@ -33,26 +42,15 @@ set pager_context=1
 set pager_index_lines=20
 set pager_stop
 
-#set alias_file = "~/.config/mutt/aliases"
-#set sort_alias = alias
-#set reverse_alias = yes
-#source $alias_file
+set wait_key = no		# mutt won't ask "press key to continue"
+set fast_reply			# skip to compose when replying
 
 auto_view text/html		# automatically show html (mailcap uses lynx)
 auto_view application/pgp-encrypted
 #set display_filter = "tac | sed '/\\\[-- Autoview/,+1d' | tac" # Suppress autoview messages.
 alternative_order text/plain text/enriched text/html
 
-#set crypt_autosign = yes
-#set crypt_opportunistic_encrypt = yes
-#set pgp_self_encrypt = yes
-#set pgp_default_key  = 'your@gpgemailaddre.ss'
-
-source $HOME/.config/mutt/keymap
-#source $HOME/.config/mutt/colors/default
 source $HOME/.config/mutt/colors/void
-#source $HOME/.config/mutt/colors/gruvbox
-source $HOME/.config/mutt/themes/powerline
+source $HOME/.config/mutt/themes/void
+source $HOME/.config/mutt/keymap
 source $HOME/.config/mutt/accounts/$EMAIL.muttrc
-
-startup-hook 'echo `touch "$HOME/.local/state/mutt-lastview"`'
