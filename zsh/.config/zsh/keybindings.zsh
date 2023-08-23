@@ -44,3 +44,8 @@ bindkey -s '^o' 'lfcd\n'
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '\C-x\C-e' edit-command-line
+
+# By default, Ctrl+d will not close your shell if the command line is filled, this fixes it
+exit_zsh() { exit }
+zle -N exit_zsh
+bindkey '^D' exit_zsh
