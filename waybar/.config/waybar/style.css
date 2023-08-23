@@ -1,13 +1,31 @@
-@keyframes blink {
-    to {
-        background-color: #ffffff;
-        color: #000000;
+@keyframes alarm {
+    0% {
+        background: #000;
+        color: #fff;
+    }
+    80% {
+        background: #ff0000;
+    }
+}
+
+@keyframes urgent {
+    0% {
+        background: #eee;
+        color: #000;
+    }
+    80% {
+        background: #000;
+        color: #fff;
     }
 }
 
 * {
-    font-family: JetBrainsMono Nerd Font;
-    font-size: 12px;
+    /* font-family: monospace; */
+    font-family: JetBrainsMono Nerd Font, monospace;
+    /* font-size: 12px; */
+    /* font-family: Terminus; */
+    /* font-size: 10px; */
+  font-size: 12px;
     color: #d0d0d0;
 }
 
@@ -75,7 +93,7 @@ window.DP-2 * {
 }
 
 widget > * {
-   padding: 2px 0.25rem 0 0.5rem;
+   padding: 0px 0.25rem 0px 0.25rem;
 }
 button {
     /* Use box-shadow instead of border so the text isn't offset */
@@ -86,8 +104,8 @@ button {
     border-radius: 0;
 }
 button:hover {
-    color: black;
-    background: #303030;
+    /* color: ; */
+    background: #ff3030;
     /* background: inherit; */
     /* box-shadow: inset 0 -3px #ffffff; */
 }
@@ -186,6 +204,9 @@ tooltip label {
     font-weight: bold;
     background: #f53c3c;
     color: #000;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    animation: alarm 0.5s infinite alternate;
 }
 
 #tray > .passive {
@@ -197,28 +218,40 @@ tooltip label {
     /* background-color: #eb4d4b; */
 }
 
+#workspaces {
+    /* padding: 0; */
+    /* margin: 0; */
+}
 #workspaces button {
     margin: 0;
     padding: 0;
-    transition: none;
+    transition: all 0.2s;
+    /* transition: border-bottom 0.2s, padding 0.2s; */
 }
-#workspaces button:hover {
-    background: #ddd;
+#workspaces button:hover:not(.active) {
+    transition: all 0.1s;
+    background: #505050;
+    color: #eee;
+    padding: 0 0.5rem;
+    /* border-radius: 1rem; */
     /* box-shadow: inset 0 -8px white; */
 }
 #workspaces button.active {
+    padding: 0 0.5rem;
     font-weight: bold;
+    /* border-top: 1px solid #ccc; */
     border-bottom: 1px solid #ccc;
-    /* background: #aaa; */
-    /* color: #000; */
+    background: #101010;
     /* box-shadow: inset 0 -1px #ddd; */
 }
 #workspaces button.urgent {
     background: #f53c3c;
+    animation: urgent 3s infinite alternate;
 }
 
 #custom-taskwarrior {
-    /* background: red; */
+    /* padding: 0; */
+    /* margin: 0; */
     /* font-size: 14px; */
 }
 #custom-taskwarrior .test {
@@ -230,4 +263,18 @@ tooltip label {
 }
 
 #image {
+}
+
+#custom-mail {
+    /* background: red; */
+}
+#custom-mail {
+    /* margin-right: 10px; */
+}
+#custom-mail.unread {
+    color: white;
+}
+
+#clock {
+    /* background: blue; */
 }
