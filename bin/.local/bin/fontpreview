@@ -62,7 +62,8 @@ generate_preview(){
 
 main(){
     # Checkig if needed dependencies are installed
-    dependencies=(xdotool sxiv convert fzf)
+    #dependencies=(xdotool sxiv convert fzf)
+    dependencies=(swayimg convert fzf)
     for dependency in "${dependencies[@]}"; do
         type -p "$dependency" &>/dev/null || {
             echo "error: Could not find '${dependency}', is it installed?" >&2
@@ -86,7 +87,7 @@ main(){
     # This is so that when we open up sxiv, we can change the focus back to
     # the terminal window, so that the user can search for the fonts without
     # having to manualy change the focus back to the terminal.
-    xdotool getactivewindow > "$TERMWIN_IDFILE"
+    #xdotool getactivewindow > "$TERMWIN_IDFILE"
 
     # Flag to run some commands only once in the loop
     FIRST_RUN=true
@@ -107,12 +108,13 @@ main(){
 
             # Display the font preview using sxiv
             #sxiv -g "$SIZE$POSITION" "$FONT_PREVIEW" -N "fontpreview" -b &
-            sxiv -N "fontpreview" -b -g "$SIZE$POSITION" "$FONT_PREVIEW" &
+            #sxiv -N "fontpreview" -b -g "$SIZE$POSITION" "$FONT_PREVIEW" &
+            swayimg -c "fontpreview" -g "$SIZE$POSITION" "$FONT_PREVIEW" &
 
             # Change focus from sxiv, back to the terminal window
             # so that user can continue to search for fonts without
             # having to manually change focus back to the terminal window
-            xdotool windowfocus "$(cat "$TERMWIN_IDFILE")"
+        #xdotool windowfocus "$(cat "$TERMWIN_IDFILE")"
 
             # Save the process ID so that we can kill
             # sxiv when the user exits the script
@@ -123,12 +125,14 @@ main(){
 	    if ! pgrep -F "$PIDFILE" >/dev/null 2>&1; then
 		echo "Restart sxiv - You maybe using a obsolete version. " >&2
 		# Display the font preview using sxiv
-		sxiv -g "$SIZE$POSITION" -N "fontpreview" -b "$FONT_PREVIEW" &
+		#sxiv -g "$SIZE$POSITION" -N "fontpreview" -b "$FONT_PREVIEW" &
+		swayimg -g "$SIZE$POSITION" -c "fontpreview" "$FONT_PREVIEW" &
+        echo "###"
 
 		# Change focus from sxiv, back to the terminal window
 		# so that user can continue to search for fonts without
 		# having to manually change focus back to the terminal window
-		xdotool windowfocus "$(cat "$TERMWIN_IDFILE")"
+		#xdotool windowfocus "$(cat "$TERMWIN_IDFILE")"
 
 		# Save the process ID so that we can kill
 		# sxiv when the user exits the script
@@ -221,7 +225,8 @@ if [ -f "$font" ]; then
     generate_preview "$font" "$FONT_PREVIEW"
 
     # Display the font preview using sxiv
-    sxiv -g "$SIZE$POSITION" -N "fontpreview" -b "$FONT_PREVIEW" &
+    #sxiv -g "$SIZE$POSITION" -N "fontpreview" -b "$FONT_PREVIEW" &
+    swayimg -g "$SIZE$POSITION" -c "fontpreview" "$FONT_PREVIEW" &
 
     # For some strange reason, sxiv just doesnt have time to read the file
     sleep 0.1

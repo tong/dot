@@ -48,6 +48,7 @@ syncandnotify() {
         mbsync "$opts" "$acc"
     fi
     maildir="$HOME/.local/share/mail/$acc"
+    #TODO: replace with notmuch count
     new=$(find\
         "$maildir/"[Ii][Nn][Bb][Oo][Xx]/new/ \
         "$maildir/"[Ii][Nn][Bb][Oo][Xx]/cur/ \
