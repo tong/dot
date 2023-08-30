@@ -1,6 +1,0 @@
-#!/bin/sh
-if [ -z "$1" ]; then
-    echo "Usage: copycontent <file>"
-    exit 1
-fi
-xclip -selection c "$1"
