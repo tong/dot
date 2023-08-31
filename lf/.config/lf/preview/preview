@@ -48,8 +48,8 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | awk '{print tolower($0)}')" in
 		preview_image "$1" "$2" "$3" "$4" "$5"
 		;;
     *.blend)
-        CACHE="$(get_cache_id "$1")"
-        [ ! -f "$CACHE.png" ] && blender-thumbnailer "$1" "${CACHE}.png"
+		CACHE="$(thumbnail_cache_path "$1")"
+		[ ! -f "$CACHE.png" ] && blender-thumbnailer "$1" "${CACHE}.png"
 		preview_image "$CACHE.png" "$2" "$3" "$4" "$5"
         ;;
 	#*.cbz|*.cbr|*.cbt)
