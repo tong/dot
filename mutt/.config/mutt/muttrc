@@ -25,27 +25,27 @@ set query_command = "khard email --parsable %s"
 
 set date_format="%Y/%m/%d %I:%M%p"
 set index_format="%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"
-set use_threads=yes
-set sort=reverse-date
-set sort_aux=date
+set use_threads = yes
+set sort = reverse-date
+set sort_aux = date
 set markers = no		# Disables the `+` displayed at line wraps
 set mark_old = no		# Unread mail stay unread until read
 
 set fcc_attach			# save attachments with the body
 set forward_format = "Fwd: %s"	# format of subject when forwarding
-set forward_quote		# include message in forwards
-set reverse_name		# reply as whomever it was to
-set include			# include message in replies
+set forward_quote		# Include message in forwards
+set reverse_name		# Reply as whomever it was to
+set include			    # Include message in replies
 set recall = no
 
 set pager_context=1
 set pager_index_lines=20
 set pager_stop
 
-set wait_key = no		# mutt won't ask "press key to continue"
-set fast_reply			# skip to compose when replying
+set wait_key = no		# Don't ask "press key to continue"
+set fast_reply			# Skip to compose when replying
 
-auto_view text/html		# automatically show html (mailcap uses lynx)
+auto_view text/html		# Automatically show html
 auto_view application/pgp-encrypted
 #set display_filter = "tac | sed '/\\\[-- Autoview/,+1d' | tac" # Suppress autoview messages.
 alternative_order text/plain text/enriched text/html
