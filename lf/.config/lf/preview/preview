@@ -75,13 +75,13 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | awk '{print tolower($0)}')" in
         #glow "$1" ;; # TODO
     *.o) nm "$1";;
     *.otf|*.ttf|*.woff|*.woff2)
-        CACHE="$(get_cache_id "$1")"
+		CACHE="$(thumbnail_cache_path "$1")"
         [ ! -f "$CACHE.png" ] && ~/.config/lf/preview/font "$1"
         preview_image "/tmp/lf_fontpreview.png" "$2" "$3" "$4" "$5"
         #mediainfo "$1"
         ;;
 	*.pdf)
-        CACHE="$(get_cache_id "$1")"
+		CACHE="$(thumbnail_cache_path "$1")"
 		[ ! -f "${CACHE}.jpg" ] && pdftoppm -jpeg -f 1 -singlefile "$1" "$CACHE"
 		preview_image "${CACHE}.jpg" "$2" "$3" "$4" "$5"
 		;;
