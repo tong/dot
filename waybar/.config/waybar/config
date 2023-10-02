@@ -21,7 +21,8 @@
     //"cava",
     "custom/taskwarrior",
     "custom/tmux",
-    "wlr/workspaces"
+    //"wlr/workspaces"
+    "hyprland/workspaces"
     //"custom/weather"
     //"image",
     //"custom/workspaces"
@@ -44,7 +45,7 @@
     //"keyboard-state",
     "pulseaudio",
     //"custom/pacman",
-    "custom/weather",
+    //"custom/weather",
     "clock",
     //"custom/mail",
     "tray",
@@ -414,21 +415,21 @@
   "wlr/workspaces": {
     "format": "{icon}",
     //"active-only": true,
-    "format-icons": {
-      "1": "1",
-      "2": "2",
-      "3": "3",
-      "4": "4",
-      "5": "5",
-      "6": "6",
-      "7": "7",
-      "8": "8",
-      "9": "9",
-      "10": "0",
-      // "urgent": "",
-      // "active": "",
-      // "default": ""
-    },
+    // "format-icons": {
+    //   "1": "1",
+    //   "2": "2",
+    //   "3": "3",
+    //   "4": "4",
+    //   "5": "5",
+    //   "6": "6",
+    //   "7": "7",
+    //   "8": "8",
+    //   "9": "9",
+    //   "10": "0",
+    //   // "urgent": "",
+    //   // "active": "",
+    //   // "default": ""
+    // },
     "on-click": "activate"
   }
 }
