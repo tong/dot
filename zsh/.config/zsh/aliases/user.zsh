@@ -14,7 +14,7 @@ alias jj='exa --long --git --icons'
 alias ja='exa --all --git --icons'
 alias jja='exa --long --all --git --icons'
 alias t='task'
-alias tm='timew'
+alias tw='timew'
 alias to='taskopen'
 alias tt='taskwarrior-tui --report tui'
 alias tx='tmux'
@@ -48,7 +48,7 @@ alias mail='neomutt'
 alias notify='notify-send'
 alias open='xdg-open'
 alias pdf='zathura'
-alias screenshot='grim -g "$(slurp)"'
+#alias screenshot='grim -g "$(slurp)"'
 #alias screenshot='scrot -u $SCREENSHOTS/screenshot-%Y_%m_%d_%H_%M.png'
 alias ultraviolet='cd $ULTRAVIOLET && nvim -c "VimwikiIndex"'
 alias unzipall="fd -e zip -X unzip {} \;"
@@ -87,7 +87,8 @@ alias kmake='$ARMSDK/Kha/Kinc/Tools/linux_x64/kmake'
 alias -s hxml='haxe'
 alias -s js='node'
 
-alias hldb='hl src/hashlink-debugger/debugger/debug.hl'
+#alias hldebug='hl ~/src/hashlink-debugger/debugger/debug.hl'
+alias hldebug='$HOME/src/hashlink-debugger/hldebug'
 
 alias paci="pacman -Slq | fzf --multi --prompt ' ' --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
 alias pacr="pacman -Qq | fzf --multi --prompt ' ' --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
