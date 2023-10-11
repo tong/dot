@@ -15,7 +15,6 @@
   "ipc": true,
   "bar_id": "bar-1",
   "modules-left": [
-    //"image#motd",
     //"custom/user",
     //"custom/github",
     //"cava",
@@ -27,12 +26,14 @@
     //"image",
     //"custom/workspaces"
     //"hyprland/submap"
+    //"group/perf"
   ],
   "modules-center": [
     //"custom/window",
     "hyprland/window"
   ],
   "modules-right": [
+    //"backlight",
     //"mpd",
     //"mpris",
     //"custom/mpv",
@@ -48,8 +49,9 @@
     //"custom/weather",
     "clock",
     //"custom/mail",
-    "tray",
-    "temperature"
+    "tray"
+    //"temperature"
+    //"image#motd"
   ],
   // "custom/media": {
   //     "format": "{icon} {}",
@@ -63,9 +65,13 @@
   //     "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
   //     // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
   // },
+  "group/perf": {
+    "orientation": "horizontal",
+    "modules": ["cpu","memory"]
+  },
   "image#motd": {
-    "path": "/home/tong/img/vector/ftl.white.svg",
-    "size": 16,
+    "path": "/home/tong/img/ftl.24.white.png",
+    "size": 15,
     "interval": 3600
     //"on-click": "mpc toggle"
   },
@@ -244,7 +250,7 @@
       }
     },
     "actions": {
-      "on-click-right": "mode",
+      "on-click-right": "mode"
       // "on-click-forward": "tz_up",
       // "on-click-backward": "tz_down",
       //"on-scroll-up": "shift_up",
@@ -253,15 +259,12 @@
   },
   "cpu": {
     "interval": 1.0,
-    "format": "{load} {usage}%",
-    // "format-alt": "{load}",
+    "format": "{usage}%",
+    "format-alt": "{load} {usage}%",
     "format-icons": [
       ""
     ],
-    "on-click-right": "kitty -e btop",
-    "actions": {
-      // "on-click": "mode"
-    }
+    "on-click-right": "kitty -e btop"
   },
   "memory": {
     "interval": 2,
