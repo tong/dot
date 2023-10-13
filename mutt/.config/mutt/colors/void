@@ -1,0 +1,170 @@
+# vim: filetype=neomuttrc
+
+# https://neomutt.org/guide/advancedusage.html#3-%C2%A0patterns-searching-limiting-and-tagging
+# https://neomutt.org/feature/index-color
+
+#all	~A
+# .	~A
+# ^	~A
+# del	~D
+# flag	~F
+# new	~N
+# old	~O
+# repl	~Q
+# read	~R
+# tag	~T
+# unread	~U
+
+####################
+
+# Default index colors
+color index color242 default '.*'
+color index_author blue default '.*'
+#color index_collapsed red blue
+color index_date default default '.*'
+color index_flags default default '.*'
+color index_label default brightgreen
+color index_number default black
+color index_subject white default '.*'
+
+# New mail
+color index bold default color234 "~N"
+color index_author cyan default "~N"
+color index_date bold cyan default '~N'
+color index_flags cyan default '~N'
+color index_subject cyan default "~N"
+
+# Reply
+#color index default color235 "~Q"
+
+# Tagged
+color index bold black yellow "~T"
+color index_date bold black yellow "~T"
+color index_author bold black yellow "~T"
+color index_subject bold black yellow "~T"
+color index_flags bold black yellow "~T"
+
+# Flagged
+color index_flags yellow default "~F"
+color index_date default default "~F"
+color index_author brightblue default "~F"
+color index_subject yellow default "~F"
+
+# Unread
+color index default default "~U"
+
+# TODO
+color index_subject red default "~sTODO"
+
+# Replied
+#color index bold default default "~R"
+
+# mono bold bold
+# mono underline underline
+# mono indicator reverse
+# mono error bold
+
+color normal default default
+#color indicator italic brightwhite color232
+color indicator brightblack white
+
+color sidebar_divider color240 default
+color sidebar_flagged yellow default
+color sidebar_indicator bold black white
+#color sidebar_indicator yellow white
+color sidebar_highlight bold white color232
+color sidebar_new yellow default
+color sidebar_spoolfile default black
+#color sidebar red green '[0-9]+'
+
+# color normal brightyellow default
+# color error red default
+# color tilde black default
+# color message cyan default
+color markers red white
+color attachment italic brightwhite default
+color search brightblack brightwhite
+# color status cyan black
+# color hdrdefault brightgreen default
+color quoted green default
+#color quoted1 blue default
+# color quoted2 cyan default
+# color quoted3 yellow default
+# color quoted4 red default
+# color quoted5 brightred default
+color signature white default
+# color bold black default
+# color underline blaack default
+# color normal default default
+# color progress white red
+
+# Header
+#color header white color236 ".*"
+color header blue default "^(From)"
+color header blue default "^(To)"
+color header bold yellow default "^(Subject)"
+#color header brightwhite default "^(CC|BCC)"
+
+# color body brightred default "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # Email addresses
+
+#color body underline default default '(https?|ftp|xmpp)://[\-\.,/%~_:?&=\#a-zA-Z0-9\?]+' # URL
+
+color body underline default default [\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+ # email
+color body underline default default (https?|ftp|xmpp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+ # url
+
+color body green default "\`[^\`]*\`" # Green text between ` and `
+color body green default "\```[\.\n]*```]\g`" # Green text between ` and `
+color body bold brightblue default "^# \.*" # Headings as bold blue
+color body bold brightcyan default "^## \.*" # Subheadings as bold cyan
+color body bold brightgreen default "^### \.*" # Subsubheadings as bold green
+color body italic color241 default "(^>+ *\.*)" # Headings as bold blue
+color body yellow default "^(\t| )*(-|\\*) \.*" # List items as yellow
+# color body brightcyan default "[;:][-o][)/(|]" # emoticons
+# color body brightcyan default "[;:][)(|]" # emoticons
+# color body brightcyan default "[ ][*][^*]*[*][ ]?" # more emoticon?
+# color body brightcyan default "[ ]?[*][^*]*[*][ ]" # more emoticon?
+# color body red default "(BAD signature)"
+# color body cyan default "(Good signature)"
+# color body brightblack default "^gpg: Good signature .*"
+# color body brightyellow default "^gpg: "
+# color body brightyellow red "^gpg: BAD signature from.*"
+# mono body bold "^gpg: Good signature"
+# mono body bold "^gpg: BAD signature from.*"
+#color body red default "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
+
+# Cancel theme colors
+# color index color223 color234 "~Q"
+# color index color223 color234 "~Q"
+# color index color223 color234 "~P"
+# color index color223 color234 "~T"
+# color index color223 color234 "~O"
+# color index color223 color234 "~F"
+#color index color223 color234 "~N"
+
+# color index_subject color109 color234 "~P !~T !~D"
+# color index_author color109 color234 "~P !~T !~D"
+# color index_subject color243 color234 "~Q !~T !~D"
+# color index_author color243 color234 "~Q !~T !~D"
+# color index_subject color142 color234 "~N !~T !~D"
+# color index_author  color142 color234 "~N !~T !~D"
+# color index_subject color142 color234 "~O !~T !~D"
+# color index_author color142 color234 "~O !~T !~D"
+#color index default color234 "~F !~T !~D"
+#color index_sulbject brightyellow default "~F !~T !~D"
+#color index_author brightblue color234 "~F !~T !~D"
+#color index_subject color214 color234 "~F ~N !~T !~D"
+# color index_author  color214 color234 "~F ~N !~T !~D"
+# color index_subject color167 color234 "~= !~T !~D"
+# color index_author color167 color234 "~= !~T !~D"
+# color index_subject color109 color234 "~P ~N !~T !~D"
+# color index_author color109 color234 "~P ~N !~T !~D"
+#color index color234 color223 "~T"
+color index brightblack red "~D"
+color index_date brightblack red "~D"
+color index_author brightblack red "~D"
+color index_subject brightblack red "~D"
+
+#color index_author color252 color16 "~f disktree.net"
+color body default default
+color body bold red default "(urgent|important)"
+
