@@ -6,3 +6,5 @@ github-token
 *.out
 *.save
 *.tmp
+*.zip
+
