@@ -6,8 +6,8 @@
 # This script can be set up as a cron job for automated mail syncing.
 
 pgrep mbsync >/dev/null && {
-    echo "mbsync already running"
-    exit
+	echo "mbsync already running"
+	exit
 }
 
 lastrun="${XDG_CONFIG_HOME:-$HOME/.config}/mutt/.mailsynclastrun"
@@ -21,52 +21,41 @@ ICON_NOTFICATION="/usr/share/icons/ePapirus/16x16/actions/mail-unread.svg"
 #[ -n "$MPOPRC" ] || MPOPRC="$HOME/.config/mpop/config"
 
 case "$(readlink -f /sbin/init)" in
-    *systemd*|*openrc*)
-        export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus;;
+*systemd* | *openrc*)
+	export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus
+	;;
 esac
 
-# Remember if a display server is running since `ps` doesn't always contain a display
-# pgrepoutput="$(pgrep -ax X\(\|org\|wayland\))"
-# displays="$(echo "$pgrepoutput" | grep -wo "[0-9]*:[0-9]\+" | sort -u)"
-# notify() {
-#     [ -n "$pgrepoutput" ] &&
-#     for x in ${displays:-0:}; do
-#         export DISPLAY="$x"
-#         notify_id=$(notify-send --app-name="mail" --icon="$ICON_NOTFICATION" "$2" "$3" -r "$notify_id" -p)
-#     done
-# }
 notify() {
-    export XDG_RUNTIME_DIR="/run/user/1000"
-    notify_id=$(notify-send --app-name="mail" --icon="$ICON_NOTFICATION" "$2" "$3" -r "$notify_id" -p)
+	export XDG_RUNTIME_DIR="/run/user/1000"
+	notify_id=$(notify-send --app-name="mail" --icon="$ICON_NOTFICATION" "$2" "$3" -r "$notify_id" -p)
 }
 
 syncandnotify() {
 	acc="$(echo "$account" | sed "s/.*\///")"
 	if [ -z "$opts" ]; then # Handle IMAP
-        mbsync "$acc"
-    else
-        mbsync "$opts" "$acc"
-    fi
-    maildir="$HOME/.local/share/mail/$acc"
-    #TODO: replace with notmuch count
-    new=$(find\
-        "$maildir/"[Ii][Nn][Bb][Oo][Xx]/new/ \
-        "$maildir/"[Ii][Nn][Bb][Oo][Xx]/cur/ \
-        -type f -newer "$lastrun" 2> /dev/null)
-    if [ -z "$new" ]; then
-        echo "No new mail"
-        #notify "$acc" "No new mail"
-    else
-	    newcount=$(echo "$new" | sed '/^\s*$/d' | wc -l)
-        echo "$newcount new mails"
-        if [ -z "$MAILSYNC_MUTE" ]; then
-            raw=$(cat "$new")
-            from=$(echo "$raw" | grep "From: ")
-            subject=$(echo "$raw" | grep "Subject: ")
-            notify "$acc" "${from:6}" "${subject:9}"
-            canberra-gtk-play -i message
-        fi
-    fi
+		mbsync "$acc"
+	else
+		mbsync "$opts" "$acc"
+	fi
+	maildir="$HOME/.local/share/mail/$acc"
+	#TODO: replace with notmuch count
+	new=$(find "$maildir/"[Ii][Nn][Bb][Oo][Xx]/new/ \
+		"$maildir/"[Ii][Nn][Bb][Oo][Xx]/cur/ \
+		-type f -newer "$lastrun" 2>/dev/null)
+	if [ -z "$new" ]; then
+		echo "No new mail"
+	else
+		newcount=$(echo "$new" | sed '/^\s*$/d' | wc -l)
+		echo "$newcount new mails"
+		if [ -z "$MAILSYNC_MUTE" ]; then
+			raw=$(cat "$new")
+			from=$(echo "$raw" | grep "From: ")
+			subject=$(echo "$raw" | grep "Subject: ")
+			notify "$acc" "${from:6}" "${subject:9}"
+			canberra-gtk-play -i message
+		fi
+	fi
 }
 
 if [ "$#" -gt "0" ]; then
@@ -77,7 +66,7 @@ if [ "$#" -gt "0" ]; then
 fi
 
 # TODO handle account passed from argument
-[ -z "$accounts" ] && accounts="$(awk '/^Channel/ {print $2}' "$MBSYNCRC" 2> /dev/null)"
+[ -z "$accounts" ] && accounts="$(awk '/^Channel/ {print $2}' "$MBSYNCRC" 2>/dev/null)"
 #[ -z "$pop_accounts" ] && [ -x "$MPOPRC" ] && pop_accounts="$(awk '/^account/ {print $2}' "$MPOPRC" 2>/dev/null)"
 
 for account in $accounts; do
