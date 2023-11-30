@@ -15,17 +15,17 @@
   "ipc": true,
   "bar_id": "bar-1",
   "modules-left": [
+    "hyprland/submap",
+    "custom/tmux",
     //"custom/user",
     //"custom/github",
     //"cava",
+    //"custom/mail",
     "custom/taskwarrior",
-    "custom/tmux",
-    //"wlr/workspaces"
     "hyprland/workspaces"
     //"custom/weather"
     //"image",
     //"custom/workspaces"
-    //"hyprland/submap"
     //"group/perf"
   ],
   "modules-center": [
@@ -48,7 +48,6 @@
     //"custom/pacman",
     //"custom/weather",
     "clock",
-    //"custom/mail",
     "tray"
     //"temperature"
     //"image#motd"
@@ -67,7 +66,10 @@
   // },
   "group/perf": {
     "orientation": "horizontal",
-    "modules": ["cpu","memory"]
+    "modules": [
+      "cpu",
+      "memory"
+    ]
   },
   "image#motd": {
     "path": "/home/tong/img/ftl.24.white.png",
@@ -152,8 +154,9 @@
     "interval": 5,
     // "return-type": "json",
     // "format": " {} ",
-    "max-length": 128
+    "max-length": 128,
     //"format-icons": { "default": "" }
+    "tooltip": false
   },
   "custom/taskwarrior": {
     "exec": "python $HOME/.config/waybar/modules/taskwarrior.py",
@@ -163,7 +166,8 @@
     "max-length": 256,
     "actions": {
       "on-click-right": "mode"
-    }
+    },
+    "tooltip": false
   },
   "custom/user": {
     "exec": "$HOME/.config/waybar/modules/user.sh",
@@ -282,14 +286,35 @@
     "path": "/",
     "on-click": "kitty -e btop"
   },
+  "hyprland/workspaces": {
+    "all-outputs": true,
+    //"format": "[{id} {name} {windows}]",
+    "format": "{id}",
+    //"format-icons": {
+    // "active": "",
+    // "default": ""
+    //},
+    "show-special": false
+    //"format-window-seperator": "|",
+    // "window-rewrite": {
+    //   "firefox": "",
+    //   "foot": "",
+    //   "code": "󰨞"
+    // }
+  },
   "hyprland/submap": {
-    "format": "SUBMAP: {}",
-    "max-length": 8,
+    "format": "󰌌 {}",
+    //"max-length": 8,
     "tooltip": true
   },
   "hyprland/window": {
-    "format": " {} ",
-    "separate-outputs": true
+    //"format": " {} ",
+    "format": "{}",
+    "separate-outputs": false,
+    "rewrite": {
+      "(.*) - Brave": " $1",
+      "v (.*)": " $1"
+    }
   },
   "keyboard-state": {
     "numlock": true,
