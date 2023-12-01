@@ -1,0 +1,45 @@
+#!/bin/bash
+
+set -e
+
+SAVEDIR=${SCREENSHOT_SAVEDIR}
+FILENAME=$(date +'screenshot_%Y-%m-%d-%H%M%S.png')
+FILEPATH="$SAVEDIR/$FILENAME"
+NOTIFICATION_MSG="Screenshot taken"
+
+mkdir -p -- "$SAVEDIR"
+
+case "$1" in
+--help)
+	echo "Usage: screenshot [-a|-m|-w|-r]
+  -a Whole screen
+  -m Given monitor
+  -w Focused window
+  -r Select region"
+	exit 0
+	;;
+-a | --all)
+	#sleep "$SCREENSHOT_DELAY"
+	grim "$FILEPATH"
+	;;
+-m | --monitor)
+	#TODO if no monitor arg is set use the current active
+	[ -z "$2" ] && echo "Missing monitor argument" && exit 1
+	NOTIFICATION_MSG="Screenshot of monitor $2 taken"
+	grim -o "$2" "$FILEPATH"
+	;;
+-w | --window)
+	RECT=$(hyprctl -j activewindow | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')
+	NOTIFICATION_MSG="Screenshot $RECT taken"
+	grim -g "$RECT" "$FILEPATH"
+	;;
+-r | --region | *)
+	RECT=$(slurp)
+	NOTIFICATION_MSG="Screenshot $RECT taken"
+	grim -g "$RECT" "$FILEPATH"
+	;;
+esac
+wl-copy <"$FILEPATH"
+canberra-gtk-play -i camera-shutter
+notify-send -a "Screenshot" -i "$FILEPATH" "$NOTIFICATION_MSG" "$FILEPATH"
+echo "$FILEPATH"
