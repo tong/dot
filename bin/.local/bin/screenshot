@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Hyperland screenshot util
+
 set -e
 
 SAVEDIR=${SCREENSHOT_SAVEDIR}
@@ -11,11 +13,12 @@ mkdir -p -- "$SAVEDIR"
 
 case "$1" in
 --help)
-	echo "Usage: screenshot [-a|-m|-w|-r]
+	echo "Usage: screenshot [-amrw]
+Options:
   -a Whole screen
   -m Given monitor
-  -w Focused window
-  -r Select region"
+  -r Select region
+  -w Focused window"
 	exit 0
 	;;
 -a | --all)
