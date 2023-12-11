@@ -29,8 +29,8 @@
 
     width = (16, 600)
     height = 600
-    origin = top-center
-    offset = 0x92
+    origin = top-right
+    offset = 48x48
     scale = 0
     transparency = 80
 
