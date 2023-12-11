@@ -15,6 +15,7 @@
   "ipc": true,
   "bar_id": "bar-1",
   "modules-left": [
+    //"image#motd",
     "hyprland/submap",
     "custom/tmux",
     //"custom/user",
@@ -50,7 +51,6 @@
     "clock",
     "tray"
     //"temperature"
-    //"image#motd"
   ],
   // "custom/media": {
   //     "format": "{icon} {}",
@@ -233,12 +233,13 @@
     }
   },
   "clock": {
-    "interval": 30,
+    "interval": 60,
     "timezone": "Europe/Vienna",
     //"format": "{:%A %d.%B %H:%M}",
-    "format": "{:%a %H:%M}",
+    //"format": "{:%a %m %H:%M}",
+    "format": "{:%m-%d %H:%M}",
     "format-alt": "{:%Y %A %d %B %R:%S}",
-    "tooltip-format": "<span size='24pt' font='Inter Bold'>{:%H:%M\n%A %d %B %Y}</span>\n\n<span>{calendar}</span>",
+    "tooltip-format": "<span size='24pt' font='Inter Bold'>{:%A %d %B %Y\n%H:%M}</span>\n\n\n<span>{calendar}</span>",
     "calendar": {
       "mode": "year",
       "mode-mon-col": 3,
