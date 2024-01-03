@@ -145,3 +145,5 @@ context.plutonika.write=client:plutonika +work +plutonika
 context.work.read=+work
 context.work.write=+work
 
+context.gamma.read=project:gamma
+context.gamma.write=project:gamma +game
