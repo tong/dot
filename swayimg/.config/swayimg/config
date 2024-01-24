@@ -1,69 +1,130 @@
-scale = optimal
-fullscreen = no
-background = grid
-window = none
-info = no
-font = monospace
-font-size = 9
-font-color = #aaaaaa
-order = alpha
-loop = yes
-recursive = no
-all = no
-slideshow = 1
-exec = echo '%'
-antialiasing = no
-#app_id = swayimg
-sway = no
+# Swayimg configuration file.
 
+# This file contains the default configuration.
+# The viewer searches for the config file in the following locations:
+# 1. $XDG_CONFIG_HOME/swayimg/config
+# 2. $HOME/.config/swayimg/config
+# 3. $XDG_CONFIG_DIRS/swayimg/config
+# 4. /etc/xdg/swayimg/config
+
+# See `man swayimgrc` for details.
+
+################################################################################
+# General options
+################################################################################
+[general]
+
+# Initial scale (optimal/fit/width/height/fill/real)
+scale = optimal
+
+# Start in full screen mode (yes/no)
+fullscreen = no
+
+# Anti-aliasing (yes/no)
+antialiasing = no
+
+# Background for transparent images (none/grid/RGB, e.g. #112233)
+transparency = grid
+
+# Window position (parent or absolute coordinates, e.g. 100,200)
+position = parent
+# Window size (parent, image, or absolute size, e.g. 800,600)
+size = parent
+# Window background mode/color (none/RGB, e.g. #112233)
+background = none
+
+# Run slideshow at startup (yes/no)
+slideshow = no
+# Slideshow image display time (seconds)
+slideshow_time = 3
+
+################################################################################
+# Image list configuration
+################################################################################
+[list]
+# Default order (none/alpha/random)
+order = alpha
+# Looping list of images (yes/no)
+loop = yes
+# Read directories recursively (yes/no)
+recursive = no
+# Open all files in the start directory (yes/no)
+all = no
+
+################################################################################
+# Font configuration
+################################################################################
+[font]
+# Font name
+name = monospace
+# Font size (in pt)
+size = 14
+# Font color
+color = #cccccc
+# Drop shadow (none/RGB, e.g. #112233)
+shadow = #000000
+
+################################################################################
+# Image meta info scheme (format, size, EXIF, etc)
+################################################################################
+[info]
+# Mode on startup (off/brief/full)
+mode = full
+# Display scheme for the "full" mode: position = content
+full.topleft = name,format,filesize,imagesize,exif
+full.topright = index
+full.bottomleft = scale,frame
+full.bottomright = status
+# Display scheme for the "brief" mode: position = content
+brief.topleft = index
+brief.topright = none
+brief.bottomleft = none
+brief.bottomright = status
+
+################################################################################
+# Key binding section: key = action [parameters]
+# Use the `xkbcli` tool to get key name: `xkbcli interactive-wayland`
+################################################################################
 [keys]
+F1 = help
 Home = first_file
-g = first_file
 End = last_file
-G = last_file
-P = prev_dir
-N = next_dir
 Prior = prev_file
-p = prev_file
 Next = next_file
-n = next_file
-F2 = prev_frame
+space = next_file
+D = prev_dir
+d = next_dir
 O = prev_frame
-F3 = next_frame
 o = next_frame
-F4 = animation
+S = slideshow
 s = animation
-F9 = slideshow
-F11 = fullscreen
 f = fullscreen
-Left = step_left
-h = step_left
-Right = step_right
-l = step_right
-Up = step_up
-k = step_up
-Down = step_down
-j = step_down
-equal = zoom_in
-plus = zoom_in
-minus = zoom_out
-#z = zoom_optimal
-#Z = zoom_fit
-0 = zoom_real
-BackSpace = zoom_reset
-F5 = rotate_left
+Left = step_left 10
+Right = step_right 10
+Up = step_up 10
+Down = step_down 10
+#ScrollLeft = step_right 5
+#ScrollRight = step_left 5
+#ScrollUp = step_down 5
+#ScrollDown = step_up 5
+equal = zoom +10
+plus = zoom +10
+minus = zoom -10
+w = zoom width
+W = zoom height
+z = zoom fit
+Z = zoom fill
+0 = zoom real
+BackSpace = zoom optimal
 bracketleft = rotate_left
-F6 = rotate_right
 bracketright = rotate_right
-F7 = flip_vertical
-F8 = flip_horizontal
+m = flip_vertical
+M = flip_horizontal
 a = antialiasing
 r = reload
 i = info
-e = exec
-Escape = quit
-Return = quit
-F10 = quit
-q = quit
+e = exec echo "Image: %"
+Escape = exit
+q = exit
 
 # vim: filetype=dosini
