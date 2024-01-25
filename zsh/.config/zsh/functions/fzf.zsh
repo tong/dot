@@ -10,7 +10,7 @@ fzf-chrome-history() {
     sqlite3 -separator $sep /tmp/h \
         "select substr(title, 1, $cols), url from urls order by last_visit_time desc" |
         awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
-        fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs xdg-open > /dev/null 2> /dev/null
+        fzf --prompt=" " --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs xdg-open > /dev/null 2> /dev/null
 }
 
 fzf-git-log() {
