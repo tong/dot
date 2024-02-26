@@ -23,7 +23,7 @@ CREDS
 TODO*
 NOTES
 PR*.md
-*.[0-9]
-*.[0-9].*
+#*.[0-9]
+#*.[0-9].*
 all_objs
 npm-debug.log
