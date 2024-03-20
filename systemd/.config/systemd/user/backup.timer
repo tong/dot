@@ -1,0 +1,11 @@
+[Unit] 
+Description=Backup important data
+
+[Timer] 
+Unit=backup.service 
+OnCalendar=daily
+#AccuracySec=12h
+Persistent=true
+
+[Install] 
+WantedBy=basic.target

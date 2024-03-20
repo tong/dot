@@ -1,0 +1,9 @@
+[Unit] 
+Description=Syncing mailbox
+
+[Timer] 
+OnCalendar=*:0/5
+OnBootSec=1 m
+
+[Install] 
+WantedBy=basic.target
