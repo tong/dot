@@ -1,7 +1,7 @@
 # vim: filetype=neomuttrc
 
 # set index_format = "%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"
-set index_format = "%zc %zs %zt %{!%Y-%m-%d %H:%M} %-24.24L %?M?(%1M)& ? %?X?&·? %s"
+set index_format = "%zc %zs %zt %{!%Y-%m-%d %H:%M} %-24.24L %?M?(%1M)& ? %?X?&·? %s"
 set pager_format = "  %n %zc %T %s%*  %{!%A %Y/%m/%d/%H:%M} %?X?  %X ? %P  "
 set status_format = "  %f%?r? %r?  %m %?n?  %n ?  %?d?  %d ?%?t?  %t ?%?F?  %F? %> %?p?  %p ?"
 set vfolder_format = "  %N %?n?%3n&   ?  %8m  · %f"
