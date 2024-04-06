@@ -1,19 +1,19 @@
 #!/bin/sh
 _mount() {
-    mkdir -p "$1"
-    echo "Mounting $1 -> $2"
-    sshfs "$1" "$2"
+	mkdir -p "$1"
+	echo "Mounting $1 -> $2"
+	sshfs "$1" "$2"
 }
 _unmount() {
-    echo "Unmounting $1"
-    umount "$1"
-    rm -r "$1"
+	echo "Unmounting $1"
+	umount "$1"
+	rm -r "$1"
 }
 if [ "$#" -eq 1 ]; then
-    [ ! -d "$1" ] && exit 1
-    _unmount "$1"
+	[ ! -d "$1" ] && exit 1
+	_unmount "$1"
 elif [ "$#" -eq 2 ]; then
-   _mount "$1" "$2"
+	_mount "$1" "$2"
 else
-    exit 1
+	exit 1
 fi

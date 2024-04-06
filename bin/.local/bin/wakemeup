@@ -1,13 +1,13 @@
 #!/bin/sh
 if [ ! "$1" ]; then
-    echo "Usage: wakemeup \"tomorrow 8:00\""
-    exit 1
+	echo "Usage: wakemeup \"tomorrow 8:00\""
+	exit 1
 fi
 if [ ! "$2" ]; then
-    DIR="${XDG_MUSIC_DIR:-$HOME/music}"
-    SONG=$(find "$DIR" -type f -iname "*.mp3" | shuf -n 1)
+	DIR="${XDG_MUSIC_DIR:-$HOME/music}"
+	SONG=$(find "$DIR" -type f -iname "*.mp3" | shuf -n 1)
 else
-    SONG="$2"
+	SONG="$2"
 fi
 TIME=$(date +%s -d "$1")
 sudo rtcwake -m mem -l -t "$TIME" && mpv "$SONG"

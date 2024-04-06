@@ -1,7 +1,8 @@
 #!/bin/sh
 if [ $# -eq 0 ]; then
-    LEN=16
+	LEN=16
 else
-    LEN=$1
+	LEN=$1
 fi
-date +%s | sha256sum | base64 | head -c "$LEN" ; echo
+date +%s | sha256sum | base64 | head -c "$LEN"
+echo

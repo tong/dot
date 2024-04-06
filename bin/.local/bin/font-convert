@@ -1,11 +1,11 @@
 #!/bin/sh
 usage() {
-    echo "Usage: font-convert <fontfile> [type]"
+	echo "Usage: font-convert <fontfile> [type]"
 }
 if [ "$#" -ne 2 ]; then
-    echo "Invalid arguments"
-    usage
-    exit 1
+	echo "Invalid arguments"
+	usage
+	exit 1
 fi
 font="$1"
 type="$2"

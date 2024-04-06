@@ -1,33 +1,32 @@
 #!/bin/bash
 # Wallpaper manager
 
-
 function usage() {
-    #echo "./$(basename $0) -h --> shows usage"
-    echo "Usage: $(basename $0) [-abcd]" 2>&1
-    echo '   -a   shows a in the output'
-    echo '   -b   shows b in the output'
-    exit 1
+	#echo "./$(basename $0) -h --> shows usage"
+	echo "Usage: $(basename $0) [-abcd]" 2>&1
+	echo '   -a   shows a in the output'
+	echo '   -b   shows b in the output'
+	exit 1
 }
 
 # if [[ ${#} -eq ]]; then
 #     usage
 # fi
 if [ $# -eq 0 ]; then
-    usage
+	usage
 fi
 
 optstring=":abcd"
 while getopts ${optstring} arg; do
-    case $arg in
-        a) echo "Option A";;
-        b) echo "Option B";;
-        ?)
-            echo "Invalid option"
-            echo
-            usage
-        ;;
-    esac
+	case $arg in
+	a) echo "Option A" ;;
+	b) echo "Option B" ;;
+	?)
+		echo "Invalid option"
+		echo
+		usage
+		;;
+	esac
 done
 echo "OPTIND: $OPTIND"
 
