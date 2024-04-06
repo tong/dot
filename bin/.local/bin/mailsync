@@ -12,7 +12,7 @@ pgrep mbsync >/dev/null && {
 
 lastrun="${XDG_CONFIG_HOME:-$HOME/.config}/mutt/.mailsynclastrun"
 notify_id=0
-ICON_NOTFICATION="/usr/share/icons/ePapirus/16x16/actions/mail-unread.svg"
+ICON_NOTFICATION="/usr/share/icons/Adwaita/symbolic/status/mail-unread-symbolic.svg"
 
 #GPG_TTY="$(tty)"
 #export ${GPG_TTY}
