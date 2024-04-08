@@ -55,13 +55,9 @@ all = no
 # Font configuration
 ################################################################################
 [font]
-# Font name
 name = monospace
-# Font size (in pt)
-size = 14
-# Font color
+size = 9
 color = #cccccc
-# Drop shadow (none/RGB, e.g. #112233)
 shadow = #000000
 
 ################################################################################
