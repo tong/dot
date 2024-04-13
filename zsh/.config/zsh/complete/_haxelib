@@ -1,83 +1,124 @@
 #compdef haxelib
 
-local -a cmd_basic cmd_information cmd_development cmd_misc
-cmd_basic=(
-'install:install a given library, or all libraries from a hxml file'
-'remove:remove a given library/version'
-"list:list all installed libraries"
-"set:set the current version for a library"
-)
-cmd_information=(
-"search:list libraries matching a word"
-"info:list information on a given library"
-"user:list information on a given user" \
-"config:print the repository path" \
-"path:give paths to libraries' sources and necessary build definitions" \
-"libpath:returns the root path of a library" \
-"version:print the currently used haxelib version" \
- "help:display this list of options" \
-)
-cmd_development=(
-"submit:submit or update a library package" \
-"register:register a new user" \
-"dev:set the development directory for a given library" \
-"git:use Git repository as library" \
-"hg:use Mercurial (hg) repository as library" \
-)
-cmd_misc=(
-"setup:set the haxelib repository path" \
-"newrepo:create a new local repository" \
-"deleterepo:delete the local repository" \
-"convertxml:convert haxelib.xml file to haxelib.json" \
-"run:run the specified library with parameters" \
-"proxy:setup the Http proxy" \
-)
+# TODO: wip
 
-_haxelib_list() {
-	ls $HAXELIB_PATH | sed -e 's/,/./g'
+_haxelib_libraries() {
+	#ls $HAXELIB_PATH | sed -e 's/,/./g'
+    #local libs
+    declare -a libs
+    #TODO: check if dir is really a haxelib
+    libs=("$(ls $HAXELIB_PATH | sed -e 's/,/./g')")
+    echo $libs
+    # for p in $libs; do
+    #     #_path_files -W "$HAXELIB_PATH/$p" -/
+    #     echo "$HAXELIB_PATH/$p"
+    # done
+}
+
+_haxelib() {
+  local context state state_descr line
+  typeset -A opt_args
+ 
+  local -a options=(
+    "--flat[do not use --recursive cloning for git]"
+    "--always[answer all questions with yes]"
+    "--debug[run in debug mode, imply not --quiet]"
+    "--quite[print less messages, imply not --debug]"
+    "--system[run bundled haxelib version instead of latest update]"
+    "--skip-dependencies[do not install dependencies]"
+    "--never[answer all questions with no]"
+    "--global[force global repo if a local one exists]"
+  )
+  _arguments -s -S \
+    $options \
+    ": :_haxelib_cmds" \
+    "*:: :->args" \
+    && return 0
+
+  #TODO:
+  case $words[1] in
+    install)
+      _arguments -s -S \
+        $options \
+        && return 0
+      ;;
+    update)
+      _arguments -s -S \
+        $options \
+        "*: :($(_haxelib_libraries))" \
+        && return 0
+      ;;
+    remove)
+      _arguments -s -S \
+        "*: :($(_haxelib_libraries))" \
+        && return 0
+      ;;
+    set)
+      _arguments -s -S \
+        "*: :($(_haxelib_libraries))" \
+        && return 0
+      ;;
+    path)
+      _arguments -s -S \
+        "*: :($(_haxelib_libraries))" \
+        && return 0
+      ;;
+    submit)
+      #TODO: show only *.zip files and dirs
+      _arguments -s -S \
+        $options \
+        "*: :_files" \
+        && return 0
+      ;;
+    dev)
+      _arguments -s -S \
+        $options \
+        "1: :($(_haxelib_libraries))" \
+        "2: :_files" \
+        && return 0
+      ;;
+    run)
+      #TODO: show only libraries with a run script
+      _arguments -s -S \
+        "*: :($(_haxelib_libraries))" \
+        && return 0
+      ;;
+    *)
+      return 0
+      ;;
+  esac
+
+  return 1
 }
 
 _haxelib_cmds() {
-    _describe 'command' cmd_basic -- cmf_information -- cmd_development -- cmd_misc
+  local -a commands=(
+    "install:install a given library, or all libraries from a hxml file"
+    "update:update a single library (if given) or all installed libraries"
+    "remove:remove a given library/version"
+    "list:list all installed libraries"
+    "set:set the current version for a library"
+    "list:list libraries matching a word"
+    "info:list information on a given library"
+    "user:list information on a given user"
+    "config:print the repository path"
+    "path:give paths to libraries' sources and necessary build definitions"
+    "libpath:returns the root path of a library"
+    "version:print the currently used haxelib version"
+    "help:display this list of options"
+    "submit:submit or update a library package"
+    "register:register a new user"
+    "dev:set the development directory for a given library"
+    "git:use Git repository as library"
+    "hg:use Mercurial (hg) repository as library"
+    "setup:set the haxelib repository path"
+    "newrepo:create a new local repository"
+    "deleterepo:delete the local repository"
+    "convertxml:convert haxelib.xml file to haxelib.json"
+    "run:run the specified library with parameters"
+    "proxy:setup the Http proxy"
+  )
+  _describe "command" commands
 }
 
-#_alternative 'cmds:commands:_haxelib_cmds'
-
-_haxelib() {
-    local ret=-1
-    _arguments -C \
-        '--flat[do not use --recursive cloning for git]' \
-        '--always[answer all questions with yes]' \
-        '--debug[run in debug mode, imply not --quiet]' \
-        '--quiet[print less messages, imply not --debug]' \
-        '--system[run bundled haxelib version instead of latest update]' \
-        '--skip-dependencies[do not install dependencies]' \
-        '--never[answer all questions with no]' \
-        '--global[force global repo if a local one exists]' \
-        '1: :_haxelib_cmds' \
-        '*::arg:->args' \
-    && ret=0
-#        '*: :_haxelib_cmds'
-    #'*: :_haxelib_cmds'
-    case "$state" in
-        (args)
-            case $words[1] in
-                (remove)
-                    _alternative \
-                        '1:library:($(ls $HAXELIB_PATH))' \
-                    && ret=0
-                    ;;
-                (**)
-                    ret=0
-                    ;;
-            esac
-            ;;
-        (**)
-            ret=0
-            ;;
-    esac
-    return ret
-}
-
-_haxelib "$@"
-
+_haxelib
