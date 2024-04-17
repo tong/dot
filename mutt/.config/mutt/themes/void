@@ -5,7 +5,8 @@ set index_format = "%zc %zs %zt %{!%Y-%m-%d %H:%M} %-24.24L %?M?(%1M)& ? %?X?
 set pager_format = "  %n %zc %T %s%*  %{!%A %Y/%m/%d/%H:%M} %?X?  %X ? %P  "
 set status_format = "  %f%?r? %r?  %m %?n?  %n ?  %?d?  %d ?%?t?  %t ?%?F?  %F? %> %?p?  %p ?"
 set vfolder_format = "  %N %?n?%3n&   ?  %8m  · %f"
-set attach_format = "%u%D  %T%-75.75d %?T?%&   ? %5s · %m/%M"
+#set attach_format = "%u%D  %T%-75.75d %?T?%&   ? %5s · %m/%M"
+set attach_format = "%u%D%I %t%4n %T%.80d%> · %.16m/%.24M, %s"
 
 #set arrow_string = ""
 
