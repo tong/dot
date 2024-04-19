@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+
+const fs = require("fs");
+const https = require("https");
+
+const OUT = process.env["HOME"] + "/.local/share/nerdfont.map";
+
+https.get("https://www.nerdfonts.com/cheat-sheet", res => {
+  let data = ""
+  res.on('data', chunk => {
+    data += chunk;
+  });
+  res.on('end', () => {
+    const items = [];
+    const lines = data.split("\n");
+    lines.forEach(line => {
+      line = line.trim();
+      if (line.startsWith('"nf-')) {
+        items.push(line.substring(0, line.length - 1));
+      }
+    });
+    const obj = JSON.parse(`{${items.join(",")}}`);
+    let out = "";
+    for (const k in obj) {
+      const icon = String.fromCodePoint(parseInt("0x" + obj[k]));
+      const s = k.substring(3);
+      const name = s.substring(s.indexOf("-") + 1);
+      out += `${icon} ${name}\n`;
+    }
+    fs.writeFileSync(OUT, out);
+  });
+})
