@@ -25,6 +25,10 @@ fzf-man() {
     f=$(fd . $MANPATH/man${1:-1} -t f -x echo {/.} | fzf) && man $f
 }
 
+fzf-nerdfont() {
+  ic=$(cat ~/.local/share/nerdfont.map | fzf --prompt=" ") && echo "${ic:0:1}" | wl-copy && echo "Copied ${ic:0:1} to clipboard" 
+}
+
 fzf-tmux() {
     if [[ ! -n $TMUX ]]; then
         ID="`tmux list-sessions`"
