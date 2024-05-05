@@ -1,0 +1,9 @@
+import = ["~/.config/alacritty/themes/themes/cyber_punk_neon.toml"]
+
+[font]
+size = 9.0
+
+[window]
+padding = { x = 12, y = 12 }
+dynamic_padding = true
+#opacity = 0.9
