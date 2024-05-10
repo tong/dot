@@ -355,3 +355,6 @@ Vagrantfile             
 
 # other formats
 *.pdf   
+
+# custom
+*.hx    
