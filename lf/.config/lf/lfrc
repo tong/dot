@@ -11,8 +11,8 @@ set info size:time
 set mouse true
 set number
 set previewer '~/.config/lf/preview/preview'
-set promptfmt "\033[32m %u@%h\033[0m:\033[34;1m%d\033[0m\033[1m%f\033[0m"
-set ratios '1:2'
+set promptfmt "\033[32m %u@%h\033[0m:\033[34;1m%d\033[0m\033[1m%f\033[0m"
+set ratios '1:4:4'
 set scrolloff 10
 set shell sh
 set shellopts '-eu'
@@ -75,4 +75,8 @@ map H set hidden!
 map o &mimeopen $f
 map O $mimeopen --ask $f
 map x extract
+
 map <c-x> cut
+
+map <f-2> rename
+map <f-3> search
