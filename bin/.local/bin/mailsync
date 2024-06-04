@@ -28,7 +28,7 @@ esac
 
 notify() {
 	export XDG_RUNTIME_DIR="/run/user/1000"
-	notify_id=$(notify-send --app-name="mail" --icon="$ICON_NOTFICATION" "$2" "$3" -r "$notify_id" -p)
+	notify_id=$(notify-send --app-name="email" --icon="$ICON_NOTFICATION" "$2" "$3" -r "$notify_id" -p)
 }
 
 syncandnotify() {
