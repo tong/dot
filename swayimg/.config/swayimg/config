@@ -1,14 +1,3 @@
-# Swayimg configuration file.
-
-# This file contains the default configuration.
-# The viewer searches for the config file in the following locations:
-# 1. $XDG_CONFIG_HOME/swayimg/config
-# 2. $HOME/.config/swayimg/config
-# 3. $XDG_CONFIG_DIRS/swayimg/config
-# 4. /etc/xdg/swayimg/config
-
-# See `man swayimgrc` for details.
-
 ################################################################################
 # General options
 ################################################################################
@@ -31,7 +20,7 @@ position = parent
 # Window size (parent, image, or absolute size, e.g. 800,600)
 size = parent
 # Window background mode/color (none/RGB, e.g. #112233)
-background = none
+background = #00000000
 
 # Run slideshow at startup (yes/no)
 slideshow = no
@@ -122,5 +111,10 @@ i = info
 e = exec echo "Image: %"
 Escape = exit
 q = exit
+
+j = next_file
+k = prev_file
+#h = next_file
+#l = prev_file
 
 # vim: filetype=dosini
