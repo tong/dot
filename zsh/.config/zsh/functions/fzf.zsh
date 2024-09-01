@@ -26,7 +26,11 @@ fzf-man() {
 }
 
 fzf-nerdfont() {
-  ic=$(cat ~/.local/share/nerdfont.map | fzf --prompt=" ") && echo "${ic:0:1}" | wl-copy && echo "Copied ${ic:0:1} to clipboard" 
+  selected=$(cat ~/.local/share/nerdfont.map | fzf --prompt=" ")
+  icon="${selected:0:1}"
+  echo "$icon"
+  wl-copy "$icon"
+  notify-send --app-name="nerdfont" "$icon copied to clipboard"
 }
 
 fzf-tmux() {
