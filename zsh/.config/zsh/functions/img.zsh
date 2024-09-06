@@ -67,23 +67,23 @@ imgrotate() {
 #     done
 # }
 
-img2jpg() {
-    for f in "$@"; do
-        local fn=${f%\.*}
-        convert -quality 100 $f "${fn}.jpg"
-    done
-}
+# img2jpg() {
+#     for f in "$@"; do
+#         local fn=${f%\.*}
+#         convert -quality 100 $f "${fn}.jpg"
+#     done
+# }
 
-img2webp() {
-    for f in "$@"; do
-        local fn=${f%\.*}
-        cwebp -q 100 $f -o $(basename ${fn}).webp
-    done
-}
+# img2webp() {
+#     for f in "$@"; do
+#         local fn=${f%\.*}
+#         cwebp -q 100 $f -o $(basename ${fn}).webp
+#     done
+# }
 
-svg2png() {
-    for f in "$@"; do
-        local fn=${f%\.*}
-        inkscape -o "$fn.png" $f
-    done
-}
+# svg2png() {
+#     for f in "$@"; do
+#         local fn=${f%\.*}
+#         inkscape -o "$fn.png" $f
+#     done
+# }
