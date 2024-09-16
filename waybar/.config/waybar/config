@@ -17,38 +17,39 @@
   "modules-left": [
     //"image#motd",
     "hyprland/submap",
-    "custom/tmux",
+    "hyprland/workspaces",
+    "custom/taskwarrior"
+    //"custom/timewarrior",
+    //"custom/tmux"
     //"custom/user",
     //"custom/github",
     //"cava",
-    //"custom/mail",
-    "custom/taskwarrior",
-    "hyprland/workspaces"
     //"custom/weather"
-    //"image",
     //"custom/workspaces"
     //"group/perf"
   ],
   "modules-center": [
-    //"custom/window",
     "hyprland/window"
+    //"custom/window",
   ],
   "modules-right": [
     //"backlight",
     //"mpd",
     //"mpris",
     //"custom/mpv",
+    //"custom/ssh",
     "network",
-    "custom/ssh",
     //"custom/gpu",
-    "cpu",
-    "memory",
+    // "cpu",
+    // "memory",
+    "group/perf",
     // "disk",
     //"keyboard-state",
     "pulseaudio",
     //"custom/pacman",
     //"custom/weather",
     "clock",
+    "custom/mail",
     "tray"
     //"temperature"
   ],
@@ -82,11 +83,11 @@
   //      "size": 16,
   //      "interval": 2
   // },
-  "custom/workspaces": {
-    "exec": "python $HOME/.config/waybar/modules/workspaces.py",
-    "format": "{}",
-    "return-type": "json"
-  },
+  // "custom/workspaces": {
+  //   "exec": "python $HOME/.config/waybar/modules/workspaces.py",
+  //   "format": "{}",
+  //   "return-type": "json"
+  // },
   "custom/github": {
     "format": "{icon} {}",
     "format-icons": {
@@ -150,13 +151,16 @@
     "max-length": 128
   },
   "custom/tmux": {
-    "exec": "$HOME/.config/waybar/modules/tmux.sh",
-    "interval": 5,
+    //"exec": "$HOME/.config/waybar/modules/tmux.sh",
+    "exec": "python $HOME/.config/waybar/modules/tmux.py",
+    //"exec": "cat $HOME/.config/waybar/modules/tmux.json",
+    //"return-type": "json",
+    "interval": 3
     // "return-type": "json",
     // "format": " {} ",
-    "max-length": 128,
+    //"max-length": 128,
     //"format-icons": { "default": "" }
-    "tooltip": false
+    //"tooltip": false
   },
   "custom/taskwarrior": {
     "exec": "python $HOME/.config/waybar/modules/taskwarrior.py",
@@ -168,6 +172,28 @@
       "on-click-right": "mode"
     },
     "tooltip": false
+  },
+  //TODO: use taskwarrior hook
+  "custom/taskwarrior2": {
+    //"exec": "cat $HOME/.local/state/waybar-taskwarrior.json",
+    "exec": "python $HOME/.config/waybar/modules/taskwarrior.N.py",
+    "return-type": "json",
+    //"interval": 2,
+    // "format": "{}",
+    //"max-length": 256,
+    // "actions": {
+    //   "on-click-right": "mode"
+    // },
+    "tooltip": true
+  },
+  "custom/timewarrior": {
+    "exec": "python $HOME/.config/waybar/modules/timewarrior.py",
+    "return-type": "json",
+    "tooltip": true
+    //"max-length": 256,
+    // "actions": {
+    //   "on-click-right": "mode"
+    // },
   },
   "custom/user": {
     "exec": "$HOME/.config/waybar/modules/user.sh",
@@ -235,7 +261,7 @@
   "clock": {
     "interval": 60,
     "timezone": "Europe/Vienna",
-    "format": "{:%Y/%m/%d %A %H:%M}",
+    "format": "{:%m.%d %A %H:%M}",
     "format-alt": "{:%Y %A %d %B %R}",
     "tooltip-format": "<span size='24pt' font='Inter Bold'>{:%A %d %B %Y\n%H:%M}</span>\n\n\n<span>{calendar}</span>",
     "calendar": {
@@ -262,20 +288,21 @@
   },
   "cpu": {
     "interval": 1.0,
-    "format": "{usage}%",
+    //"format": "{usage}{icon}",
+    "format": "CPU:{usage}",
     "format-alt": "{load} {usage}%",
     "format-icons": [
       ""
     ],
-    "on-click-right": "kitty -e btop"
+    "on-right": "kitty -e btop"
   },
   "memory": {
     "interval": 2,
-    "format": "{}",
+    "format": "MEM:{}",
     "format-icons": {
       "default": "󰍛"
     },
-    "tooltip-format": " {used:0.1f}G/{total:0.1f}gb - {}%",
+    //"tooltip-format": " {used:0.1f}G/{total:0.1f}gb - {}%",
     "on-click": "kitty -e btop"
   },
   "disk": {
@@ -293,7 +320,7 @@
     // "active": "",
     // "default": ""
     //},
-    "show-special": false
+    //"show-special": true
     //"format-window-seperator": "|",
     // "window-rewrite": {
     //   "firefox": "",
@@ -307,12 +334,13 @@
     "tooltip": true
   },
   "hyprland/window": {
-    //"format": " {} ",
     "format": "{}",
     "separate-outputs": false,
     "rewrite": {
       "(.*) - Brave": " $1",
-      "v (.*)": " $1"
+      "vv ?(.*)": " $1",
+      "n?vim (.*)": " $1",
+      "tmux(.*)": " tmux $1"
     }
   },
   "keyboard-state": {
@@ -375,7 +403,8 @@
   "network": {
     // "interface": "wlp2*", // (Optional) To force the use of this interface
     //"format-ethernet": "{ipaddr}  {bandwidthDownBytes}  {bandwidthUpBits}",
-    "format-ethernet": "{bandwidthDownBytes} {bandwidthUpBytes}",
+    //"format-ethernet": "{bandwidthDownBytes} {bandwidthUpBytes}",
+    "format-ethernet": "{bandwidthDownBytes}|{bandwidthUpBytes}",
     "format-wifi": "{essid} ({signalStrength}%) ",
     "tooltip-format": "{ifname} {gwaddr}",
     "format-linked": "{ifname} (No IP) ",
@@ -385,7 +414,8 @@
   },
   "pulseaudio": {
     // "format": "{icon} {volume}% {format_source}",
-    "format": "{icon}{volume}",
+    //"format": "{icon} {volume}",
+    "format": "󰕿{volume}",
     "format-bluetooth": "{volume}% {icon} {format_source}",
     "format-bluetooth-muted": " {icon} {format_source}",
     "format-muted": "A̶U̶D̶I̶O̶",
@@ -398,11 +428,11 @@
       "phone": "",
       "portable": "",
       "car": "",
-      "default": [
-        "",
-        "",
-        ""
-      ]
+      // "default": [
+      //   "",
+      //   "",
+      //   ""
+      // ]
     },
     "on-click": "pavucontrol",
     "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
@@ -438,25 +468,25 @@
     "format": "{volume}%",
     "format-muted": "",
     "on-click": "helvum"
-  },
-  "wlr/workspaces": {
-    "format": "{icon}",
-    //"active-only": true,
-    // "format-icons": {
-    //   "1": "1",
-    //   "2": "2",
-    //   "3": "3",
-    //   "4": "4",
-    //   "5": "5",
-    //   "6": "6",
-    //   "7": "7",
-    //   "8": "8",
-    //   "9": "9",
-    //   "10": "0",
-    //   // "urgent": "",
-    //   // "active": "",
-    //   // "default": ""
-    // },
-    "on-click": "activate"
   }
+  // "wlr/workspaces": {
+  //   "format": "{icon}",
+  //   //"active-only": true,
+  //   // "format-icons": {
+  //   //   "1": "1",
+  //   //   "2": "2",
+  //   //   "3": "3",
+  //   //   "4": "4",
+  //   //   "5": "5",
+  //   //   "6": "6",
+  //   //   "7": "7",
+  //   //   "8": "8",
+  //   //   "9": "9",
+  //   //   "10": "0",
+  //   //   // "urgent": "",
+  //   //   // "active": "",
+  //   //   // "default": ""
+  //   // },
+  //   "on-click": "activate"
+  // }
 }

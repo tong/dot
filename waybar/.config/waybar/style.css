@@ -1,48 +1,50 @@
 @keyframes alarm {
-    0% {
-        background: #000;
-        color: #fff;
-    }
-    80% {
-        background: #ff0000;
-    }
+  0% {
+    background: #000;
+    color: #fff;
+  }
+
+  80% {
+    background: #ff0000;
+  }
 }
 
 @keyframes urgent {
-    0% {
-        background: #eee;
-        color: #000;
-    }
-    80% {
-        background: #000;
-        color: #fff;
-    }
+  0% {
+    background: #eee;
+    color: #000;
+  }
+
+  50% {
+    background: #000;
+    color: #fff;
+  }
 }
 
 @keyframes submap {
-    0% {
-        background: #fff;
-        color: #000;
-    }
-    50% {
-        background: #000;
-        color: #fff;
-    }
+  0% {
+    background: #fff;
+    color: #000;
+  }
+
+  50% {
+    background: #000;
+    color: #fff;
+  }
 }
 
-
 * {
-    /* font-family: monospace; */
-    font-family: JetBrainsMono Nerd Font, monospace;
-    /* font-size: 12px; */
-    /* font-family: Terminus; */
-    /* font-size: 10px; */
+  font-family: JetBrainsMono Nerd Font, monospace;
   font-size: 12px;
-    color: #d0d0d0;
+  color: #b0b0b0;
 }
 
 window {
-    background: none;
+  background: none;
+}
+
+window#waybar {
+  background: none;
 }
 
 /* window#waybar { */
@@ -52,14 +54,14 @@ window {
 /* } */
 
 /* window#waybar { */
-    /* background: none; */
-    /* border-bottom: 3px solid rgba(100, 114, 125, 0.5); */
-    /* color: #eee; */
-    /* transition-property: background-color; */
-    /* transition-duration: .5s; */
+/* background: none; */
+/* border-bottom: 3px solid rgba(100, 114, 125, 0.5); */
+/* color: #eee; */
+/* transition-property: background-color; */
+/* transition-duration: .5s; */
 /* } */
 /* window#waybar.hidden { */
-    /* opacity: 0.2; */
+/* opacity: 0.2; */
 /* } */
 /*
 window#waybar.empty {
@@ -77,63 +79,68 @@ window#waybar.chromium {
 }
 */
 
-window.DP-2 * {
-}
+/* window.DP-2 * {} */
 
 .modules-left {
-    margin-left: 0.5rem;
-    /* background: red; */
+  /* margin-left: 0.5rem; */
+  /* background: red; */
 }
-.modules-left > widget:first-child {
-    /* background: green; */
-    /* margin-left: 20px; */
+
+/* .modules-left>widget:first-child { */
+/* background: green; */
+/* margin-left: 20px; */
+/* } */
+
+.modules-left>widget:last-child {
+  /* background: blue; */
 }
-.modules-left > widget:last-child {
-    /* background: blue; */
-}
+
 /* If workspaces is the leftmost module, omit left margin */
-.modules-left > widget:first-child > #workspaces {
-    /* margin-left: 0; */
+.modules-left>widget:first-child>#workspaces {
+  /* margin-left: 0; */
 }
 
 .modules-right {
-    margin-right: 0.5rem;
-}
-/* If workspaces is the rightmost module, omit right margin */
-.modules-right > widget:last-child > #workspaces {
-    /* margin-right: 0; */
+  margin-right: 0.5rem;
 }
 
-widget > * {
-   padding: 0px 0.25rem 0px 0.25rem;
+/* If workspaces is the rightmost module, omit right margin */
+.modules-right>widget:last-child>#workspaces {
+  /* margin-right: 0; */
 }
+
+widget>* {
+  padding: 0px 0.25rem 0px 0.25rem;
+}
+
 button {
-    /* Use box-shadow instead of border so the text isn't offset */
-    /* box-shadow: inset 0 -3px transparent; */
-    /* box-shadow: inset 0 -1px white; */
-    /* Avoid rounded borders under each button name */
-    /* border: none; */
-    border-radius: 0;
+  /* Use box-shadow instead of border so the text isn't offset */
+  /* box-shadow: inset 0 -3px transparent; */
+  /* box-shadow: inset 0 -1px white; */
+  /* Avoid rounded borders under each button name */
+  /* border: none; */
+  border-radius: 0;
 }
+
 button:hover {
-    /* color: ; */
-    background: #ff3030;
-    /* background: inherit; */
-    /* box-shadow: inset 0 -3px #ffffff; */
+  background: #ff3030;
+  /* background: inherit; */
+  /* box-shadow: inset 0 -3px #ffffff; */
 }
 
 tooltip {
-    border-radius: 0;
-    border: none;
+  border-radius: 0;
+  border: none;
 }
+
 tooltip label {
-    padding: 1rem 1.5rem;
-    /* background: #141414; */
-    border: none;
+  padding: 1rem 1.5rem;
+  /* background: #141414; */
+  border: none;
 }
 
 #mode {
-    background-color: #64727D;
+  background-color: #64727D;
 }
 
 /*
@@ -172,12 +179,12 @@ tooltip label {
 */
 
 #network.disconnected {
-    background-color: #f53c3c;
+  background-color: #f53c3c;
 }
 
 #pulseaudio.muted {
-    background: #a0a0a0;
-    color: #141414;
+  background: #a0a0a0;
+  color: #141414;
 }
 
 /*
@@ -205,86 +212,105 @@ tooltip label {
 */
 
 #scratchpad {
-    background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 #scratchpad.empty {
-	background-color: transparent;
+  background-color: transparent;
 }
 
 #temperature.critical {
-    font-weight: bold;
-    background: #f53c3c;
-    color: #000;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    animation: alarm 0.5s infinite alternate;
+  font-weight: bold;
+  background: #f53c3c;
+  color: #000;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  animation: alarm 0.5s infinite alternate;
 }
 
-#tray > .passive {
-    /* -gtk-icon-effect: dim; */
+#tray>.passive {
+  /* -gtk-icon-effect: dim; */
 }
 
-#tray > .needs-attention {
-    -gtk-icon-effect: highlight;
-    /* background-color: #eb4d4b; */
+#tray>.needs-attention {
+  -gtk-icon-effect: highlight;
+  /* background-color: #eb4d4b; */
 }
 
 #workspaces {
-    /* padding: 0; */
-    /* margin: 0; */
+  /* padding: 0; */
+  /* margin: 0; */
 }
+
 #workspaces button {
-    margin: 0;
-    padding: 0;
-    transition: all 0.2s;
-    /* transition: border-bottom 0.2s, padding 0.2s; */
+  margin: 0;
+  padding: 0 2px;
+  transition: all 0.2s;
+  /* transition: border-bottom 0.2s, padding 0.2s; */
 }
+
 #workspaces button:hover:not(.active) {
-    transition: all 0.1s;
-    background: #505050;
-    color: #eee;
-    padding: 0 0.5rem;
-    /* border-radius: 1rem; */
-    /* box-shadow: inset 0 -8px white; */
+  transition: all 0.1s;
+  background: #000;
+  color: #eee;
+  /* padding: 0 0.5rem; */
+  /* border-radius: 1rem; */
+  /* box-shadow: inset 0 -8px white; */
 }
+
 /*#workspaces button.empty {*/
 #workspaces button.active {
-    padding: 0 0.5rem;
-    font-weight: bold;
-    /* border-top: 1px solid #ccc; */
-    border-bottom: 1px solid #ccc;
-    background: #101010;
-    /* box-shadow: inset 0 -1px #ddd; */
+  /* padding: 0 0.25rem; */
+  font-weight: bold;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border: 1px solid #aaa;
+  /* background: #333; */
+  /* background: #101010; */
+  /* box-shadow: inset 0 -1px #ff0000; */
 }
+
 #workspaces button.urgent {
-    background: #f53c3c;
-    animation: urgent 2s infinite alternate;
+  background: #f53c3c;
+  animation: urgent 2s infinite alternate;
 }
 
 #custom-taskwarrior {
-    /* padding: 0; */
-    /* margin: 0; */
-    /* font-size: 14px; */
+  /* padding: 0; */
+  /* margin: 0; */
+  /* font-size: 14px; */
 }
+
+.taskwarrior {
+  /* background: blue; */
+  background: #141414;
+  color: #d0d0d0;
+}
+
 #custom-taskwarrior .test {
-    /* background: green; */
+  /* background: green; */
 }
 
 #custom-tmux {
-    /* background: blue; */
+  /* background: blue; */
+}
+
+#custom-tmux .attached {
+  background: red;
 }
 
 #image {}
 
 #custom-mail {
-    /* background: red; */
+  /* background: red; */
 }
+
 #custom-mail {
-    /* margin-right: 10px; */
+  /* margin-right: 10px; */
 }
+
 #custom-mail.unread {
-    color: white;
+  color: white;
 }
 
 #clock {}
