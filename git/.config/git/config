@@ -14,9 +14,11 @@
     ui = auto
 [commit]
     verbose = true
+	gpgsign = true
 [user]
     name = tong 
     email = tong@disktree.net
+	signingkey = 0FE9AED0566CC214
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential
