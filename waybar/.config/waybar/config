@@ -37,7 +37,7 @@
     //"mpd",
     //"mpris",
     //"custom/mpv",
-    //"custom/ssh",
+    "custom/ssh",
     "network",
     //"custom/gpu",
     // "cpu",
@@ -143,7 +143,7 @@
   "custom/ssh": {
     "exec": "$HOME/.config/waybar/modules/ssh.sh",
     "interval": 3,
-    "format": "{icon} {}",
+    "format": "{}",
     "format-icons": {
       "default": "󰢩"
     },
@@ -261,8 +261,9 @@
   "clock": {
     "interval": 60,
     "timezone": "Europe/Vienna",
-    "format": "{:%m.%d %A %H:%M}",
-    "format-alt": "{:%Y %A %d %B %R}",
+    //"format": "{:%m.%d %A %H:%M}",
+    "format": "| {:%A %H:%M}",
+    "format-alt": "| {:%A %d %B %R}",
     "tooltip-format": "<span size='24pt' font='Inter Bold'>{:%A %d %B %Y\n%H:%M}</span>\n\n\n<span>{calendar}</span>",
     "calendar": {
       "mode": "year",
@@ -289,7 +290,7 @@
   "cpu": {
     "interval": 1.0,
     //"format": "{usage}{icon}",
-    "format": "CPU:{usage}",
+    "format": "| CPU:{usage}",
     "format-alt": "{load} {usage}%",
     "format-icons": [
       ""
@@ -404,7 +405,7 @@
     // "interface": "wlp2*", // (Optional) To force the use of this interface
     //"format-ethernet": "{ipaddr}  {bandwidthDownBytes}  {bandwidthUpBits}",
     //"format-ethernet": "{bandwidthDownBytes} {bandwidthUpBytes}",
-    "format-ethernet": "{bandwidthDownBytes}|{bandwidthUpBytes}",
+    "format-ethernet": "| {bandwidthDownBytes} 󰲝 {bandwidthUpBytes}",
     "format-wifi": "{essid} ({signalStrength}%) ",
     "tooltip-format": "{ifname} {gwaddr}",
     "format-linked": "{ifname} (No IP) ",
@@ -415,7 +416,7 @@
   "pulseaudio": {
     // "format": "{icon} {volume}% {format_source}",
     //"format": "{icon} {volume}",
-    "format": "󰕿{volume}",
+    "format": "| VOL:{volume}",
     "format-bluetooth": "{volume}% {icon} {format_source}",
     "format-bluetooth-muted": " {icon} {format_source}",
     "format-muted": "A̶U̶D̶I̶O̶",
