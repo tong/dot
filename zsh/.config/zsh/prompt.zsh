@@ -55,18 +55,25 @@ prompt_status() {
     symbols=()
     #[[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}$CROSS"
     if [[ $RETVAL -ne 0 ]]; then
-        symbols+="%{%K{black}%F{red}%}$CROSS"
+        #symbols+="%{%K{black}%F{red}%}$"
+        symbols+="%{%F{red}%}$CROSS "
         if [[ $RETVAL -ne 130 ]]; then
             symbols+="$RETVAL"
         fi
+        #symbols+="$RETVAL"
     else
-       symbols+="$CIRCLE"
+        # print -n "%{%F{black}%}"
+        # #symbols+=" "
+        #symbols+=" $CIRCLE"
+        # symbols+="%{%F{white}%} "
+        # #󰜴
+        #symbols+="$RETVAL"
     fi
     [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}$LIGHTNING"
     [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}$GEAR"
     #[[ -n "$symbols" ]] && prompt_segment $PRIMARY_FG white "$symbols"
     ##prompt_segment red green ""
-    [[ -n "$symbols" ]] && prompt_segment $PRIMARY_FG white "$symbols" 
+    [[ -n "$symbols" ]] && prompt_segment $PRIMARY_FG white " $symbols" 
 }
 
 prompt_context() {
@@ -85,14 +92,20 @@ prompt_context() {
     if (( ${+sshcon} )); then
         seg+=" $(cut -d' ' -f 1 <<< $sshcon)"
     fi
+    #prompt_segment black black "" 
+    #prompt_segment black white "  " 
+    #prompt_segment cyan black "" 
+    prompt_segment black black "" 
 
+    #prompt_segment / white "BBBB" 
+    ##seg+="AAA"
     # if [[ "$user" != "$DEFAULT_USER" || -n "$SSH_CONNECTION" ]]; then
     #prompt_segment $PRIMARY_FG default "  %(!.%{%F{yellow}%}.)$user@%m "
     #prompt_segment $PRIMARY_FG default "  %(!.%{%F{red}%}.)"
     #prompt_segment white black "  %(!.%{%F{red}%}.)"
     #prompt_segment black white "  %(!.%{%F{red}%}.)"
     #SEGMENT_SEPARATOR=""
-    prompt_segment black white "$seg" 
+    #prompt_segment black white "$seg" 
 }
 
 #source $ZDOTDIR/plugins/gitstatus/gitstatus.plugin.zsh
@@ -106,7 +119,6 @@ function prompt_gitstatus() {
         (( VCS_STATUS_NUM_UNSTAGED  )) && SEG+="!$VCS_STATUS_NUM_UNSTAGED"
         (( VCS_STATUS_NUM_UNTRACKED )) && SEG+="?$VCS_STATUS_NUM_UNTRACKED"
         [[ VCS_STATUS_TAG ]] && SEG+="$VCS_STATUS_TAG"
-       
         color=white
         if [[ $VCS_STATUS_HAS_CONFLICTED -ne 0 ]]; then
             color=red
@@ -119,9 +131,7 @@ function prompt_gitstatus() {
         else
             color=green
         fi
-
         prompt_segment $color black " $SEG "
-        
         ##SEGMENT_SEPARATOR=""
         #[[ $VCS_STATUS_TAG ]] && prompt_segment white black " $VCS_STATUS_TAG "
   fi
@@ -183,20 +193,20 @@ prompt_history() {
     prompt_segment black grey "$hist"
 }
 
-prompt_tasks() {
-    prompt_segment red $PRIMARY_FG
-    if [ `task +READY +OVERDUE count` -gt "0" ]; then
-        printf "%b" "\u$TASKWARRIOR_OVERDUE "
-    elif [ `task +READY +DUETODAY count` -gt "0" ]; then
-        printf "%b" "\u$TASKWARRIOR_DUETODAY "
-    elif [ `task +READY +DUETomorrow count` -gt "0" ]; then
-        printf "%b" "\u$TASKWARRIOR_DUETOMORROW "
-    elif [ `task +READY urgency \> 10 count` -gt "0" ]; then
-        printf "%b" "\u$TASKWARRIOR_URGENT "
-    else
-        printf "%b" "\u$OK"
-    fi
-}
+# prompt_tasks() {
+#     prompt_segment red $PRIMARY_FG
+#     if [ `task +READY +OVERDUE count` -gt "0" ]; then
+#         printf "%b" "\u$TASKWARRIOR_OVERDUE "
+#     elif [ `task +READY +DUETODAY count` -gt "0" ]; then
+#         printf "%b" "\u$TASKWARRIOR_DUETODAY "
+#     elif [ `task +READY +DUETomorrow count` -gt "0" ]; then
+#         printf "%b" "\u$TASKWARRIOR_DUETOMORROW "
+#     elif [ `task +READY urgency \> 10 count` -gt "0" ]; then
+#         printf "%b" "\u$TASKWARRIOR_URGENT "
+#     else
+#         printf "%b" "\u$OK"
+#     fi
+# }
 
 prompt_vi() {
     case "$ZVM_MODE" in

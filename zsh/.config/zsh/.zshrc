@@ -70,13 +70,13 @@ source "$ZDOTDIR/keybindings.zsh"
 
 ###############################################################################
 
+export ARMSDK=$HOME/armory/armsdk
 #export ARMORY_PLAY_KROM='$ARMSDK/Krom/Krom $path $resources --consolepid $pid'
 #export ARMORY_PLAY_HTML5='chromium --app=$url --new-window --window-size=$width,$height --auto-open-devtools-for-tabs'
-#export ARMSDK=$HOME/armory/armsdk
 
 export GOPATH="$HOME/.go"
-export HAXE_STD_PATH=/usr/local/share/haxe/std
-export COLORTHEME="onedark"
+#export HAXE_STD_PATH=/usr/local/share/haxe/std
+#export COLORTHEME="onedark"
 
 [ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
 [ -d "$HOME/.cargo/bin" ] && PATH="$HOME/.cargo/bin:$PATH"
@@ -96,8 +96,7 @@ if ! pgrep -u "$USER" ssh-agent > /dev/null; then
     source "$XDG_RUNTIME_DIR/ssh-agent.env"
     ssh-add ~/.ssh/id_rsa
 fi
-if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    source "$XDG_RUNTIME_DIR/ssh-agent.env" > /dev/null
-fi
+# if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+#     source "$XDG_RUNTIME_DIR/ssh-agent.env" > /dev/null
+# fi
 
-#export SWAYSOCK=$(ls /run/user/1000/sway-ipc.sock | head -n 1)
