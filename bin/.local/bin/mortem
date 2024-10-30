@@ -5,35 +5,39 @@
 # https://www.worldometers.info/demographics/life-expectancy/
 
 usage() {
-	echo -e "Usage: mortem YYYY-MM-DD [options]\n" \
-		"Options:\n   --ley|--life-expectancy=YEARS"
+  echo -e "Usage: mortem YYYY-MM-DD [options]\n" \
+    "Options:\n   --ley|--life-expectancy=YEARS\n\n" \
+    "NDL: number of days lived\n" \
+    "PRO: progress percentage\n" \
+    "ETR: estimated time remaining (days)\n" \
+    "EDD: estimated date of death\n"
 }
 
 if [ "$#" -eq "0" ]; then
-	usage
-	exit 1
+  usage
+  exit 1
 fi
 if [ "$1" = "--help" ]; then
-	usage
-	exit 0
+  usage
+  exit 0
 fi
 birth=$1
 birth_date=$(date -d"$birth" "+%s")
 shift
 ley=70
 while true; do
-	case "$1" in
-	--ley | --life-expectancy)
-		shift
-		if [ "$#" -eq "0" ]; then
-			usage
-			exit 1
-		fi
-		ley=$1
-		shift
-		;;
-	*) break ;;
-	esac
+  case "$1" in
+  --ley | --life-expectancy)
+    shift
+    if [ "$#" -eq "0" ]; then
+      usage
+      exit 1
+    fi
+    ley=$1
+    shift
+    ;;
+  *) break ;;
+  esac
 done
 led=$((ley * 365 + ley / 4))
 ndl=$(($((birth_date - $(date '+%s'))) / 86400))
