@@ -63,8 +63,8 @@ source $ZDOTDIR/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 # promptinit
 # prompt walters
 #source "$ZDOTDIR/prompt/void.zsh"
-source "$ZDOTDIR/prompt.zsh"
-#source "$HOME/src/spaceship-prompt/spaceship.zsh"
+#source "$ZDOTDIR/prompt.zsh"
+source "$HOME/src/spaceship-prompt/spaceship.zsh"
 
 source "$ZDOTDIR/keybindings.zsh"
 
