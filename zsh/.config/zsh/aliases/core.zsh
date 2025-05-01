@@ -39,10 +39,11 @@ alias h='history 1'
 alias hs='history | grep'
 alias hsi='history | grep -i'
 
-alias -g G='| grep' # Pipe commands output to grep (fe: history G nmap)
-
 alias diff='diff --color'
+
+alias timestamp="date +%s"
 
 alias uppercase="tr '[:lower:]' '[:upper:]'"
 alias lowercase="tr '[:upper:]' '[:lower:]'"
 
+alias -g G='| grep' # Pipe commands output to grep (fe: history G nmap)
