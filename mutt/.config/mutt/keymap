@@ -107,3 +107,5 @@ macro index \Cf \
 #     <change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>\
 #     <enter-command>set pipe_decode=\$my_old_pipe_decode wait_key=\$my_old_wait_key<enter>" \
 #     "notmuch: reconstruct thread"
+
+#macro attach 'V' "<pipe-entry>iconv -c --to-code=UTF8 > /tmp/neomutt.html<enter><shell-escape>$BROWSER /tmp/neomutt.html<enter>"

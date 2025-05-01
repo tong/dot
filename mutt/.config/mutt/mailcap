@@ -1,6 +1,5 @@
 text/plain; $EDITOR %s ;
-#text/html; mimeopen %s ; nametemplate=%s.html
-text/html; $BROWSER %s ; nametemplate=%s.html
+text/html; xdg-open %s ; nametemplate=%s.html
 text/html; lynx -assume_charset=%{charset} -display_charset=utf-8 -dump -width=1024 %s; nametemplate=%s.html; copiousoutput;
 image/*; swayimg %s ;
 video/*; setsid mpv --quiet %s &; copiousoutput

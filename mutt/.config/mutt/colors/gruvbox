@@ -4,12 +4,12 @@
 # https://neomutt.org/feature/index-color
 
 # Cancel theme colors
-color index color223 color234 "~Q"
-color index color223 color234 "~P"
-color index color223 color234 "~T"
-color index color223 color234 "~O"
-color index color223 color234 "~F"
-color index color223 color234 "~N"
+# color index color223 color234 "~Q"
+# color index color223 color234 "~P"
+# color index color223 color234 "~T"
+# color index color223 color234 "~O"
+# color index color223 color234 "~F"
+# color index color223 color234 "~N"
 
 color index_subject color109 color234 "~P !~T !~D"
 color index_author color109 color234 "~P !~T !~D"
