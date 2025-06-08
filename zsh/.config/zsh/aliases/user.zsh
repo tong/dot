@@ -52,6 +52,7 @@ alias mail='neomutt'
 alias notify='notify-send'
 alias open='xdg-open'
 alias pdf='zathura'
+alias record-screen='wf-recorder -g "$(slurp)" -f output.mp4'
 alias sunset='hyprsunset'
 alias unzipall="fd -e zip -X unzip {} \;"
 alias weather='curl -L wttr.in/Vienna'
@@ -107,5 +108,7 @@ alias kmake='$ARMSDK/Kha/Kinc/Tools/linux_x64/kmake'
 
 alias flipper='$HOME/sdk/qFlipper-x86_64-1.2.2.AppImage'
 alias godot='$HOME/sdk/Godot_v4.2.2/Godot_v4.2.2-stable_linux.x86_64'
+alias ldtk='$HOME/sdk/LDtk_1.5.3.AppImage'
 alias reaper='$HOME/sdk/reaper/reaper'
 alias vcvrack='(cd $HOME/sdk/vcvrack/ && ./Rack)'
+
