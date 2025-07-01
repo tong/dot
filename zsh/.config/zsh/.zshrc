@@ -53,7 +53,7 @@ function zvm_after_init() {
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 #source $ZDOTDIR/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source $ZDOTDIR/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+#source $ZDOTDIR/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 #source $ZDOTDIR/plugins/k/k.sh
 
 # autoload -U promptinit; promptinit
@@ -73,6 +73,13 @@ source "$ZDOTDIR/keybindings.zsh"
 export ARMSDK=$HOME/armory/armsdk
 #export ARMORY_PLAY_KROM='$ARMSDK/Krom/Krom $path $resources --consolepid $pid'
 #export ARMORY_PLAY_HTML5='chromium --app=$url --new-window --window-size=$width,$height --auto-open-devtools-for-tabs'
+
+# export ANDROID_NDK_HOME=/home/tong/sdk/android-ndk
+# export PATH=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH}
+# export ANDROID_SYSROOT=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot
+# export ANDROID_TOOLCHAIN=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64
+# export ANDROID_API=21
+# export ANDROID_HOME=${HOME}/sdk/android-sdk
 
 export GOPATH="$HOME/.go"
 #export HAXE_STD_PATH=/usr/local/share/haxe/std
