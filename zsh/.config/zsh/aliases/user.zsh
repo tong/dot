@@ -97,11 +97,13 @@ alias -s hxml='haxe'
 alias -s js='node'
 
 #alias blender-armory='$HOME/sdk/blender-3.3.6/blender --app-template armory'
-alias blender3='$HOME/sdk/blender-3.6.11/blender'
-#alias blender3_3='$HOME/sdk/blender-3.3.6/blender'
+#alias blender3='$HOME/sdk/blender-3.6.11/blender'
 #alias armory-electron-runtime='/home/tong/dev/armory3d/armory_electron_runtime/armory-electron-runtime-linux-x64/armory-electron-runtime'
-alias hldebug='$HOME/src/hashlink-debugger/hldebug'
-#alias hldebug='hl ~/src/hashlink-debugger/debugger/debug.hl'
+
+#alias hldebug='$HOME/src/hashlink-debugger/hldebug'
+alias hldebug='hl $HOME/src/hashlink-debugger/debugger/debug.hl'
+alias hlprofiler='hl $HOME/src/hashlink/other/haxelib/profiler.hl'
+
 alias krom='$ARMSDK/Krom/Krom'
 alias khamake='$ARMSDK/nodejs/node-linux64 $ARMSDK/Kha/Tools/khamake/khamake.js'
 alias kmake='$ARMSDK/Kha/Kinc/Tools/linux_x64/kmake'
