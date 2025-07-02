@@ -98,7 +98,7 @@ alias -s hl='hl'
 alias -s hxml='haxe'
 alias -s js='node'
 
-''#alias hldebug='$HOME/src/hashlink-debugger/hldebug'
+#alias hldebug='$HOME/src/hashlink-debugger/hldebug'
 alias hldebug='hl $HOME/src/hashlink-debugger/debugger/debug.hl'
 alias hlprofiler='hl $HOME/src/hashlink/other/haxelib/profiler.hl'
 alias ldtk='$HOME/sdk/LDtk_1.5.3.AppImage'
