@@ -57,8 +57,9 @@ alias sunset='hyprsunset'
 alias unzipall="fd -e zip -X unzip {} \;"
 alias weather='curl -L wttr.in/Vienna'
 alias webcam-snapshot='mpv av://v4l2:/dev/video0 --profile=low-latency --untimed'
-alias wiki='cd $HOME/wiki && nvim . +"Telescope find_files"'
+#alias wiki='cd $HOME/wiki && nvim . +"Telescope find_files"'
 #alias wiki='cd $HOME/wiki && nvim . -c "WikiPages"'
+alias wiki='cd $HOME/wiki && nvim .'
 alias wtri='hl $HOME/dev/lib/wtri/wtri.hl'
 alias wtric='$HOME/dev/lib/wtri/wtri'
 alias ytdl-mp3='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio -f bestaudio --add-metadata --embed-thumbnail --audio-format mp3 "$@"'
@@ -68,7 +69,6 @@ alias nconfig='$EDITOR $XDG_CONFIG_HOME/nvim'
 alias vconf='$EDITOR $HOME/.config/nvim'
 alias zconfig='cd $ZDOTDIR && $EDITOR .'
 alias zsource='source $ZDOTDIR/.zshrc && source $HOME/.zshenv'
-#alias zstats='zshstats'
 
 #alias clipcopy='cat "${1:-/dev/stdin}" | xsel --clipboard --input;'
 #alias clippaste='xsel --clipboard --output;'
@@ -76,7 +76,8 @@ alias zsource='source $ZDOTDIR/.zshrc && source $HOME/.zshenv'
 #alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 #alias psmem='ps auxf | sort -nr -k 4'
 alias meminfo='free -m -l -t'
-alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
+
+# alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
 alias gpuutilization='nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits'
 
 alias checkroute='mtr $1 -tez -Q1 --ipinfo 1'
@@ -93,24 +94,26 @@ alias fchrome='fzf-chrome-history'
 
 # ---
 
+alias -s hl='hl'
 alias -s hxml='haxe'
 alias -s js='node'
+
+''#alias hldebug='$HOME/src/hashlink-debugger/hldebug'
+alias hldebug='hl $HOME/src/hashlink-debugger/debugger/debug.hl'
+alias hlprofiler='hl $HOME/src/hashlink/other/haxelib/profiler.hl'
+alias ldtk='$HOME/sdk/LDtk_1.5.3.AppImage'
+alias pak='hl $HOME/.local/bin/pak.hl'
 
 #alias blender-armory='$HOME/sdk/blender-3.3.6/blender --app-template armory'
 #alias blender3='$HOME/sdk/blender-3.6.11/blender'
 #alias armory-electron-runtime='/home/tong/dev/armory3d/armory_electron_runtime/armory-electron-runtime-linux-x64/armory-electron-runtime'
 
-#alias hldebug='$HOME/src/hashlink-debugger/hldebug'
-alias hldebug='hl $HOME/src/hashlink-debugger/debugger/debug.hl'
-alias hlprofiler='hl $HOME/src/hashlink/other/haxelib/profiler.hl'
-
-alias krom='$ARMSDK/Krom/Krom'
-alias khamake='$ARMSDK/nodejs/node-linux64 $ARMSDK/Kha/Tools/khamake/khamake.js'
-alias kmake='$ARMSDK/Kha/Kinc/Tools/linux_x64/kmake'
+# alias krom='$ARMSDK/Krom/Krom'
+# alias khamake='$ARMSDK/nodejs/node-linux64 $ARMSDK/Kha/Tools/khamake/khamake.js'
+# alias kmake='$ARMSDK/Kha/Kinc/Tools/linux_x64/kmake'
 
 alias flipper='$HOME/sdk/qFlipper-x86_64-1.2.2.AppImage'
 alias godot='$HOME/sdk/Godot_v4.2.2/Godot_v4.2.2-stable_linux.x86_64'
-alias ldtk='$HOME/sdk/LDtk_1.5.3.AppImage'
 alias reaper='$HOME/sdk/reaper/reaper'
 alias vcvrack='(cd $HOME/sdk/vcvrack/ && ./Rack)'
 
