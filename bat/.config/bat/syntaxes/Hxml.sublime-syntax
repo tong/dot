@@ -7,7 +7,7 @@ file_extensions:
 scope: source.hxml
 contexts:
   main:
-    - match: (-js|-lua|-swf|-as3|-neko|-php|-cpp|-cppia|-cs|-java|-python|-hl|--interp|-swf-(header|version|lib|lib-extern)|-xml|-main|-lib|-D|-resource|-exclude|-v|-debug|-prompt|-cmd|-dce|--flash-strict|--no-traces|--gen-hx-classes|-java-lib|-net-lib|--each|--next|--display|--no-output|--times|--no-inline|--no-opt|--remap|-help|--help|-h|--dead-code-elimination|--macro|--dce|--wait|--connect|--cwd|--help-defines|--help-metas|--run)
+    - match: (-js|--js|-lua|--lua|-swf|--swf|-neko|--neko|-php|--php|-cpp|--cpp|-cppia|--cppia|-cs|--cs|-java|--java|--jvm|-python|--python|-hl|--hl|--interp|-swf-(header|version|lib|lib-extern)|-xml|--xml|--json|-main|-lib|-D|-resource|-exclude|-v|-debug|-prompt|-cmd|-dce|--flash-strict|--no-traces|--gen-hx-classes|-java-lib|-net-lib|--each|--next|--display|--no-output|--times|--no-inline|--no-opt|--remap|-help|--help|-h|--dead-code-elimination|--macro|--dce|--wait|--connect|--cwd|--help-defines|--help-user-defines|--help-metas|--help-user-metas|--run)
       scope: keyword.other.hxml
     - match: (#).*$\n?
       scope: comment.line.number-sign.hxml
