@@ -3,7 +3,7 @@
 active.indicator=
 alias.burndown=burndown.weekly
 color=on
-#data.location=~/.task
+#data.location=~/.local/share/taskwarrior
 news.version=2.6.0
 verbose=affected,blank,context,edit,footnote,label,new-id,project,special,sync,override,recur
 
@@ -13,7 +13,7 @@ report.notes.columns=id,description
 report.notes.labels=id,description
 report.notes.description=Only show annotations
 
-## Report: Due 
+## Report: Due
 # report.due.label=ID,Description,Due
 # report.due.columns=id,description,project
 # report.due.filter=status:pending due:
@@ -43,12 +43,12 @@ report.simple.labels=ID,Proj,Desc
 report.simple.sort=project+\/,entry+
 report.simple.filter=status:pending
 
-## 
+##
 report.all.description=Test report showing all possible columns
-report.all.columns=uuid,id,description.combined,start.iso,end.iso,status,tags.count,depends,due,entry,imask,last,mask,modified,parent,priority,project,recur,rtype,scheduled,tags,template,until,urgency,wait
-report.all.labels=UUID,ID,description,start,end,status,tags.count,depends,due,entry,imask,last,mask,modified,parent,priority,project,recur,rtype,scheduled,tags,template,until,urgency,wait
+report.all.columns=uuid,id,description.combined,start.iso,end.iso,status,tags.count,depends,due,entry,imask,last,mask,modified,parent,priority,project,recur,rtype,scheduled,tags,template,until,urgency,wait,version
+report.all.labels=UUID,ID,description,start,end,status,tags.count,depends,due,entry,imask,last,mask,modified,parent,priority,project,recur,rtype,scheduled,tags,template,until,urgency,wait,version
 report.all.sort=project+\/,entry+
-#report.all.filter=status:completed
+report.all.filter=status:completed
 
 ## TODO
 # report.invoice.description=Invoice compatible list
@@ -58,17 +58,19 @@ report.all.sort=project+\/,entry+
 # #report.invoice.filter=status:completed
 
 ## TODO
-report.polybar.description=Single active task to be shown in polybar
-report.polybar.columns=id,project,description.oneline,urgency
-report.polybar.labels=id,project,description,urgency
-report.polybar.filter=status:pending
+# report.polybar.description=Single active task to be shown in polybar
+# report.polybar.columns=id,project,description.oneline,urgency
+# report.polybar.labels=id,project,description,urgency
+# report.polybar.filter=status:pending
 #report.polbar.sort=project+\/,entry+
 #report.polybar.limit=1
 
 ##
 report.tui.description=Default report for taskwarrior-tui
-report.tui.labels=ID,Project,Description,Tags,Due,Est,Job,NTags,Github
-report.tui.columns=id,project,description,tags,due,estimate,job,anotations.count,github
+#report.tui.labels=ID,Project,Description,Tags,Due,Est,Job,NTags,Github
+#report.tui.columns=id,project,description,tags,due,estimate,job,annotations.count,github
+report.tui.labels=ID,Project,Description,Tags,Due,Est,Job,Github,Version
+report.tui.columns=id,project,description,tags,due,estimate,job,github,version
 report.tui.sort=urgency-\/,project+\/,entry+
 report.tui.filter=status:pending
 
@@ -101,6 +103,9 @@ uda.github.type=numeric
 uda.estimate.label=Estimate
 uda.estimate.type=numeric
 
+uda.version.label=Version
+uda.version.type=string
+
 uda.taskwarrior-tui.selection.indicator=
 uda.taskwarrior-tui.mark-selection.indicator=
 uda.taskwarrior-tui.unmark-selection.indicator=⦿
@@ -126,7 +131,6 @@ include $HOME/.config/taskwarrior/hez.theme
 
 # --- Context
 
-
 context.armory.read=project:armory or +armory
 context.armory.write=+armory
 
@@ -139,7 +143,9 @@ context.hxmpp.write=project:hxmpp +xmpp +haxe
 context.norc.read=project:norc
 context.norc.write=project:norc +xmpp +haxe
 
-context.plutonika.read=client:plutonika +plutonika
+# context.plutonika.read=client:plutonika +plutonika
+# context.plutonika.write=client:plutonika +work +plutonika
+context.plutonika.read=+plutonika +work
 context.plutonika.write=client:plutonika +work +plutonika
 
 context.work.read=+work
