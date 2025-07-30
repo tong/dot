@@ -1,98 +1,109 @@
 #compdef haxe
 
-compctl -g "*.hxml" haxe
+function _haxe() {
+  local context state line
 
-_haxe_files() {
-    ls -d */ *.hxml
+  _haxe_modules() {
+    local -a modules
+    modules=(${(f)"$(find . -type f -name '*.hx' -print 2>/dev/null | sed -E 's|^\./||;s|\.hx$||;s|/|.|g')"})
+    _describe 'Haxe modules' modules
+  }
+
+  _haxe_haxelibs() {
+    local -a libs
+    libs=(${(f)"$(haxelib list 2>/dev/null | sed -E 's/^([a-zA-Z0-9_-]+)(:.*)?$/\1/')"})
+    _describe 'haxelib packages' libs
+  }
+
+  typeset -a _haxe_defines_cache=()
+
+  _haxe_load_defines() {
+    if (( ${#_haxe_defines_cache[@]} == 0 )); then
+      _haxe_defines_cache=(${(f)"$(haxe --help-defines 2>/dev/null | grep -E '^[a-zA-Z0-9_-]+' | awk '{print $1}')"})
+    fi
+  }
+
+  _haxe_define_complete() {
+    _haxe_load_defines
+    _describe 'Haxe defines' _haxe_defines_cache
+  }
+
+  _arguments -C -s -S \
+    '--js[Generate JavaScript]:output file:_files -g "*.js"' \
+    '--lua[Generate Lua]:output file:_files -g "*.lua"' \
+    '--swf[Generate SWF]:output file:_files -g "*.swf"' \
+    '--neko[Generate Neko bytecode]:output file:_files -g "*.n"' \
+    '--php[Generate PHP]:output directory:_files -/' \
+    '--cpp[Generate C++]:output directory:_files -/' \
+    '--cppia[Generate Cppia]:output file:_files -g "*.cppia"' \
+    '--cs[Generate C#]:output directory:_files -/' \
+    '--java[Generate Java]:output directory:_files -/' \
+    '--jvm[Generate JVM]:output file:_files -g "*.jar"' \
+    '--python[Generate Python]:output file:_files -g "*.py"' \
+    '--hl[Generate HashLink .hl or .c file]:output file:_files -g "*.hl"' \
+    '--interp[Interpret the program using internal macro system]' \
+    '--run[Run Haxe module]:module:_haxe_modules' \
+    '-p[Add source path]:path:_files -/' \
+    '--class-path[Add source path]:path:_files -/' \
+    '-m[Startup class]:class name:_haxe_modules' \
+    '--main[Startup class]:class name:_haxe_modules' \
+    '-L[Use haxelib library]:library:_haxe_haxelibs' \
+    '--library[Use haxelib library]:library:_haxe_haxelibs' \
+    '-D[Define a conditional flag]:define:_haxe_define_complete' \
+    '--define[Define a conditional flag]:define:_haxe_define_complete' \
+    '-r[Add named resource]:file[@name]' \
+    '--resource[Add named resource]:file[@name]' \
+    '--cmd[Run shell command after compile]:command' \
+    '--remap[Remap a package]:package:target' \
+    '--macro[Call macro]:macro call' \
+    '-C[Set working directory]:dir:_files -/' \
+    '--cwd[Set working directory]:dir:_files -/' \
+    '--haxelib-global[Use global haxelib config]' \
+    '-w[Warnings]:warning list' \
+    '--dce[Dead code elimination mode]:mode:((std\:"Only classes in the Haxe Standard Library are affected" no\:"No DCE is performed" full\:"All classes are affected by DCE"))' \
+    '--no-traces[Don’t compile trace calls]' \
+    '--no-output[Compile without generating output]' \
+    '--no-inline[Disable inlining]' \
+    '--no-opt[Disable optimizations]' \
+    '-v[Verbose mode]' \
+    '--verbose[Verbose mode]' \
+    '--debug[Add debug info]' \
+    '--prompt[Prompt on error]' \
+    '--times[Show compile times]' \
+    '--next[Start new compilation block]' \
+    '--each[Repeat previous args for all --next blocks]' \
+    '--display[Code completion / IDE hints]' \
+    '--xml[Generate XML description]:file:_files -g "*.xml"' \
+    '--json[Generate JSON description]:file:_files -g "*.json"' \
+    '--server-listen[Start compilation server]:host:port or stdio' \
+    '--server-connect[Connect to compilation server]:host:port' \
+    '--connect[Connect and run command]:host:port' \
+    '--swf-version[Set SWF version]:version' \
+    '--swf-header[Set SWF header]:header' \
+    '--flash-strict[Strict Flash API mode]' \
+    '--swf-lib[Add SWF lib]:file:_files -g "*.swf"' \
+    '--swf-lib-extern[SWF lib for extern only]:file:_files -g "*.swf"' \
+    '--java-lib[Add Java lib]:file:_files -g "*.jar"' \
+    '--java-lib-extern[Java lib for extern only]:file:_files -g "*.jar"' \
+    '--net-lib[Add .NET DLL]:file:_files -g "*.dll"' \
+    '--net-std[Root .NET DLL search path]:path:_files -/' \
+    '--c-arg[Pass arg to native compiler]:argument' \
+    '--version[Print version and exit]' \
+    '-h[Show help]' \
+    '--help[Show help]' \
+    '--help-defines[List compiler defines]' \
+    '--help-user-defines[List user defines]' \
+    '--help-metas[List metas]' \
+    '--help-user-metas[List user metas]' \
+    '*:file or module:_files'
+
+  # Special case for -D and --define argument completions
+  case $state in
+    define)
+      _haxe_define_complete
+      return
+      ;;
+  esac
+
+  return 0
 }
-
-_haxe() {
-
-    local ret=-1
-
-    _arguments \
-        "--js[generate JavaScript code into target file]" \
-        "--lua[generate Lua code into target file]" \
-        "--swf[generate Flash SWF bytecode into target file]" \
-        "--neko[generate Neko bytecode into target file]" \
-        "--php[generate PHP code into target directory]" \
-        "--cpp[generate C++ code into target directory]" \
-        "--cppia[generate Cppia bytecode into target file]" \
-        "--cs[generate C# code into target directory]" \
-        "--java[generate Java code into target directory]" \
-        "--jvm[generate JVM bytecode into target file]" \
-        "--python[generate Python code into target file]" \
-        "--hl[generate HashLink .hl bytecode or .c code into target file]" \
-        "--interp[interpret the program using internal macro system]" \
-        "--run[interpret a Haxe module with command line arguments]" \
-        {-p,--class-path}"[show extended help information]" \
-        {-m,--main}"[select startup class]" \
-        {-L,--library}"[use a haxelib library]" \
-        {-D,--define}"[define a conditional compilation flag]" \
-        {-r,--resource}"[add a named resource file]" \
-        "--cmd[run the specified command after successful compilation]" \
-        "--remap[remap a package to another one]" \
-        "--macro[call the given macro before typing anything else]" \
-        {-C,--cwd}"[set current working directory]" \
-        "--haxelib-global[pass --global argument to haxelib]" \
-        "--dce[set the dead code elimination mode (default std)]" \
-        "--no-traces[don't compile trace calls in the program]" \
-        "--no-outout[compiles but does not generate any file]" \
-        "--no-inline[disable inlining]" \
-        "--no-opt[disable code optimizations]" \
-        {-v,--verbose}"[turn on verbose mode]" \
-        "--debug[add debug information to the compiled code]" \
-        "--prompt[prompt on error]" \
-        "--times[measure compilation time]" \
-        "--next[separate several haxe compilations]" \
-        "--each[append preceding parameters to all Haxe compilations separated by --next]" \
-        "--display[display code tips]" \
-        "--xml[generate XML types description]" \
-        "--json[generate JSON types description]" \
-        "--server-listen[wait on the given port (or use standard i/o) for commands to run]" \
-        "--server-connect[connect to the given port and wait for commands to run]" \
-        "--connect[connect on the given port and run commands there]" \
-        "--swf-version[change the SWF version]" \
-        "--swf-header[define SWF header (width:height:fps:color)]" \
-        "--flash-strict[more type strict flash API]" \
-        "--swf-lib[add the SWF library to the compiled SWF]" \
-        "--swf-lib-extern[use the SWF library for type checking]" \
-        "--java-lib[add an external JAR or directory of JAR files]" \
-        "--java-lib-extern[use an external JAR or directory of JAR files for type checking]" \
-        "--net-lib[add an external .NET DLL file]" \
-        "--net-std[add a root std .NET DLL search path]" \
-        "--c-arg[pass option <arg> to the native Java/C# compiler]" \
-        "--version[print version and exit]" \
-        {-h,--help}"[show extended help information]" \
-        "--help-defines[print help for all compiler specific defines]" \
-        "--help-metas[print help for all compiler metadatas]" \
-    && ret=0
-        #'*::arg:->args' \
-        #"*::haxe files:($(ls -d */ *.hxml))" \
-        #"*: :_files" \
-    #echo $state
-    case "$words[2]" in
-        args)
-            #echo "args: $words"
-            ;;
-        --dce)
-            dce_modes=(
-                'std:Only classes in the Haxe Standard Library are affected' \
-                'no:No DCE is performed' \
-                'full:All classes are affected by DCE'
-            )
-            #_values 'dce modes' ${_haxe_dce_modes[@]}
-            _describe -t commands 'dce modes' dce_modes
-            ;;
-        # --help-metas)
-        #     help_metas=(
-        #         '@\:using:Automatically uses the argument types as static extensions for the annotated type'
-        #         '@\:void:Use Cpp native `void` return type (cpp only)'
-        #
-        #     )
-            _describe -t commands 'metas' help_metas
-    esac
-    return ret
-}
-
-_haxe "$@"
