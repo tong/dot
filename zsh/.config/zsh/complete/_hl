@@ -1,5 +1,4 @@
 #compdef hl
-
 # Zsh completion for HashLink (hl)
 _arguments -s \
   '--debug[Start debugger on given port]:port number:_ports' \

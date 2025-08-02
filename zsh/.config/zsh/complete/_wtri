@@ -1,0 +1,10 @@
+#compdef wtri
+# Zsh completion for wtri
+_arguments -s \
+  '--host[Address to bind]:host name:_hosts' \
+  '--port[Port to bind]:port number:_ports' \
+  '--root[Filesystem root]:path:_files' \
+  '--deflate[Deflate compression level]:compression level (0-9)' \
+  '--uv[Use libuv with specified max connections]:number of connections' \
+  '--quiet[Disable logging to stdout]' \
+  '--help[Print this help]'
