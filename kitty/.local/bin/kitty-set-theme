@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# Usage: kitty-set-theme theme-name.conf
+
+THEME_DIR="$HOME/.config/kitty/themes"
+if [[ -z "$1" ]]; then
+  echo "Usage: $(basename "$0") <theme-name.conf>"
+  exit 1
+fi
+THEME="$1"
+if [[ ! "$THEME" =~ \.conf$ ]]; then
+  echo "Error: Theme name must end in .conf"
+  exit 1
+fi
+THEME_PATH="$THEME_DIR/$THEME"
+if [[ ! -f "$THEME_PATH" ]]; then
+  echo "Error: Theme file not found: $THEME_PATH"
+  exit 1
+fi
+
+KITTY_SOCKET=$(find /tmp -maxdepth 1 -type s -name 'kitty-*' | head -n 1)
+if [[ -z "$KITTY_SOCKET" ]]; then
+  echo "No kitty socket found"
+  exit 1
+fi
+kitty @ --to "unix:$KITTY_SOCKET" set-colors --all "$THEME_PATH"
