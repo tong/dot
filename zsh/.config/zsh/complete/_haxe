@@ -15,22 +15,23 @@ function _haxe() {
     _describe 'haxelib packages' libs
   }
 
-  typeset -a _haxe_defines_cache=()
-
-  _haxe_load_defines() {
-    if (( ${#_haxe_defines_cache[@]} == 0 )); then
-      _haxe_defines_cache=(${(f)"$(haxe --help-defines 2>/dev/null | grep -E '^[a-zA-Z0-9_-]+' | awk '{print $1}')"})
-    fi
-  }
+  # typeset -a _haxe_defines_cache=()
+  #
+  # _haxe_load_defines() {
+  #   if (( ${#_haxe_defines_cache[@]} == 0 )); then
+  #     _haxe_defines_cache=(${(f)"$(haxe --help-defines 2>/dev/null | grep -E '^[a-zA-Z0-9_-]+' | awk '{print $1}')"})
+  #   fi
+  # }
 
   _haxe_define_complete() {
-    _haxe_load_defines
-    _describe 'Haxe defines' _haxe_defines_cache
+    # _haxe_load_defines
+    _haxe_defines=(${(f)"$(haxe --help-defines 2>/dev/null | sed -En 's/^[[:space:]]*([A-Za-z0-9_.-]+)[[:space:]]*:[[:space:]]*(.*)$/\1:\2/p')"})
+    _describe 'Haxe defines' _haxe_defines
   }
 
   _arguments -C -s -S \
-    '--js[Generate JavaScript]:output file:_files -g "*.js"' \
-    '--lua[Generate Lua]:output file:_files -g "*.lua"' \
+    '(-js --js)'{-js,--js}'[Generate JavaScript]:output file:_files -g "*.js"' \
+    '(-lua --lua)'{-lua,--lua}'[Generate Lua]:output file:_files -g "*.lua"' \
     '--swf[Generate SWF]:output file:_files -g "*.swf"' \
     '--neko[Generate Neko bytecode]:output file:_files -g "*.n"' \
     '--php[Generate PHP]:output directory:_files -/' \
@@ -96,14 +97,5 @@ function _haxe() {
     '--help-metas[List metas]' \
     '--help-user-metas[List user metas]' \
     '*:file or module:_files'
-
-  # Special case for -D and --define argument completions
-  case $state in
-    define)
-      _haxe_define_complete
-      return
-      ;;
-  esac
-
   return 0
 }
