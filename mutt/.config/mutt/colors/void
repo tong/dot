@@ -113,7 +113,7 @@ color body underline default default [\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+ # email
 color body underline default default (https?|ftp|xmpp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+ # url
 
 color body green default "\`[^\`]*\`" # Green text between ` and `
-color body green default "\```[\.\n]*```]\g`" # Green text between ` and `
+color body green default "\``[\.\n]*``" # Green text between ` and `
 color body bold brightblue default "^# \.*" # Headings as bold blue
 color body bold brightcyan default "^## \.*" # Subheadings as bold cyan
 color body bold brightgreen default "^### \.*" # Subsubheadings as bold green
