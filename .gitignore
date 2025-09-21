@@ -1,11 +1,15 @@
-*.0/
+*.[0-9]/
 newsboat/**/urls
+kitty/**/current-theme.conf
+mutt/**/.mailsynclastrun
 github-token
 *.bak
 *.fifo
 *.gpgrc
 *.out
 *.save
+*.sqlite3
 *.tmp
 *.zip
+*.zcompdump
 
