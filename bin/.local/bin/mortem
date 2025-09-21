@@ -13,19 +13,21 @@ usage() {
     "EDD: estimated date of death\n"
 }
 
-if [ "$#" -eq "0" ]; then
-  usage
-  exit 1
-fi
-if [ "$1" = "--help" ]; then
+if [ "$#" -eq "0" ] || [ "$1" = "--help" ]; then
   usage
   exit 0
 fi
+
 birth=$1
-birth_date=$(date -d"$birth" "+%s")
+# Error handling for date
+if ! birth_date_s=$(date -d"$birth" "+%s"); then
+  echo "Error: Invalid date format for birthday. Please use YYYY-MM-DD." >&2
+  exit 1
+fi
 shift
-ley=70
-while true; do
+
+ley=70 # Default life expectancy
+while [[ "$1" =~ ^-- ]]; do
   case "$1" in
   --ley | --life-expectancy)
     shift
@@ -36,13 +38,34 @@ while true; do
     ley=$1
     shift
     ;;
-  *) break ;;
+  *)
+    echo "Unknown option: $1"
+    usage
+    exit 1
+    ;;
   esac
 done
-led=$((ley * 365 + ley / 4))
-ndl=$(($((birth_date - $(date '+%s'))) / 86400))
-ndl=${ndl#-}
-pro=$(echo "scale=2; $ndl/$led*100" | bc)
-etr=$(echo "scale=2; $led-$ndl" | bc)
-eyd=$(($(date -d"$birth" "+%Y") + ley))
-printf "NDL: %i\nPRO: %f\nETR: %i\nEYD: %i\n" "$ndl" "$pro" "$etr" "$eyd"
+
+# Life expectancy in days (more accurate)
+led=$(echo "$ley * 365.25" | bc)
+
+# Number of days lived
+now_s=$(date '+%s')
+ndl=$(((now_s - birth_date_s) / 86400))
+
+if [ "$ndl" -lt 0 ]; then
+  echo "Error: Birth date cannot be in the future." >&2
+  exit 1
+fi
+
+# Progress percentage
+pro=$(echo "scale=2; $ndl / $led * 100" | bc)
+
+# Estimated time remaining (days)
+etr=$(echo "scale=0; ($led - $ndl)/1" | bc)
+
+# Estimated date of death
+led_int=$(echo "$led/1" | bc)
+edd=$(date -d "$birth + $led_int days" +"%Y-%m-%d")
+
+printf "NDL: %i\nPRO: %.2f\nETR: %i\nEDD: %s\n" "$ndl" "$pro" "$etr" "$edd"
