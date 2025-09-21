@@ -6,4 +6,13 @@
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 [submodule "zsh/.config/zsh/plugins/zsh-vi-mode"]
 	path = zsh/.config/zsh/plugins/zsh-vi-mode
-	url = https://github.com/jeffreytse/zsh-vi-mode.git
+	url = https://github.com/jeffreytse/zsh-vi-mode
+[submodule "zsh/.config/zsh/plugins/zsh-autosuggestions"]
+	path = zsh/.config/zsh/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
+[submodule "zsh/.config/zsh/zsh-syntaxhighlighting"]
+	path = zsh/.config/zsh/zsh-syntaxhighlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
+[submodule "zsh/.config/zsh/plugins/zsh-syntaxhighlighting"]
+	path = zsh/.config/zsh/plugins/zsh-syntaxhighlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
