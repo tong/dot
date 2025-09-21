@@ -1,44 +1,90 @@
 #!/bin/sh
 
 # A general, all-purpose extraction script.
-#
-# Default behavior: Extract archive into new directory
-# Behavior with `-c` option: Extract contents into current directory
+set -e
 
-while getopts "hc" o; do case "${o}" in
-	c) extracthere="True" ;;
-	*) printf "Options:\\n   -c: Extract archive into current directory rather than a new one.\\n" && exit 1 ;;
-	esac done
+# --- Helper Functions ---
+usage() {
+    echo "Usage: extract [-c] <archive>"
+    echo "A general, all-purpose extraction script."
+    echo
+    echo "Options:"
+    echo "   -c: Extract archive into current directory rather than a new one."
+    exit 1
+}
 
-if [ -z "$extracthere" ]; then
-	archive="$(readlink -f "$*")" &&
-		directory="$(echo "$archive" | sed 's/\.[^\/.]*$//')" &&
-		mkdir -p "$directory" &&
-		cd "$directory" || exit 1
-else
-	archive="$(readlink -f "$(echo "$*" | cut -d' ' -f2)" 2>/dev/null)"
+has_cmd() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# --- Argument Parsing ---
+extracthere=false
+while getopts "hc" o; do
+    case "${o}" in
+        c) extracthere=true ;;
+        h | *) usage ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+if [ -z "$1" ]; then
+    echo "Error: No archive file specified." >&2
+    usage
 fi
 
-[ -z "$archive" ] && printf "Give archive to extract as argument.\\n" && exit 1
+archive_path="$1"
 
-if [ -f "$archive" ]; then
-	case "$archive" in
-	*.tar.bz2 | *.tbz2) bsdtar -xf "$archive" ;;
-	*.tar.xz) bsdtar -xf "$archive" ;;
-	*.tar.gz | *.tgz) bsdtar -xf "$archive" ;;
-	*.tar.zst) bsdtar -xf "$archive" ;;
-	*.tar) bsdtar -xf "$archive" ;;
-	*.lzma) unlzma "$archive" ;;
-	*.bz2) bunzip2 "$archive" ;;
-	*.rar) unrar x -ad "$archive" ;;
-	*.gz) gunzip "$archive" ;;
-	*.zip) unzip "$archive" ;;
-	*.Z) uncompress "$archive" ;;
-	*.7z) 7z x "$archive" ;;
-	*.xz) unxz "$archive" ;;
-	*.exe) cabextract "$archive" ;;
-	*) printf "extract: '%s' - unknown archive method\\n" "$archive" ;;
-	esac
-else
-	printf "File \"%s\" not found.\\n" "$archive"
+if ! [ -f "$archive_path" ]; then
+    echo "Error: File '$archive_path' not found." >&2
+    exit 1
 fi
+
+# Use readlink (from coreutils) if available, otherwise fallback to a relative path.
+if has_cmd readlink; then
+    archive=$(readlink -f "$archive_path")
+else
+    archive="$archive_path"
+fi
+archive_name=$(basename -- "$archive")
+
+# --- Extraction Logic ---
+if [ "$extracthere" = "false" ]; then
+    # Create a directory named after the archive and extract into it.
+    # Strips the longest known extension.
+    dir_name=$(echo "$archive_name" | sed -e 's/\.tar\.gz$//' -e 's/\.tar\.bz2$//' -e 's/\.tar\.xz$//' -e 's/\.tar\.zst$//' -e 's/\.tgz$//' -e 's/\.tbz2$//' -e 's/\.[^.]*$//')
+    mkdir -p -- "$dir_name"
+    cd -- "$dir_name" || exit
+fi
+
+echo "Extracting '$archive_name'..."
+
+# Use bsdtar if available, it handles most formats automatically.
+if has_cmd bsdtar; then
+    bsdtar -xf "$archive"
+    echo "Done."
+    exit 0
+fi
+
+# Fallback to other tools if bsdtar is not present.
+case "$archive_name" in
+    *.tar.gz | *.tgz)   has_cmd tar || { echo "Error: tar not found" >&2; exit 1; }; tar -xzf "$archive" ;;
+    *.tar.bz2 | *.tbz2) has_cmd tar || { echo "Error: tar not found" >&2; exit 1; }; tar -xjf "$archive" ;;
+    *.tar.xz)           has_cmd tar || { echo "Error: tar not found" >&2; exit 1; }; tar -xJf "$archive" ;;
+    *.tar.zst)          has_cmd tar || { echo "Error: tar not found" >&2; exit 1; }; tar --zstd -xf "$archive" ;;
+    *.tar)              has_cmd tar || { echo "Error: tar not found" >&2; exit 1; }; tar -xf "$archive" ;;
+    *.zip)              has_cmd unzip || { echo "Error: unzip not found" >&2; exit 1; }; unzip "$archive" ;;
+    *.rar)              has_cmd unrar || { echo "Error: unrar not found" >&2; exit 1; }; unrar x "$archive" ;;
+    *.7z)               has_cmd 7z || { echo "Error: 7z not found" >&2; exit 1; }; 7z x "$archive" ;;
+    *.gz)               has_cmd gunzip || { echo "Error: gunzip not found" >&2; exit 1; }; gunzip "$archive" ;;
+    *.bz2)              has_cmd bunzip2 || { echo "Error: bunzip2 not found" >&2; exit 1; }; bunzip2 "$archive" ;;
+    *.xz)               has_cmd unxz || { echo "Error: unxz not found" >&2; exit 1; }; unxz "$archive" ;;
+    *.lzma)             has_cmd unlzma || { echo "Error: unlzma not found" >&2; exit 1; }; unlzma "$archive" ;;
+    *.Z)                has_cmd uncompress || { echo "Error: uncompress not found" >&2; exit 1; }; uncompress "$archive" ;;
+    *.exe)              has_cmd cabextract || { echo "Error: cabextract not found" >&2; exit 1; }; cabextract "$archive" ;;
+    *)
+        echo "Error: '$archive_name' is an unknown or unsupported archive format." >&2
+        exit 1
+        ;;
+esac
+
+echo "Done."
