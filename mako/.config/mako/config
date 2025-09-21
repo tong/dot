@@ -13,11 +13,10 @@ font=monospace 11
 
 border-size=2
 border-radius=4
-background-color=#2e3440ee
-text-color=#eceff4
-border-color=#4c566a
-text-color=#101014
-border-color=#101014
+
+background-color=#928374ee
+border-color=#282828
+text-color=#282828
 
 icons=0
 max-icon-size=64
@@ -28,7 +27,7 @@ text-color=#d8dee9
 default-timeout=3000
 
 [urgency=normal]
-border-color=#101014
+#border-color=#101014
 
 [urgency=high]
 border-color=#bf616a

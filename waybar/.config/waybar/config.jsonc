@@ -1,0 +1,236 @@
+// -*- mode: jsonc -*-
+{
+  "output": [
+    "DP-1"
+  ],
+  "layer": "top",
+  "position": "top",
+  "height": 28,
+  "spacing": 0,
+  // "margin": "4 4 4 4",
+  "bar_id": "bar-1",
+  "modules-left": [
+    "hyprland/workspaces",
+    "custom/taskwarrior"
+  ],
+  "modules-center": [
+    "hyprland/window"
+  ],
+  "modules-right": [
+    "mpris",
+    "mpd",
+    "network",
+    "group/performance",
+    // "cpu",
+    // "memory",
+    "pulseaudio",
+    "bluetooth",
+    "clock",
+    "tray",
+    "temperature"
+  ],
+  "backlight": {
+    // "device": "acpi_video1",
+    // "format": "{percent}% {icon}",
+    // "format-icons": ["", "", "", "", "", "", "", "", ""]
+  },
+  "bluetooth": {
+    "format": "",
+    "format-disabled": "󰂲",
+    "format-connected": "",
+    "format-no-controller": "",
+    "tooltip-format": "Devices connected: {num_connections}",
+    "on-click": "blueberry"
+  },
+  "clock": {
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format-alt": "{:%Y-%m-%d}",
+    "calendar": {
+      "mode": "year",
+      "mode-mon-col": 3,
+      "weeks-pos": "left",
+      "on-scroll": 1,
+      "on-click-right": "mode",
+      "format": {
+        "months": "<span color='#ffead3'><b>{}</b></span>",
+        "days": "<span>{}</span>",
+        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+        "today": "<span color='#000' background='#fff'><b>{}</b></span>"
+      }
+    }
+  },
+  "cpu": {
+    "format": "{usage}",
+    // "format-alt": "{load} {usage}%",
+    "tooltip": true,
+    "tooltip-format": "load: {load}\nusage: {usage}\n{avg_frequency}",
+    "interval": 1
+    // "on-click": "kitty -e btop"
+  },
+  "group/performance": {
+    "orientation": "horizontal",
+    "modules": [
+      "cpu",
+      "memory"
+    ]
+  },
+  "hyprland/workspaces": {
+    "all-outputs": true,
+    // "show-special": true,
+    "format": "{name}",
+    "format-icons": {
+      "active": "{name}",
+      "default": "{name}"
+    }
+    // "workspace-taskbar": {
+    //   // Enable the workspace taskbar. Default: false
+    //   "enable": true,
+    //
+    //   // If true, the active/focused window will have an 'active' class. Could cause higher CPU usage due to more frequent redraws. Default: false
+    //   "update-active-window": true,
+    //
+    //   // Format of the windows in the taskbar. Default: "{icon}". Allowed variables: {icon}, {title}
+    //   "format": "{icon} {title:.20}",
+    //
+    //   // Icon size in pixels. Default: 16
+    //   "icon-size": 16,
+    //
+    //   // Either the name of an installed icon theme or an array of themes (ordered by priority). If not set, the default icon theme is used.
+    //   // "icon-theme": "some_icon_theme",
+    //
+    //   // Orientation of the taskbar ("horizontal" or "vertical"). Default: "horizontal".
+    //   // "orientation": "horizontal",
+    //
+    //   // List of regexes. A window will NOT be shown if its window class or title match one or more items. Default: []
+    //   // "ignore-list": [ "code", "Firefox - .*" ],
+    //
+    //   // Command to run when a window is clicked. Default: "" (switch to the workspace as usual). Allowed variables: {address}, {button}
+    //   // "on-click-window": "/some/arbitrary/script {address} {button}"
+    // }
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    }
+  },
+  "keyboard-state": {
+    "numlock": true,
+    "capslock": true,
+    "format": "{name} {icon}",
+    "format-icons": {
+      "locked": "",
+      "unlocked": ""
+    }
+  },
+  "memory": {
+    "format": "{used}",
+    "on-click": "kitty -e btop",
+    "tooltip-format": "total: {total}gb\nused: {used}gb\navailable: {avail}gb\nswap: {swapTotal}gb\n"
+  },
+  "mpd": {
+    "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} {elapsedTime:%M:%S}/{totalTime:%M:%S} ⸨{songPosition}|{queueLength}⸩ {volume}% ",
+    "format-disconnected": "Disconnected ",
+    "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+    "unknown-tag": "N/A",
+    "interval": 5,
+    "consume-icons": {
+      "on": " "
+    },
+    "random-icons": {
+      "off": "<span color=\"#f53c3c\"></span> ",
+      "on": " "
+    },
+    "repeat-icons": {
+      "on": " "
+    },
+    "single-icons": {
+      "on": "1 "
+    },
+    "state-icons": {
+      "paused": "",
+      "playing": ""
+    },
+    "tooltip-format": "MPD (connected)",
+    "tooltip-format-disconnected": "MPD (disconnected)"
+  },
+  "mpris": {
+    "format": "{status_icon} {player_icon} {dynamic}",
+    "format-paused": "{status_icon} {dynamic}",
+    "player-icons": {
+      "default": "▶"
+      // "chrome": "",
+      // "brave": "",
+      // "firefox": "",
+      // "mpv": "🎵"
+    },
+    "status-icons": {
+      "paused": "󰏤"
+    }
+    //"ignored-players": ["firefox"]
+  },
+  "network": {
+    "format-ethernet": "{bandwidthDownBytes} {bandwidthUpBytes}",
+    // "format-alt": "{bandwidthDownBytes} {bandwidthUpBytes} 󰈀 {ipaddr}###",
+    "format-wifi": "{bandwidthDownBytes}/{bandwidthUpBytes}  {essid} ({signalStrength}%)",
+    "format-disconnected": "⚠ NETWORK DISCONNECTED",
+    "tooltip-format": "interface: {ifname}\nip: {ipaddr}\ngateway: {gwaddr}\nnetmask: {netmask}\n\n  {bandwidthTotalBytes}\n {bandwidthDownBytes}\n {bandwidthUpBytes}",
+    "tooltip-format-wifi": "interface: {ifname}\nip: {ipaddr}\ngateway: {gwaddr}\nnetmask: {netmask}\n\n  {bandwidthTotalBytes}\n {bandwidthDownBytes}\n {bandwidthUpBytes}\n\n SSID: {essid} {frequency} ({signalStrength}%)",
+    "tooltip-format-disconnected": "Disconnected",
+    "interval": 1
+  },
+  "pulseaudio": {
+    "format": "󰕿{volume}",
+    "format-bluetooth": "{icon}{volume}",
+    // "format-bluetooth-muted": "",
+    "format-muted": "MUTED",
+    // "format-source": "{volume}%",
+    // "format-source-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": [
+        "",
+        "",
+        ""
+      ]
+    },
+    "on-click": "pavucontrol",
+    "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "scroll-step": 2, // %, can be a float
+    "tooltip": true,
+    "tooltip-format": "{desc}\n{volume}%",
+    "max-volume": 150
+  },
+  "temperature": {
+    "hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
+    "format": "",
+    "format-critical": " {temperatureC}°",
+    "critical-threshold": 80
+  },
+  "tray": {
+    "icon-size": 11,
+    "spacing": 8,
+    "show-passive-items": true
+    // "icons": {
+    //   "blueman": "bluetooth",
+    // }
+  },
+  "custom/taskwarrior": {
+    "exec": "python $HOME/.config/waybar/module/taskwarrior.py",
+    "return-type": "json",
+    "interval": 5,
+    "format": "{}",
+    "max-length": 256,
+    "actions": {
+      "on-click-right": "mode"
+    },
+    "tooltip": false
+  }
+}

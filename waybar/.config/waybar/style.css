@@ -1,324 +1,185 @@
+/* @import "../omarchy/current/theme/waybar.css"; */
+@define-color background #282828;
+@define-color foreground #d4be98;
+@define-color red #cc241d;
+@define-color green #98971a;
+@define-color yellow #d79921;
+@define-color blue #458588;
+@define-color magenta #b16286;
+@define-color cyan #689d6a;
+@define-color gray #a89984;
+
+@define-color red_light #fb4934;
+@define-color green_light #b8bb26;
+@define-color yellow_light #fabd2d;
+@define-color blue_light #83a598;
+@define-color magenta_light #d3869b;
+@define-color cyan #8ec07c;
+@define-color gray_dark #928374;
+
+/* -------------------------------------------------------------------------- */
+
 @keyframes alarm {
   0% {
     background: #000;
     color: #fff;
   }
-
   80% {
-    background: #ff0000;
+    background: @red;
   }
 }
 
 @keyframes urgent {
   0% {
-    background: #eee;
-    color: #000;
+    background: @background;
+    color: @foreground;
   }
-
   50% {
-    background: #000;
-    color: #fff;
+    background: @foreground;
+    color: @background;
   }
 }
 
-@keyframes submap {
+@keyframes workspace-activate {
   0% {
-    background: #fff;
-    color: #000;
+    border-color: @background;
   }
-
-  50% {
-    background: #000;
-    color: #fff;
+  100% {
+    border-color: @foreground;
   }
 }
+
+/* -------------------------------------------------------------------------- */
 
 * {
-  font-family: JetBrainsMono Nerd Font, monospace;
+  color: @foreground;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  font-family: "JetBrainsMono Nerd Font Mono", monospace;
   font-size: 12px;
-  color: #b0b0b0;
 }
 
-window {
+window, #waybar {
   background: none;
 }
 
-window#waybar {
-  background: none;
+.hidden {
+  opacity: 0;
 }
-
-/* window#waybar { */
-/*     background: @theme_base_color; */
-/*     border-bottom: 1px solid @unfocused_borders; */
-/*     color: @theme_text_color; */
-/* } */
-
-/* window#waybar { */
-/* background: none; */
-/* border-bottom: 3px solid rgba(100, 114, 125, 0.5); */
-/* color: #eee; */
-/* transition-property: background-color; */
-/* transition-duration: .5s; */
-/* } */
-/* window#waybar.hidden { */
-/* opacity: 0.2; */
-/* } */
-/*
-window#waybar.empty {
-    background-color: transparent;
-}
-window#waybar.solo {
-    background-color: #FFFFFF;
-}
-window#waybar.termite {
-    background-color: #3F3F3F;
-}
-window#waybar.chromium {
-    background-color: #000000;
-    border: none;
-}
-*/
-
-/* window.DP-2 * {} */
 
 .modules-left {
-  /* margin-left: 0.5rem; */
-  /* background: red; */
+  margin-left: 6px;
 }
-
-/* .modules-left>widget:first-child { */
-/* background: green; */
-/* margin-left: 20px; */
-/* } */
 
 .modules-left>widget:last-child {
   /* background: blue; */
 }
 
-/* If workspaces is the leftmost module, omit left margin */
-.modules-left>widget:first-child>#workspaces {
-  /* margin-left: 0; */
-}
-
 .modules-right {
-  margin-right: 0.5rem;
+  margin-right: 8px;
 }
 
-/* If workspaces is the rightmost module, omit right margin */
-.modules-right>widget:last-child>#workspaces {
-  /* margin-right: 0; */
+.modules-right>widget>* {
+  /* background: blue; */
 }
 
+
+widget {
+  /* margin-right: 8px; */
+  /* padding: 0 8px; */
+  /* background: white; */
+}
 widget>* {
-  padding: 0px 0.25rem 0px 0.25rem;
-}
-
-button {
-  /* Use box-shadow instead of border so the text isn't offset */
-  /* box-shadow: inset 0 -3px transparent; */
-  /* box-shadow: inset 0 -1px white; */
-  /* Avoid rounded borders under each button name */
-  /* border: none; */
-  border-radius: 0;
-}
-
-button:hover {
-  background: #ff3030;
-  /* background: inherit; */
-  /* box-shadow: inset 0 -3px #ffffff; */
+  /* margin-right: 8px; */
+  /* margin: 0 8px; */
+  /* padding: 0 8px; */
+  /* padding: 20px 0.25rem 0px 0.25rem; */
 }
 
 tooltip {
-  border-radius: 0;
-  border: none;
+  padding: 2px;
 }
-
 tooltip label {
-  padding: 1rem 1.5rem;
-  /* background: #141414; */
-  border: none;
+  /* padding: 2rem 1.5rem; */
+  /* background:red; */
 }
 
-#mode {
-  background-color: #64727D;
+/* #custom-expand-icon { */
+/*   margin-right: 7px; */
+/* } */
+
+/* -------------------------------------------------------------------------- */
+
+#bluetooth, #memory, #network, #pulseaudio {
+  margin-right: 8px;
 }
 
-/*
-#clock,
-#battery,
-#cpu,
-#memory,
-#disk,
-#temperature,
-#backlight,
-#network,
-#pulseaudio,
-#wireplumber,
-#custom-media,
-#tray,
-#mode,
-#idle_inhibitor,
-#scratchpad,
-#mpd,
-#workspaces,
-#window,
-#custom-mpv,
-#custom-taskwarrior,
-#custom-tmux {
+#clock {
+  /* margin-left: 8.75px; */
+  /* background: yellow; */
+  /* animation: urgent 0.8s ease-in-out infinite; */
 }
-*/
 
-
-/*
-#cpu, #memory, #disk {
-    padding: 1px 0 0 0;
+#cpu {
+  /* margin-right: 1px; */
 }
-#cpu {}
-#memory {}
-#disk {}
-*/
+
+#mpris {
+  color: @gray_dark;
+}
+
+#network {
+}
 
 #network.disconnected {
-  background-color: #f53c3c;
+  background-color: @red;
+}
+
+#performance {
+  /* background: red; */
+}
+
+#pulseaudio {
 }
 
 #pulseaudio.muted {
-  background: #a0a0a0;
-  color: #141414;
+  /* color: #141414; */
 }
 
-/*
-#custom-media {}
-#custom-media.custom-spotify {}
-#custom-media.custom-vlc {}
-
-
-#idle_inhibitor {}
-#idle_inhibitor.activated {}
-
-#mpd {}
-#mpd.disconnected {}
-
-#keyboard-state {}
-#keyboard-state > label {}
-#keyboard-state > label.locked {}
-
-#language {}
-*/
-
-/*
-#mpd.stopped {}
-#mpd.paused {}
-*/
-
-#scratchpad {
-  background: rgba(0, 0, 0, 0.2);
+#temperature {
 }
-
-#scratchpad.empty {
-  background-color: transparent;
-}
-
 #temperature.critical {
   font-weight: bold;
-  background: #f53c3c;
-  color: #000;
+  background: @red;
   padding-left: 1rem;
   padding-right: 1rem;
   animation: alarm 0.5s infinite alternate;
 }
 
-#tray>.passive {
-  /* -gtk-icon-effect: dim; */
-}
-
-#tray>.needs-attention {
-  -gtk-icon-effect: highlight;
-  /* background-color: #eb4d4b; */
-}
-
-#workspaces {
-  /* padding: 0; */
-  /* margin: 0; */
-}
-
 #workspaces button {
-  margin: 0;
-  padding: 0 2px;
-  transition: all 0.2s;
-  /* transition: border-bottom 0.2s, padding 0.2s; */
+  all: initial;
+  padding: 0 6px;
+  border-top: 1px solid @background;
 }
 
-#workspaces button:hover:not(.active) {
-  transition: all 0.1s;
-  background: #000;
-  color: #eee;
-  /* padding: 0 0.5rem; */
-  /* border-radius: 1rem; */
-  /* box-shadow: inset 0 -8px white; */
-}
-
-/*#workspaces button.empty {*/
 #workspaces button.active {
-  /* padding: 0 0.25rem; */
-  font-weight: bold;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  border: 1px solid #aaa;
-  /* background: #333; */
-  /* background: #101010; */
-  /* box-shadow: inset 0 -1px #ff0000; */
+  border-color: @foreground;
+  /* animation: workspace-activate 0.3s ease-in-out 1 forwards; */
+}
+#workspaces button.active.animated {
+  /* animation: workspace-activate 1s ease-in-out 1; */
+}
+
+#workspaces button.empty {
+  opacity: 0.5;
 }
 
 #workspaces button.urgent {
-  background: #f53c3c;
+  background: @red;
   animation: urgent 2s infinite alternate;
 }
 
-#custom-taskwarrior {
-  /* padding: 0; */
-  /* margin: 0; */
-  /* font-size: 14px; */
-}
-
-.taskwarrior {
-  /* background: blue; */
-  background: #141414;
-  color: #d0d0d0;
-}
-
-#custom-taskwarrior .test {
-  /* background: green; */
-}
-
-#custom-tmux {
-  /* background: blue; */
-}
-
-#custom-tmux .attached {
-  background: red;
-}
-
-#image {}
-
-#custom-mail {
-  /* background: red; */
-}
-
-#custom-mail {
-  /* margin-right: 10px; */
-}
-
-#custom-mail.unread {
-  color: white;
-}
-
-#clock {}
-
-#submap {
-  padding: 0 1rem;
-  margin-right: 1rem;
-  background: white;
-  color: black;
-  animation: submap 1s infinite;
+#tray {
+ margin-left: 0.5rem;
 }
