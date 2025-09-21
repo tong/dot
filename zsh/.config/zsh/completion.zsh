@@ -1,90 +1,102 @@
-# Load more completions
-fpath=($ZDOTDIR/plugins/zsh-completions/src $fpath)
-fpath=($ZDOTDIR/complete/ $fpath)
+fpath=(
+    "$ZDOTDIR/plugins/zsh-completions/src" # 3rd-party zsh-completions plugin
+    "$ZDOTDIR/complete"                    # User-specific local completions
+    $fpath
+)
 
-# Should be called before compinit
 zmodload zsh/complist
 
-# Use hjlk in menu selection (during completion)
-# Doesn't work well with interactive mode
-# bindkey -M menuselect 'h' vi-backward-char
-# bindkey -M menuselect 'k' vi-up-line-or-history
-# bindkey -M menuselect 'j' vi-down-line-or-history
-# bindkey -M menuselect 'l' vi-forward-char
-#
-# bindkey -M menuselect '^xg' clear-screen
-# bindkey -M menuselect '^xi' vi-insert                      # Insert
-# bindkey -M menuselect '^xh' accept-and-hold                # Hold
-# bindkey -M menuselect '^xn' accept-and-infer-next-history  # Next
-# bindkey -M menuselect '^xu' undo                           # Undo
+# Initialize the completion system.
+# -i: ignore insecure directories (for security)
+# -d: specify the dump file path for caching, improving startup time
+ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
+autoload -U compinit; compinit -i -d "$ZSH_COMPDUMP"
 
-autoload -U compinit; compinit
-_comp_options+=(globdots) # With hidden files
+# Include hidden files (dotfiles) in completions
+_comp_options+=(globdots)
 
-# Only work with the Zsh function vman
-compdef vman="man"
+# ------------------------------------------------------------------------------
+# Completion Options (setopt)
+# ------------------------------------------------------------------------------
 
-# +---------+
-# | Options |
-# +---------+
-
-#setopt GLOB_COMPLETE      # Show autocompletion menu with globs
-setopt MENU_COMPLETE        # Automatically highlight first element of completion menu
+setopt MENU_COMPLETE        # Automatically highlight the first completion entry.
 setopt AUTO_LIST            # Automatically list choices on ambiguous completion.
-setopt COMPLETE_IN_WORD     # Complete from both ends of a word.
+setopt COMPLETE_IN_WORD     # Complete from anywhere in a word, not just the beginning.
+# setopt GLOB_COMPLETE      # Expand glob patterns in completion. Can be noisy.
 
-# +---------+
-# | zstyles |
-# +---------+
+# ------------------------------------------------------------------------------
+# Completion Styles (zstyle)
+# ------------------------------------------------------------------------------
 
-# Ztyle pattern
-# :completion:<function>:<completer>:<command>:<argument>:<tag>
+# --- General Settings ---
 
-# Define completers
-zstyle ':completion:*' completer _extensions _complete _approximate
-
-# Use cache for commands using cache
+# Use a cache for performance
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompcache"
-# Complete the alias when _expand_alias is used as a function
-zstyle ':completion:*' complete true
 
-zle -C alias-expension complete-word _generic
-bindkey '^Xa' alias-expension
-zstyle ':completion:alias-expension:*' completer _expand_alias
-
-# Use cache for commands which use it
-
-# Allow you to select in a menu
+# Enable the completion menu
 zstyle ':completion:*' menu select
 
-# Autocomplete options for cd instead of directory stack
-zstyle ':completion:*' complete-options true
+# Keep the prefix of the word being completed
+zstyle ':completion:*' keep-prefix true
 
-zstyle ':completion:*' file-sort name
-#zstyle ':completion:*' file-list all
+# --- Matching Control ---
+# Defines how matches are found. This enables fuzzy matching.
+# ''                  : First, try an exact prefix match.
+# 'm:{a-zA-Z}={A-Za-z}': Case-insensitive matching.
+# 'r:|[._-]=* r:|=*'  : Match after a separator (e.g., `.` `_` `-`).
+# 'l:|=* r:|=*'      : Match from both left and right of the word.
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
+# --- Formatting & Display ---
+
+# Group completions by their type (e.g., 'aliases', 'functions')
+zstyle ':completion:*' group-name ''
+
+# Set the order for some groups when completing commands
+zstyle ':completion:*:*:-command-:*:*' group-order aliases builtins functions commands
+
+# Custom formatting for different parts of the completion menu
 zstyle ':completion:*:*:*:*:corrections' format '%F{yellow}!- %d (errors: %e) -!%f'
 zstyle ':completion:*:*:*:*:descriptions' format '%F{blue} %D %d %f'
 zstyle ':completion:*:*:*:*:messages' format ' %F{purple} -- %d --%f'
 zstyle ':completion:*:*:*:*:warnings' format ' %F{red}-- no matches found --%f'
-# zstyle ':completion:*:default' list-prompt '%S%M matches%s'
-# Colors for files and directory
+
+# Use LS_COLORS for file and directory completion colors
 zstyle ':completion:*:*:*:*:default' list-colors ${(s.:.)LS_COLORS}
 
-# Only display some tags for the command cd
+# --- Command-specific Settings ---
+
+# Sort files by name
+zstyle ':completion:*' file-sort name
+
+# For `cd`, show local directories, directory stack, and path directories in order
 zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
-# zstyle ':completion:*:complete:git:argument-1:' tag-order !aliases
+# Autocomplete options for cd instead of directory stack
+zstyle ':completion:*:*:cd:*' complete-options true
 
-# Required for completion to be in good groups (named after the tags)
-zstyle ':completion:*' group-name ''
 
-zstyle ':completion:*:*:-command-:*:*' group-order aliases builtins functions commands
-
-# See ZSHCOMPWID "completion matching control"
-zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-
-zstyle ':completion:*' keep-prefix true
-
+# For `ssh`/`scp`, complete hosts from known_hosts files
 zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 
+# Define a completer for `vman` to use `man`'s completions
+compdef vman="man"
+
+# ------------------------------------------------------------------------------
+# Custom Completions & Keybindings
+# ------------------------------------------------------------------------------
+
+# --- Alias Expansion ---
+# Custom widget to expand an alias on demand with Ctrl-X, a
+zle -C alias-expansion complete-word _generic
+bindkey '^Xa' alias-expansion
+zstyle ':completion:alias-expansion:*' completer _expand_alias
+zstyle ':completion:alias-expansion:*' menu no # Disable menu for this specific completion
+zstyle ':completion:alias-expansion:*' complete true # Perform completion on the alias expansion
+
+# --- Vi-style keybindings for menu (currently disabled) ---
+# These can conflict with other settings. Enable with caution.
+# bindkey -M menuselect 'h' vi-backward-char
+# bindkey -M menuselect 'k' vi-up-line-or-history
+# bindkey -M menuselect 'j' vi-down-line-or-history
+# bindkey -M menuselect 'l' vi-forward-char
