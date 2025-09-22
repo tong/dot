@@ -1,3 +1,21 @@
 #!/bin/sh
-curl -s http://getip.disktree.net
-echo
+
+services="
+http://getip.disktree.net
+http://ifconfig.me/ip
+http://icanhazip.com
+http://ipinfo.io/ip
+http://api.ipify.org
+"
+
+for service in $services; do
+  ip=$(curl -s --max-time 5 "$service")
+  if [ -n "$ip" ] && echo "$ip" | grep -qE '^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$'; then
+    echo "$ip"
+    exit 0
+  fi
+done
+
+echo "Error: Could not retrieve public IP address from any service." >&2
+exit 1
+
