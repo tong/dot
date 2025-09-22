@@ -2,12 +2,15 @@
 newsboat/**/urls
 kitty/**/current-theme.conf
 mutt/**/.mailsynclastrun
+mpd/**/log
+database
 github-token
 *.bak
 *.fifo
 *.gpgrc
 *.out
 *.save
+*.sql
 *.sqlite3
 *.tmp
 *.zip
