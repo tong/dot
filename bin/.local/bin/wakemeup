@@ -1,13 +1,83 @@
 #!/bin/sh
-if [ ! "$1" ]; then
-	echo "Usage: wakemeup \"tomorrow 8:00\""
-	exit 1
+
+set -e
+
+usage() {
+  echo "Usage: wakemeup \"<time_string>\" [path_to_song_or_dir]"
+  echo "Sets an alarm that wakes the system from suspend."
+  echo
+  echo "Example: wakemeup \"tomorrow 08:00\""
+  echo "         wakemeup \"+5 minutes\" /path/to/my/favorite.mp3"
+  exit 1
+}
+
+has_cmd() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+for cmd in rtcwake mpv shuf date; do
+  if ! has_cmd "$cmd"; then
+    echo "Error: required command '$cmd' not found." >&2
+    exit 1
+  fi
+done
+
+if [ -z "$1" ]; then
+  usage
 fi
-if [ ! "$2" ]; then
-	DIR="${XDG_MUSIC_DIR:-$HOME/music}"
-	SONG=$(find "$DIR" -type f -iname "*.mp3" | shuf -n 1)
+
+time_str="$1"
+song_path="$2"
+
+if ! wake_time_s=$(date +%s -d "$time_str"); then
+  echo "Error: invalid time string '$time_str'." >&2
+  exit 1
+fi
+
+current_time_s=$(date +%s)
+if [ "$wake_time_s" -le "$current_time_s" ]; then
+  echo "Error: specified time is in the past." >&2
+  exit 1
+fi
+
+if [ -z "$song_path" ]; then
+  music_dir="${XDG_MUSIC_DIR:-$HOME/music}"
+  if [ ! -d "$music_dir" ]; then
+    echo "Error: music directory '$music_dir' not found." >&2
+    exit 1
+  fi
+  song=$(find "$music_dir" -type f -iregex '.*\.\(mp3\|flac\|ogg\|opus\|wav\|m4a\)$' | shuf -n 1)
+  if [ -z "$song" ]; then
+    echo "Error: no music found in '$music_dir'." >&2
+    exit 1
+  fi
 else
-	SONG="$2"
+  if [ ! -e "$song_path" ]; then
+    echo "Error: file or directory '$song_path' not found." >&2
+    exit 1
+  fi
+  if [ -d "$song_path" ]; then
+    # Directory provided, find a random song in it
+    song=$(find "$song_path" -type f -iregex '.*\.\(mp3\|flac\|ogg\|opus\|wav\|m4a\)$' | shuf -n 1)
+    if [ -z "$song" ]; then
+      echo "Error: no music found in '$song_path'." >&2
+      exit 1
+    fi
+  else
+    song="$song_path"
+  fi
 fi
-TIME=$(date +%s -d "$1")
-sudo rtcwake -m mem -l -t "$TIME" && mpv "$SONG"
+
+wake_time_human=$(date -d "@$wake_time_s")
+echo "Setting alarm for: $wake_time_human"
+echo "Song to play: $song"
+echo "System will now suspend."
+
+# rtcwake needs root. The script will prompt for sudo password if needed.
+# -m mem: Suspend to RAM (S3).
+# -l: Assumes hardware clock is set to local time
+sudo rtcwake -m mem -l -t "$wake_time_s"
+
+echo "Welcome back! Press Ctrl+C to stop the alarm."
+mpv --loop=inf "$song"
+
