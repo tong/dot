@@ -3,7 +3,7 @@
 set -goq @status-left-area-left-format "#S"
 set -goq @status-left-area-middle-format ""
 set -goq @status-left-area-right-format "#I:#P"
-set -goq @status-right-area-left-format "#(i3-msg -t get_workspaces | tr ',' '\n' | grep num | awk -F: '{print int($2)}')"
+# set -goq @status-right-area-left-format "#(i3-msg -t get_workspaces | tr ',' '\n' | grep num | awk -F: '{print int($2)}')"
 #set -goq @status-right-area-middle-format "#(uname -r)"
 #set -goq @status-right-area-middle-format "#(task active rc.verbose: rc.report.active.columns:description rc.report.active.labels:1)"
 set -goq @status-right-area-middle-format "#(task active rc.verb"
@@ -45,7 +45,9 @@ set -gqF @window-status-format "#{@window-status-prefix}#{@window-status-format}
 set -goq @pl-color-main-1 colour245
 set -goq @pl-color-main-2 colour250
 set -goq @pl-color-main-3 colour245
-set -goq @pl-color-black-1 black
+#set -goq @pl-color-black-1 black
+set -goq @pl-color-black-1 red
+set -goq @pl-color-res red
 set -goq @pl-color-grey-1 colour233
 set -goq @pl-color-grey-2 colour235
 set -goq @pl-color-grey-3 colour238
