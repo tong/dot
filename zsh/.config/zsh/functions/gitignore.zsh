@@ -1,8 +1,3 @@
-
-git_num_modified_files() {
-    git diff --name-only | wc -l
-}
-
 gitignore() {
     curl -fLw '\n' https://www.gitignore.io/api/"${(j:,:)@}"
 }

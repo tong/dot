@@ -31,8 +31,7 @@ alias calc='bc -q $@'
 alias chat='profanity'
 alias cheat='cht.sh'
 alias chmox='chmod +x'
-alias clip='kitty +kitten clipboard'
-alias clipboard='kitty +kitten clipboard'
+# alias clipboard='cliphist list | fzf --prompt "󰅇 " --no-sort | cliphist decode | tee >(wl-copy >/dev/null 2>&1)'
 alias clock='tty-clock'
 alias colorpicker='hyprpicker'
 alias contact='khard'
@@ -53,13 +52,14 @@ alias notify='notify-send'
 alias open='xdg-open'
 alias pdf='zathura'
 alias record-screen='wf-recorder -g "$(slurp)" -f output.mp4'
+alias screenshot='hyprshot'
 alias sunset='hyprsunset'
 alias unzipall="fd -e zip -X unzip {} \;"
 alias weather='curl -L wttr.in/Vienna'
 alias webcam-snapshot='mpv av://v4l2:/dev/video0 --profile=low-latency --untimed'
+alias wiki='cd $HOME/wiki && nvim .'
 #alias wiki='cd $HOME/wiki && nvim . +"Telescope find_files"'
 #alias wiki='cd $HOME/wiki && nvim . -c "WikiPages"'
-alias wiki='cd $HOME/wiki && nvim .'
 #alias wtri='hl $HOME/dev/lib/wtri/wtri.hl'
 #alias wtric='$HOME/dev/lib/wtri/wtri'
 alias ytdl-mp3='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio -f bestaudio --add-metadata --embed-thumbnail --audio-format mp3 "$@"'
@@ -70,27 +70,15 @@ alias vconf='$EDITOR $HOME/.config/nvim'
 alias zconfig='cd $ZDOTDIR && $EDITOR .'
 alias zsource='source $ZDOTDIR/.zshrc && source $HOME/.zshenv'
 
-#alias clipcopy='cat "${1:-/dev/stdin}" | xsel --clipboard --input;'
-#alias clippaste='xsel --clipboard --output;'
-
 #alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 #alias psmem='ps auxf | sort -nr -k 4'
 alias meminfo='free -m -l -t'
-
 # alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
 alias gpuutilization='nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits'
-
 alias checkroute='mtr $1 -tez -Q1 --ipinfo 1'
 alias ports='netstat -tulanp' # List open tcp/udp ports
 
-alias paci="pacman -Slq | fzf --multi --prompt ' ' --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
-alias pacr="pacman -Qq | fzf --multi --prompt ' ' --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
-
 alias waybar-reload='killall -SIGUSR2 waybar'
-
-alias fnerdfont='fzf-nerdfont'
-alias fchrome='fzf-chrome-history'
-#alias fzscreenlayout='ls "$HOME/.local/share/screenlayout/" | fzf --prompt="  " | $@'
 
 # ---
 
@@ -116,3 +104,11 @@ alias godot='$HOME/sdk/Godot_v4.2.2/Godot_v4.2.2-stable_linux.x86_64'
 alias reaper='$HOME/sdk/reaper/reaper'
 alias vcvrack='(cd $HOME/sdk/vcvrack/ && ./Rack)'
 
+# ---
+
+alias paci="pacman -Slq | fzf --multi --prompt ' ' --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
+alias pacr="pacman -Qq | fzf --multi --prompt ' ' --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
+
+alias fnerdfont='fzf-nerdfont'
+alias fchrome='fzf-chrome-history'
+#alias fzscreenlayout='ls "$HOME/.local/share/screenlayout/" | fzf --prompt="  " | $@'

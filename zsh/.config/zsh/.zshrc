@@ -3,27 +3,28 @@ setopt interactive_comments
 # Disable flow control (Ctrl-S/Ctrl-Q)
 setopt noflowcontrol
 
-# --- Navigation
 setopt AUTO_CD              # Go to folder path without using cd.
 setopt AUTO_PUSHD           # Push the current directory visited on the stack.
 setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
 setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
 setopt CDABLE_VARS          # Change directory to a path stored in a variable.
-
-# --- Correction
 setopt CORRECT              # Spelling correction
-
-# --- Globbing
 setopt EXTENDED_GLOB        # Use extended globbing syntax.
 
 # --- History
-setopt appendhistory
-setopt sharehistory
-
 HISTFILE="$HOME/.cache/zsh/history"
 HISTSIZE=100000
 SAVEHIST=100000
 HISTDUP=erase
+
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+
 setopt EXTENDED_HISTORY       # Write the history file in the ':start:elapsed;command' format.
 setopt SHARE_HISTORY          # Share history between all sessions.
 setopt HIST_EXPIRE_DUPS_FIRST # Expire a duplicate event first when trimming history.
@@ -68,9 +69,10 @@ source "$ZDOTDIR/completion.zsh"
 
 source "$ZDOTDIR/functions/archive.zsh"
 source "$ZDOTDIR/functions/autosource.zsh"
+source "$ZDOTDIR/functions/clipboard.zsh"
 source "$ZDOTDIR/functions/confirm.zsh"
 source "$ZDOTDIR/functions/fzf.zsh"
-source "$ZDOTDIR/functions/git.zsh"
+source "$ZDOTDIR/functions/gitignore.zsh"
 source "$ZDOTDIR/functions/img.zsh"
 source "$ZDOTDIR/functions/lfcd.zsh"
 source "$ZDOTDIR/functions/mail.zsh"
