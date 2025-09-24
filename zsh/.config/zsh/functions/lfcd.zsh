@@ -1,11 +1,19 @@
+# A wrapper for the lf file manager that changes the directory on exit.
 lfcd() {
-    source "$HOME/.config/lf/colors"
-    source "$HOME/.config/lf/icons"
-    tmp="$(mktemp)"
+    local tmp
+    tmp=$(mktemp) || return 1
+    # The temp file will be removed when the function exits.
+    trap "rm -f -- '$tmp'" EXIT
+    # Run lf, telling it to write the last directory to the temp file.
     lf -last-dir-path="$tmp" "$@"
-    if [ -f "$tmp" ]; then
-        dir="$(cat "$tmp")"
-        rm -f "$tmp" >/dev/null
-        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir" || exit
+    # If lf wrote to the temp file, read the directory path.
+    if [[ -f "$tmp" ]]; then
+        local dir
+        dir=$(<"$tmp")
+        # If it's a valid directory and not the current one, change to it.
+        if [[ -d "$dir" && "$dir" != "$PWD" ]]; then
+            cd -- "$dir"
+        fi
     fi
 }
+
