@@ -1,0 +1,71 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = true
+command_timeout = 200
+
+# \
+format = """
+$jobs\
+[](dimmed)  \
+$directory\
+$git_branch\
+$git_status\
+$haxe\
+($style)$character"""
+
+[character]
+error_symbol = "[](bold red)"
+success_symbol = "[](dimmed)"
+vimcmd_symbol = '[]()'
+vimcmd_replace_one_symbol = '[](bold fg:lavender)'
+vimcmd_replace_symbol = '[](bold fg:lavender)'
+vimcmd_visual_symbol = '[](bold fg:yellow)'
+
+[directory]
+truncation_length = 8
+truncation_symbol = "…/"
+truncate_to_repo = false
+# style = "dimmed"
+# repo_root_style = "bold cyan"
+# repo_root_format = "[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
+
+# [directory.substitutions]
+# "Documents" = "󰈙 "
+# "Downloads" = " "
+# "Music" = "󰝚 "
+# "Pictures" = " "
+# "dev" = "󰲋 "
+
+[git_branch]
+# format = "[$symbol $branch]($style) "
+# style = "italic cyan"
+style = "italic dimmed"
+symbol = ""
+
+[git_status]
+format = '[$all_status]($style)'
+diverged = "⇕⇡${ahead_count}⇣${behind_count} "
+conflicted = " "
+up_to_date = " "
+untracked = '[ $count](bold yellow) '
+modified= '[ $count](bold blue) '
+behind = '[ ](bold purple) '
+ahead = '[ ](bold purple) '
+deleted = '[ $count](bold red) '
+stashed = "[ ](cyan) "
+staged = '[ $count](bold green) '
+renamed = ""
+
+[jobs]
+symbol = ''
+# number_threshold = 4
+# symbol_threshold = 0
+
+# [localip]
+# ssh_only = false
+# disabled = false
+# format = '@[$localipv4](bold red) '
+
+[haxe]
+format = "[$symbol](bold fg:202) "
+symbol = " "
