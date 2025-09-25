@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# passgen: Generates a random, secure password.
+#
+# Usage:
+#   passgen [length]
+#
+# If length is not provided, it defaults to 16 characters.
+#
+
+set -eu
+
+DEFAULT_LENGTH=16
+CHAR_SET='A-Za-z0-9!@#$%^&*()_+{}|:<>?=-[];,./~'
+
+length="${1:-$DEFAULT_LENGTH}"
+
+if ! [[ "$length" =~ ^[0-9]+$ ]] || ((length <= 0)); then
+  echo "Error: Length must be a positive integer." >&2
+  exit 1
+fi
+
+# - LC_ALL=C ensures byte-oriented processing for speed and consistency.
+# - tr -dc 'SET' reads from stdin and deletes all characters NOT in the set.
+# - /dev/urandom provides a stream of high-quality random bytes.
+# - head -c "$length" takes the specified number of characters from the stream.
+LC_ALL=C tr -dc "$CHAR_SET" </dev/urandom | head -c "$length"
+
+echo
