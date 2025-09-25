@@ -1,4 +1,3 @@
-# shellcheck shell=zsh
 gitignore() {
     curl -fLw '\n' https://www.gitignore.io/api/"${(j:,:)@}"
 }

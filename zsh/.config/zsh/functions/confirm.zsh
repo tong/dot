@@ -1,5 +1,3 @@
-# shellcheck shell=zsh
-#
 # Asks for confirmation before running a command.
 #
 # Usage: confirm [--root] <command> [args...]

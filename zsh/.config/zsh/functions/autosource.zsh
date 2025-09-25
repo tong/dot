@@ -1,4 +1,3 @@
-# shellcheck shell=zsh
 # Auto source on enter directory
 if [ -z "$AUTOSOURCE_FILE" ]; then
     autoload -U add-zsh-hook

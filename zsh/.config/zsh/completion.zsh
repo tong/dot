@@ -1,4 +1,3 @@
-# shellcheck shell=zsh
 fpath=(
     "$ZDOTDIR/plugins/zsh-completions/src" # 3rd-party zsh-completions plugin
     "$ZDOTDIR/complete"                    # User-specific local completions

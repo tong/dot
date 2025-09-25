@@ -1,4 +1,3 @@
-# shellcheck shell=zsh
 if [ -x /usr/bin/dircolors ]; then
     if [ -r "$HOME/.dircolors" ]; then
         eval "$(dircolors -b "$HOME/.dircolors")"

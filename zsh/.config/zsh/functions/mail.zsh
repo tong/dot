@@ -1,5 +1,3 @@
-# shellcheck shell=zsh
-#
 # Function to count files in a given mailbox directory.
 # Usage: mailbox_count <mailbox_subdirectory>
 # Example: mailbox_count INBOX/cur

@@ -1,4 +1,3 @@
-# shellcheck shell=zsh
 # Nmap options are:
 #  -sS - TCP SYN scan
 #  -v - verbose

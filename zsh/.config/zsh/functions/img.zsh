@@ -1,5 +1,3 @@
-# shellcheck shell=zsh
-#
 # Image manipulation functions.
 # Requires ImageMagick to be installed.
 # On macOS: brew install imagemagick

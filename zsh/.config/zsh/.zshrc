@@ -1,4 +1,3 @@
-
 # Use comments in interactive shell
 setopt interactive_comments
 # Disable flow control (Ctrl-S/Ctrl-Q)
@@ -94,10 +93,10 @@ source "$ZDOTDIR/aliases/user.zsh"
 
 # --- zsh-vi-mode ---
 # Must be sourced before other plugins that affect keybindings.
-function zvm_config() {
+# function zvm_config() {
     # ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
     # ZVM_VI_ESCAPE_BINDKEY=jj
-}
+# }
 # Load fzf after zsh-vi-mode is initialized to prevent keybinding conflicts.
 function zvm_after_init() {
     source /usr/share/fzf/completion.zsh
@@ -111,8 +110,6 @@ source "$ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 # source "$ZDOTDIR/plugins/bd/bd.zsh"
 # source "$ZDOTDIR/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 # source "$ZDOTDIR/plugins/k/k.sh"
-
-fpath=($ZDOTDIR/plugins/zsh-completions/src $fpath)
 
 # ------------------------------------------------------------------------------
 # Keybindings
@@ -129,7 +126,6 @@ eval "$(zoxide init zsh)"
 
 # --- FZF (fuzzy finder) ---
 # FZF setup is handled in `zvm_after_init` for compatibility with zsh-vi-mode.
-# The following line is redundant.
 # eval "$(fzf --zsh)"
 
 # ------------------------------------------------------------------------------
@@ -157,18 +153,13 @@ unset SSH_ENV
 # Project-specific / Temporarily Disabled
 # ==============================================================================
 
-# --- Atuin (Shell History) ---
 # eval "$(atuin init zsh)"
-
-# --- LuaRocks ---
 # eval "$(luarocks path --bin)"
 
-# --- Armory SDK ---
 # export ARMSDK=$HOME/armory/armsdk
 # export ARMORY_PLAY_KROM='$ARMSDK/Krom/Krom $path $resources --consolepid $pid'
 # export ARMORY_PLAY_HTML5='chromium --app=$url --new-window --window-size=$width,$height --auto-open-devtools-for-tabs'
 
-# --- Android NDK ---
 # export ANDROID_NDK_HOME=/home/tong/sdk/android-ndk
 # export PATH=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH}
 # export ANDROID_SYSROOT=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot
@@ -176,5 +167,4 @@ unset SSH_ENV
 # export ANDROID_API=21
 # export ANDROID_HOME=${HOME}/sdk/android-sdk
 
-# --- OPAM (OCaml) ---
 # [[ ! -r /home/tong/.opam/opam-init/init.zsh ]] || source /home/tong/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null

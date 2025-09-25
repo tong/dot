@@ -1,4 +1,3 @@
-# shellcheck shell=zsh
 clipboard() {
   local sel decoded
   sel=$(cliphist list | fzf --prompt "󰅇 " --no-sort) || return
