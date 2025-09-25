@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+# rgb2hex: Converts an RGB decimal color code to its hexadecimal representation.
+#
+# Usage:
+#   rgb2hex [-p] <r> <g> <b>
+#   echo "<r> <g> <b>" | rgb2hex [-p]
+#
+# Options:
+#   -p, --prefix   Adds a '#' prefix to the output hex code.
+#
+
+set -euo pipefail
+
+ADD_PREFIX=false
+
+usage() {
+  echo "Usage: $(basename "$0") [-p|--prefix] <r> <g> <b>" >&2
+  echo "   or: echo \"<r> <g> <b>\" | $(basename "$0") [-p|--prefix]" >&2
+  echo "Example: $(basename "$0") 255 136 0" >&2
+}
+
+convert_to_hex() {
+  local r=$1 g=$2 b=$3
+  for val in $r $g $b; do
+    if ! [[ "$val" =~ ^[0-9]+$ ]] || ((val < 0 || val > 255)); then
+      echo "Error: Invalid RGB value. Must be an integer between 0 and 255." >&2
+      echo "Received: r='$r', g='$g', b='$b'" >&2
+      return 1
+    fi
+  done
+  local prefix=""
+  if [[ "$ADD_PREFIX" == true ]]; then
+    prefix="#"
+  fi
+  printf "%s%02x%02x%02x\n" "$prefix" "$r" "$g" "$b"
+}
+
+if [[ "${1:-}" == "-p" ]] || [[ "${1:-}" == "--prefix" ]]; then
+  ADD_PREFIX=true
+  shift
+fi
+
+if [[ "$#" -gt 0 ]]; then
+  if [[ "$#" -ne 3 ]]; then
+    echo "Error: Please provide exactly 3 arguments for R, G, and B." >&2
+    usage
+    exit 1
+  fi
+  convert_to_hex "$1" "$2" "$3"
+else
+  while read -r r g b junk; do
+    [[ -z "$r" ]] && continue
+    if [[ -n "$junk" ]]; then
+      echo "Error: Input line has more than 3 values: '$r $g $b $junk...'" >&2
+      continue
+    fi
+    convert_to_hex "$r" "$g" "$b"
+  done
+fi
