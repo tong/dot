@@ -1,8 +1,0 @@
-#!/bin/sh
-sel=$(echo " exit|鈴 hibernate| lock| reboot| shutdown|鈴 suspend| kill $USER" | rofi -dmenu -sep '|' -i -p ' ')
-opt="${sel:2}"
-case $opt in
-    "kill $USER") loginctl kill-user "$USER" ;;
-    *) i3-exit "$opt" ;;
-esac
-exit $?
