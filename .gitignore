@@ -3,6 +3,7 @@ newsboat/**/urls
 kitty/**/current-theme.conf
 mutt/**/.mailsynclastrun
 mpd/**/log
+mpd/**/state
 database
 github-token
 *.bak
