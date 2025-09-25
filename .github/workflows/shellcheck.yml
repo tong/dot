@@ -2,8 +2,7 @@ name: shellcheck
 
 on:
   push:
-    paths:
-      - 'script/**'
+  pull_request:
 
 jobs:
   shellcheck:
@@ -11,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Shellcheck
-        uses: ludeeus/action-shellcheck@1.1.0
+        uses: ludeeus/action-shellcheck@2.0.0
         with:
-          scandir: './script'
+          scandir: .
           severity: error
