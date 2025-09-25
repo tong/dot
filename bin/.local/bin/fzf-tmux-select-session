@@ -1,2 +1,0 @@
-#!/bin/sh
-tmux ls -F "#S" | fzf --prompt=' ' | xargs tmux switch-client -t

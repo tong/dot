@@ -1,12 +1,30 @@
 #!/bin/bash
-COLS="$(tput cols)"
-((COLS <= 0)) && COLS="${COLUMNS:-80}"
+#
+# 'hr' - print a horizontal rule
+#
+# Usage: hr [char...]
+# If no char is given, '#' is used.
+# Multiple arguments will print multiple lines.
+
+# Get terminal width, prioritizing $COLUMNS, then tput, then fallback to 80.
+COLS=${COLUMNS:-0}
+((COLS <= 0)) && COLS=$(tput cols)
+((COLS <= 0)) && COLS=80
+
 hr() {
-	local WORD="$1"
-	local LINE=''
-	[[ -z "$WORD" ]] && return
-	printf -v LINE '%*s' "$COLS" ""
-	LINE="${LINE// /${WORD}}"
-	echo "${LINE:0:${COLS}}"
+  local char="$1"
+  local line
+
+  # Create a line of repeated characters.
+  printf -v line '%*s' "$COLS" ''
+  line="${line// /${char}}"
+
+  # Print the line, truncated to the column width.
+  printf "%.*s\n" "$COLS" "$line"
 }
-for WORD in "${@:-#}"; do hr "$WORD"; done
+
+# Loop over arguments, or use '#' as a default.
+# This allows calling 'hr - = ~' to print three different rulers.
+for char in "${@:-#}"; do
+  hr "$char"
+done

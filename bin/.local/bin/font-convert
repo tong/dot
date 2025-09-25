@@ -1,12 +1,52 @@
 #!/bin/sh
+#
+# font-convert: A wrapper for fontforge to convert font files.
+#
+
+set -eu
+
 usage() {
-	echo "Usage: font-convert <fontfile> [type]"
+  echo "Usage: $(basename "$0") <input-font> <output-type>"
+  echo "Example: $(basename "$0") myfont.otf woff"
 }
-if [ "$#" -ne 2 ]; then
-	echo "Invalid arguments"
-	usage
-	exit 1
+
+# --- Validation ---
+
+# Check for fontforge dependency
+if ! command -v fontforge >/dev/null; then
+  echo "Error: fontforge is not installed or not in your PATH." >&2
+  exit 1
 fi
-font="$1"
-type="$2"
-fontforge -lang=ff -c "Open(\"${font}\");Generate(\"${font%.ttf}.${type}\")" 2>/dev/null
+
+# Check for correct number of arguments
+if [ "$#" -ne 2 ]; then
+  echo "Error: Invalid number of arguments." >&2
+  usage
+  exit 1
+fi
+
+input_font="$1"
+output_type="$2"
+
+# Check if the input file exists
+if [ ! -f "$input_font" ]; then
+  echo "Error: Input file not found: '$input_font'" >&2
+  exit 1
+fi
+
+# --- Conversion ---
+
+# Construct the output filename by replacing the extension.
+# ${input_font%.*} removes the extension from the input file.
+output_font="${input_font%.*}.${output_type}"
+
+echo "Converting '$input_font' to '$output_font'..."
+
+# Construct the fontforge script
+# We let fontforge print errors to stderr by not redirecting it.
+ff_script="Open(\"$input_font\"); Generate(\"$output_font\");"
+
+# Execute fontforge
+fontforge -lang=ff -c "$ff_script"
+
+echo "Done."

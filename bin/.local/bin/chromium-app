@@ -1,9 +1,0 @@
-#!/bin/sh
-if [ -z "$1" ]; then
-	echo "Usage: chromium-app <url>"
-	exit 1
-fi
-URL=$1
-W=${2:-1024}
-H=${3:-1280}
-chromium --new-window --app=$URL -user-data-dir=/tmp --window-size=$W,$H

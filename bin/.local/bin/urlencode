@@ -1,25 +1,46 @@
 #!/usr/bin/env bash
+#
+# urlencode: Percent-encodes a string, from arguments or stdin.
+# Conforms to RFC 3986.
+#
+# Usage:
+#   urlencode "string to encode"
+#   echo "string to encode" | urlencode
+#
 
-rawurlencode() {
-	local string="${1}"
-	local strlen=${#string}
-	local encoded=""
-	local pos c o
-	for ((pos = 0; pos < strlen; pos++)); do
-		c=${string:$pos:1}
-		case "$c" in [-_.~a-zA-Z0-9]) o="${c}" ;;
-		*) printf -v o '%%%02x' "'$c'" ;;
-		esac
-		encoded+="${o}"
-	done
-	echo "${encoded}"  # You can either set a return variable (FASTER)
-	REPLY="${encoded}" #+or echo the result (EASIER), or both
+set -euo pipefail
+
+# Setting the locale to C ensures that the script works byte-by-byte,
+# which is what URL encoding requires for correctness.
+export LC_ALL=C
+
+urlencode() {
+  local string="${1}"
+  local strlen=${#string}
+  local encoded=""
+  local pos c o
+  for ((pos = 0; pos < strlen; pos++)); do
+    c=${string:$pos:1}
+    case "$c" in
+    [-_.~a-zA-Z0-9])
+      o="$c"
+      ;;
+    *)
+      printf -v o '%%%02x' "'$c'"
+      ;;
+    esac
+    encoded+="$o"
+  done
+  echo "$encoded"
 }
-if test -n "$1"; then
-	rawurlencode "$*"
-	exit
+
+# If arguments are provided, encode them all as a single string.
+if [[ -n "${1:-}" ]]; then
+  urlencode "$*"
+  exit 0
 fi
-IFS=
-while read -r line; do
-	rawurlencode "$line"
+# Otherwise, read from standard input line by line.
+# Using IFS= and -r is the robust way to read lines.
+while IFS= read -r line; do
+  urlencode "$line"
 done

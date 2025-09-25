@@ -1,8 +1,40 @@
 #!/usr/bin/env bash
+#
+# haxe-runner: A wrapper script to easily compile and run .hx files with Haxe.
+#
+# Usage: haxe-runner <path/to/script.hx> [args...]
+#
+
 set -euo pipefail
-function _haxerunner {
-	local hx=$1
-	shift
-	haxe -p $(realpath $(dirname ${hx})) --run $(basename ${hx}) $*
-}
-_haxerunner ${1:?'expecting an .hx file'} $@
+
+# --- Validation ---
+# Ensure a file path is provided.
+if [[ -z "${1:-}" ]]; then
+    echo "Usage: $(basename "$0") <path/to/script.hx> [args...]" >&2
+    exit 1
+fi
+
+hx_file=$1
+
+# Ensure the file exists.
+if [[ ! -f "$hx_file" ]]; then
+    echo "Error: File not found: '$hx_file'" >&2
+    exit 1
+fi
+
+# --- Preparation ---
+# Shift arguments so "$@" contains only the arguments for the Haxe script.
+shift
+
+# Get the absolute path of the script's directory for the Haxe classpath.
+classpath=$(realpath "$(dirname "$hx_file")")
+
+# Get the module name by stripping the path and the .hx extension.
+module_name=$(basename "$hx_file" .hx)
+
+# --- Execution ---
+# Run the Haxe script.
+# -p sets the classpath.
+# --run specifies the main module to compile and run.
+echo "haxe -p \"$classpath\" --run \"$module_name\" \"$@\""
+haxe -p "$classpath" --run "$module_name" "$@"
