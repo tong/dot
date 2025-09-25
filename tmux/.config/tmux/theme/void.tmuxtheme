@@ -45,9 +45,8 @@ set -gqF @window-status-format "#{@window-status-prefix}#{@window-status-format}
 set -goq @pl-color-main-1 colour245
 set -goq @pl-color-main-2 colour250
 set -goq @pl-color-main-3 colour245
-#set -goq @pl-color-black-1 black
-set -goq @pl-color-black-1 red
-set -goq @pl-color-res red
+set -goq @pl-color-black-1 black
+# set -goq @pl-color-res red
 set -goq @pl-color-grey-1 colour233
 set -goq @pl-color-grey-2 colour235
 set -goq @pl-color-grey-3 colour238
