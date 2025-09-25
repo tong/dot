@@ -1,3 +1,4 @@
+
 # Use comments in interactive shell
 setopt interactive_comments
 # Disable flow control (Ctrl-S/Ctrl-Q)
@@ -50,8 +51,8 @@ setopt HIST_VERIFY            # Do not execute immediately upon history expansio
 export CC=/usr/bin/clang
 export CXX=/usr/bin/clang++
 export GOPATH="$HOME/.go"
-export HAXELIB_PATH=$HOME/src/haxelib
-export HAXE_STD_PATH=/usr/share/haxe/std
+export HAXELIB_PATH=$HOME/.haxelib
+export HAXE_STD_PATH=/usr/local/share/haxe/std
 export HASHLINK=$HOME/src/hashlink
 export THEME=gruvbox
 
@@ -64,6 +65,8 @@ export THEME=gruvbox
 # ------------------------------------------------------------------------------
 # Completions, Functions & Aliases
 # ------------------------------------------------------------------------------
+
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 source "$ZDOTDIR/completion.zsh"
 

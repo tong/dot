@@ -60,8 +60,6 @@ alias unzipall="fd -e zip -X unzip {} \;"
 alias weather='curl -L wttr.in/Vienna'
 alias webcam-snapshot='mpv av://v4l2:/dev/video0 --profile=low-latency --untimed'
 alias wiki='cd $HOME/wiki && nvim .'
-#alias wtri='hl $HOME/dev/lib/wtri/wtri.hl'
-#alias wtric='$HOME/dev/lib/wtri/wtri'
 alias ytdl-mp3='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio -f bestaudio --add-metadata --embed-thumbnail --audio-format mp3 "$@"'
 alias ytdl='yt-dlp'
 
@@ -73,12 +71,10 @@ alias zsource='source $ZDOTDIR/.zshrc && source $HOME/.zshenv'
 #alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 #alias psmem='ps auxf | sort -nr -k 4'
 alias meminfo='free -m -l -t'
-# alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
-# alias gpuutilization='nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits'
-alias checkroute='mtr $1 -tez -Q1 --ipinfo 1'
-alias ports='netstat -tulanp' # List open tcp/udp ports
 
-alias waybar-reload='killall -SIGUSR2 waybar'
+alias checkroute='mtr $1 -tez -Q1 --ipinfo 1'
+alias ports='ss -tuln' # Show open tcp/udp ports
+alias connections="ss -tunap" # Show network connextions
 
 # ---
 
@@ -111,4 +107,7 @@ alias pacr="pacman -Qq | fzf --multi --prompt ' ' --preview 'pacman -Qi {1}' 
 
 alias fnerdfont='fzf-nerdfont'
 alias fchrome='fzf-chrome-history'
-#alias fzscreenlayout='ls "$HOME/.local/share/screenlayout/" | fzf --prompt="  " | $@'
+
+# ---
+
+alias waybar-reload='killall -SIGUSR2 waybar'

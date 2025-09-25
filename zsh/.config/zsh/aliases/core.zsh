@@ -1,5 +1,9 @@
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    if [ -r "$HOME/.dircolors" ]; then
+        eval "$(dircolors -b "$HOME/.dircolors")"
+    else
+        eval "$(dircolors -b)"
+    fi
     alias dir='dir --color=auto'
     alias vdir='vdir --color=auto'
     alias grep='grep --color=auto'
@@ -21,19 +25,22 @@ alias ll='ls -l'
 alias la='ls -A'
 alias lla='ls -la'
 alias l='ls -CF'
-alias lla='ls -la'
 
 alias md="mkdir -p"
 alias rd="rmdir"
 alias cr="cp -r"
 
 alias d='dirs -v'
-for index ({1..9}) alias "$index"="cd +${index}"; unset index
+# Create aliases 1, 2, 3, etc. to navigate directory stack
+for index in {1..9}; do
+    alias "$index"="cd +$index"
+done
+unset index
 
 alias df='df -h'
 alias du='du -h'
 alias now='date +"%T"'
-#alias paths='echo -e ${PATH//:/\\n}'
+#alias paths='echo "$PATH" | tr ":" "\n"'
 
 alias h='history 1'
 alias hs='history | grep'
