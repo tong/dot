@@ -1,3 +1,5 @@
+# shellcheck shell=zsh
+#
 # Creates a directory and changes into it.
 function mkcd takedir() { # mkcd is equivalent to takedir
     mkdir -p -- "$@" && cd -- "${@:$#}"

@@ -1,4 +1,5 @@
-
+# shellcheck shell=zsh
+#
 fzf-chrome-history() {
     local cols sep browser_path open
     cols=$(( COLUMNS / 3 ))

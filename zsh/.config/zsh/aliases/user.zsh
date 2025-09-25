@@ -1,3 +1,4 @@
+# shellcheck shell=zsh
 alias a='archive'
 alias az='archive zip'
 alias bc="bc -ql"

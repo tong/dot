@@ -1,3 +1,4 @@
+# shellcheck shell=zsh
 alias amend='git commit --amend'
 alias branch='git branch'
 alias checkout='git checkout'
@@ -9,4 +10,3 @@ alias pull='git pull'
 alias push='git push'
 alias status='git status'
 alias stash='git stash'
-#alias g='git'

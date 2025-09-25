@@ -1,3 +1,5 @@
+# shellcheck shell=zsh
+#
 function archive() {
     local usage=\
 "Archive files and directories using given compression algorithm.

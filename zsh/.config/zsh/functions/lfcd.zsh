@@ -1,3 +1,4 @@
+# shellcheck shell=zsh
 # A wrapper for the lf file manager that changes the directory on exit.
 lfcd() {
     local tmp
