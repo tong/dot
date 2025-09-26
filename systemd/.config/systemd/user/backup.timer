@@ -1,11 +1,12 @@
-[Unit] 
-Description=Backup important data
+[Unit]
+Description=Run backup daily or at boot if missed
 
-[Timer] 
-Unit=backup.service 
-OnCalendar=daily
-#AccuracySec=12h
+[Timer]
+OnCalendar=20:00
+# Run 1 minute after boot
+OnBootSec=1min
+# Persistent ensures missed runs (while system was off) execute on next boot
 Persistent=true
 
-[Install] 
-WantedBy=basic.target
+[Install]
+WantedBy=timers.target

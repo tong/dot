@@ -1,16 +1,6 @@
 [Unit]
-Description=Backup data
-After=network.target
+Description=Daily backup
 
 [Service]
 Type=oneshot
-ExecStart=/home/tong/.config/systemd/bin/backup.sh /home/tong/armory /mnt/ssd2/bak
-ExecStart=/home/tong/.config/systemd/bin/backup.sh /home/tong/biz /mnt/ssd2/bak
-ExecStart=/home/tong/.config/systemd/bin/backup.sh /home/tong/dev /mnt/ssd2/bak
-ExecStart=/home/tong/.config/systemd/bin/backup.sh /home/tong/disktree /mnt/ssd2/bak
-ExecStart=/home/tong/.config/systemd/bin/backup.sh /home/tong/doc /mnt/ssd2/bak
-ExecStart=/home/tong/.config/systemd/bin/backup.sh /home/tong/img /mnt/ssd2/bak
-ExecStart=/home/tong/.config/systemd/bin/backup.sh /home/tong/work /mnt/ssd2/bak
-
-[Install] 
-WantedBy= multi-user.target
+ExecStart=%h/.local/bin/backup
