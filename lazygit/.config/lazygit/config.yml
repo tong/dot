@@ -1,20 +1,11 @@
-gui:
-  showFileTree: true
-  theme:
-    activeBorderColor:
-      - white
-      - bold
-    inactiveBorderColor:
-      - black
-    optionsTextColor:
-      - blue
-    selectedLineBgColor:
-      - reverse # set to `default` to have no background colour
-    selectedRangeBgColor:
-      - reverse
-    cherryPickedCommitBgColor:
-      - cyan
-    cherryPickedCommitFgColor:
-      - blue
-    unstagedChangesColor:
-      - red
+keybindings:
+  universal:
+    nextItem: j
+    prevItem: k
+    nextPage: Ctrl+d
+    prevPage: Ctrl+u
+    confirm: l
+    return: h
+    nextView: n
+    prevView: p
+    quit: q
