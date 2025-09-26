@@ -18,7 +18,7 @@
 [user]
     name = tong 
     email = tong@disktree.net
-	signingkey = 0FE9AED0566CC214
+	signingkey = 849900BB51BF83E3
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential
