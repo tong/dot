@@ -5,6 +5,7 @@ mutt/**/.mailsynclastrun
 mpd/**/log
 mpd/**/state
 database
+systemd/.config/systemd/user/*.wants
 github-token
 *.bak
 *.fifo
