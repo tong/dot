@@ -1,9 +1,49 @@
 #!/bin/bash
 set -euo pipefail
 
+###############################################################################
+# Backup Script
 #
-# A flexible backup script using rsync for efficient, space-saving snapshots.
+# Features:
+#   - Creates dated snapshot directories using rsync with --link-dest.
+#   - Supports local and remote destinations (over SSH).
+#   - Maintains a "master" destination as the source of truth for all syncs.
+#   - Rotates old backups per destination according to configured retention.
+#   - Uses excludes to skip unnecessary files (cache, tmp, etc).
+#   - Provides notifications via `notify-send` if available.
 #
+# Usage:
+#   backup [-c|--config <config_file>] [-h|--help]
+#
+# Default config location:
+#   ${XDG_CONFIG_HOME:-$HOME/.config}/backup/config
+#
+# Example config file:
+#
+#   # An array of all final destinations for the backup.
+#   # Each entry is "<path> <days_to_keep>".
+#   # The first entry is the MASTER_DEST.
+#   DESTINATIONS=(
+#     "/mnt/data/bak 30"
+#     "pi:/mnt/hd4/bak 30"
+#   )
+#
+#   # An array of source directories on your main computer to be backed up.
+#   SOURCE_DIRS=(
+#     "$HOME/dev"
+#     "$HOME/something"
+#   )
+#
+#   # An array of rsync exclude patterns.
+#   EXCLUDE_PATTERNS=(
+#     ".cache"
+#     "node_modules"
+#     "*.tmp"
+#     "$HOME/.config/chromium"
+#     "$HOME/.config/go"
+#   )
+#
+###############################################################################
 
 # --- Static Settings ---
 readonly APP_NAME="backup"
