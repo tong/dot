@@ -84,7 +84,6 @@ source "$ZDOTDIR/functions/zsh.zsh"
 source "$ZDOTDIR/aliases/core.zsh"
 source "$ZDOTDIR/aliases/git.zsh"
 source "$ZDOTDIR/aliases/nmap.zsh"
-source "$ZDOTDIR/aliases/tmux.zsh"
 source "$ZDOTDIR/aliases/user.zsh"
 
 # ------------------------------------------------------------------------------
@@ -124,9 +123,22 @@ source "$ZDOTDIR/keybindings.zsh"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
+# Colored man pages
+export MANPAGER="less -R"
+export GROFF_NO_SGR=0
+export LESS_TERMCAP_md=$'\e[1;36m'   # bold headers (section titles)
+export LESS_TERMCAP_us=$'\e[1;32m'   # underlined (command names, options)
+export LESS_TERMCAP_me=$'\e[0m'      # reset bold/underline
+export LESS_TERMCAP_ue=$'\e[0m'      # reset underline
+export LESS_TERMCAP_so=$'\e[44;33m'  # standout (rare)
+export LESS_TERMCAP_se=$'\e[0m'      # reset standout
+
 # --- FZF (fuzzy finder) ---
 # FZF setup is handled in `zvm_after_init` for compatibility with zsh-vi-mode.
 # eval "$(fzf --zsh)"
+
+export FZF_CTRL_R_OPTS="--prompt=' ' --preview 'echo {}' --preview-window=down:3:wrap"
+export FZF_CTRL_T_OPTS="--prompt=' ' --preview 'bat --style=numbers --color=always {}' --preview-window=right:50%"
 
 # ------------------------------------------------------------------------------
 # SSH Agent
