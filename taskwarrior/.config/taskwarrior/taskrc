@@ -1,5 +1,3 @@
-# vim: filetype=bash
-
 active.indicator=
 alias.burndown=burndown.weekly
 color=on
@@ -110,7 +108,7 @@ uda.taskwarrior-tui.selection.indicator=
 uda.taskwarrior-tui.mark-selection.indicator=
 uda.taskwarrior-tui.unmark-selection.indicator=⦿
 #uda.taskwarrior-tui.report.next.filter=simple
-uda.taskwarrior-tui.selection.blink=yes
+uda.taskwarrior-tui.selection.blink=no
 uda.taskwarrior-tui.selection.bold=true
 uda.taskwarrior-tui.selection.italic=false
 uda.taskwarrior-tui.selection.reverse=yes
