@@ -1,82 +1,125 @@
 %[ "$LF_LEVEL" -eq 1 ] || echo "WARNING: You're in a nested lf instance!"
 
-#set drawbox
-#set relativenumber
 set cleaner '~/.config/lf/preview/cleaner'
+set previewer '~/.config/lf/preview/preview'
 set hidden
-set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set icons
 set ifs "\n"
 set info size:time
 set mouse true
 set number
-set previewer '~/.config/lf/preview/preview'
-set promptfmt "\033[32m %u@%h\033[0m:\033[34;1m%d\033[0m\033[1m%f\033[0m"
-set ratios '1:4:4'
+set ratios '1:1'
 set scrolloff 10
 set shell sh
 set shellopts '-eu'
 
 cmd on-cd &{{
-    printf "\033]0; $PWD\007" > /dev/tty
+    printf "]0; $PWD" > /dev/tty
 }}
 on-cd
 
-cmd bookmark-create ${{
-    read -p "Bookmark id: " ans
-    mkdir -p $LF_BOOKMARK_PATH
-    echo $PWD > $LF_BOOKMARK_PATH/$ans
-}}
-cmd bookmark-jump ${{
-    res="$(cat $LF_BOOKMARK_PATH/$(ls $LF_BOOKMARK_PATH | fzf --prompt=' '))"
-    lf -remote "send $id cd \"$res\""
+# Improved open command:
+# - Runs executable files.
+# - Opens directories by navigating into them.
+# - Opens specified text files in your $EDITOR.
+# - Opens other files with xdg-open in a detached process.
+cmd open ${{
+    set -f
+    # If the file is executable and not a directory, run it
+    if [ -x "$f" ] && ! [ -d "$f" ]; then
+        #"$f"
+        setsid "$f" >/dev/null 2>&1 &
+        exit 0
+    fi
+    # If it's a directory, enter it
+    if [ -d "$f" ]; then
+        lf -remote "send $id cd "$f""
+        exit 0
+    fi
+    # Otherwise, open based on file type
+    case "$f" in
+        *.txt|*.md|*.sh|*.py|*.go|*.c|*.cpp|*.h|*.hpp|*.js|*.ts|*.json|*.yml|*.toml|*.conf|*.cfg)
+            $EDITOR "$f"
+            ;;
+        *)
+            setsid xdg-open "$f" >/dev/null 2>&1
+            ;;
+    esac
 }}
 
+
+# Create a directory and select it
+cmd mkdir %{{
+    mkdir -p -- "$*"
+    lf -remote "send $id select "$*""
+}}
+
+# Trash command (moves selected files to trash).
+cmd trash %{{
+    trash-put -- $fx
+}}
+
+# Force remove command (deletes selected files permanently).
+cmd remove %{{
+    rm -rf -- $fx
+}}
+
+# Extract archives.
 cmd extract ${{
     set -f
     case $f in
-        *.tar.bz|*.tar.bz2|*.tbz|*.tbz2) tar xjvf $f;;
-        *.tar.gz|*.tgz) tar xzvf $f;;
-        *.tar.xz|*.txz) tar xJvf $f;;
-        *.zip) unzip $f;;
-        *.rar) unrar x $f;;
-        *.7z) 7z x $f;;
+        *.tar.bz|*.tar.bz2|*.tbz|*.tbz2) tar xjvf "$f";;
+        *.tar.gz|*.tgz) tar xzvf "$f";;
+        *.tar.xz|*.txz) tar xJvf "$f";;
+        *.zip) unzip "$f";;
+        *.rar) unrar x "$f";;
+        *.7z) 7z x "$f";;
+        *) echo "Unsupported archive type: $f";;
     esac
-    outname=$(echo "$f" | cut -f 1 -d '.')
-    notify-send --app-name='archive extracted' --urgency "low" --icon="$VOID/icons/actions/extract-archive.svg" "$f  $outname"
-
 }}
 
-cmd mkdir %{{
-    IFS=" "
-    mkdir -p -- "$*"
-    lf -remote "send $id select \"$*\""
+# Compress selected files into a .tar.gz archive.
+cmd compress ${{
+    read -p "Create archive name (.tar.gz): " name
+    if [ -n "$name" ]; then
+        tar -czf "$name" $fx
+        echo "Created archive '$name'"
+    fi
 }}
 
-cmd tar ${{
-    set -f
-    mkdir $1
-    cp -r $fx $1
-    tar czf $1.tar.gz $1
-    rm -rf $1
+# Fuzzy find files with fzf and jump to the directory.
+cmd find-file ${{
+    local file="$(fzf --preview 'bat --color=always --style=numbers,changes --line-range :500 {}')"
+    if [ -n "$file" ]; then
+        local dir="$(dirname "$file")"
+        lf -remote "send $id cd "$dir""
+        lf -remote "send $id select "$file""
+    fi
 }}
 
-cmd zip ${{
-    set -f
-    mkdir $1
-    cp -r $fx $1
-    zip -r $1.zip $1
-    rm -rf $1
-}}
+# --- Mappings ----------------------------------------------------------------
 
+map o open
+map O $xdg-open $f
 map a push :mkdir<space>
-map D delete
 map H set hidden!
-map o &mimeopen $f
-map O $mimeopen --ask $f
-map x extract
+#map gs get-size
 
+map DD trash
+map RR remove
 map <c-x> cut
+map p paste
+map y copy
+
+map / search
+map <c-f> find-file
+
+map X extract
+map C compress
 
 map <f-2> rename
 map <f-3> search
+
+# Bookmarks
+#map mb bookmark-create
+#map gb bookmark-jump

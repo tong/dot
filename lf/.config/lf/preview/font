@@ -1,6 +1,6 @@
 #!/bin/sh
 
-font=$1
+FONT=$1
 
 SIZE=600x400
 BG_COLOR="#050505"
@@ -13,15 +13,14 @@ FONTPREVIEW_DIR="/tmp"
 FONT_PREVIEW="$FONTPREVIEW_DIR/lf_fontpreview.png"
 
 pre_exit() {
-    kill -9 "$(cat "$PIDFILE" 2>/dev/null)" > /dev/null
-    #rm -rf "$FONTPREVIEW_DIR"
-    #rm -f $FONT_PREVIEW
+  kill -9 "$(cat "$PIDFILE" 2>/dev/null)" >/dev/null
+  #rm -rf "$FONTPREVIEW_DIR"
+  #rm -f $FONT_PREVIEW
 }
 
 generate_preview() {
-    convert -size $SIZE xc:"$BG_COLOR" -gravity center -pointsize $FONT_SIZE -font "$1" -fill "$FG_COLOR" -annotate "$POSITION" "$PREVIEW_TEXT" -flatten "$2"
+  convert -size $SIZE xc:"$BG_COLOR" -gravity center -pointsize $FONT_SIZE -font "$1" -fill "$FG_COLOR" -annotate "$POSITION" "$PREVIEW_TEXT" -flatten "$2"
 }
 
 trap pre_exit EXIT
-generate_preview "$font" "$FONT_PREVIEW"
-
+generate_preview "$FONT" "$FONT_PREVIEW"
