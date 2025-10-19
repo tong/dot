@@ -9,6 +9,7 @@ set -euo pipefail
 #   - Supports local and remote destinations (over SSH).
 #   - Maintains a "master" destination as the source of truth for all syncs.
 #   - Rotates old backups per destination according to configured retention.
+#   - Supports rotation tiers (daily, weekly, monthly).
 #   - Uses excludes to skip unnecessary files (cache, tmp, etc).
 #   - Provides notifications via `notify-send` if available.
 #
@@ -20,21 +21,21 @@ set -euo pipefail
 #
 # Example config file:
 #
-#   # An array of all final destinations for the backup.
-#   # Each entry is "<path> <days_to_keep>".
+#   # DESTINATIONS entries have the form: "<path> <interval> <days_to_keep>"
 #   # The first entry is the MASTER_DEST.
+#   # Interval can be: daily | weekly | monthly
 #   DESTINATIONS=(
-#     "/mnt/data/bak 30"
-#     "pi:/mnt/hd4/bak 30"
+#     "/mnt/data/bak daily 30"
+#     "pi:/mnt/hd4/bak weekly 90"
 #   )
 #
-#   # An array of source directories on your main computer to be backed up.
+#   # Directories to back up
 #   SOURCE_DIRS=(
 #     "$HOME/dev"
 #     "$HOME/something"
 #   )
 #
-#   # An array of rsync exclude patterns.
+#   # rsync exclude patterns
 #   EXCLUDE_PATTERNS=(
 #     ".cache"
 #     "node_modules"
@@ -45,19 +46,14 @@ set -euo pipefail
 #
 ###############################################################################
 
-# --- Static Settings ---
 readonly APP_NAME="backup"
 readonly LOG_FILE="/tmp/${APP_NAME}.log"
 readonly LOCK_FILE="/tmp/${APP_NAME}.lock"
 
-# --- Global Config Vars (loaded from file) ---
-# Declared here for global scope and populated by load_config()
 MASTER_DEST=""
 DESTINATIONS=()
 SOURCE_DIRS=()
 EXCLUDE_PATTERNS=()
-
-# --- Helper Functions ---
 
 usage() {
   cat <<EOF
@@ -76,7 +72,7 @@ log() {
 
 die() {
   log "ERROR: $1"
-  notify-send -u critical -a "$APP_NAME" "Backup Failed" "$1"
+  notify-send -u critical -a "$APP_NAME" "Backup Failed" "$1" || true
   exit 1
 }
 
@@ -97,7 +93,7 @@ cleanup() {
   rm -f "$LOCK_FILE"
 }
 
-# --- Core Logic Functions ---
+# --- Config ---
 
 load_config() {
   local config_file="$1"
@@ -105,22 +101,22 @@ load_config() {
     die "Config file not found. Please create it at: $config_file"
   fi
 
-  # Source the config file to load the variables
   # shellcheck source=/dev/null
   source "$config_file"
 
-  # Validate that required variables were loaded
   if ((${#DESTINATIONS[@]} == 0)); then
     die "DESTINATIONS array is empty in $config_file. At least one destination (the master) is required."
   fi
 
-  # The master destination is the path from the FIRST entry in the array.
-  read -r MASTER_DEST _ <<<"${DESTINATIONS[0]}"
+  # First destination entry is master
+  read -r MASTER_DEST _ _ <<<"${DESTINATIONS[0]}"
 
   if [[ -z "$MASTER_DEST" || ${#SOURCE_DIRS[@]} -eq 0 ]]; then
     die "Required variables MASTER_DEST (from DESTINATIONS) or SOURCE_DIRS are not set in $config_file"
   fi
 }
+
+# --- Backup creation ---
 
 create_master_backup() {
   log "--- (1/3) Creating/updating master backup at $MASTER_DEST ---"
@@ -136,15 +132,17 @@ create_master_backup() {
 
   mkdir -p "$destdir_local"
 
+  # Find last successful backup (with .ok marker)
   local latest_backup
-  latest_backup=$(find "$MASTER_DEST" -mindepth 1 -maxdepth 1 -type d -not -name "$date" | sort -r | head -n 1)
+  latest_backup=$(find "$MASTER_DEST" -mindepth 1 -maxdepth 1 -type d -name '20*' \
+    -exec test -f "{}/.ok" \; -print | sort -r | head -n 1)
 
   local link_dest_arr=()
-  if [ -d "$latest_backup" ]; then
+  if [ -n "$latest_backup" ] && [ -d "$latest_backup" ]; then
     link_dest_arr=("--link-dest=$latest_backup")
     log "Using $latest_backup for hard links."
   else
-    log "No previous backup found to link against. Performing full backup."
+    log "No valid previous .ok backup found. Performing full backup."
   fi
 
   local rsync_excludes=()
@@ -153,14 +151,18 @@ create_master_backup() {
   done
 
   log "Backing up all source directories to master destination..."
-  if ! rsync -aR --delete "${rsync_excludes[@]}" "${link_dest_arr[@]}" "${SOURCE_DIRS[@]}" "$destdir_local/"; then
+  if rsync -aR --delete "${rsync_excludes[@]}" "${link_dest_arr[@]}" "${SOURCE_DIRS[@]}" "$destdir_local/"; then
+    touch "$destdir_local/.ok"
+    log "Master backup completed successfully. Marked with .ok"
+  else
     die "Failed to create master backup. rsync command failed."
   fi
 }
 
+# --- Sync secondary destinations ---
+
 sync_to_destinations() {
   log "--- (2/3) Syncing master backup to secondary destinations ---"
-  # Get all destinations except the first one (the master)
   local sync_dests=("${DESTINATIONS[@]:1}")
 
   if ((${#sync_dests[@]} == 0)); then
@@ -178,11 +180,10 @@ sync_to_destinations() {
 
   local all_sync_ok=true
   for dest_info in "${sync_dests[@]}"; do
-    local dest_path
-    read -r dest_path _ <<<"$dest_info"
+    local dest_path interval keep_days
+    read -r dest_path interval keep_days <<<"$dest_info"
 
-    log "Syncing to destination: $dest_path"
-
+    log "Syncing to destination: $dest_path ($interval)"
     if [[ "$dest_path" == *":"* ]]; then
       local remote_host="${dest_path%%:*}"
       local remote_dir="${dest_path#*:}"
@@ -207,52 +208,64 @@ sync_to_destinations() {
   fi
 }
 
+# --- Rotation logic with intervals ---
+
 rotate_destinations() {
   log "--- (3/3) Rotating backups for all destinations ---"
   for dest_info in "${DESTINATIONS[@]}"; do
-    local dest_path
-    local keep_days
-    read -r dest_path keep_days <<<"$dest_info"
+    local dest_path interval keep_days
+    read -r dest_path interval keep_days <<<"$dest_info"
 
     if ! [[ "$keep_days" =~ ^[0-9]+$ ]]; then
-      log "Warning: Invalid or missing keep_days for '$dest_path'. Skipping rotation."
+      log "Warning: Invalid keep_days for '$dest_path'. Skipping rotation."
       continue
     fi
 
-    log "Rotating destination: $dest_path (keeping $keep_days days)"
+    log "Rotating destination: $dest_path ($interval, keep $keep_days days)"
+
+    local prune_cmd=""
+    case "$interval" in
+    daily)
+      prune_cmd="find %q -mindepth 1 -maxdepth 1 -type d -mtime +$keep_days -exec rm -rf {} +"
+      ;;
+    weekly)
+      prune_cmd="find %q -mindepth 1 -maxdepth 1 -type d -mtime +$((keep_days * 7)) -exec rm -rf {} +"
+      ;;
+    monthly)
+      prune_cmd="find %q -mindepth 1 -maxdepth 1 -type d -mtime +$((keep_days * 30)) -exec rm -rf {} +"
+      ;;
+    *)
+      log "Warning: Unknown interval '$interval' for $dest_path. Defaulting to daily."
+      prune_cmd="find %q -mindepth 1 -maxdepth 1 -type d -mtime +$keep_days -exec rm -rf {} +"
+      ;;
+    esac
+
     if [[ "$dest_path" == *":"* ]]; then
-      # Remote Destination
       local remote_host="${dest_path%%:*}"
       local remote_dir="${dest_path#*:}"
-
       local remote_mkdir_cmd
       printf -v remote_mkdir_cmd 'mkdir -p %q' "$remote_dir"
       # shellcheck disable=SC2029
-      if ! ssh "$remote_host" "$remote_mkdir_cmd"; then
-        log "Warning: Could not create or access remote directory for $dest_path. Skipping rotation."
+      ssh "$remote_host" "$remote_mkdir_cmd" || {
+        log "Warning: Cannot access $dest_path"
         continue
-      fi
+      }
 
       local remote_find_cmd
-      printf -v remote_find_cmd 'find %q -mindepth 1 -maxdepth 1 -type d -mtime +%s -exec rm -rf {} +' "$remote_dir" "$keep_days"
+      printf -v remote_find_cmd "$prune_cmd" "$remote_dir"
       # shellcheck disable=SC2029
-      if ! ssh "$remote_host" "$remote_find_cmd"; then
-        log "Warning: Failed to rotate remote backup at $dest_path"
-      fi
+      ssh "$remote_host" "$remote_find_cmd" || log "Warning: Failed to rotate remote backup at $dest_path"
     else
-      # Local Destination
-      if ! find "$dest_path" -mindepth 1 -maxdepth 1 -type d -mtime +"$keep_days" -exec rm -rf {} +; then
-        log "Warning: Failed to rotate local backup at $dest_path"
-      fi
+      eval "$(printf "$prune_cmd" "$dest_path")" || log "Warning: Failed to rotate local backup at $dest_path"
     fi
   done
 }
 
+# --- Main ---
+
 main() {
-  # Set default config file path
   local config_file="${XDG_CONFIG_HOME:-$HOME/.config}/backup/config"
 
-  # Manual argument parsing loop to support long options
   while [[ $# -gt 0 ]]; do
     case "$1" in
     -h | --help)
@@ -260,31 +273,28 @@ main() {
       exit 0
       ;;
     -c | --config)
-      if [[ -n "$2" ]]; then
+      if [[ -n "${2:-}" ]]; then
         config_file="$2"
-        shift # shift past option argument
+        shift
       else
-        die "Error: --config requires a non-empty option argument."
+        die "Error: --config requires a path."
       fi
       ;;
-    --config=*)
-      config_file="${1#*=}"
-      ;;
+    --config=*) config_file="${1#*=}" ;;
     *)
-      # Unknown option
       echo "Unknown option: $1"
       usage
       exit 1
       ;;
     esac
-    shift # shift past option name
+    shift
   done
 
   trap cleanup EXIT
   acquire_lock
   load_config "$config_file"
 
-  notify-send -u normal -a "$APP_NAME" "Backup" "Backup started…"
+  notify-send -u normal -a "$APP_NAME" "Backup" "Backup started…" || true
   log "--- Backup process started ---"
 
   local start_time
@@ -299,7 +309,7 @@ main() {
   elapsed=$((end_time - start_time))
 
   log "--- Backup process complete in ${elapsed}s ---"
-  notify-send -u normal -a "$APP_NAME" "Backup Finished" "Process completed in ${elapsed}s."
+  notify-send -u normal -a "$APP_NAME" "Backup Finished" "Completed in ${elapsed}s." || true
 }
 
 main "$@"
