@@ -19,9 +19,14 @@
 # Mode at startup (viewer/gallery)
 mode = viewer
 # Window position (parent or absolute coordinates, e.g. 100,200)
-position = parent
+position = auto
 # Window size (fullscreen/parent/image, or absolute size, e.g. 800,600)
-size = parent
+# size = parent
+# size = image
+
+overlay = yes
+#decoration = no
+
 # Action performed by SIGUSR1 signal (same format as for key bindings)
 sigusr1 = reload
 # Action performed by SIGUSR2 signal (same format as for key bindings)
@@ -40,13 +45,13 @@ transparency = grid
 # Default image scale (optimal/fit/width/height/fill/real)
 scale = optimal
 # Fix position of the image on the window surface (yes/no)
-fixed = yes
+#fixed = yes
 # Anti-aliasing mode (none/box/bilinear/bicubic/mks13)
 antialiasing = none
 # Run slideshow at startup (yes/no)
-slideshow = no
+#slideshow = no
 # Slideshow image display time (seconds)
-slideshow_time = 3
+#slideshow_time = 3
 # Number of previously viewed images to store in cache
 history = 1
 # Number of preloaded images (read ahead)
@@ -82,7 +87,7 @@ shadow = #000000ff
 # Default order (none/alpha/random)
 order = alpha
 # Looping list of images (yes/no)
-loop = yes
+#loop = yes
 # Read directories recursively (yes/no)
 recursive = no
 # Open all files in the start directory (yes/no)
@@ -141,7 +146,7 @@ d = next_dir
 Shift+o = prev_frame
 o = next_frame
 c = skip_file
-Shift+s = slideshow
+#Shift+s = slideshow
 s = animation
 f = fullscreen
 Return = mode
