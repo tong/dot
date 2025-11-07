@@ -108,10 +108,10 @@ map H set hidden!
 map DD trash
 map RR remove
 map <c-x> cut
-map p paste
 map y copy
+map p paste
 
-map / search
+#map / search
 map <c-f> find-file
 
 map X extract

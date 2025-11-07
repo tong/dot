@@ -18,9 +18,9 @@ pre_exit() {
   #rm -f $FONT_PREVIEW
 }
 
-generate_preview() {
+generate_font_preview() {
   convert -size $SIZE xc:"$BG_COLOR" -gravity center -pointsize $FONT_SIZE -font "$1" -fill "$FG_COLOR" -annotate "$POSITION" "$PREVIEW_TEXT" -flatten "$2"
 }
 
 trap pre_exit EXIT
-generate_preview "$FONT" "$FONT_PREVIEW"
+generate_font_preview "$FONT" "$FONT_PREVIEW"
