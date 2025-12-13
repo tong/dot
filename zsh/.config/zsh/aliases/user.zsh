@@ -118,4 +118,4 @@ alias fnerdfont='fzf-nerdfont'
 
 # ---
 
-alias waybar-reload='killall -SIGUSR2 waybar'
+alias waybar-restart='killall waybar 2>/dev/null || true; waybar >/dev/null 2>&1 & disown'
