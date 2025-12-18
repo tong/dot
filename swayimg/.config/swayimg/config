@@ -100,7 +100,7 @@ all = yes
 # Font name
 name = monospace
 # Font size (pt)
-size = 14
+size = 9
 # Font color (RGBA)
 color = #ccccccff
 # Shadow color (RGBA)
