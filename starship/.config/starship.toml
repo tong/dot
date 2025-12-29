@@ -6,7 +6,7 @@ command_timeout = 200
 # \
 format = """
 $jobs\
-[](dimmed)  \
+  \
 $directory\
 $git_branch\
 $git_status\
@@ -15,7 +15,7 @@ $haxe\
 
 [character]
 error_symbol = "[](bold red)"
-success_symbol = "[](dimmed)"
+success_symbol = "[󰁕]()"
 vimcmd_symbol = '[]()'
 vimcmd_replace_one_symbol = '[](bold fg:lavender)'
 vimcmd_replace_symbol = '[](bold fg:lavender)'
