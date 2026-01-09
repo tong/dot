@@ -1,5 +1,5 @@
 #include=~/.config/mako/core.ini
-
+default-timeout=5000
 text-color=#d4be98
 border-color=#a89984
 background-color=#282828
