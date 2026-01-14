@@ -1,25 +1,3 @@
-# export XDG_CONFIG_HOME="$HOME/.config"
-# export XDG_CACHE_HOME="$HOME/.cache"
-# export XDG_DOCUMENTS_DIR="$HOME/doc"
-# export XDG_DOWNLOADS="$HOME/downloads"
-# export XDG_DOWNLOAD_DIR="$HOME/downloads"
-# export XDG_MUSIC_DIR="$HOME/music"
-# export XDG_PICTURES_DIR="$HOME/img"
-# export XDG_VIDEOS_DIR="$HOME/video"
-#
-# export EMAIL="$USER@disktree.net"
-# export GITUSER="$USER" 
-#
-# export BROWSER="brave"
-# export EDITOR="nvim"
-# export FILEMANAGER=lf
-# export FILEMANAGER_GUI=nautilus
-# export TERMINAL=kitty
-#
-# export TASKDATA=$HOME/.local/share/taskwarrior
-# export TASKRC=$HOME/.config/taskwarrior/taskrc
-
-#export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 HISTFILE="$HOME/.cache/zsh/history"
@@ -34,21 +12,19 @@ setopt interactive_comments
 setopt noflowcontrol
 setopt auto_cd auto_pushd pushd_ignore_dups pushd_silent cdable_vars
 setopt correct extended_glob
-################################################################################
 
-# --- zsh-vi-mode (optional, before keybind-affecting plugins) ---
-function zvm_after_init() {
+# function zvm_after_init() {
   # source /usr/share/fzf/completion.zsh
   # source /usr/share/fzf/key-bindings.zsh
   # ZVM_CURSOR_STYLE_ENABLED=true
   # ZVM_INSERT_MODE_CURSOR=$'\e[6 q'   # blinking beam
   # ZVM_NORMAL_MODE_CURSOR=$'\e[2 q'   # blinking block
-}
+# }
 
 #source "$ZDOTDIR/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
+
 source "$ZDOTDIR/plugins/zsh-completions/zsh-completions.plugin.zsh"
 source "$ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-# Syntax highlighting must always be last
 source "$ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 source "$ZDOTDIR/completion.zsh"
@@ -56,10 +32,9 @@ source "$ZDOTDIR/completion.zsh"
 for f in "$ZDOTDIR/functions/"*.zsh; do source "$f"; done
 for f in "$ZDOTDIR/aliases/"*.zsh;   do source "$f"; done
 
+source "$ZDOTDIR/bindings.zsh"
 #source "$ZDOTDIR/config/man.zsh"
 #source "$ZDOTDIR/config/ssh.zsh"
-
-source "$ZDOTDIR/bindings.zsh"
 
 ################################################################################
 
@@ -90,8 +65,9 @@ export LD_LIBRARY_PATH=/usr/local/lib
 export CC=/usr/bin/clang
 export CXX=/usr/bin/clang++
 export GOPATH="$HOME/.go"
+export PICO_SDK_PATH="$HOME/sdk/pico-sdk"
 export HAXELIB_PATH=$HOME/.haxe
-#export HAXE_STD_PATH=/usr/local/share/haxe/std
+export HAXE_STD_PATH=/usr/local/share/haxe/std
 export HAXE_STD_PATH=/usr/share/haxe/std
 export HASHLINK=$HOME/src/hashlink
 export THEME=gruvbox
@@ -107,6 +83,5 @@ export THEME=gruvbox
 # export ANDROID_API=21
 # export ANDROID_HOME=${HOME}/sdk/android-sdk
 
-
-
+#export ZEPHYR_SDK_INSTALL_DIR=/home/tong/sdk/zephyr-sdk-0.16.5-1
 

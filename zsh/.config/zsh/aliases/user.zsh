@@ -71,6 +71,8 @@ alias wiki='cd $HOME/wiki && nvim .'
 alias ytdl-mp3='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio -f bestaudio --add-metadata --embed-thumbnail --audio-format mp3 "$@"'
 alias ytdl='yt-dlp'
 
+# alias wtri='hl $HOME/dev/lib/wtri/wtri.hl'
+
 alias nconfig='$EDITOR $XDG_CONFIG_HOME/nvim'
 alias vconf='$EDITOR $HOME/.config/nvim'
 alias zconfig='cd $ZDOTDIR && $EDITOR .'
