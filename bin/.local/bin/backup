@@ -9,7 +9,6 @@ set -euo pipefail
 #   - Supports local and remote destinations (over SSH).
 #   - Maintains a "master" destination as the source of truth for all syncs.
 #   - Rotates old backups per destination according to configured retention.
-#   - Supports rotation tiers (daily, weekly, monthly).
 #   - Uses excludes to skip unnecessary files (cache, tmp, etc).
 #   - Provides notifications via `notify-send` if available.
 #
@@ -21,12 +20,11 @@ set -euo pipefail
 #
 # Example config file:
 #
-#   # DESTINATIONS entries have the form: "<path> <interval> <days_to_keep>"
+#   # DESTINATIONS entries have the form: "<path> <days_to_keep>"
 #   # The first entry is the MASTER_DEST.
-#   # Interval can be: daily | weekly | monthly
 #   DESTINATIONS=(
-#     "/mnt/data/bak daily 30"
-#     "pi:/mnt/hd4/bak weekly 90"
+#     "/mnt/data/bak 10"
+#     "pi:/mnt/hd4/bak 30"
 #   )
 #
 #   # Directories to back up
@@ -109,7 +107,7 @@ load_config() {
   fi
 
   # First destination entry is master
-  read -r MASTER_DEST _ _ <<<"${DESTINATIONS[0]}"
+  read -r MASTER_DEST _ <<<"${DESTINATIONS[0]}"
 
   if [[ -z "$MASTER_DEST" || ${#SOURCE_DIRS[@]} -eq 0 ]]; then
     die "Required variables MASTER_DEST (from DESTINATIONS) or SOURCE_DIRS are not set in $config_file"
@@ -180,10 +178,10 @@ sync_to_destinations() {
 
   local all_sync_ok=true
   for dest_info in "${sync_dests[@]}"; do
-    local dest_path interval keep_days
-    read -r dest_path interval keep_days <<<"$dest_info"
+    local dest_path keep_days
+    read -r dest_path keep_days <<<"$dest_info"
 
-    log "Syncing to destination: $dest_path ($interval)"
+    log "Syncing to destination: $dest_path"
     if [[ "$dest_path" == *":"* ]]; then
       local remote_host="${dest_path%%:*}"
       local remote_dir="${dest_path#*:}"
@@ -208,37 +206,22 @@ sync_to_destinations() {
   fi
 }
 
-# --- Rotation logic with intervals ---
+# --- Rotation logic ---
 
 rotate_destinations() {
   log "--- (3/3) Rotating backups for all destinations ---"
   for dest_info in "${DESTINATIONS[@]}"; do
-    local dest_path interval keep_days
-    read -r dest_path interval keep_days <<<"$dest_info"
+    local dest_path keep_days
+    read -r dest_path keep_days <<<"$dest_info"
 
     if ! [[ "$keep_days" =~ ^[0-9]+$ ]]; then
       log "Warning: Invalid keep_days for '$dest_path'. Skipping rotation."
       continue
     fi
 
-    log "Rotating destination: $dest_path ($interval, keep $keep_days days)"
+    log "Rotating destination: $dest_path (keep $keep_days days)"
 
-    local prune_cmd=""
-    case "$interval" in
-    daily)
-      prune_cmd="find %q -mindepth 1 -maxdepth 1 -type d -mtime +$keep_days -exec rm -rf {} +"
-      ;;
-    weekly)
-      prune_cmd="find %q -mindepth 1 -maxdepth 1 -type d -mtime +$((keep_days * 7)) -exec rm -rf {} +"
-      ;;
-    monthly)
-      prune_cmd="find %q -mindepth 1 -maxdepth 1 -type d -mtime +$((keep_days * 30)) -exec rm -rf {} +"
-      ;;
-    *)
-      log "Warning: Unknown interval '$interval' for $dest_path. Defaulting to daily."
-      prune_cmd="find %q -mindepth 1 -maxdepth 1 -type d -mtime +$keep_days -exec rm -rf {} +"
-      ;;
-    esac
+    local prune_cmd="find %q -mindepth 1 -maxdepth 1 -type d -mtime +$keep_days -exec rm -rf {} +"
 
     if [[ "$dest_path" == *":"* ]]; then
       local remote_host="${dest_path%%:*}"
