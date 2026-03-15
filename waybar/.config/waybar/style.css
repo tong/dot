@@ -1,185 +1,187 @@
-/* @import "../omarchy/current/theme/waybar.css"; */
-@define-color background #282828;
-@define-color foreground #d4be98;
-@define-color red #cc241d;
-@define-color green #98971a;
-@define-color yellow #d79921;
-@define-color blue #458588;
-@define-color magenta #b16286;
-@define-color cyan #689d6a;
-@define-color gray #a89984;
+@define-color black #1a1a1a;
+@define-color white #b8b8b8;
+@define-color gray_dark #262626;
+@define-color gray_med #4a4a4a;
+@define-color gray_light #808080;
+@define-color gray_ultra_light #a0a0a0;
 
-@define-color red_light #fb4934;
-@define-color green_light #b8bb26;
-@define-color yellow_light #fabd2d;
-@define-color blue_light #83a598;
-@define-color magenta_light #d3869b;
-@define-color cyan #8ec07c;
-@define-color gray_dark #928374;
+@define-color bg_module rgba(26, 26, 26, 0.75);
+@define-color bg_hover rgba(184, 184, 184, 0.15);
+@define-color bg_active rgba(184, 184, 184, 0.85);
 
 /* -------------------------------------------------------------------------- */
 
-@keyframes alarm {
-  0% {
-    background: #000;
-    color: #fff;
-  }
-  80% {
-    background: @red;
-  }
-}
-
 @keyframes urgent {
-  0% {
-    background: @background;
-    color: @foreground;
-  }
-  50% {
-    background: @foreground;
-    color: @background;
-  }
-}
-
-@keyframes workspace-activate {
-  0% {
-    border-color: @background;
-  }
-  100% {
-    border-color: @foreground;
-  }
+  0% { background-color: @black; color: @white; }
+  50% { background-color: @gray_med; color: @white; }
+  100% { background-color: @black; color: @white; }
 }
 
 /* -------------------------------------------------------------------------- */
 
 * {
-  color: @foreground;
+  font-family: "JetBrainsMono Nerd Font", "monospace";
+  font-size: 13px;
   border: none;
   border-radius: 0;
   min-height: 0;
-  font-family: "JetBrainsMono Nerd Font Mono", monospace;
-  font-size: 12px;
 }
 
-window, #waybar {
-  background: none;
+window#waybar {
+  background-color: transparent;
+  color: @white;
 }
 
-.hidden {
-  opacity: 0;
+window#waybar.hidden {
+  opacity: 0.2;
 }
 
-.modules-left {
-  margin-left: 6px;
+#workspaces,
+#window,
+#mpris,
+#pulseaudio,
+#network,
+#cpu,
+#memory,
+#temperature,
+#backlight,
+#clock,
+#tray,
+#bluetooth,
+#custom-taskwarrior,
+#custom-keyboard,
+#custom-home-assistant,
+#group-performance {
+  padding: 0 6px;
+  margin: 4px 4px;
+  background-color: @bg_module;
+  border-radius: 12px;
+  color: @white;
+  border: 1px solid rgba(184, 184, 184, 0.05);
 }
 
-.modules-left>widget:last-child {
-  /* background: blue; */
+/* --- Group modules --- */
+
+#group-performance {
+  padding: 0;
 }
 
-.modules-right {
-  margin-right: 8px;
+#group-performance #cpu,
+#group-performance #memory {
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 0 10px;
 }
 
-.modules-right>widget>* {
-  /* background: blue; */
-}
+/* --- Modules --- */
 
-
-widget {
-  /* margin-right: 8px; */
-  /* padding: 0 8px; */
-  /* background: white; */
-}
-widget>* {
-  /* margin-right: 8px; */
-  /* margin: 0 8px; */
-  /* padding: 0 8px; */
-  /* padding: 20px 0.25rem 0px 0.25rem; */
-}
-
-tooltip {
-  padding: 2px;
-}
-tooltip label {
-  /* padding: 2rem 1.5rem; */
-  /* background:red; */
-}
-
-/* #custom-expand-icon { */
-/*   margin-right: 7px; */
-/* } */
-
-/* -------------------------------------------------------------------------- */
-
-#bluetooth, #memory, #network, #pulseaudio {
-  margin-right: 8px;
-}
-
-#clock {
-  /* margin-left: 8.75px; */
-  /* background: yellow; */
-  /* animation: urgent 0.8s ease-in-out infinite; */
-}
-
-#cpu {
-  /* margin-right: 1px; */
-}
-
-#mpris {
-  color: @gray_dark;
-}
-
-#network {
-}
-
-#network.disconnected {
-  background-color: @red;
-}
-
-#performance {
-  /* background: red; */
-}
-
-#pulseaudio {
-}
-
-#pulseaudio.muted {
-  /* color: #141414; */
-}
-
-#temperature {
-}
-#temperature.critical {
-  font-weight: bold;
-  background: @red;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  animation: alarm 0.5s infinite alternate;
+#workspaces {
+  padding: 0;
+  background-color: transparent;
+  border: none;
 }
 
 #workspaces button {
-  all: initial;
-  padding: 0 6px;
-  border-top: 1px solid @background;
+  padding: 0 10px;
+  margin: 4px 2px;
+  background-color: @bg_module;
+  color: @gray_med;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(184, 184, 184, 0.05);
+}
+
+#workspaces button:hover {
+  background-color: @bg_hover;
+  color: @gray_ultra_light;
 }
 
 #workspaces button.active {
-  border-color: @foreground;
-  /* animation: workspace-activate 0.3s ease-in-out 1 forwards; */
-}
-#workspaces button.active.animated {
-  /* animation: workspace-activate 1s ease-in-out 1; */
-}
-
-#workspaces button.empty {
-  opacity: 0.5;
+  background-color: @bg_active;
+  color: @black;
+  font-weight: bold;
 }
 
 #workspaces button.urgent {
-  background: @red;
-  animation: urgent 2s infinite alternate;
+  animation: urgent 1.5s infinite;
+}
+
+#workspaces button.empty {
+  color: @gray_dark;
+}
+
+#window {
+  color: @gray_ultra_light;
+  background-color: transparent;
+  border: none;
+  font-style: italic;
+}
+
+#clock {
+  font-weight: bold;
+  color: @white;
+}
+
+#pulseaudio.muted {
+  color: @gray_med;
+}
+
+#network.disconnected {
+  color: @gray_light;
+  background-color: @gray_dark;
+}
+
+#bluetooth.disabled {
+  color: @gray_med;
+}
+
+#temperature.critical {
+  background-color: @gray_light;
+  color: @black;
+  font-weight: bold;
+}
+
+#custom-taskwarrior {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+#custom-keyboard.disconnected {
+  color: @gray_med;
+}
+
+#mpris {
+  color: @gray_light;
+  font-style: italic;
+  font-size: 12px;
+}
+
+#mpris.paused {
+  color: @gray_med;
 }
 
 #tray {
- margin-left: 0.5rem;
+  padding: 0 12px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  background-color: @gray_ultra_light;
+  color: @black;
+}
+
+tooltip {
+  background: @gray_dark;
+  border: 1px solid @gray_med;
+  border-radius: 8px;
+}
+
+tooltip label {
+  color: @gray_ultra_light;
+  padding: 8px;
 }
