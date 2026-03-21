@@ -10,7 +10,6 @@
   ],
   "modules-left": [
     "hyprland/workspaces",
-    "tray",
     "custom/taskwarrior"
   ],
   "modules-center": [
@@ -24,6 +23,7 @@
     "custom/keyboard",
     "bluetooth",
     "clock",
+    "tray",
     "temperature"
   ],
   "hyprland/workspaces": {
@@ -53,7 +53,7 @@
     "actions": {
       "on-click-right": "mode"
     },
-    "tooltip": false
+    "tooltip": true
   },
   "mpris": {
     "format": "{status_icon} {player_icon} {dynamic}",

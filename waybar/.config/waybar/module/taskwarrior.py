@@ -1,17 +1,25 @@
 import os
 import json
 import html
+import sys
+from datetime import datetime, timezone
 from tasklib import TaskWarrior
 
 
 class WaybarTaskwarrior:
     def __init__(self):
         self.data_location = os.environ.get("TASKDATA", "~/.task")
-        if not os.path.exists(os.path.expanduser(self.data_location)):
-            print(json.dumps({"text": " TASKDATA not found", "class": "error"}))
-            exit(1)
+        expanded_location = os.path.expanduser(self.data_location)
 
-        self.tw = TaskWarrior(self.data_location)
+        if not os.path.exists(expanded_location):
+            self._exit_with_error(f" {self.data_location} not found")
+
+        try:
+            self.tw = TaskWarrior(expanded_location)
+        except Exception as e:
+            self._exit_with_error(f" TaskWarrior error: {e}")
+
+        self.max_next_tasks = 3
         self.colors = {
             "background": "#090909",
             "b_high": "#a1a1a1",
@@ -23,199 +31,223 @@ class WaybarTaskwarrior:
             "f_low": "#111",
             "f_inv": "#818181",
             "urgent": "#ff0000",
+            "project": "#81a1c1",
         }
-        self.powerline_symbols = {
+        self.symbols = {
             "right_arrow": "",
             "right_arrow_thin": "",
             "left_arrow": "",
             "left_arrow_thin": "",
+            "pending": "📋",
+            "urgent": "",
+            "active": "󰮔",
+            "waiting": "",
+            "next": "",
+            "timer": "",
         }
 
-    def _pango_markup(self, text, bg=None, fg=None, weight=None, element="span"):
-        attributes = []
-        if bg:
-            attributes.append(f'background="{bg}"')
-        if fg:
-            attributes.append(f'color="{fg}"')
-        if weight:
-            attributes.append(f'font-weight="{weight}"')
+    def _exit_with_error(self, message):
+        print(json.dumps({"text": message, "class": "error"}))
+        sys.exit(0)
 
-        # Pango markup requires XML-escaping for text content.
+    def _pango(self, text, bg=None, fg=None, weight=None, size=None, style=None):
+        attrs = []
+        if bg:
+            attrs.append(f'background="{bg}"')
+        if fg:
+            attrs.append(f'color="{fg}"')
+        if weight:
+            attrs.append(f'font-weight="{weight}"')
+        if size:
+            attrs.append(f'font-size="{size}"')
+        if style:
+            attrs.append(f'font-style="{style}"')
+
         safe_text = html.escape(str(text))
-        return f"<{element} {' '.join(attributes)}>{safe_text}</{element}>"
+        return f"<span {' '.join(attrs)}>{safe_text}</span>"
+
+    def _format_duration(self, start_time):
+        if not start_time:
+            return ""
+
+        if start_time.tzinfo is None:
+            start_time = start_time.replace(tzinfo=timezone.utc)
+
+        now = datetime.now(timezone.utc)
+        diff = now - start_time
+
+        seconds = int(diff.total_seconds())
+        hours, remainder = divmod(seconds, 3600)
+        minutes, _ = divmod(remainder, 60)
+
+        if hours > 0:
+            return f"{hours}h {minutes}m"
+        return f"{minutes}m"
 
     def get_tasks(self):
-        self.pending_tasks = self.tw.tasks.pending()
-        self.waiting_tasks = self.tw.tasks.waiting()
-        self.active_tasks = self.pending_tasks.filter("+ACTIVE")
-        self.next_tasks = self.pending_tasks.filter("+next")
-        self.overdue_tasks = self.pending_tasks.filter("+OVERDUE")
+        self.pending = self.tw.tasks.pending()
+        self.waiting = self.tw.tasks.waiting()
+
+        # Filter from pending to ensure consistency
+        self.active_tasks = self.pending.filter("+ACTIVE")
+        self.next_tasks = self.pending.filter("+next")
+        self.overdue_tasks = self.pending.filter("+OVERDUE")
+
+        # Tasks that are pending but not active and not tagged 'next'
+        self.other_pending = self.pending.filter("-ACTIVE -next")
 
         self.active_task = self.active_tasks[0] if self.active_tasks else None
 
     def build_text(self):
         parts = []
 
-        # Counts
-        pending_count = len(self.pending_tasks)
-        next_count = len(self.next_tasks)
-        overdue_count = len(self.overdue_tasks)
-        waiting_count = len(self.waiting_tasks)
-
-        if overdue_count > 0:
+        # 1. Overdue Count
+        if self.overdue_tasks:
             parts.append(
-                self._pango_markup(
-                    f" {overdue_count}  ",
-                    self.colors["urgent"],
-                    self.colors["f_low"],
-                    "bold",
+                self._pango(
+                    f" {len(self.overdue_tasks)} {self.symbols['urgent']} ",
+                    bg=self.colors["urgent"],
+                    fg=self.colors["f_low"],
+                    weight="bold",
                 )
             )
             parts.append(
-                self._pango_markup(
-                    self.powerline_symbols["right_arrow"],
-                    self.colors["urgent"],
-                    self.colors["background"],
+                self._pango(
+                    self.symbols["right_arrow"],
+                    fg=self.colors["urgent"],
+                    bg=self.colors["background"],
                 )
             )
 
-        if waiting_count > 0:
+        # 2. Waiting Count
+        if self.waiting:
             parts.append(
-                self._pango_markup(
-                    f" {waiting_count}  ",
-                    self.colors["b_med"],
-                    self.colors["f_low"],
-                    "bold",
+                self._pango(
+                    f" {len(self.waiting)} {self.symbols['waiting']} ",
+                    bg=self.colors["b_med"],
+                    fg=self.colors["f_low"],
+                    weight="bold",
                 )
             )
 
-        parts.append(self._pango_markup(f" {pending_count} "))
-        if next_count > 0:
-            parts.append(self._pango_markup(f"+{next_count} "))
+        # 3. Main Counts
+        parts.append(self._pango(f" {len(self.pending)} "))
+        if self.next_tasks:
+            parts.append(self._pango(f"+{len(self.next_tasks)} ", weight="bold"))
 
-        # Active task
+        # 4. Active Task Detail
         if self.active_task:
             project = self.active_task["project"]
-            description = self.active_task["description"]
+            desc = self.active_task["description"]
+            duration = self._format_duration(self.active_task["start"])
+
+            # Segment start
+            parts.append(
+                self._pango(
+                    self.symbols["right_arrow"],
+                    fg=self.colors["background"],
+                    bg=self.colors["b_high"],
+                )
+            )
 
             if project:
                 parts.append(
-                    self._pango_markup(
-                        self.powerline_symbols["right_arrow"],
-                        self.colors["b_high"],
-                        self.colors["background"],
-                    )
-                )
-                parts.append(
-                    self._pango_markup(
+                    self._pango(
                         f" {project.upper()} ",
-                        self.colors["b_high"],
-                        self.colors["f_low"],
-                        "bold",
+                        bg=self.colors["b_high"],
+                        fg=self.colors["f_low"],
+                        weight="bold",
                     )
                 )
                 parts.append(
-                    self._pango_markup(
-                        self.powerline_symbols["right_arrow_thin"],
-                        self.colors["b_high"],
-                        self.colors["background"],
-                    )
-                )
-            else:
-                parts.append(
-                    self._pango_markup(
-                        self.powerline_symbols["right_arrow"],
-                        self.colors["b_high"],
-                        self.colors["background"],
+                    self._pango(
+                        self.symbols["right_arrow_thin"],
+                        bg=self.colors["b_high"],
+                        fg=self.colors["f_low"],
                     )
                 )
 
+            main_text = f" {desc} "
+            if duration:
+                main_text += f"({duration}) "
+
             parts.append(
-                self._pango_markup(
-                    f" {description} ",
-                    self.colors["b_high"],
-                    self.colors["f_low"],
-                    "bold",
-                )
-            )
-            parts.append(
-                self._pango_markup(
-                    self.powerline_symbols["left_arrow"],
-                    self.colors["b_high"],
-                    self.colors["background"],
+                self._pango(
+                    main_text,
+                    bg=self.colors["b_high"],
+                    fg=self.colors["f_low"],
+                    weight="bold",
                 )
             )
 
-        # Next tasks
+            # Segment end
+            parts.append(
+                self._pango(
+                    self.symbols["left_arrow"],
+                    fg=self.colors["background"],
+                    bg=self.colors["b_high"],
+                )
+            )
+
+        # 5. Next Tasks Peek
         if self.next_tasks:
-            next_strings = []
-            for task in self.next_tasks[:3]:  # show first 3
-                s = task["description"]
+            next_items = []
+            for task in self.next_tasks[: self.max_next_tasks]:
+                t_str = task["description"]
                 if task["project"]:
-                    s = f"{task['project'].upper()}:{s}"
-                next_strings.append(s)
+                    t_str = f"{task['project']}:{t_str}"
+                next_items.append(t_str)
 
+            separator = f" {self.symbols['left_arrow_thin']} "
             parts.append(
-                " "
-                + self._pango_markup(
-                    f" {self.powerline_symbols['left_arrow_thin']} ".join(next_strings),
-                    fg=self.colors["b_med"],
-                )
+                " " + self._pango(separator.join(next_items), fg=self.colors["b_med"])
             )
 
         return "".join(parts)
 
     def build_tooltip(self):
-        tooltip_lines = []
-        tooltip_lines.append("<b>Taskwarrior</b>")
+        lines = []
+
+        def add_section(title, tasks, icon=""):
+            if not tasks:
+                return
+            lines.append(self._pango(f"{icon} {title} ({len(tasks)})", weight="bold"))
+            for t in tasks:
+                proj = f"[{t['project']}] " if t["project"] else ""
+
+                # Add duration for active tasks in tooltip
+                duration = ""
+                if t.active:
+                    d = self._format_duration(t["start"])
+                    if d:
+                        duration = f" ({d})"
+
+                lines.append(f"  • {proj}{t['description']}{duration}")
+            lines.append("")
 
         if self.active_task:
-            tooltip_lines.append(
-                f"\n<b>Active:</b> {html.escape(self.active_task['description'])}"
-            )
-            if self.active_task["project"]:
-                tooltip_lines.append(
-                    f"  <i>Project: {html.escape(self.active_task['project'])}</i>"
-                )
+            add_section("Active", [self.active_task], self.symbols["active"])
 
-        if self.overdue_tasks:
-            tooltip_lines.append(f"\n<b>Overdue ({len(self.overdue_tasks)}):</b>")
-            for task in self.overdue_tasks:
-                tooltip_lines.append(f"  - {html.escape(task['description'])}")
+        add_section("Overdue", self.overdue_tasks, self.symbols["urgent"])
+        add_section("Next", self.next_tasks, self.symbols["next"])
+        add_section("Waiting", self.waiting, self.symbols["waiting"])
+        add_section("Pending", self.other_pending, self.symbols["pending"])
 
-        if self.waiting_tasks:
-            tooltip_lines.append(f"\n<b>Waiting ({len(self.waiting_tasks)}):</b>")
-            for task in self.waiting_tasks:
-                tooltip_lines.append(f"  - {html.escape(task['description'])}")
-
-        if self.next_tasks:
-            tooltip_lines.append(f"\n<b>Next ({len(self.next_tasks)}):</b>")
-            for task in self.next_tasks:
-                tooltip_lines.append(f"  - {html.escape(task['description'])}")
-
-        pending_non_next = [
-            t for t in self.pending_tasks if not t.active and "+next" not in t["tags"]
-        ]
-        if pending_non_next:
-            tooltip_lines.append(f"\n<b>Pending ({len(pending_non_next)}):</b>")
-            for task in pending_non_next:
-                tooltip_lines.append(f"  - {html.escape(task['description'])}")
-
-        return "\n".join(tooltip_lines)
+        return "\n".join(lines).strip()
 
     def run(self):
         try:
             self.get_tasks()
-            text = self.build_text()
-            tooltip = self.build_tooltip()
-
-            output = {"text": text, "tooltip": tooltip, "class": "taskwarrior"}
+            output = {
+                "text": self.build_text(),
+                "tooltip": self.build_tooltip(),
+                "class": "taskwarrior",
+                "alt": "active" if self.active_task else "idle",
+            }
             print(json.dumps(output))
-
         except Exception as e:
-            print(json.dumps({"text": f"Error: {e}", "class": "error"}))
+            self._exit_with_error(f"Runtime error: {e}")
 
 
 if __name__ == "__main__":
     WaybarTaskwarrior().run()
-
