@@ -203,7 +203,7 @@ window#waybar.hidden {
 }
 
 #mpris {
-  color: #a3be8c;
+  /* color: #a3be8c; */
 }
 
 #mpris.paused {

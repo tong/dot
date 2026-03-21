@@ -11,11 +11,11 @@
   "modules-left": [
     "hyprland/workspaces",
     "custom/taskwarrior",
-    "hyprland/window",
-    "mpris"
+    "hyprland/window"
   ],
   "modules-center": [],
   "modules-right": [
+    "mpris",
     "pulseaudio",
     "network",
     "group/performance",
@@ -147,8 +147,8 @@
     "interval": 5
   },
   "custom/keyboard": {
-    "exec": "$HOME/.config/waybar/module/totem.sh",
-    "interval": 5,
+    "exec": "bash $HOME/.config/waybar/module/keyboard.sh",
+    "interval": 30,
     "return-type": "json"
   },
   "bluetooth": {
