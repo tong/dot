@@ -66,6 +66,15 @@ window#waybar.hidden {
   border: 1px solid rgba(184, 184, 184, 0.05);
 }
 
+#custom-home-assistant {
+  /* Home Assistant blue */
+  /* color: #41bdf5; */
+}
+
+#custom-home-assistant.error {
+  color: #ff5555;
+}
+
 /* --- Group modules --- */
 
 #group-performance {
@@ -109,8 +118,8 @@ window#waybar.hidden {
   background-color: @bg_active;
   color: @black;
   font-weight: bold;
-  padding: 0 20px;
-  min-width: 45px;
+  padding: 0 12px;
+  min-width: 32px;
 }
 
 #workspaces button.urgent {
@@ -194,7 +203,7 @@ window#waybar.hidden {
 }
 
 #mpris {
-  /* color: #a3be8c; */
+  color: #a3be8c;
 }
 
 #mpris.paused {

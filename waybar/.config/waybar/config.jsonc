@@ -22,10 +22,18 @@
     "custom/keyboard",
     "bluetooth",
     "custom/ssh",
+    "custom/home-assistant",
     "clock",
     "tray",
     "temperature"
   ],
+  "custom/home-assistant": {
+    "exec": "python $HOME/.config/waybar/module/home-assistant.py",
+    "return-type": "json",
+    "interval": 300,
+    "format": "{}",
+    "tooltip": true
+  },
   "custom/ssh": {
     "exec": "python $HOME/.config/waybar/module/ssh.py",
     "return-type": "json",
