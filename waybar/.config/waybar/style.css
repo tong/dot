@@ -56,7 +56,8 @@ window#waybar.hidden {
 #custom-taskwarrior,
 #custom-keyboard,
 #custom-home-assistant,
-#group-performance {
+#group-performance,
+#hyprland-submap {
   padding: 0 6px;
   margin: 4px 4px;
   background-color: @bg_module;
@@ -108,8 +109,8 @@ window#waybar.hidden {
   background-color: @bg_active;
   color: @black;
   font-weight: bold;
-  padding: 0 4px;
-  min-width: 48px;
+  padding: 0 20px;
+  min-width: 45px;
 }
 
 #workspaces button.urgent {
@@ -121,10 +122,10 @@ window#waybar.hidden {
 }
 
 #window {
-  color: @gray_ultra_light;
+  /* color: @gray_ultra_light; */
   background-color: transparent;
   border: none;
-  font-style: italic;
+  /* font-style: italic; */
 }
 
 #clock {
@@ -193,13 +194,12 @@ window#waybar.hidden {
 }
 
 #mpris {
-  color: @gray_light;
-  font-style: italic;
-  font-size: 12px;
+  /* color: #a3be8c; */
 }
 
 #mpris.paused {
-  color: @gray_med;
+  color: @gray_light;
+  font-style: italic;
 }
 
 #tray {
