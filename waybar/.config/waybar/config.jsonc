@@ -22,10 +22,18 @@
     "group/performance",
     "custom/keyboard",
     "bluetooth",
+    "custom/ssh",
     "clock",
     "tray",
     "temperature"
   ],
+  "custom/ssh": {
+    "exec": "python $HOME/.config/waybar/module/ssh.py",
+    "return-type": "json",
+    "interval": 10,
+    "format": "{}",
+    "tooltip": true
+  },
   "hyprland/workspaces": {
     "all-outputs": true,
     "format": "{name}",

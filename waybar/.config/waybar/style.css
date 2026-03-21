@@ -179,8 +179,17 @@ window#waybar.hidden {
   padding: 0;
 }
 
-#custom-keyboard.disconnected {
-  color: @gray_med;
+#custom-ssh {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+#custom-ssh.active {
+  padding: 0 10px;
+  margin: 4px 4px;
+  background-color: @bg_module;
+  font-weight: bold;
 }
 
 #mpris {
