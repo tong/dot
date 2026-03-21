@@ -47,9 +47,9 @@ class WaybarTaskwarrior:
     def get_tasks(self):
         self.pending_tasks = self.tw.tasks.pending()
         self.waiting_tasks = self.tw.tasks.waiting()
-        self.active_tasks = self.tw.tasks.filter("+ACTIVE")
-        self.next_tasks = self.tw.tasks.filter("+next")
-        self.overdue_tasks = self.tw.tasks.filter("+OVERDUE")
+        self.active_tasks = self.pending_tasks.filter("+ACTIVE")
+        self.next_tasks = self.pending_tasks.filter("+next")
+        self.overdue_tasks = self.pending_tasks.filter("+OVERDUE")
 
         self.active_task = self.active_tasks[0] if self.active_tasks else None
 
