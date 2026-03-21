@@ -2,7 +2,7 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 28,
+  "height": 36,
   "spacing": 0,
   "bar_id": "bar-1",
   "output": [
@@ -90,13 +90,15 @@
     "max-volume": 150
   },
   "network": {
-    "format-ethernet": "{bandwidthDownBytes} {bandwidthUpBytes}",
-    "format-wifi": "{bandwidthDownBytes}/{bandwidthUpBytes}  {essid} ({signalStrength}%)",
-    "format-disconnected": "⚠ NETWORK DISCONNECTED",
-    "tooltip-format": "interface: {ifname}\nip: {ipaddr}\ngateway: {gwaddr}\nnetmask: {netmask}\n\n  {bandwidthTotalBytes}\n {bandwidthDownBytes}\n {bandwidthUpBytes}",
-    "tooltip-format-wifi": "interface: {ifname}\nip: {ipaddr}\ngateway: {gwaddr}\nnetmask: {netmask}\n\n  {bandwidthTotalBytes}\n {bandwidthDownBytes}\n {bandwidthUpBytes}\n\n SSID: {essid} {frequency} ({signalStrength}%)",
-    "tooltip-format-disconnected": "Disconnected",
-    "interval": 1
+    "format-ethernet": "󰈀 {bandwidthDownBytes} 󰈀 {bandwidthUpBytes}",
+    "format-wifi": " {essid} ({signalStrength}%) {bandwidthDownBytes}/{bandwidthUpBytes}",
+    "format-linked": "󰈀 {ifname} (No IP)",
+    "format-disconnected": "󰲜 Disconnected",
+    "tooltip-format": "󰈀 {ifname} via {gwaddr}\n\n󰇚 {bandwidthDownBytes}\t󰇻 {bandwidthUpBytes}",
+    "tooltip-format-wifi": " {essid} ({signalStrength}%)\n{ipaddr}/{netmask}\n\n󰇚 {bandwidthDownBytes}\t󰇻 {bandwidthUpBytes}",
+    "tooltip-format-ethernet": "󰈀 {ifname}\n{ipaddr}/{netmask}\n\n󰇚 {bandwidthDownBytes}\t󰇻 {bandwidthUpBytes}",
+    "tooltip-format-disconnected": "󰲜 Disconnected",
+    "interval": 2
   },
   "group/performance": {
     "orientation": "horizontal",
@@ -106,15 +108,16 @@
     ]
   },
   "cpu": {
-    "format": " {usage}",
+    "format": " {usage}%",
     "tooltip": true,
-    "tooltip-format": "load: {load}\nusage: {usage}\n{avg_frequency}",
-    "interval": 1
+    "tooltip-format": " CPU Usage: {usage}%\n󰓅 Avg Freq: {avg_frequency}GHz\n\nLoad: {load}",
+    "interval": 2
   },
   "memory": {
-    "format": " {used}",
+    "format": " {percentage}%",
     "on-click": "kitty -e btop",
-    "tooltip-format": "total: {total}gb\nused: {used}gb\navailable: {avail}gb\nswap: {swapTotal}gb\n"
+    "tooltip-format": " {used}GB / {total}GB ({percentage}%)\n󰓡 Available: {avail}GB\n󰓡 Swap: {swapUsed}GB / {swapTotal}GB ({swapPercentage}%)",
+    "interval": 5
   },
   "custom/keyboard": {
     "exec": "$HOME/.config/waybar/module/totem.sh",
@@ -126,12 +129,14 @@
     "format-disabled": "󰂲",
     "format-connected": "",
     "format-no-controller": "",
-    "tooltip-format": "Devices connected: {num_connections}",
+    "tooltip-format": " {controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+    "tooltip-format-connected": " {controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
     "on-click": "kitty -e bluetui"
   },
   "clock": {
+    "format": "{:%A, %d %B %Y - %H:%M:%S}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format-alt": "{:%Y-%m-%d}",
     "calendar": {
       "mode": "year",
       "mode-mon-col": 3,
@@ -149,8 +154,14 @@
   },
   "temperature": {
     "hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
+    "states": {
+      "warning": 70,
+      "critical": 80
+    },
     "format": "",
-    "format-critical": " {temperatureC}°",
-    "critical-threshold": 80
+    "format-warning": "󰈸 {temperatureC}°C",
+    "format-critical": "󱗗 {temperatureC}°C",
+    "tooltip-format": " Temperature: {temperatureC}°C",
+    "interval": 2
   }
 }

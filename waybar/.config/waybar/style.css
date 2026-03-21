@@ -49,7 +49,6 @@ window#waybar.hidden {
 #network,
 #cpu,
 #memory,
-#temperature,
 #backlight,
 #clock,
 #tray,
@@ -134,7 +133,8 @@ window#waybar.hidden {
 }
 
 #pulseaudio.muted {
-  color: @gray_med;
+  background-color: @gray_dark;
+  color: @gray_light;
 }
 
 #network.disconnected {
@@ -146,11 +146,32 @@ window#waybar.hidden {
   color: @gray_med;
 }
 
+#temperature {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+}
+
+#temperature.warning {
+  padding: 0 6px;
+  margin: 4px 4px;
+  background-color: @bg_module;
+  border: 1px solid rgba(184, 184, 184, 0.05);
+  color: #ffaa00;
+  font-weight: bold;
+}
+
 #temperature.critical {
+  padding: 0 6px;
+  margin: 4px 4px;
+  background-color: @bg_module;
+  border: 1px solid rgba(184, 184, 184, 0.05);
   animation: blink-red 0.8s infinite;
   border-radius: 12px;
   font-weight: bold;
 }
+
 
 #custom-taskwarrior {
   background-color: transparent;
