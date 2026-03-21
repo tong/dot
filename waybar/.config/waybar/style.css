@@ -89,24 +89,28 @@ window#waybar.hidden {
 }
 
 #workspaces button {
-  padding: 0 10px;
+  padding: 0 8px;
   margin: 4px 2px;
   background-color: @bg_module;
   color: @gray_med;
-  border-radius: 10px;
-  transition: all 0.2s ease;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(.55,-0.68,.48,1.68);
   border: 1px solid rgba(184, 184, 184, 0.05);
+  min-width: 24px;
 }
 
 #workspaces button:hover {
   background-color: @bg_hover;
   color: @gray_ultra_light;
+  padding: 0 12px;
 }
 
 #workspaces button.active {
   background-color: @bg_active;
   color: @black;
   font-weight: bold;
+  padding: 0 4px;
+  min-width: 48px;
 }
 
 #workspaces button.urgent {

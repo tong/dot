@@ -30,7 +30,7 @@
     "all-outputs": true,
     "format": "{name}",
     "format-icons": {
-      "active": "{name}",
+      "active": "{name}",
       "default": "{name}"
     }
   },

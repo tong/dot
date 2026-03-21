@@ -44,6 +44,7 @@ class WaybarTaskwarrior:
             "waiting": "",
             "next": "",
             "timer": "",
+            "main": "",
         }
 
     def _exit_with_error(self, message):
@@ -99,7 +100,7 @@ class WaybarTaskwarrior:
         self.active_task = self.active_tasks[0] if self.active_tasks else None
 
     def build_text(self):
-        parts = []
+        parts = [self._pango(f" {self.symbols['main']} ", weight="bold")]
 
         # 1. Overdue Count
         if self.overdue_tasks:
