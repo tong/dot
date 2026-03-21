@@ -12,9 +12,15 @@
 /* -------------------------------------------------------------------------- */
 
 @keyframes urgent {
-  0% { background-color: @black; color: @white; }
-  50% { background-color: @gray_med; color: @white; }
-  100% { background-color: @black; color: @white; }
+  0% { background-color: @bg_module; }
+  50% { background-color: @gray_med; }
+  100% { background-color: @bg_module; }
+}
+
+@keyframes blink-red {
+  0% { background-color: rgba(255, 0, 0, 0.1); color: #ff5555; }
+  50% { background-color: rgba(255, 0, 0, 0.8); color: #ffffff; }
+  100% { background-color: rgba(255, 0, 0, 0.1); color: #ff5555; }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -137,8 +143,8 @@ window#waybar.hidden {
 }
 
 #temperature.critical {
-  background-color: @gray_light;
-  color: @black;
+  animation: blink-red 0.8s infinite;
+  border-radius: 12px;
   font-weight: bold;
 }
 

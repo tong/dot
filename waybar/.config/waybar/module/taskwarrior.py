@@ -238,11 +238,18 @@ class WaybarTaskwarrior:
     def run(self):
         try:
             self.get_tasks()
+
+            classes = ["taskwarrior"]
+            if self.active_task:
+                classes.append("active")
+            if self.overdue_tasks:
+                classes.append("urgent")
+
             output = {
                 "text": self.build_text(),
                 "tooltip": self.build_tooltip(),
-                "class": "taskwarrior",
-                "alt": "active" if self.active_task else "idle",
+                "class": " ".join(classes),
+                "alt": "active" if self.active_task else "idle"
             }
             print(json.dumps(output))
         except Exception as e:
