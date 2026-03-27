@@ -1,0 +1,215 @@
+#!/bin/bash
+
+DEFAULT_WLED_IP="192.168.0.132"
+WLED_IP="${WLED_IP:-$DEFAULT_WLED_IP}"
+usage() {
+  echo "Usage: $0 [-i|--ip <IP>] [-h|--help] [on|off|info|presets|brightness|color|preset|effects|effect|palettes|palette|help]"
+  echo "Commands:"
+  echo "  on, off                 Turn WLED on or off"
+  echo "  info                    Show device details"
+  echo "  state                   Show current state summary"
+  echo "  presets                 List all available presets"
+  echo "  preset <ID|Name>        Set preset (or show current if no arg)"
+  echo "  brightness <0-255>      Set brightness (or show current if no arg)"
+  echo "  color <R,G,B>           Set color (or show current if no arg)"
+  echo "  effects                 List all available effects"
+  echo "  effect <ID|Name>        Set effect (or show current if no arg)"
+  echo "  palettes                List all available palettes"
+  echo "  palette <ID|Name>       Set palette (or show current if no arg)"
+  echo "  help                    Show this help message"
+  exit 1
+}
+
+send_request() {
+  local url="http://$WLED_IP/json/state"
+  curl -s -X POST -H "Content-Type: application/json" -d "$1" "$url" >/dev/null
+}
+
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+  -i | --ip)
+    WLED_IP="$2"
+    shift 2
+    ;;
+  -h | --help)
+    usage
+    ;;
+  *)
+    break
+    ;;
+  esac
+done
+
+case "$1" in
+help)
+  usage
+  ;;
+on)
+  send_request '{"on":true}'
+  ;;
+off)
+  send_request '{"on":false}'
+  ;;
+state)
+  if command -v jq >/dev/null 2>&1; then
+    # Fetch all needed data in parallel-ish (two requests)
+    state_json=$(curl -s -m 2 "http://$WLED_IP/json/state")
+    info_json=$(curl -s -m 2 "http://$WLED_IP/json")
+    presets_json=$(curl -s -m 2 "http://$WLED_IP/presets.json")
+
+    echo "$state_json" | jq -r --argjson info "$info_json" --argjson ps "$presets_json" '
+      "Power:      " + (if .on then "ON" else "OFF" end),
+      "Brightness: \(.bri)",
+      "Color:      \(.seg[0].col[0] | join(","))",
+      "Effect:     \(.seg[0].fx) (\($info.effects[.seg[0].fx]))",
+      "Palette:    \(.seg[0].pal) (\($info.palettes[.seg[0].pal]))",
+      "Preset:     " + (if .ps <= 0 then "None" else "\(.ps) (\($ps[(.ps|tostring)].n // "Unknown"))" end)
+    '
+  else
+    curl -s -m 2 "http://$WLED_IP/json/state"
+  fi
+  ;;
+info)
+  # Fetch and display device information
+  if command -v jq >/dev/null 2>&1; then
+    curl -s -m 2 "http://$WLED_IP/json/info" | jq -r '
+      "Device Name: \(.name)",
+      "Version:     \(.ver) (\(.release))",
+      "IP Address:  \(.ip)",
+      "LED Count:   \(.leds.count)",
+      "WiFi Signal: \(.wifi.signal)%",
+      "Uptime:      \(.uptime) seconds"
+    '
+  else
+    curl -s -m 2 "http://$WLED_IP/json/info"
+  fi
+  ;;
+presets)
+  # List all available presets
+  if command -v jq >/dev/null 2>&1; then
+    curl -s -m 2 "http://$WLED_IP/presets.json" | jq -r 'to_entries[] | select(.value.n != null) | "\(.key): \(.value.n)"'
+  else
+    curl -s -m 2 "http://$WLED_IP/presets.json"
+  fi
+  ;;
+effects)
+  # List all available effects
+  if command -v jq >/dev/null 2>&1; then
+    curl -s -m 2 "http://$WLED_IP/json/eff" | jq -r 'to_entries[] | "\(.key): \(.value)"'
+  else
+    curl -s -m 2 "http://$WLED_IP/json/eff"
+  fi
+  ;;
+effect)
+  if [[ -z "$2" ]]; then
+    if command -v jq >/dev/null 2>&1; then
+      current_fx=$(curl -s -m 2 "http://$WLED_IP/json/state" | jq -r '.seg[0].fx')
+      fx_name=$(curl -s -m 2 "http://$WLED_IP/json/eff" | jq -r ".[$current_fx]")
+      echo "Current effect: $current_fx ($fx_name)"
+    else
+      curl -s -m 2 "http://$WLED_IP/json/state"
+    fi
+    exit 0
+  fi
+  fx_input="$2"
+  if [[ "$fx_input" =~ ^[0-9]+$ ]]; then
+    fx_id="$fx_input"
+  else
+    # Try to resolve name to ID using effects array
+    fx_id=$(curl -s -m 2 "http://$WLED_IP/json/eff" | jq -r "to_entries[] | select(.value == \"$fx_input\") | .key" | head -n 1)
+    if [[ -z "$fx_id" || "$fx_id" == "null" ]]; then
+      echo "Error: Effect '$fx_input' not found."
+      exit 1
+    fi
+  fi
+  send_request "{\"seg\":{\"fx\":$fx_id}}"
+  ;;
+palettes)
+  # List all available palettes
+  if command -v jq >/dev/null 2>&1; then
+    curl -s -m 2 "http://$WLED_IP/json/pal" | jq -r 'to_entries[] | "\(.key): \(.value)"'
+  else
+    curl -s -m 2 "http://$WLED_IP/json/pal"
+  fi
+  ;;
+palette)
+  if [[ -z "$2" ]]; then
+    if command -v jq >/dev/null 2>&1; then
+      current_pal=$(curl -s -m 2 "http://$WLED_IP/json/state" | jq -r '.seg[0].pal')
+      pal_name=$(curl -s -m 2 "http://$WLED_IP/json/pal" | jq -r ".[$current_pal]")
+      echo "$current_pal ($pal_name)"
+    else
+      curl -s -m 2 "http://$WLED_IP/json/state"
+    fi
+    exit 0
+  fi
+  pal_input="$2"
+  if [[ "$pal_input" =~ ^[0-9]+$ ]]; then
+    pal_id="$pal_input"
+  else
+    # Try to resolve name to ID using palettes array
+    pal_id=$(curl -s -m 2 "http://$WLED_IP/json/pal" | jq -r "to_entries[] | select(.value == \"$pal_input\") | .key" | head -n 1)
+    if [[ -z "$pal_id" || "$pal_id" == "null" ]]; then
+      echo "Error: Palette '$pal_input' not found."
+      exit 1
+    fi
+  fi
+  send_request "{\"seg\":{\"pal\":$pal_id}}"
+  ;;
+brightness)
+  if [[ -z "$2" ]]; then
+    if command -v jq >/dev/null 2>&1; then
+      current_bri=$(curl -s -m 2 "http://$WLED_IP/json/state" | jq -r '.bri')
+      echo "$current_bri"
+    else
+      curl -s -m 2 "http://$WLED_IP/json/state"
+    fi
+    exit 0
+  fi
+  send_request "{\"bri\":$2}"
+  ;;
+color)
+  if [[ -z "$2" ]]; then
+    # If no color is provided, fetch and display the current color from the first segment
+    if command -v jq >/dev/null 2>&1; then
+      current_col=$(curl -s -m 2 "http://$WLED_IP/json/state" | jq -r '.seg[0].col[0] | join(",")')
+      echo "$current_col"
+    else
+      curl -s -m 2 "http://$WLED_IP/json/state"
+    fi
+    exit 0
+  fi
+  IFS=',' read -r r g b <<<"$2"
+  send_request "{\"seg\":{\"col\":[[$r,$g,$b]]}}"
+  ;;
+preset)
+  if [[ -z "$2" ]]; then
+    if command -v jq >/dev/null 2>&1; then
+      current_ps=$(curl -s -m 2 "http://$WLED_IP/json/state" | jq -r '.ps')
+      if [[ "$current_ps" -le 0 ]]; then
+        echo "None"
+      else
+        preset_name=$(curl -s -m 2 "http://$WLED_IP/presets.json" | jq -r ".\"$current_ps\".n")
+        echo "$current_ps ($preset_name)"
+      fi
+    else
+      curl -s -m 2 "http://$WLED_IP/json/state"
+    fi
+    exit 0
+  fi
+  preset_input="$2"
+  if [[ "$preset_input" =~ ^[0-9]+$ ]]; then
+    preset_id="$preset_input"
+  else
+    preset_id=$(curl -s -m 2 "http://$WLED_IP/presets.json" | jq -r "to_entries[] | select(.value.n == \"$preset_input\") | .key" | head -n 1)
+    if [[ -z "$preset_id" || "$preset_id" == "null" ]]; then
+      echo "Error: Preset '$preset_input' not found."
+      exit 1
+    fi
+  fi
+  send_request "{\"ps\":$preset_id}"
+  ;;
+*)
+  usage
+  ;;
+esac
