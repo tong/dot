@@ -57,13 +57,23 @@ window#waybar.hidden {
 #custom-keyboard,
 #custom-home-assistant,
 #group-performance,
-#hyprland-submap {
+#systemd-failed-units {
   padding: 0 6px;
   margin: 4px 4px;
   background-color: @bg_module;
   border-radius: 12px;
   color: @white;
   border: 1px solid rgba(184, 184, 184, 0.05);
+}
+
+#systemd-failed-units.ok {
+  color: #a3be8c; /* Green */
+}
+
+#systemd-failed-units.failed {
+  color: #ff5555; /* Red */
+  font-weight: bold;
+  animation: blink-red 1s infinite;
 }
 
 #custom-home-assistant {

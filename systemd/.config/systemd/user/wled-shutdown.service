@@ -1,0 +1,14 @@
+[Unit]
+Description=Turn off WLED LEDs on Shutdown/Reboot
+After=network-online.target
+Before=shutdown.target reboot.target halt.target
+
+[Service]
+Type=oneshot
+User=tong
+ExecStart=/bin/true
+ExecStop=/home/tong/.local/bin/dark-side-of-the-monitor off
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
