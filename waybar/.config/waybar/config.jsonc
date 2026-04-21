@@ -23,11 +23,19 @@
     "bluetooth",
     "custom/ssh",
     "custom/home-assistant",
-    "systemd-failed-units",
+    "custom/mail",
+    // "systemd-failed-units",
     "clock",
     "tray",
     "temperature"
   ],
+  "custom/mail": {
+    "exec": "python $HOME/.config/waybar/module/mail.py",
+    "return-type": "json",
+    "interval": 60,
+    "format": "{}",
+    "tooltip": true
+  },
   "custom/home-assistant": {
     "exec": "python $HOME/.config/waybar/module/home-assistant.py",
     "return-type": "json",
@@ -69,7 +77,7 @@
     "format": "{title}",
     "icon": true,
     "icon-size": 14,
-    "max-length": 40,
+    "max-length": 256,
     "separate-outputs": true
   },
   "tray": {

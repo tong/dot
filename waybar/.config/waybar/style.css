@@ -56,6 +56,7 @@ window#waybar.hidden {
 #custom-taskwarrior,
 #custom-keyboard,
 #custom-home-assistant,
+#custom-mail,
 #group-performance,
 #systemd-failed-units {
   padding: 0 6px;
@@ -64,6 +65,15 @@ window#waybar.hidden {
   border-radius: 12px;
   color: @white;
   border: 1px solid rgba(184, 184, 184, 0.05);
+}
+
+#custom-mail.unread {
+  color: #ebcb8b; /* Yellow-ish color from Nord/Everforest or similar */
+  font-weight: bold;
+}
+
+#custom-mail.spam {
+  color: @gray_light;
 }
 
 #systemd-failed-units.ok {
