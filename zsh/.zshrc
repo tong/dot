@@ -65,12 +65,18 @@ export LD_LIBRARY_PATH=/usr/local/lib
 export CC=/usr/bin/clang
 export CXX=/usr/bin/clang++
 export GOPATH="$HOME/.go"
-export PICO_SDK_PATH="$HOME/sdk/pico-sdk"
 export HAXELIB_PATH=$HOME/.haxe
 export HAXE_STD_PATH=/usr/local/share/haxe/std
 export HAXE_STD_PATH=/usr/share/haxe/std
 export HASHLINK=$HOME/src/hashlink
 export THEME=gruvbox
+
+export PICO_SDK_PATH="$HOME/sdk/pico-sdk"
+export PICO_EXTRAS_PATH="$HOME/sdk/pico-extras"
+
+export HASS_TOKEN=$(pass home-assistant/token_ftl)
+
+export TOTEM_MAC="DD:47:1E:F7:48:A4"
 
 # export ARMSDK=$HOME/armory/armsdk
 # export ARMORY_PLAY_KROM='$ARMSDK/Krom/Krom $path $resources --consolepid $pid'
