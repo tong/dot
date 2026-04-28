@@ -1,0 +1,92 @@
+* {
+  font: "JetBrainsMono Nerd Font 11";
+  
+  /* Waybar Palette */
+  black:      #1a1a1a;
+  white:      #b8b8b8;
+  gray-dark:  #262626;
+  gray-med:   #4a4a4a;
+  gray-light: #808080;
+  gray-ultra: #a0a0a0;
+
+  /* Rofi Semantic Colors */
+  background:          @black;
+  background-alt:      @gray-dark;
+  foreground:          @white;
+  foreground-alt:      @gray-ultra;
+  accent:              @white;
+  bg-active:           rgba(184, 184, 184, 0.85); /* @bg_active from waybar */
+  border-col:          rgba(184, 184, 184, 0.1);
+
+  background-color:    transparent;
+  text-color:          @foreground-alt;
+  spacing:             0;
+}
+
+window {
+  background-color:    rgba(26, 26, 26, 0.95);
+  border-color:        @border-col;
+  location:            center;
+  width:               600px;
+  height:              600px;
+  border:              1px;
+  border-radius:       12px;
+  padding:             16px;
+}
+
+inputbar {
+  padding:    8px 12px;
+  spacing:    12px;
+  children:   [ prompt, entry ];
+  background-color: @background-alt;
+  border-radius:    12px;
+  margin:           0 0 16px 0;
+}
+
+prompt {
+  text-color: @accent;
+  font: "JetBrainsMono Nerd Font Bold 11";
+}
+
+entry {
+  text-color: @foreground;
+  placeholder: "Search...";
+  placeholder-color: @gray-med;
+}
+
+listview {
+  lines:      10;
+  columns:    1;
+  fixed-height: false;
+}
+
+element {
+  padding:       8px 16px;
+  spacing:       8px;
+  border-radius: 12px;
+  margin:        2px 0;
+}
+
+element normal active {
+  text-color: @accent;
+}
+
+element selected {
+  text-color:       @black;
+  background-color: @bg-active;
+}
+
+element selected active {
+  background-color: @gray-light;
+  text-color:       @black;
+}
+
+element-text {
+  text-color: inherit;
+  vertical-align: 0.5;
+}
+
+element-icon {
+  size: 24px;
+  padding: 0 8px 0 0;
+}
