@@ -42,7 +42,7 @@ bindkey "^[[B" down-line-or-beginning-search
 # Edit the current command line in $EDITOR
 autoload -U edit-command-line
 zle -N edit-command-line
-bindkey '^[e' edit-command-line # Alt-e
+bindkey '^g' edit-command-line
 
 # Exit zsh if command line is empty, otherwise clear it
 exit_zsh() {
