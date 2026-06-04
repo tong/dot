@@ -172,8 +172,8 @@ sync_to_destinations() {
   date=$(date +"%Y-%m-%d")
   local master_backup_path="$MASTER_DEST/$date"
 
-  if [[ ! -d "$master_backup_path" ]]; then
-    die "Master backup for today not found at $master_backup_path. Cannot sync."
+  if [[ ! -f "$master_backup_path/.ok" ]]; then
+    die "Master backup for today is missing or incomplete (.ok not found at $master_backup_path). Cannot sync."
   fi
 
   local all_sync_ok=true
