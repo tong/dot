@@ -182,20 +182,34 @@ sync_to_destinations() {
     read -r dest_path keep_days <<<"$dest_info"
 
     log "Syncing to destination: $dest_path"
+
+    local rsync_opts=("-az" "--delete" "--partial")
+    local ssh_opts="-o ConnectTimeout=10 -o ServerAliveInterval=30 -o ServerAliveCountMax=5"
+
     if [[ "$dest_path" == *":"* ]]; then
       local remote_host="${dest_path%%:*}"
       local remote_dir="${dest_path#*:}"
       local remote_cmd
       printf -v remote_cmd 'mkdir -p %q' "$remote_dir"
       # shellcheck disable=SC2029
-      if ! ssh "$remote_host" "$remote_cmd"; then
-        log "Warning: Could not create remote directory for $dest_path. Skipping sync."
+      if ! ssh $ssh_opts "$remote_host" "$remote_cmd"; then
+        log "Warning: Could not access remote destination $dest_path. Skipping sync."
         all_sync_ok=false
         continue
       fi
+      rsync_opts+=("-e" "ssh $ssh_opts")
+    else
+      # Check if local destination exists (handles unmounted drives)
+      if [[ ! -d "$dest_path" ]]; then
+        log "Warning: Local destination $dest_path not found. Is it mounted? Skipping sync."
+        all_sync_ok=false
+        continue
+      fi
+      # Ensure the dated directory exists inside the destination
+      mkdir -p "$dest_path/$date"
     fi
 
-    if ! rsync -az --delete "$master_backup_path/" "$dest_path/$date/"; then
+    if ! rsync "${rsync_opts[@]}" "$master_backup_path/" "$dest_path/$date/"; then
       log "Warning: Failed to sync to destination $dest_path"
       all_sync_ok=false
     fi
@@ -221,6 +235,7 @@ rotate_destinations() {
 
     log "Rotating destination: $dest_path (keep $keep_days days)"
 
+    local ssh_opts="-o ConnectTimeout=10 -o ServerAliveInterval=30 -o ServerAliveCountMax=5"
     local prune_cmd="find %q -mindepth 1 -maxdepth 1 -type d -mtime +$keep_days -exec rm -rf {} +"
 
     if [[ "$dest_path" == *":"* ]]; then
@@ -229,16 +244,20 @@ rotate_destinations() {
       local remote_mkdir_cmd
       printf -v remote_mkdir_cmd 'mkdir -p %q' "$remote_dir"
       # shellcheck disable=SC2029
-      ssh "$remote_host" "$remote_mkdir_cmd" || {
-        log "Warning: Cannot access $dest_path"
+      if ! ssh $ssh_opts "$remote_host" "$remote_mkdir_cmd"; then
+        log "Warning: Cannot access remote destination $dest_path"
         continue
-      }
+      fi
 
       local remote_find_cmd
       printf -v remote_find_cmd "$prune_cmd" "$remote_dir"
       # shellcheck disable=SC2029
-      ssh "$remote_host" "$remote_find_cmd" || log "Warning: Failed to rotate remote backup at $dest_path"
+      ssh $ssh_opts "$remote_host" "$remote_find_cmd" || log "Warning: Failed to rotate remote backup at $dest_path"
     else
+      if [[ ! -d "$dest_path" ]]; then
+        log "Warning: Local destination $dest_path not found. Skipping rotation."
+        continue
+      fi
       eval "$(printf "$prune_cmd" "$dest_path")" || log "Warning: Failed to rotate local backup at $dest_path"
     fi
   done
