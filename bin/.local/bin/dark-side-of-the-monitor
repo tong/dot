@@ -1,9 +1,10 @@
 #!/bin/bash
 
-DEFAULT_WLED_IP="192.168.0.132"
+DEFAULT_WLED_IP="192.168.0.131"
 WLED_IP="${WLED_IP:-$DEFAULT_WLED_IP}"
+
 usage() {
-  echo "Usage: $0 [-i|--ip <IP>] [-h|--help] [on|off|info|presets|brightness|color|preset|effects|effect|palettes|palette|help]"
+  echo "Usage: dark-side-of-the-monitor [-i|--ip <IP>] [-h|--help] [on|off|info|presets|brightness|color|preset|effects|effect|palettes|palette|help]"
   echo "Commands:"
   echo "  on, off                 Turn WLED on or off"
   echo "  info                    Show device details"
