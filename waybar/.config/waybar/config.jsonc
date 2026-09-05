@@ -9,15 +9,17 @@
     "DP-1"
   ],
   "modules-left": [
-    "custom/taskwarrior",
     "hyprland/workspaces",
+    "custom/taskwarrior"
+  ],
+  "modules-center": [
     "hyprland/window"
   ],
-  "modules-center": [],
   "modules-right": [
     "mpris",
     "pulseaudio",
     "network",
+    "custom/wireguard",
     "group/performance",
     "custom/keyboard",
     "bluetooth",
@@ -25,37 +27,28 @@
     "custom/home-assistant",
     "custom/mail",
     // "systemd-failed-units",
+    "battery",
     "clock",
     "tray",
     "temperature"
   ],
-  "custom/mail": {
-    "exec": "python $HOME/.config/waybar/module/mail.py",
+  "custom/taskwarrior": {
+    "exec": "python $HOME/.config/waybar/module/taskwarrior.py",
     "return-type": "json",
-    "interval": 60,
+    "interval": 5,
     "format": "{}",
-    "tooltip": true
-  },
-  "custom/home-assistant": {
-    "exec": "python $HOME/.config/waybar/module/home-assistant.py",
-    "return-type": "json",
-    "interval": 300,
-    "format": "{}",
-    "tooltip": true
-  },
-  "custom/ssh": {
-    "exec": "python $HOME/.config/waybar/module/ssh.py",
-    "return-type": "json",
-    "interval": 10,
-    "format": "{}",
+    "max-length": 256,
+    "actions": {
+      "on-click-right": "mode"
+    },
     "tooltip": true
   },
   "hyprland/workspaces": {
     "all-outputs": true,
     "format": "{icon}",
     "on-click": "activate",
-    "on-scroll-up": "hyprctl dispatch workspace e+1",
-    "on-scroll-down": "hyprctl dispatch workspace e-1",
+    "on-scroll-up": "hyprctl dispatch \"hl.dsp.focus({ workspace = 'e+1' })\"",
+    "on-scroll-down": "hyprctl dispatch \"hl.dsp.focus({ workspace = 'e-1' })\"",
     "show-special": true,
     "format-icons": {
       "1": "1",
@@ -80,22 +73,6 @@
     "max-length": 256,
     "separate-outputs": true
   },
-  "tray": {
-    "icon-size": 14,
-    "spacing": 4,
-    "show-passive-items": true
-  },
-  "custom/taskwarrior": {
-    "exec": "python $HOME/.config/waybar/module/taskwarrior.py",
-    "return-type": "json",
-    "interval": 5,
-    "format": "{}",
-    "max-length": 256,
-    "actions": {
-      "on-click-right": "mode"
-    },
-    "tooltip": true
-  },
   "mpris": {
     "format": "{player_icon} {dynamic}",
     "format-paused": "{status_icon} <i>{dynamic}</i>",
@@ -114,15 +91,15 @@
     "on-click": "playerctl play-pause"
   },
   "pulseaudio": {
-    "format": " {volume}",
-    "format-bluetooth": "{icon}{volume}",
-    "format-muted": "MUTED",
+    "format": "{icon} {volume}",
+    "format-bluetooth": "{icon} {volume}",
+    "format-muted": "󰝟 MUTED",
     "format-icons": {
       "headphone": "",
-      "hands-free": "",
-      "headset": "",
+      "hands-free": "",
+      "headset": "",
       "phone": "",
-      "portable": "",
+      "portable": "",
       "car": "",
       "default": [
         "",
@@ -139,14 +116,24 @@
   },
   "network": {
     "format-ethernet": "󰈀 {bandwidthDownBytes} 󰈀 {bandwidthUpBytes}",
-    "format-wifi": " {essid} ({signalStrength}%) {bandwidthDownBytes}/{bandwidthUpBytes}",
+    "format-wifi": "󰖩 {essid} ({signalStrength}%) {bandwidthDownBytes}/{bandwidthUpBytes}",
     "format-linked": "󰈀 {ifname} (No IP)",
     "format-disconnected": "󰲜 Disconnected",
     "tooltip-format": "󰈀 {ifname} via {gwaddr}\n\n󰇚 {bandwidthDownBytes}\t󰇻 {bandwidthUpBytes}",
-    "tooltip-format-wifi": " {essid} ({signalStrength}%)\n{ipaddr}/{netmask}\n\n󰇚 {bandwidthDownBytes}\t󰇻 {bandwidthUpBytes}",
+    "tooltip-format-wifi": "󰖩 {essid} ({signalStrength}%)\n{ipaddr}/{netmask}\n\n󰇚 {bandwidthDownBytes}\t󰇻 {bandwidthUpBytes}",
     "tooltip-format-ethernet": "󰈀 {ifname}\n{ipaddr}/{netmask}\n\n󰇚 {bandwidthDownBytes}\t󰇻 {bandwidthUpBytes}",
     "tooltip-format-disconnected": "󰲜 Disconnected",
     "interval": 2
+  },
+  "custom/wireguard": {
+    "exec": "python $HOME/.config/waybar/module/wireguard.py",
+    "return-type": "json",
+    "interval": 10,
+    "format": "{}",
+    "on-click": "python $HOME/.config/waybar/module/wireguard.py cycle",
+    "on-click-right": "python $HOME/.config/waybar/module/wireguard.py off",
+    "signal": 8,
+    "tooltip": true
   },
   "group/performance": {
     "orientation": "horizontal",
@@ -156,15 +143,15 @@
     ]
   },
   "cpu": {
-    "format": " {usage}%",
+    "format": " {usage}%",
     "tooltip": true,
-    "tooltip-format": " CPU Usage: {usage}%\n󰓅 Avg Freq: {avg_frequency}GHz\n\nLoad: {load}",
+    "tooltip-format": " CPU Usage: {usage}%\n󰓅 Avg Freq: {avg_frequency}GHz\n\nLoad: {load}",
     "interval": 2
   },
   "memory": {
-    "format": " {percentage}%",
+    "format": " {percentage}%",
     "on-click": "kitty -e btop",
-    "tooltip-format": " {used}GB / {total}GB ({percentage}%)\n󰓡 Available: {avail}GB\n󰓡 Swap: {swapUsed}GB / {swapTotal}GB ({swapPercentage}%)",
+    "tooltip-format": " {used}GB / {total}GB ({percentage}%)\n󰓡 Available: {avail}GB\n󰓡 Swap: {swapUsed}GB / {swapTotal}GB ({swapPercentage}%)",
     "interval": 5
   },
   "custom/keyboard": {
@@ -182,13 +169,60 @@
     "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
     "on-click": "kitty -e bluetui"
   },
+  "custom/ssh": {
+    "exec": "python $HOME/.config/waybar/module/ssh.py",
+    "return-type": "json",
+    "interval": 10,
+    "format": "{}",
+    "tooltip": true
+  },
+  "custom/home-assistant": {
+    "exec": "python $HOME/.config/waybar/module/home-assistant.py",
+    "return-type": "json",
+    "interval": 300,
+    "format": "{}",
+    "tooltip": true
+  },
+  "custom/mail": {
+    "exec": "python $HOME/.config/waybar/module/mail.py",
+    "return-type": "json",
+    "interval": 60,
+    "format": "{}",
+    "tooltip": true
+  },
+  "systemd-failed-units": {
+    "hide-on-ok": true,
+    "format": "󰀪 {nr_failed}",
+    "format-ok": "󰄴",
+    "system": true,
+    "user": true
+  },
+  "battery": {
+    "bat": "BAT0",
+    "interval": 60,
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "max-length": 25
+  },
   "clock": {
-    "format": "{:%A, %d %B %Y - %H:%M:%S}",
+    "interval": 1,
+    "format": "󰥔 {:%A, %d %B %Y - %H:%M:%S}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
       "mode-mon-col": 3,
       "weeks-pos": "left",
+      "iso8601": true,
       "on-scroll": 1,
       "on-click-right": "mode",
       "format": {
@@ -199,6 +233,11 @@
         "today": "<span background='#ffffff' color='#000000'><b>{}</b></span>"
       }
     }
+  },
+  "tray": {
+    "icon-size": 14,
+    "spacing": 4,
+    "show-passive-items": true
   },
   "temperature": {
     "hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
@@ -211,12 +250,5 @@
     "format-critical": "󱗗 {temperatureC}°C",
     "tooltip-format": " Temperature: {temperatureC}°C",
     "interval": 2
-  },
-  "systemd-failed-units": {
-    "hide-on-ok": true,
-    "format": "✗ {nr_failed}",
-    "format-ok": "✓",
-    "system": true,
-    "user": true
   }
 }

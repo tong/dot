@@ -50,12 +50,14 @@ window#waybar.hidden {
 #cpu,
 #memory,
 #backlight,
+#battery,
 #clock,
 #tray,
 #bluetooth,
 #custom-taskwarrior,
 #custom-keyboard,
 #custom-home-assistant,
+#custom-wireguard,
 #custom-mail,
 #group-performance,
 #systemd-failed-units {
@@ -73,6 +75,19 @@ window#waybar.hidden {
 }
 
 #custom-mail.spam {
+  color: @gray_light;
+}
+
+#custom-wireguard.connected {
+  color: #a3be8c; /* Green - VPN is up */
+}
+
+#custom-wireguard.prod {
+  color: #ff5555; /* Red - prod, be careful */
+  font-weight: bold;
+}
+
+#custom-wireguard.disconnected {
   color: @gray_light;
 }
 
