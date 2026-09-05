@@ -15,8 +15,9 @@
   foreground:          @white;
   foreground-alt:      @gray-ultra;
   accent:              @white;
+  bg-module:           rgba(26, 26, 26, 0.75);   /* @bg_module from waybar */
   bg-active:           rgba(184, 184, 184, 0.85); /* @bg_active from waybar */
-  border-col:          rgba(184, 184, 184, 0.1);
+  border-col:          rgba(184, 184, 184, 0.05); /* matches waybar module border */
 
   background-color:    transparent;
   text-color:          @foreground-alt;
@@ -38,7 +39,9 @@ inputbar {
   padding:    8px 12px;
   spacing:    12px;
   children:   [ prompt, entry ];
-  background-color: @background-alt;
+  background-color: @bg-module;
+  border:           1px;
+  border-color:     @border-col;
   border-radius:    12px;
   margin:           0 0 16px 0;
 }
@@ -61,10 +64,13 @@ listview {
 }
 
 element {
-  padding:       8px 16px;
-  spacing:       8px;
-  border-radius: 12px;
-  margin:        2px 0;
+  padding:          8px 16px;
+  spacing:          8px;
+  background-color: @bg-module;
+  border:           1px;
+  border-color:     @border-col;
+  border-radius:    12px;
+  margin:           2px 0;
 }
 
 element normal active {
