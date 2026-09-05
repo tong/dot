@@ -1,10 +1,24 @@
 #include=~/.config/mako/core.ini
+
+font=JetBrainsMono Nerd Font 11
 default-timeout=5000
-text-color=#d4be98
-border-color=#a89984
-background-color=#282828
+text-color=#b8b8b8FF
+border-color=#4a4a4aFF
+background-color=#1a1a1aBF
+progress-color=source #808080FF
 padding=10
-border-size=2
-# font=Liberation Sans 11
+border-size=1
+border-radius=12
+icon-border-radius=8
 max-icon-size=32
 outer-margin=20
+margin=8
+
+[urgency=low]
+text-color=#808080FF
+border-color=#4a4a4aFF
+
+[urgency=critical]
+text-color=#ff5555FF
+border-color=#ff5555FF
+default-timeout=0
