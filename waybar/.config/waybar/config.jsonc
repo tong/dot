@@ -19,7 +19,6 @@
     "mpris",
     "pulseaudio",
     "network",
-    "custom/wireguard",
     "group/performance",
     "custom/keyboard",
     "bluetooth",
