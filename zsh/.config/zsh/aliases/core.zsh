@@ -37,6 +37,10 @@ for index in {1..9}; do
 done
 unset index
 
+alias chmox='chmod +x'
+alias cox='chmod +x'
+alias nox='chmod a-x'
+
 alias df='df -h'
 alias du='du -h'
 alias now='date +"%T"'
