@@ -59,6 +59,7 @@ window#waybar.hidden {
 #custom-home-assistant,
 #custom-wireguard,
 #custom-mail,
+#custom-norc,
 #group-performance,
 #systemd-failed-units {
   padding: 0 6px;
@@ -76,6 +77,77 @@ window#waybar.hidden {
 
 #custom-mail.spam {
   color: @gray_light;
+}
+
+#custom-norc.offline {
+  color: @gray_light;
+}
+
+#custom-norc.unread {
+  color: #ebcb8b; /* like unread mail */
+  font-weight: bold;
+}
+
+#custom-norc.away {
+  color: @gray_ultra_light;
+}
+
+#custom-norc.dnd {
+  color: #d08770; /* Orange - busy */
+}
+
+#custom-norc.call {
+  color: #a3be8c; /* Green */
+  font-weight: bold;
+}
+
+#custom-norc.ringing {
+  color: #a3be8c;
+  font-weight: bold;
+  animation: urgent 1s infinite;
+}
+
+#custom-norc.calling {
+  color: #a3be8c; /* Green - your call, waiting to be answered */
+  font-weight: bold;
+  animation: urgent 2s infinite;
+}
+
+@keyframes norc-connected {
+  0% { color: #a3be8c; }
+  50% { color: @gray_med; }
+  100% { color: #a3be8c; }
+}
+
+#custom-norc.connected {
+  color: #a3be8c; /* Green - in a call */
+  font-weight: bold;
+  animation: norc-connected 3s ease-in-out infinite;
+}
+
+#custom-norc.attention {
+  color: #bf616a; /* Red - someone wants your attention */
+  font-weight: bold;
+}
+
+#custom-norc.pending {
+  color: #88c0d0; /* Blue - presence requests */
+}
+
+@keyframes norc-files {
+  0% { color: #88c0d0; }
+  50% { color: @gray_med; }
+  100% { color: #88c0d0; }
+}
+
+#custom-norc.files {
+  color: #88c0d0; /* Blue - files offered to you, waiting */
+  animation: norc-files 3s ease-in-out infinite;
+}
+
+#custom-norc.typing {
+  color: @white;
+  font-style: italic;
 }
 
 #custom-wireguard.connected {

@@ -24,6 +24,7 @@
     "bluetooth",
     "custom/ssh",
     "custom/home-assistant",
+    "custom/norc",
     "custom/mail",
     // "systemd-failed-units",
     "battery",
@@ -180,6 +181,13 @@
     "return-type": "json",
     "interval": 300,
     "format": "{}",
+    "tooltip": true
+  },
+  "custom/norc": {
+    "exec": "python $HOME/.config/waybar/module/norc.py tong",
+    "return-type": "json",
+    "format": "{}",
+    "on-click": "pkill -USR1 -f waybar/module/norc.py",
     "tooltip": true
   },
   "custom/mail": {
