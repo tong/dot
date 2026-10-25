@@ -33,7 +33,7 @@ cmd open ${{
     fi
     # If it's a directory, enter it
     if [ -d "$f" ]; then
-        lf -remote "send $id cd "$f""
+        lf -remote "send $id cd \"$f\""
         exit 0
     fi
     # Otherwise, open based on file type
@@ -50,8 +50,9 @@ cmd open ${{
 
 # Create a directory and select it
 cmd mkdir %{{
+    IFS=' '
     mkdir -p -- "$*"
-    lf -remote "send $id select "$*""
+    lf -remote "send $id select \"$*\""
 }}
 
 # Trash command (moves selected files to trash).
@@ -89,23 +90,23 @@ cmd compress ${{
 
 # Fuzzy find files with fzf and jump to the directory.
 cmd find-file ${{
-    local file="$(fzf --preview 'bat --color=always --style=numbers,changes --line-range :500 {}')"
+    file="$(fzf --preview 'bat --color=always --style=numbers,changes --line-range :500 {}')"
     if [ -n "$file" ]; then
-        local dir="$(dirname "$file")"
-        lf -remote "send $id cd "$dir""
-        lf -remote "send $id select "$file""
+        dir="$(dirname "$file")"
+        lf -remote "send $id cd \"$dir\""
+        lf -remote "send $id select \"$file\""
     fi
 }}
 
 # Copy path, directory or name of the current file to the clipboard.
-cmd yank-path &printf '%s' "$f" | wl-copy
+cmd yank-path &[ -n "$f" ] && printf '%s' "$f" | wl-copy
 cmd yank-dir &printf '%s' "$PWD" | wl-copy
-cmd yank-name &printf '%s' "$(basename "$f")" | wl-copy
+cmd yank-name &[ -n "$f" ] && printf '%s' "$(basename "$f")" | wl-copy
 
 # --- Mappings ----------------------------------------------------------------
 
 map o open
-map O $xdg-open $f
+map O $xdg-open "$f"
 map a push :mkdir<space>
 map H set hidden!
 #map gs get-size
