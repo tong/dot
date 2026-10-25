@@ -77,7 +77,7 @@ end
 hl.bind(mainMod .. " + CTRL + SHIFT + 1", hl.dsp.window.move({ workspace = 1, follow = true }))
 hl.bind(mainMod .. " + CTRL + SHIFT + 2", hl.dsp.window.move({ workspace = 2, follow = true }))
 hl.bind(mainMod .. " + CTRL + SHIFT + 3", hl.dsp.window.move({ workspace = 3, follow = true }))
-hl.bind(mainMod .. " + CTRL + SHIFT + 4", hl.dsp.window.move({ workspace = 1, follow = true }))
+hl.bind(mainMod .. " + CTRL + SHIFT + 4", hl.dsp.window.move({ workspace = 4, follow = true }))
 hl.bind(mainMod .. " + CTRL + SHIFT + 5", hl.dsp.window.move({ workspace = 5, follow = true }))
 hl.bind(mainMod .. " + CTRL + SHIFT + 6", hl.dsp.window.move({ workspace = 6, follow = true }))
 hl.bind(mainMod .. " + CTRL + SHIFT + 7", hl.dsp.window.move({ workspace = 7, follow = true }))
