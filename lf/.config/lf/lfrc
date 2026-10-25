@@ -97,6 +97,11 @@ cmd find-file ${{
     fi
 }}
 
+# Copy path, directory or name of the current file to the clipboard.
+cmd yank-path &printf '%s' "$f" | wl-copy
+cmd yank-dir &printf '%s' "$PWD" | wl-copy
+cmd yank-name &printf '%s' "$(basename "$f")" | wl-copy
+
 # --- Mappings ----------------------------------------------------------------
 
 map o open
@@ -110,6 +115,9 @@ map RR remove
 map <c-x> cut
 map y copy
 map p paste
+map Yp yank-path
+map Yd yank-dir
+map Yn yank-name
 
 #map / search
 map <c-f> find-file
