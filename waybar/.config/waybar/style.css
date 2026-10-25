@@ -145,6 +145,10 @@ window#waybar.hidden {
   animation: norc-files 3s ease-in-out infinite;
 }
 
+#custom-norc.transfer {
+  color: #88c0d0; /* Blue - files being sent or received */
+}
+
 #custom-norc.typing {
   color: @white;
   font-style: italic;

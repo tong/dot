@@ -1,17 +1,25 @@
 #!/usr/bin/env python3
 """
-norc: presence, calls, new messages, mentions, typing contacts, presence requests, file offers and online contacts
-of a running norc (with api = 1 or --api).
+norc: calls, unread messages and mentions, file offers and transfers, presence requests, typing contacts, your
+presence and the online contacts of a running norc (with api = 1 or --api): at its Unix socket if it has one, else
+over TCP. Most of it is norc's status (the status event, /overview): norc counts the unread messages, entering a
+chat (/chat) or writing in it reads them.
 
 Runs continuously (no interval): prints a JSON line on each change, reconnects when norc restarts.
-    norc.py [ACCOUNT]    default: the only norc running with the api
-SIGUSR1 resets the new messages, mentions and attention requests, and mutes the ringtone (on-click).
+    norc.py [ACCOUNT] [--icon ICON]
+ACCOUNT: the account of the norc (as `norc -a <account>`), default: the only norc running with the api. --icon: the
+icon in front of the text (default 󰭹), e.g. a letter per account. One module per account, in the Waybar config:
+    "custom/norc#work": {"exec": "python ~/.config/waybar/module/norc.py work --icon W",
+                         "on-click": "pkill -USR1 -f 'module/norc.py work( |$)'", "return-type": "json"}
+(CSS: #custom-norc as for all, #custom-norc.work for this one.)
+SIGUSR1 (on-click) mutes the ringtone and dismisses what is shown: the attention requests and the unread messages
+so far (newer ones show again).
 A ringing call plays the ringtone (RINGTONE) in a loop, not with your presence dnd; your call the ringback tone
 (RINGBACK) until it is answered.
 
-Classes (by priority): ringing, calling, connected, call (connecting), attention, unread, files (file offers),
-pending (presence requests), typing,
-offline, away, dnd, online.
+Classes (by priority): ringing, calling, connected, call (connecting), attention, unread (also mentions),
+files (file offers), transfer (files being sent or received), pending (presence requests), typing,
+offline (also connecting, reconnecting), away, dnd, online.
 """
 
 import html
@@ -25,11 +33,12 @@ import sys
 import threading
 import time
 
-ICON = "󰭹"
 # in the text after the icon
 TYPING = "󰏫"  # nf-md-pencil (✎ is in no installed font)
 REQUEST = "+"
 FILE = "↓"
+TRANSFER = "⇅"
+MENTION = "@"
 ATTENTION = "!"
 RECORDING = "●"
 # calls by state (Nerd Font: phone-incoming, phone-outgoing, phone, phone-in-talk)
@@ -48,29 +57,43 @@ PLAYERS = (["pw-play"], ["paplay"], ["canberra-gtk-play", "-f"])
 STATE_DIR = os.path.join(
     os.environ.get("XDG_STATE_HOME") or os.path.expanduser("~/.local/state"), "norc"
 )
-ACCOUNT = sys.argv[1] if len(sys.argv) > 1 else None
-# seconds between requests of the own presence, presence requests and file offers (norc has no event when they end)
-REFRESH = 30
-# typing without a new chat state for this long: stopped (a client may not send `paused`)
+
+def options(args):
+    """The account and the icon of the command line"""
+    account, icon = None, "󰭹"
+    i = 0
+    while i < len(args):
+        if args[i] == "--icon" and i + 1 < len(args):
+            icon = args[i + 1]
+            i += 1
+        elif args[i].startswith("--icon="):
+            icon = args[i][len("--icon=") :]
+        elif account is None:
+            account = args[i]
+        i += 1
+    return account, icon
+
+
+ACCOUNT, ICON = options(sys.argv[1:])
+# typing without a change for this long: stopped (a client may not send `paused`)
 TYPING_TIMEOUT = 60
+# seconds between redraws while a call is connected (its duration) or a file is transferred
+TICK = 5
 
 
 class State:
     def __init__(self):
-        self.online = False
         self.jid: str | None = None
         self.error: str | None = None  # why offline (connection, login)
-        self.presence: dict | None = None  # own: {"state", "status"}
+        self.status: dict | None = None  # norc's status (the status event, /overview)
         self.contacts = {}  # bare jid -> {"name", "presence"} of available contacts
-        self.calls = {}  # id (else the peer) -> {"from", "name", "state", "media", "incoming", "recording"}
-        self.unread = {}  # contact name, or "nick in room" for mentions -> new messages
-        self.typing = {}  # bare jid -> (name, time of the chat state)
-        self.requests = {}  # bare jid -> name: asking to see your presence
-        self.offers = {}  # id -> {"from", "file", "size"}: files offered to you
         self.attention = []  # (name, text) of /attention
+        self.typing_since = {}  # bare jid -> when it started typing (for TYPING_TIMEOUT)
 
 
 state = State()
+# dismissed with a click: the unread messages (and mentions) per chat then
+dismissed = {}
 
 
 class Ringer:
@@ -93,12 +116,20 @@ class Ringer:
         self.stop()
         if sound and sound != self.muted and self.player and os.path.exists(sound):
             self.sound = sound
-            threading.Thread(target=self.loop, args=(self.generation, sound), daemon=True).start()
+            threading.Thread(
+                target=self.loop, args=(self.generation, sound), daemon=True
+            ).start()
 
     def loop(self, generation, sound):
+        if not self.player:
+            return
         while generation == self.generation:
             try:
-                self.proc = subprocess.Popen(self.player + [sound], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                self.proc = subprocess.Popen(
+                    self.player + [sound],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
                 self.proc.wait()
             except OSError:
                 return
@@ -123,8 +154,8 @@ def esc(s):
     return html.escape(str(s), quote=False)
 
 
-def describe(p):
-    return p["state"] + (f" ({p['status']})" if p.get("status") else "")
+def describe(state, status=None):
+    return state + (f" ({status})" if status else "")
 
 
 def size(n):
@@ -136,83 +167,181 @@ def size(n):
         n /= 1024
 
 
+def duration(seconds):
+    s = int(seconds)
+    h, m = divmod(s // 60, 60)
+    return f"{h}:{m:02}:{s % 60:02}" if h else f"{m}:{s % 60:02}"
+
+
+def bare(jid):
+    return jid.split("/")[0]
+
+
+def unread_chats(s):
+    """The chats with unread messages not dismissed: (chat, unread, mentions) with the counts since the click"""
+    chats = []
+    for c in s.get("chats", []):
+        seen = dismissed.get(c["jid"], (0, 0))
+        unread, mentions = c["unread"] - seen[0], c["mentions"] - seen[1]
+        # rooms: only mentions show, the other messages of rooms only in the tooltip
+        if unread > 0 and (not c["room"] or mentions > 0):
+            chats.append((c, unread, mentions))
+    return chats
+
+
+def typing(s):
+    """The contacts typing (not for longer than TYPING_TIMEOUT without a change)"""
+    now = time.time()
+    current = {t["jid"]: t for t in s.get("typing", []) if t["state"] == "composing"}
+    for jid in list(state.typing_since):
+        if jid not in current:
+            del state.typing_since[jid]
+    for jid in current:
+        state.typing_since.setdefault(jid, now)
+    return [
+        t
+        for jid, t in current.items()
+        if now - state.typing_since[jid] < TYPING_TIMEOUT
+    ]
+
+
 def show():
-    s = state
-    count = sum(s.unread.values())
-    ringing = [c for c in s.calls.values() if c["state"] == "ringing"]
+    st = state
+    s = st.status or {"connection": "offline", "presence": "available"}
+    online = s["connection"] == "online"
+    calls = s.get("calls", [])
+    ringing = [c for c in calls if c["state"] == "ringing"]
+    chats = unread_chats(s)
+    count = sum(n for c, n, _ in chats if not c["room"])
+    mentions = sum(m for _, _, m in chats)
+    offers = [t for t in s.get("transfers", []) if t["state"] == "offered"]
+    transfers = [t for t in s.get("transfers", []) if t["state"] != "offered"]
+    requests = s.get("requests", [])
+    typists = typing(s)
+
     # the text: the icon, then what waits for you
     parts = []
     if count:
         parts.append(str(count))
-    if s.attention:
+    if mentions:
+        parts.append(f"{MENTION}{mentions}")
+    if st.attention:
         parts.append(ATTENTION)
-    if s.typing:
-        parts.append(TYPING + ", ".join(name for name, _ in s.typing.values()))
-    if s.requests:
-        parts.append(f"{REQUEST}{len(s.requests)}")
-    if s.offers:
-        parts.append(f"{FILE}{len(s.offers)}")
-    if s.calls:
-        c = (ringing or list(s.calls.values()))[0]
-        rec = f" {RECORDING}" if any(c.get("recording") for c in s.calls.values()) else ""
-        parts = [f"{CALL_ICONS.get(c['state'], c['state'])} {c['name']}{rec}"] + parts
-        cls = {"ringing": "ringing", "calling": "calling", "connected": "connected"}.get(c["state"], "call")
-    elif s.attention:
+    if typists:
+        parts.append(TYPING + ", ".join(t["name"] for t in typists))
+    if requests:
+        parts.append(f"{REQUEST}{len(requests)}")
+    if offers:
+        parts.append(f"{FILE}{len(offers)}")
+    if transfers:
+        sized = [t for t in transfers if t.get("size")]
+        done = (
+            sum(t["bytes"] for t in sized) / sum(t["size"] for t in sized)
+            if sized
+            else None
+        )
+        parts.append(
+            TRANSFER
+            + (f"{int(done * 100)}%" if done is not None else str(len(transfers)))
+        )
+    if calls:
+        c = (ringing or calls)[0]
+        rec = f" {RECORDING}" if any(c.get("recording") for c in calls) else ""
+        since = f" {duration(time.time() - c['since'])}" if c.get("since") else ""
+        parts = [
+            f"{CALL_ICONS.get(c['state'], c['state'])} {c['name']}{since}{rec}"
+        ] + parts
+        cls = {
+            "ringing": "ringing",
+            "calling": "calling",
+            "connected": "connected",
+        }.get(c["state"], "call")
+    elif st.attention:
         cls = "attention"
-    elif count:
+    elif count or mentions:
         cls = "unread"
-    elif s.offers:
+    elif offers:
         cls = "files"
-    elif s.requests:
+    elif transfers:
+        cls = "transfer"
+    elif requests:
         cls = "pending"
-    elif s.typing:
+    elif typists:
         cls = "typing"
-    elif not s.online:
+    elif not online:
         cls = "offline"
     else:
-        own = (s.presence or {}).get("state", "available")
-        cls = {"away": "away", "xa": "away", "dnd": "dnd"}.get(own, "online")
+        cls = {"away": "away", "xa": "away", "dnd": "dnd"}.get(s["presence"], "online")
     data = {"text": " ".join([ICON] + parts), "class": cls}
-    calling = any(c["state"] == "calling" for c in s.calls.values())
+    calling = any(c["state"] == "calling" for c in calls)
     ringer.update(
-        RINGTONE if ringing and (s.presence or {}).get("state") != "dnd" else RINGBACK if calling else None
+        RINGTONE
+        if ringing and s["presence"] != "dnd"
+        else RINGBACK
+        if calling
+        else None
     )
 
-    lines = [f"<b>norc</b> {esc(s.jid or ACCOUNT or '')}"]
-    if not s.online:
-        lines.append("offline" + (f": {esc(s.error)}" if s.error else ""))
-    elif s.presence:
-        lines.append(esc(describe(s.presence)))
-    if s.calls:
+    lines = [f"<b>norc</b> {esc(st.jid or ACCOUNT or '')}"]
+    if not online:
+        lines.append(esc(s["connection"]) + (f": {esc(st.error)}" if st.error else ""))
+    else:
+        lines.append(esc(describe(s["presence"], s.get("status"))))
+    if calls:
         lines += ["", "<b>Calls</b>"]
-        for c in s.calls.values():
+        for c in calls:
             direction = "from" if c["incoming"] else "to"
             lines.append(
                 f"  {esc(c['state'])} {direction} {esc(c['name'])} ({esc(c['media'])})"
+                + (f" {duration(time.time() - c['since'])}" if c.get("since") else "")
+                + (f", muted {esc(', '.join(c['muted']))}" if c.get("muted") else "")
                 + (f" {RECORDING} recording" if c.get("recording") else "")
             )
-    if s.attention:
+    if st.attention:
         lines += ["", "<b>Attention</b>"] + [
-            f"  {esc(name)}" + (f": {esc(text)}" if text else "") for name, text in s.attention
+            f"  {esc(name)}" + (f": {esc(text)}" if text else "")
+            for name, text in st.attention
         ]
-    if s.unread:
-        lines += ["", "<b>New messages</b>"] + [
-            f"  {esc(name)}: {n}" for name, n in s.unread.items()
-        ]
-    if s.typing:
-        lines += ["", "<b>Typing</b>"] + [f"  {esc(name)}" for name, _ in s.typing.values()]
-    if s.requests:
+    if s.get("chats"):
+        lines += ["", "<b>Unread</b>"]
+        for c in s["chats"]:
+            lines.append(
+                f"  {'#' if c['room'] else ''}{esc(c['name'])}: {c['unread']}"
+                + (f" ({MENTION}{c['mentions']})" if c["mentions"] else "")
+                + ("  <i>/chat " + esc(c["jid"]) + "</i>" if not c["room"] else "")
+            )
+    if typists:
+        lines += ["", "<b>Typing</b>"] + [f"  {esc(t['name'])}" for t in typists]
+    if requests:
         lines += ["", "<b>Asking to see your presence</b>"] + [
-            f"  {esc(name)}  <i>/contacts accept {esc(jid)}</i>" for jid, name in s.requests.items()
+            f"  {esc(jid)}  <i>/contacts accept {esc(jid)}</i>" for jid in requests
         ]
-    if s.offers:
+    if offers:
         lines += ["", "<b>Files offered</b>"] + [
-            f"  {esc(o['file'] or 'file')} ({size(o['size'])}) from {esc(bare(o['from']))}  <i>/file accept {id}</i>"
-            for id, o in s.offers.items()
+            f"  {esc(t['file'])} ({size(t.get('size'))}) from {esc(t['jid'])}  <i>/file accept {t['id']}</i>"
+            for t in offers
         ]
-    if s.online and s.contacts:
-        lines += ["", f"<b>Online</b> ({len(s.contacts)})"]
-        for c in sorted(s.contacts.values(), key=lambda c: c["name"].lower()):
+    if transfers:
+        lines += ["", "<b>File transfers</b>"]
+        for t in transfers:
+            progress = f" {int(t['bytes'] / t['size'] * 100)}%" if t.get("size") else ""
+            what = (
+                "reading, then offering to"
+                if t["state"] == "preparing"
+                else "to"
+                if t["direction"] == "send"
+                else "from"
+            )
+            lines.append(f"  {esc(t['file'])} {what} {esc(t['jid'])}{progress}")
+    if s.get("command"):
+        lines += [
+            "",
+            "<b>Command waiting</b>",
+            f"  {esc(s['command']['node'])} of {esc(s['command']['jid'])}  <i>/command submit</i>",
+        ]
+    if online and st.contacts:
+        lines += ["", f"<b>Online</b> ({len(st.contacts)})"]
+        for c in sorted(st.contacts.values(), key=lambda c: c["name"].lower()):
             lines.append(
                 f"  {esc(c['name'])}"
                 + (
@@ -226,10 +355,23 @@ def show():
 
 
 def reset(*_):
+    """A click: mutes the ringtone, dismisses the attention requests and the unread messages so far"""
     ringer.mute()
-    state.unread.clear()
     state.attention.clear()
+    dismissed.clear()
+    for c in (state.status or {}).get("chats", []):
+        dismissed[c["jid"]] = (c["unread"], c["mentions"])
     show()
+
+
+def update_status(s):
+    state.status = s
+    # read in norc (fewer than when dismissed): count from there again
+    counts = {c["jid"]: (c["unread"], c["mentions"]) for c in s.get("chats", [])}
+    for jid, seen in list(dismissed.items()):
+        now = counts.get(jid, (0, 0))
+        if now[0] < seen[0] or now[1] < seen[1]:
+            del dismissed[jid]
 
 
 def api_file():
@@ -247,164 +389,92 @@ def api_file():
     return files[0] if len(files) == 1 else None
 
 
-def bare(jid):
-    return jid.split("/")[0]
-
-
 def data(request, d):
     """The result of a request"""
     s = state
-    if request == "presence":
-        s.online = d["online"]
-        s.presence = {"state": d["state"], "status": d.get("status")}
-    elif request == "config":
-        s.jid = bare(d["values"].get("jid") or "") or None
+    if request == "overview":
+        update_status(d)
+    elif request == "account":
+        s.jid = bare(d.get("jid") or "") or None
     elif request == "contacts":
         s.contacts = {
             c["jid"]: {"name": c.get("name") or c["jid"], "presence": c["presence"]}
             for c in d["contacts"]
             if c.get("presence")
         }
-    elif request == "requests":
-        s.requests = {jid: s.requests.get(jid, jid) for jid in d["requests"]}
-    elif request == "transfers":
-        s.offers = {
-            t["id"]: {"from": t["peer"], "file": t.get("file"), "size": t.get("size")}
-            for t in d["transfers"]
-            if t["direction"] == "receive" and t["state"] == "offered"
-        }
-    elif request == "calls":
-        s.calls = {
-            c.get("id", c["peer"]): {
-                "from": c["peer"],
-                "name": bare(c["peer"]),
-                "state": c["state"],
-                "media": c["media"],
-                "incoming": c["incoming"],
-                "recording": bool(c.get("recording")),
-            }
-            for c in d["calls"]
-        }
 
 
 def event(name, d):
+    """An event; `False` if it changes nothing shown"""
     s = state
-    if name == "login":
-        s.online = True
+    if name == "status":
+        update_status(d)
+    elif name == "login":
         s.error = None
     elif name == "logout":
-        s.online = False
         s.contacts.clear()
-        s.typing.clear()
     elif name == "error" and d.get("kind") in ("connection", "stream", "login"):
         s.error = d.get("text")
     elif name == "presence":
         jid = bare(d["from"])
         if jid == s.jid:
-            return
+            return False
         if d["state"] == "offline" and not d.get("resources"):
             s.contacts.pop(jid, None)
-            s.typing.pop(jid, None)
         elif d["state"] != "offline":
-            s.contacts[jid] = {"name": d["name"], "presence": describe(d)}
-    elif name == "chatstate":
-        jid = bare(d["from"])
-        if d["state"] == "composing":
-            s.typing[jid] = (d["name"], time.time())
-        else:
-            s.typing.pop(jid, None)
-    elif name == "message" and not d.get("delayed") and not d.get("carbon"):
-        s.unread[d["name"]] = s.unread.get(d["name"], 0) + 1
-        # a message ends typing
-        s.typing.pop(bare(d["from"]), None)
-    elif name == "room" and d.get("mention") and not d.get("own") and not d.get("delayed"):
-        key = f"{d['nick']} in {d['room'].split('@')[0]}"
-        s.unread[key] = s.unread.get(key, 0) + 1
-    elif name == "sent":
-        # answered
-        s.unread.pop(d["name"], None)
+            s.contacts[jid] = {
+                "name": d["name"],
+                "presence": describe(d["state"], d.get("status")),
+            }
     elif name == "attention":
         s.attention.append((d["name"], d.get("text")))
-    elif name == "subscribe":
-        s.requests[bare(d["from"])] = d.get("name") or bare(d["from"])
-    elif name == "roster":
-        # accepted (from, both) or removed: no longer asking
-        if d.get("subscription") in ("from", "both") or d.get("action") == "removed":
-            s.requests.pop(d["jid_contact"], None)
-    elif name == "file-offer":
-        s.offers[d["id"]] = {"from": d["from"], "file": d.get("file"), "size": d.get("size")}
-    elif name in ("file-received", "file-failed"):
-        peer = d.get("from") or d.get("peer")
-        for id, o in list(s.offers.items()):
-            if o["from"] == peer and (name == "file-received" or o["file"] == d.get("file")):
-                del s.offers[id]
-    elif name == "call":
-        # by its id: the peer changes from the bare jid to the client answering (a call to all clients)
-        key = d.get("id", d["from"])
-        if d["state"] == "ended":
-            s.calls.pop(key, None)
-            if "id" not in d:
-                # norc without ids: all calls of the contact
-                for k, c in list(s.calls.items()):
-                    if bare(c["from"]) == bare(d["from"]):
-                        del s.calls[k]
-        else:
-            s.calls[key] = {
-                **s.calls.get(key, {}),
-                "from": d["from"],
-                "name": d["name"],
-                "state": d["state"],
-                "media": d["media"],
-                "incoming": d["incoming"],
-            }
-    elif name == "recording":
-        for c in s.calls.values():
-            if c["from"] == d["from"]:
-                c["recording"] = d["state"] == "started"
+    else:
+        return False
+    return True
 
 
-def expire_typing():
-    """Removes typing contacts without a chat state for `TYPING_TIMEOUT`, returns whether any were removed"""
-    now = time.time()
-    old = [jid for jid, (_, t) in state.typing.items() if now - t > TYPING_TIMEOUT]
-    for jid in old:
-        del state.typing[jid]
-    return bool(old)
+def connect(info):
+    """The Unix socket of the api file if it has one (only you can connect, no token), else TCP"""
+    if "socket" in info:
+        sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        try:
+            sock.connect(info["socket"])
+            return sock
+        except OSError:
+            sock.close()
+            if "port" not in info:
+                raise
+    return socket.create_connection((info["host"], int(info["port"])))
 
 
 def run(path):
     with open(path) as f:
-        info = dict(line.split(" = ", 1) for line in f.read().splitlines() if " = " in line)
-    with socket.create_connection((info["host"], int(info["port"]))) as sock:
-        # woken up for the refresh and to expire typing
-        sock.settimeout(5)
-
-        def request(*cmds):
-            sock.sendall("".join(json.dumps(c) + "\n" for c in cmds).encode())
-
-        def refresh():
-            request(
-                {"id": "presence", "cmd": "presence"},
-                {"id": "requests", "cmd": "contacts requests"},
-                {"id": "transfers", "cmd": "file transfers"},
-            )
-
-        request(
-            {"auth": info["token"]},
-            *({"id": c, "cmd": c} for c in ("config", "contacts", "calls")),
+        info = dict(
+            line.split(" = ", 1) for line in f.read().splitlines() if " = " in line
         )
-        refresh()
-        refreshed = time.time()
+    with connect(info) as sock:
+        # woken up to redraw durations and progress, and to expire typing
+        sock.settimeout(TICK)
+        sock.sendall(
+            "".join(
+                json.dumps(r) + "\n"
+                for r in [
+                    # over the Unix socket answered ok without token
+                    {"auth": info.get("token", "")},
+                    {"id": "account", "cmd": "account"},
+                    {"id": "contacts", "cmd": "contacts"},
+                    {"id": "overview", "cmd": "overview"},
+                ]
+            ).encode()
+        )
         buffer = b""
         while True:
             try:
                 chunk = sock.recv(65536)
             except socket.timeout:
-                if expire_typing():
+                s = state.status or {}
+                if s.get("calls") or s.get("transfers") or state.typing_since:
                     show()
-                if time.time() - refreshed >= REFRESH:
-                    refresh()
-                    refreshed = time.time()
                 continue
             if not chunk:
                 return
@@ -415,7 +485,11 @@ def run(path):
                 if msg["type"] == "data":
                     data(msg.get("id"), msg["data"])
                 elif msg["type"] == "event":
-                    event(msg["event"], msg["data"])
+                    if not event(msg["event"], msg["data"]):
+                        continue
+                elif msg["type"] == "error" and msg.get("id") == "overview":
+                    # a norc without status (before /overview)
+                    state.error = "this norc has no /overview: update norc"
                 else:
                     continue
                 show()
@@ -430,10 +504,10 @@ def main():
                 run(path)
         except (OSError, ValueError, KeyError):
             pass
-        # norc doesn't run: the new messages are kept
-        unread, attention = state.unread, state.attention
+        # norc doesn't run: the attention requests are kept
+        attention = state.attention
         state.__init__()
-        state.unread, state.attention = unread, attention
+        state.attention = attention
         show()
         time.sleep(5)
 

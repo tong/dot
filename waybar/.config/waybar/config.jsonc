@@ -24,7 +24,8 @@
     "bluetooth",
     "custom/ssh",
     "custom/home-assistant",
-    "custom/norc",
+    "custom/norc#tong",
+    "custom/norc#zod",
     "custom/mail",
     // "systemd-failed-units",
     "battery",
@@ -183,11 +184,19 @@
     "format": "{}",
     "tooltip": true
   },
-  "custom/norc": {
+  "custom/norc#tong": {
     "exec": "python $HOME/.config/waybar/module/norc.py tong",
     "return-type": "json",
     "format": "{}",
-    "on-click": "pkill -USR1 -f waybar/module/norc.py",
+    "on-click": "pkill -USR1 -f 'module/norc.py tong( |$)'",
+    "tooltip": true
+  },
+  "custom/norc#zod": {
+    // "exec": "python $HOME/.config/waybar/module/norc.py zod@x.disktree.net --icon Z",
+    "exec": "python $HOME/.config/waybar/module/norc.py zod@x.disktree.net",
+    "on-click": "pkill -USR1 -f 'module/norc.py zod@x.disktree.net( |$)'",
+    "return-type": "json",
+    "format": "{}",
     "tooltip": true
   },
   "custom/mail": {
