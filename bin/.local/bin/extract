@@ -1,90 +1,330 @@
 #!/bin/sh
+# extract - a general, all-purpose extraction script.
+#
+# Picks the right tool for the archive type (by extension, falling back to
+# MIME sniffing with file(1)) and extracts into a directory named after the
+# archive, unless -c is given.
 
-# A general, all-purpose extraction script.
-set -e
+set -u
 
-# --- Helper Functions ---
 usage() {
-    echo "Usage: extract [-c] <archive>"
-    echo "A general, all-purpose extraction script."
-    echo
-    echo "Options:"
-    echo "   -c: Extract archive into current directory rather than a new one."
-    exit 1
+  cat <<'USAGE'
+Usage: extract [-c] <archive>...
+
+Extract one or more archives. Each archive is extracted into a new directory
+in the current working directory, named after the archive with its extension
+removed (foo.tar.gz -> foo/).
+
+Options:
+  -c    Extract into the current directory instead of a new one.
+  -h    Show this help.
+
+Formats: tar (plain, gz, bz2, xz, zst, lz, lz4, Z), zip (and jar, war, apk,
+whl, cbz, epub, xpi), rar/cbr, 7z, iso, deb, rpm, cpio, cab/msi/exe, and
+single compressed files (gz, bz2, xz, lzma, zst, lz4, lz, Z, br).
+USAGE
 }
 
-has_cmd() {
-    command -v "$1" >/dev/null 2>&1
+warn() { printf 'extract: %s\n' "$*" >&2; }
+die() {
+  warn "$@"
+  exit 1
+}
+has_cmd() { command -v "$1" >/dev/null 2>&1; }
+lower() { printf '%s\n' "$1" | tr '[:upper:]' '[:lower:]'; }
+
+# Print the first installed command among the arguments after the first;
+# the first argument describes what it is needed for (used in the error).
+pick() {
+  what=$1
+  shift
+  for c in "$@"; do
+    if has_cmd "$c"; then
+      printf '%s\n' "$c"
+      return 0
+    fi
+  done
+  die "cannot extract $what: none of [$*] is installed"
 }
 
-# --- Argument Parsing ---
-extracthere=false
-while getopts "hc" o; do
-    case "${o}" in
-        c) extracthere=true ;;
-        h | *) usage ;;
+abs_path() {
+  case $1 in
+  /*) printf '%s\n' "$1" ;;
+  *) printf '%s/%s\n' "$(pwd -P)" "$1" ;;
+  esac
+}
+
+# True if $1 (possibly compressed) is a tar archive.
+is_tar() {
+  if has_cmd bsdtar; then
+    bsdtar -tf "$1" >/dev/null 2>&1
+  elif has_cmd tar; then
+    tar -tf "$1" >/dev/null 2>&1
+  else
+    return 1
+  fi
+}
+
+# Print a format keyword for archive $1 (absolute path) with file name $2.
+# Decided by extension first, then by MIME type. Fails if unrecognised.
+format_of() {
+  case $(lower "$2") in
+  *.tar.gz | *.tgz | *.tar.bz2 | *.tbz2 | *.tbz | *.tar.xz | *.txz | \
+    *.tar.zst | *.tzst | *.tar.lz | *.tlz | *.tar.lz4 | *.tar.z | *.tar)
+    echo tar
+    ;;
+  *.zip | *.jar | *.war | *.ear | *.apk | *.whl | *.cbz | *.epub | *.xpi)
+    echo zip
+    ;;
+  *.rar | *.cbr) echo rar ;;
+  *.7z) echo 7z ;;
+  *.iso) echo iso ;;
+  *.deb) echo deb ;;
+  *.rpm) echo rpm ;;
+  *.cpio) echo cpio ;;
+  *.cab | *.msi | *.exe) echo cab ;;
+  *.gz) echo gz ;;
+  *.bz2) echo bz2 ;;
+  *.xz | *.lzma) echo xz ;;
+  *.zst) echo zst ;;
+  *.lz4) echo lz4 ;;
+  *.lz) echo lz ;;
+  *.z) echo Z ;;
+  *.br) echo br ;;
+  *)
+    has_cmd file || return 1
+    case $(file -b --mime-type "$1") in
+    application/x-tar) echo tar ;;
+    application/zip | application/java-archive) echo zip ;;
+    application/x-rar | application/vnd.rar) echo rar ;;
+    application/x-7z-compressed) echo 7z ;;
+    application/x-iso9660-image) echo iso ;;
+    application/vnd.debian.binary-package | application/x-debian-package)
+      echo deb
+      ;;
+    application/x-rpm) echo rpm ;;
+    application/x-cpio) echo cpio ;;
+    application/vnd.ms-cab-compressed) echo cab ;;
+    application/gzip | application/x-gzip) echo gz ;;
+    application/x-bzip2) echo bz2 ;;
+    application/x-xz | application/x-lzma) echo xz ;;
+    application/zstd) echo zst ;;
+    application/x-lz4) echo lz4 ;;
+    application/x-lzip) echo lz ;;
+    application/x-compress) echo Z ;;
+    *) return 1 ;;
     esac
+    ;;
+  esac
+}
+
+# Print the directory name for an archive: its name minus the archive extension.
+dir_name_for() {
+  n=$1
+  case $(lower "$n") in
+  *.tar.gz | *.tar.bz2 | *.tar.xz | *.tar.zst | *.tar.lz | *.tar.lz4 | *.tar.z)
+    n=${n%.*}
+    n=${n%.*}
+    ;;
+  *.*)
+    n=${n%.*}
+    ;;
+  esac
+  [ -n "$n" ] || n="$1.extracted"
+  printf '%s\n' "$n"
+}
+
+# Decompress single-file archive $1 (named $2) into the current directory,
+# using the remaining arguments as a decompressor that writes to stdout.
+decompress() {
+  a=$1
+  out=${2%.*}
+  shift 2
+  [ -n "$out" ] || out="$a.out"
+  [ -e "$out" ] && die "'$out' already exists, not overwriting"
+  "$@" "$a" >"$out" || {
+    rm -f -- "$out"
+    return 1
+  }
+}
+
+# Extract archive $1 (absolute path, file name $2, format $3) into the
+# current directory.
+run_extract() {
+  a=$1 name=$2 fmt=$3
+  case $fmt in
+  tar)
+    t=$(pick "tar archives" bsdtar tar) || exit 1
+    if [ "$t" = bsdtar ]; then
+      bsdtar -xf "$a"
+    else
+      case $(lower "$name") in
+      *.lz4) lz4 -dc "$a" | tar -xf - ;;
+      *) tar -xf "$a" ;;
+      esac
+    fi
+    ;;
+  zip)
+    t=$(pick "zip archives" bsdtar unzip 7z 7zz 7za) || exit 1
+    case $t in
+    bsdtar) bsdtar -xf "$a" ;;
+    unzip) unzip -q "$a" ;;
+    *) "$t" x "$a" ;;
+    esac
+    ;;
+  rar)
+    t=$(pick "rar archives" unrar bsdtar 7z 7zz 7za) || exit 1
+    case $t in
+    unrar) unrar x "$a" ;;
+    bsdtar) bsdtar -xf "$a" ;;
+    *) "$t" x "$a" ;;
+    esac
+    ;;
+  7z)
+    t=$(pick "7z archives" 7z 7zz 7za bsdtar) || exit 1
+    case $t in
+    bsdtar) bsdtar -xf "$a" ;;
+    *) "$t" x "$a" ;;
+    esac
+    ;;
+  iso)
+    t=$(pick "iso images" bsdtar 7z 7zz 7za) || exit 1
+    case $t in
+    bsdtar) bsdtar -xf "$a" ;;
+    *) "$t" x "$a" ;;
+    esac
+    ;;
+  deb)
+    t=$(pick "deb packages" bsdtar ar) || exit 1
+    case $t in
+    bsdtar) bsdtar -xf "$a" ;;
+    ar) ar x "$a" ;;
+    esac
+    ;;
+  rpm)
+    t=$(pick "rpm packages" bsdtar rpm2cpio) || exit 1
+    case $t in
+    bsdtar) bsdtar -xf "$a" ;;
+    rpm2cpio)
+      has_cmd cpio || die "cannot extract rpm packages: cpio is not installed"
+      rpm2cpio "$a" | cpio -idm --quiet
+      ;;
+    esac
+    ;;
+  cpio)
+    t=$(pick "cpio archives" bsdtar cpio) || exit 1
+    case $t in
+    bsdtar) bsdtar -xf "$a" ;;
+    cpio) cpio -idm --quiet <"$a" ;;
+    esac
+    ;;
+  cab)
+    t=$(pick "cab/msi/exe archives" cabextract 7z 7zz 7za bsdtar) || exit 1
+    case $t in
+    cabextract) cabextract -q "$a" ;;
+    bsdtar) bsdtar -xf "$a" ;;
+    *) "$t" x "$a" ;;
+    esac
+    ;;
+  gz)
+    t=$(pick "gzip files" gzip pigz) || exit 1
+    decompress "$a" "$name" "$t" -dc
+    ;;
+  bz2)
+    t=$(pick "bzip2 files" bzip2 pbzip2 lbzip2) || exit 1
+    decompress "$a" "$name" "$t" -dc
+    ;;
+  xz)
+    t=$(pick "xz/lzma files" xz) || exit 1
+    decompress "$a" "$name" xz -dc
+    ;;
+  zst)
+    t=$(pick "zstd files" zstd) || exit 1
+    decompress "$a" "$name" zstd -dc
+    ;;
+  lz4)
+    t=$(pick "lz4 files" lz4) || exit 1
+    decompress "$a" "$name" lz4 -dc
+    ;;
+  lz)
+    t=$(pick "lzip files" lzip) || exit 1
+    decompress "$a" "$name" lzip -dc
+    ;;
+  Z)
+    t=$(pick "compress files" gzip uncompress) || exit 1
+    decompress "$a" "$name" "$t" -dc
+    ;;
+  br)
+    t=$(pick "brotli files" brotli) || exit 1
+    decompress "$a" "$name" brotli -dc
+    ;;
+  *) die "internal error: unknown format '$fmt'" ;;
+  esac
+}
+
+# Extract one archive given as $1. Runs in a subshell so a failure (or die)
+# only affects this archive.
+extract_one() {
+  path=$1
+  [ -e "$path" ] || die "'$path' not found"
+  [ -f "$path" ] || die "'$path' is not a regular file"
+  [ -r "$path" ] || die "'$path' is not readable"
+  archive=$(abs_path "$path")
+  name=$(basename -- "$archive")
+
+  fmt=$(format_of "$archive" "$name") || die "'$name': unrecognised archive format"
+  # A compressed file without .tar in its name may still be a tarball.
+  case $fmt in
+  gz | bz2 | xz | zst | lz4 | lz | Z) is_tar "$archive" && fmt=tar ;;
+  esac
+
+  dest=.
+  created=false
+  if [ "$extracthere" = false ]; then
+    dest=$(dir_name_for "$name")
+    if [ -e "$dest" ] && ! [ -d "$dest" ]; then
+      dest="$dest.extracted"
+    fi
+    if ! [ -d "$dest" ]; then
+      mkdir -p -- "$dest" || die "cannot create directory '$dest'"
+      created=true
+    fi
+  fi
+
+  printf "Extracting '%s' -> %s/\n" "$name" "$dest"
+  if (cd -- "$dest" && run_extract "$archive" "$name" "$fmt"); then
+    echo "Done."
+  else
+    [ "$created" = true ] && rmdir -- "$dest" 2>/dev/null
+    die "'$name': extraction failed"
+  fi
+}
+
+# --- Main ---
+extracthere=false
+while getopts hc o; do
+  case $o in
+  c) extracthere=true ;;
+  h)
+    usage
+    exit 0
+    ;;
+  *)
+    usage >&2
+    exit 2
+    ;;
+  esac
 done
 shift $((OPTIND - 1))
 
-if [ -z "$1" ]; then
-    echo "Error: No archive file specified." >&2
-    usage
+if [ $# -eq 0 ]; then
+  warn "no archive specified"
+  usage >&2
+  exit 2
 fi
 
-archive_path="$1"
-
-if ! [ -f "$archive_path" ]; then
-    echo "Error: File '$archive_path' not found." >&2
-    exit 1
-fi
-
-# Use readlink (from coreutils) if available, otherwise fallback to a relative path.
-if has_cmd readlink; then
-    archive=$(readlink -f "$archive_path")
-else
-    archive="$archive_path"
-fi
-archive_name=$(basename -- "$archive")
-
-# --- Extraction Logic ---
-if [ "$extracthere" = "false" ]; then
-    # Create a directory named after the archive and extract into it.
-    # Strips the longest known extension.
-    dir_name=$(echo "$archive_name" | sed -e 's/\.tar\.gz$//' -e 's/\.tar\.bz2$//' -e 's/\.tar\.xz$//' -e 's/\.tar\.zst$//' -e 's/\.tgz$//' -e 's/\.tbz2$//' -e 's/\.[^.]*$//')
-    mkdir -p -- "$dir_name"
-    cd -- "$dir_name" || exit
-fi
-
-echo "Extracting '$archive_name'..."
-
-# Use bsdtar if available, it handles most formats automatically.
-if has_cmd bsdtar; then
-    bsdtar -xf "$archive"
-    echo "Done."
-    exit 0
-fi
-
-# Fallback to other tools if bsdtar is not present.
-case "$archive_name" in
-    *.tar.gz | *.tgz)   has_cmd tar || { echo "Error: tar not found" >&2; exit 1; }; tar -xzf "$archive" ;;
-    *.tar.bz2 | *.tbz2) has_cmd tar || { echo "Error: tar not found" >&2; exit 1; }; tar -xjf "$archive" ;;
-    *.tar.xz)           has_cmd tar || { echo "Error: tar not found" >&2; exit 1; }; tar -xJf "$archive" ;;
-    *.tar.zst)          has_cmd tar || { echo "Error: tar not found" >&2; exit 1; }; tar --zstd -xf "$archive" ;;
-    *.tar)              has_cmd tar || { echo "Error: tar not found" >&2; exit 1; }; tar -xf "$archive" ;;
-    *.zip)              has_cmd unzip || { echo "Error: unzip not found" >&2; exit 1; }; unzip "$archive" ;;
-    *.rar)              has_cmd unrar || { echo "Error: unrar not found" >&2; exit 1; }; unrar x "$archive" ;;
-    *.7z)               has_cmd 7z || { echo "Error: 7z not found" >&2; exit 1; }; 7z x "$archive" ;;
-    *.gz)               has_cmd gunzip || { echo "Error: gunzip not found" >&2; exit 1; }; gunzip "$archive" ;;
-    *.bz2)              has_cmd bunzip2 || { echo "Error: bunzip2 not found" >&2; exit 1; }; bunzip2 "$archive" ;;
-    *.xz)               has_cmd unxz || { echo "Error: unxz not found" >&2; exit 1; }; unxz "$archive" ;;
-    *.lzma)             has_cmd unlzma || { echo "Error: unlzma not found" >&2; exit 1; }; unlzma "$archive" ;;
-    *.Z)                has_cmd uncompress || { echo "Error: uncompress not found" >&2; exit 1; }; uncompress "$archive" ;;
-    *.exe)              has_cmd cabextract || { echo "Error: cabextract not found" >&2; exit 1; }; cabextract "$archive" ;;
-    *)
-        echo "Error: '$archive_name' is an unknown or unsupported archive format." >&2
-        exit 1
-        ;;
-esac
-
-echo "Done."
+status=0
+for f in "$@"; do
+  (extract_one "$f") || status=1
+done
+exit $status
