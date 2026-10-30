@@ -91,13 +91,13 @@ class WaybarTaskwarrior:
 
         # Filter from pending to ensure consistency
         self.active_tasks = self.pending.filter("+ACTIVE")
-        self.next_tasks = self.pending.filter("+next")
+        # Exclude active tasks so they aren't shown twice
+        self.next_tasks = self.pending.filter("+next -ACTIVE")
         self.overdue_tasks = self.pending.filter("+OVERDUE")
 
         # Tasks that are pending but not active and not tagged 'next'
         self.other_pending = self.pending.filter("-ACTIVE -next")
 
-        self.active_task = self.active_tasks[0] if self.active_tasks else None
 
     def build_text(self):
         parts = [self._pango(f" {self.symbols['main']} ", weight="bold")]
@@ -136,18 +136,20 @@ class WaybarTaskwarrior:
         if self.next_tasks:
             parts.append(self._pango(f"+{len(self.next_tasks)} ", weight="bold"))
 
-        # 4. Active Task Detail
-        if self.active_task:
-            project = self.active_task["project"]
-            desc = self.active_task["description"]
-            duration = self._format_duration(self.active_task["start"])
+        # 4. Active Task Details
+        for i, task in enumerate(self.active_tasks):
+            if i > 0:
+                parts.append(" ")
+            project = task["project"]
+            desc = task["description"]
+            duration = self._format_duration(task["start"])
 
             # Segment start
             parts.append(
                 self._pango(
                     self.symbols["right_arrow"],
                     fg=self.colors["background"],
-                    bg=self.colors["b_high"],
+                    bg=self.colors["b_med"] if project else self.colors["b_high"],
                 )
             )
 
@@ -155,16 +157,16 @@ class WaybarTaskwarrior:
                 parts.append(
                     self._pango(
                         f" {project.upper()} ",
-                        bg=self.colors["b_high"],
+                        bg=self.colors["b_med"],
                         fg=self.colors["f_low"],
                         weight="bold",
                     )
                 )
                 parts.append(
                     self._pango(
-                        self.symbols["right_arrow_thin"],
+                        self.symbols["right_arrow"],
                         bg=self.colors["b_high"],
-                        fg=self.colors["f_low"],
+                        fg=self.colors["b_med"],
                     )
                 )
 
@@ -226,8 +228,8 @@ class WaybarTaskwarrior:
                 lines.append(f"  • {proj}{t['description']}{duration}")
             lines.append("")
 
-        if self.active_task:
-            add_section("Active", [self.active_task], self.symbols["active"])
+        if self.active_tasks:
+            add_section("Active", self.active_tasks, self.symbols["active"])
 
         add_section("Overdue", self.overdue_tasks, self.symbols["urgent"])
         add_section("Next", self.next_tasks, self.symbols["next"])
@@ -241,7 +243,7 @@ class WaybarTaskwarrior:
             self.get_tasks()
 
             classes = ["taskwarrior"]
-            if self.active_task:
+            if self.active_tasks:
                 classes.append("active")
             if self.overdue_tasks:
                 classes.append("urgent")
@@ -250,7 +252,7 @@ class WaybarTaskwarrior:
                 "text": self.build_text(),
                 "tooltip": self.build_tooltip(),
                 "class": " ".join(classes),
-                "alt": "active" if self.active_task else "idle"
+                "alt": "active" if self.active_tasks else "idle"
             }
             print(json.dumps(output))
         except Exception as e:
