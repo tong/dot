@@ -2,10 +2,29 @@
 import os
 import json
 import requests
+import subprocess
 import sys
 
 HASS_URL = os.environ.get("HASS_URL", "http://192.168.0.94:8123")
-HASS_TOKEN = os.environ.get("HASS_TOKEN")
+
+
+def load_token():
+    token = os.environ.get("HASS_TOKEN")
+    if token:
+        return token
+    try:
+        out = subprocess.run(
+            ["pass", "home-assistant/token_ftl"],
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+        return out.stdout.strip() if out.returncode == 0 else None
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+
+
+HASS_TOKEN = load_token()
 HASS_TEMP_ENTITY = os.environ.get(
     "HASS_TEMP_ENTITY", "sensor.living_living_room_temperature"
 )
