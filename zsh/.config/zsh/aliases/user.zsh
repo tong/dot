@@ -1,5 +1,5 @@
-alias a='archive'
-alias az='archive zip'
+alias a='compress'
+alias az='compress -f zip'
 alias bc="bc -ql"
 alias c='clear'
 alias ddg="ddgr"
@@ -54,7 +54,6 @@ alias mail='neomutt'
 # alias man='man $1 | col -bx | bat -l man -p'
 alias nctl='norc ctl'
 alias notify='notify-send'
-alias open='xdg-open'
 alias phone='scrcpy'
 alias pdf='zathura'
 alias record-screen='wf-recorder -g "$(slurp)" -f output.mp4'
