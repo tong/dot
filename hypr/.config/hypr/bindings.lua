@@ -15,7 +15,7 @@ hl.bind(mainMod .. " + W", hl.dsp.window.close())
 
 hl.bind(mainMod .. " + return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(os.getenv("BROWSER")))
-hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(os.getenv("FILEMANAGER_GUI")))
+hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(os.getenv("FILEMANAGER_GUI") .. " --new-window"))
 
 -- hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(launcher))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("rofi -show drun"))
