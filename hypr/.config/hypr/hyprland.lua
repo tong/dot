@@ -83,7 +83,6 @@ hl.config({
     dwindle = {
         preserve_split = true,
         -- smart_resizing = false,
-        special_scale_factor = 0.9,
     },
 
     misc = {
@@ -106,6 +105,8 @@ for i = 1, 9 do
     hl.workspace_rule({ workspace = tostring(i), monitor = "DP-1" })
 end
 hl.workspace_rule({ workspace = "10", monitor = "HDMI-A-1" })
+-- special workspaces: inset ~5% per side (replaces deprecated dwindle.special_scale_factor = 0.9 on 4K)
+hl.workspace_rule({ workspace = "s[true]", gaps_out = { top = 108, right = 192, bottom = 108, left = 192 } })
 
 hl.window_rule({
     match = { class = "(blender|brave-browser|chromium|gimp|mpv|org.inkscape.Inkscape|vlc)" },
