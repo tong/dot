@@ -1,0 +1,226 @@
+#!/bin/sh
+# compress - create an archive from files or directories; counterpart to extract.
+#
+# Paths are stored relative to their parent directory, so `compress ~/src/foo`
+# yields an archive containing foo/..., not home/user/src/foo/....
+
+set -u
+
+DEFAULT_FORMAT=tar.zst
+# Names left out of archives unless -a is given (matched at any depth).
+EXCLUDES=".git .hg .svn node_modules __pycache__ .DS_Store Thumbs.db"
+
+usage() {
+    cat <<'USAGE'
+Usage: compress [-f FORMAT] [-o OUTPUT] [-a] <path>...
+
+Create an archive from one or more files or directories. Each path is stored
+relative to its parent, so `compress ~/src/foo` stores foo/..., never the
+full path.
+
+Options:
+  -f FORMAT  Archive format: tar.zst (default), tar.gz, tar.xz, tar.bz2,
+             tar, zip, 7z. Inferred from OUTPUT's extension when -o is given.
+  -o OUTPUT  Output file. Defaults to <name>.<format> in the current
+             directory; required when more than one path is given.
+  -a         Archive everything. By default .git, .hg, .svn, node_modules,
+             __pycache__, .DS_Store and Thumbs.db are left out.
+  -h         Show this help.
+USAGE
+}
+
+warn() { printf 'compress: %s\n' "$*" >&2; }
+die()  { warn "$@"; exit 1; }
+has_cmd() { command -v "$1" >/dev/null 2>&1; }
+lower() { printf '%s\n' "$1" | tr '[:upper:]' '[:lower:]'; }
+
+# Print the first installed command among the arguments after the first;
+# the first argument describes what it is needed for (used in the error).
+pick() {
+    what=$1
+    shift
+    for c in "$@"; do
+        if has_cmd "$c"; then
+            printf '%s\n' "$c"
+            return 0
+        fi
+    done
+    die "cannot create $what: none of [$*] is installed"
+}
+
+# Canonical format name for a user-supplied -f value.
+canon_format() {
+    case $(lower "$1") in
+        tar.zst | tzst | zst | zstd)       echo tar.zst ;;
+        tar.gz | tgz | gz | gzip)          echo tar.gz ;;
+        tar.xz | txz | xz)                 echo tar.xz ;;
+        tar.bz2 | tbz2 | tbz | bz2 | bzip2) echo tar.bz2 ;;
+        tar)                               echo tar ;;
+        zip)                               echo zip ;;
+        7z | 7zip)                         echo 7z ;;
+        *) return 1 ;;
+    esac
+}
+
+# Format implied by an output file name.
+format_from_name() {
+    case $(lower "$1") in
+        *.tar.zst | *.tzst)           echo tar.zst ;;
+        *.tar.gz | *.tgz)             echo tar.gz ;;
+        *.tar.xz | *.txz)             echo tar.xz ;;
+        *.tar.bz2 | *.tbz2 | *.tbz)   echo tar.bz2 ;;
+        *.tar)                        echo tar ;;
+        *.zip)                        echo zip ;;
+        *.7z)                         echo 7z ;;
+        *) return 1 ;;
+    esac
+}
+
+# Absolute, symlink-resolved path of $1. The file itself need not exist, but
+# its directory must.
+abs_path() {
+    if [ -d "$1" ]; then
+        (cd -- "$1" && pwd -P)
+    else
+        (cd -- "$(dirname -- "$1")" && printf '%s/%s\n' "$(pwd -P)" "$(basename -- "$1")")
+    fi
+}
+
+# --- Argument parsing ---
+format=
+output=
+all=false
+while getopts f:o:ah o; do
+    case $o in
+        f) format=$(canon_format "$OPTARG") || die "unknown format '$OPTARG'" ;;
+        o) output=$OPTARG ;;
+        a) all=true ;;
+        h) usage; exit 0 ;;
+        *) usage >&2; exit 2 ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+if [ $# -eq 0 ]; then
+    warn "no path specified"
+    usage >&2
+    exit 2
+fi
+
+for p in "$@"; do
+    [ -e "$p" ] || die "'$p' not found"
+    [ -d "$p" ] || [ -f "$p" ] || die "'$p' is not a file or directory"
+done
+
+# --- Output name and format ---
+if [ -z "$output" ]; then
+    [ $# -eq 1 ] || die "more than one path given; name the archive with -o"
+    [ -n "$format" ] || format=$DEFAULT_FORMAT
+    base=$(basename -- "$(abs_path "$1")")
+    [ "$base" != / ] || die "refusing to archive /"
+    output="$base.$format"
+elif [ -z "$format" ]; then
+    format=$(format_from_name "$output") || die "cannot infer a format from '$output'; use -f"
+fi
+[ -e "$output" ] && die "'$output' already exists"
+out_abs=$(abs_path "$output") || die "directory for '$output' does not exist"
+
+# --- Resolve inputs to (parent, base) pairs ---
+# Rotate the positional parameters: each input is replaced by two parameters.
+# Also note if the output lands inside an input tree, so it can be excluded.
+self_exclude=
+n=$#
+i=0
+while [ $i -lt $n ]; do
+    p=$1
+    shift
+    i=$((i + 1))
+    abs=$(abs_path "$p")
+    parent=$(dirname -- "$abs")
+    base=$(basename -- "$abs")
+    [ "$base" != / ] || die "refusing to archive /"
+    case $out_abs in
+        "$abs"/*) self_exclude=${out_abs#"$parent"/} ;;
+    esac
+    set -- "$@" "$parent" "$base"
+done
+npairs=$#
+
+excludes=
+[ "$all" = true ] || excludes=$EXCLUDES
+
+printf "Creating '%s'" "$output"
+[ -z "$excludes" ] || printf ' (leaving out: %s; -a keeps them)' "$excludes"
+echo
+
+cleanup_fail() {
+    rm -f -- "$out_abs"
+    die "failed to create '$output'"
+}
+
+# --- Create the archive ---
+case $format in
+    tar | tar.zst | tar.gz | tar.xz | tar.bz2 | zip | 7z)
+        case $format in
+            zip) tool=$(pick "zip archives" bsdtar zip) || exit 1 ;;
+            7z)  tool=$(pick "7z archives" 7z 7zz 7za bsdtar) || exit 1 ;;
+            *)   tool=$(pick "$format archives" bsdtar tar) || exit 1 ;;
+        esac ;;
+    *) die "internal error: unknown format '$format'" ;;
+esac
+
+case $tool in
+    bsdtar | tar)
+        # Build: [--exclude X]... [-C parent base]... with the excludes first.
+        for x in $excludes; do
+            set -- "$@" --exclude "$x"
+        done
+        [ -z "$self_exclude" ] || set -- "$@" --exclude "$self_exclude"
+        i=0
+        while [ $i -lt $npairs ]; do
+            set -- "$@" -C "$1" "$2"
+            shift 2
+            i=$((i + 2))
+        done
+        "$tool" -caf "$out_abs" "$@" || cleanup_fail
+        ;;
+    zip)
+        # zip has no -C; run once per input from its parent directory.
+        i=0
+        while [ $i -lt $npairs ]; do
+            parent=$1 base=$2
+            shift 2
+            i=$((i + 2))
+            set -- "$@" "$parent" "$base"
+            (
+                cd -- "$parent" || exit 1
+                set -- "$base"
+                for x in $excludes; do
+                    set -- "$@" -x "*/$x" "*/$x/*"
+                done
+                [ -z "$self_exclude" ] || set -- "$@" -x "$self_exclude"
+                zip -qr "$out_abs" "$@"
+            ) || cleanup_fail
+        done
+        ;;
+    7z | 7zz | 7za)
+        i=0
+        while [ $i -lt $npairs ]; do
+            parent=$1 base=$2
+            shift 2
+            i=$((i + 2))
+            set -- "$@" "$parent" "$base"
+            (
+                cd -- "$parent" || exit 1
+                set -- "$base"
+                for x in $excludes; do
+                    set -- "$@" "-xr!$x"
+                done
+                [ -z "$self_exclude" ] || set -- "$@" "-x!$self_exclude"
+                "$tool" a -bso0 -bsp0 "$out_abs" "$@"
+            ) || cleanup_fail
+        done
+        ;;
+esac
+
+printf "Done. '%s' (%s)\n" "$output" "$(du -h "$out_abs" | cut -f1)"
