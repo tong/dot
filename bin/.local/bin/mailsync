@@ -25,7 +25,7 @@ case "$(readlink -f /sbin/init 2>/dev/null)" in
 esac
 
 # Function to send desktop notifications
-# $1: account, $2: from, $3: subject
+# $1: mailbox, $2: from, $3: subject
 notify() {
   export XDG_RUNTIME_DIR="/run/user/$(id -u)"
   summary="New mail in $1"
@@ -47,23 +47,25 @@ syncandnotify() {
   fi
 
   maildir="$HOME/.local/share/mail/$acc"
-  # Find emails newer than the last run. Use -path for robustness.
+  # Find emails in notified mailboxes newer than the last run
   new=$(find "$maildir" \
-    \( -path '*/[Ii][Nn][Bb][Oo][Xx]/new/*' -o -path '*/[Ii][Nn][Bb][Oo][Xx]/cur/*' \) \
+    \( -path '*/[Ii][Nn][Bb][Oo][Xx]/new/*' -o -path '*/[Ii][Nn][Bb][Oo][Xx]/cur/*' \
+    -o -path '*/Work/new/*' -o -path '*/Work/cur/*' \) \
     -type f -newer "$lastrun" 2>/dev/null || true)
 
   if [ -z "$new" ]; then
     echo "No new mail for $acc"
   else
-    newcount=$(echo "$new" | sed '/^\\s*$/d' | wc -l)
+    newcount=$(echo "$new" | sed '/^\s*$/d' | wc -l)
     echo "$newcount new mails for $acc"
     if [ -z "$MAILSYNC_MUTE" ]; then
       # Process each new mail individually
-      echo "$new" | sed '/^\\s*$/d' | while IFS= read -r mailfile; do
+      echo "$new" | sed '/^\s*$/d' | while IFS= read -r mailfile; do
         if [ -f "$mailfile" ]; then
           from=$(grep -i '^From: ' "$mailfile" | head -n 1 | sed -e 's/^[Ff][Rr][Oo][Mm]: //')
           subject=$(grep -i '^Subject: ' "$mailfile" | head -n 1 | sed -e 's/^[Ss][Uu][Bb][Jj][Ee][Cc][Tt]: //')
-          notify "$acc" "$from" "$subject"
+          mailbox=$(basename "$(dirname "$(dirname "$mailfile")")")
+          notify "$acc/$mailbox" "$from" "$subject"
         else
           echo "mailsync: warning: skipping non-file item in new mail list: $mailfile" >&2
         fi
@@ -93,7 +95,7 @@ if [ -n "$accounts_args" ]; then
 elif [ -n "$EMAIL" ]; then
   accounts="$EMAIL"
 else
-  accounts="$(awk '/^Channel/ {print $3}' "$MBSYNCRC" 2>/dev/null)"
+  accounts="$(awk '/^Channel/ {print $2}' "$MBSYNCRC" 2>/dev/null)"
 fi
 
 if [ -z "$accounts" ]; then
@@ -110,3 +112,5 @@ echo "Indexing mail..."
 notmuch new --quiet
 touch "$lastrun"
 
+# Refresh waybar mail module
+#pkill -RTMIN+9 waybar || true
