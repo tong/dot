@@ -2,53 +2,45 @@
 
 startup-hook 'echo `touch "$HOME/.local/state/mutt-lastview"`'
 
-set ssl_starttls=yes
-set ssl_force_tls=yes
-
-unset imap_passive
-set imap_keepalive = 30
-set mail_check_stats
-set sleep_time = 0		# Pause 0 seconds for informational messages
+# General
 set mail_check = 120
-set smtp_authenticators = 'gssapi:login'
+set mail_check_stats
+set sleep_time = 0              # Don't pause for informational messages
+set wait_key = no               # Don't ask "press key to continue"
 set rfc2047_parameters = yes
+
+# MIME
 set mailcap_path = $HOME/.config/mutt/mailcap:$mailcap_path
-set mime_forward = yes	# attachments are forwarded with mail
-
-#set crypt_autosign = yes
-#set crypt_opportunistic_encrypt = yes
-#set pgp_self_encrypt = yes
-#set pgp_default_key  = 'your@gpgemailaddre.ss'
-
 set mime_type_query_command = "file --mime-type -b %s"
+auto_view text/html
+auto_view application/pgp-encrypted
+alternative_order text/plain text/enriched text/html
+
+# Contacts
 set query_command = "khard email --parsable %s"
 
-set date_format="%Y/%m/%d %I:%M%p"
-set index_format="%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"
+# Index
+set date_format = "%Y/%m/%d %I:%M%p"
 set use_threads = yes
 set sort = reverse-date
 set sort_aux = date
-set markers = no		# Disables the `+` displayed at line wraps
-set mark_old = no		# Unread mail stay unread until read
+set mark_old = no               # Unread mail stays unread until read
 
-set fcc_attach			# save attachments with the body
-set forward_format = "Fwd: %s"	# format of subject when forwarding
-set forward_quote		# Include message in forwards
-set reverse_name		# Reply as whomever it was to
-set include			    # Include message in replies
-set recall = no
-
-set pager_context=1
-set pager_index_lines=20
+# Pager
+set pager_context = 1
+set pager_index_lines = 20
 set pager_stop
+set markers = no                # Don't show `+` at wrapped lines
 
-set wait_key = no		# Don't ask "press key to continue"
-set fast_reply			# Skip to compose when replying
-
-auto_view text/html		# Automatically show html
-auto_view application/pgp-encrypted
-#set display_filter = "tac | sed '/\\\[-- Autoview/,+1d' | tac" # Suppress autoview messages.
-alternative_order text/plain text/enriched text/html
+# Compose
+set fast_reply                  # Skip to compose when replying
+set include                     # Quote message in replies
+set reverse_name                # Reply as whomever it was to
+set recall = no
+set fcc_attach                  # Save attachments with the body
+set forward_format = "Fwd: %s"
+set forward_quote               # Quote message in forwards
+set mime_forward = yes          # Forward attachments with the mail
 
 source $HOME/.config/mutt/colors/void
 source $HOME/.config/mutt/themes/void
