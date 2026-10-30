@@ -55,6 +55,7 @@ window#waybar.hidden {
 #tray,
 #bluetooth,
 #custom-taskwarrior,
+#custom-gamepad,
 #custom-keyboard,
 #custom-home-assistant,
 #custom-wireguard,
@@ -298,6 +299,10 @@ window#waybar.hidden {
   background-color: transparent;
   border: none;
   padding: 0;
+}
+
+#custom-gamepad.low {
+  color: #ff5555;
 }
 
 #custom-ssh {
