@@ -199,19 +199,21 @@
     "on-click": "pkill -USR1 -f 'module/norc.py tong( |$)'",
     "tooltip": true
   },
-  "custom/norc#zod": {
-    // "exec": "python $HOME/.config/waybar/module/norc.py zod@x.disktree.net --icon Z",
-    "exec": "python $HOME/.config/waybar/module/norc.py zod@x.disktree.net",
-    "on-click": "pkill -USR1 -f 'module/norc.py zod@x.disktree.net( |$)'",
-    "return-type": "json",
-    "format": "{}",
-    "tooltip": true
-  },
+  // "custom/norc#zod": {
+  //   // "exec": "python $HOME/.config/waybar/module/norc.py zod@x.disktree.net --icon Z",
+  //   "exec": "python $HOME/.config/waybar/module/norc.py zod@x.disktree.net",
+  //   "on-click": "pkill -USR1 -f 'module/norc.py zod@x.disktree.net( |$)'",
+  //   "return-type": "json",
+  //   "format": "{}",
+  //   "tooltip": true
+  // },
   "custom/mail": {
     "exec": "python $HOME/.config/waybar/module/mail.py",
     "return-type": "json",
     "interval": 60,
+    "signal": 9,
     "format": "{}",
+    "on-click": "kitty -e neomutt",
     "tooltip": true
   },
   "systemd-failed-units": {
