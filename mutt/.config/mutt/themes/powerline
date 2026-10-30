@@ -1,17 +1,10 @@
 # vim: filetype=neomuttrc
 
-# set index_format = "%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"
-# set index_format = "%2C %Z"
 set index_format = "  %zc %zs %zt %{!%Y-%m-%d %H:%M} %-24.24L %?M?(%1M)& ? %?X?&·? %s"
-#set index_format = "  %zs %{!%y/%m/%d %H:%M} %zc %zt  %-28.28L  %?M?(%1M)&  ? %?X?&·? %s"
-# set index_format = "  %zs %{!%Y-%m-%d %H:%M} %zc %zt %s"
-#set pager_format = "  %n %zc  %T %s%*  %{!%d %b · %H:%M} %?X?  %X ? %P  "
 set pager_format = "  %n %zc  %T %s%*  %{!%Y/%m/%d %H:%M} %?X?  %X ? %P  "
 set status_format = "  %f%?r? %r?  %m %?n?  %n ?  %?d?  %d ?%?t?  %t ?%?F?  %F? %> %?p?   %p ?"
-set vfolder_format = "  %N %?n?%3n&   ?  %8m  · %f"
+set mailbox_folder_format = "  %N %?n?%3n&   ?  %8m  · %f"
 set attach_format = "%u%D  %T%-75.75d %?T?%&   ? %5s · %m/%M"
-#set arrow_string = ""
-#set indent_string = "> "
 
 # No addressed to me, to me, group, cc, sent by me, mailing list
 set to_chars=""
@@ -22,15 +15,15 @@ set flag_chars = "      "
 
 set hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypted"
 tag-transforms "replied" "↻ "  \
-               "encrytpted" "" \
+               "encrypted" "" \
                "signed" "" \
-               "attachment" "󰁦" \
+               "attachment" "󰁦"
 
 # The formats must start with 'G' and the entire sequence is case sensitive.
 tag-formats "replied" "GR" \
             "encrypted" "GE" \
             "signed" "GS" \
-            "attachment" "GA" \
+            "attachment" "GA"
 
 set sidebar_visible = no
 set sidebar_width = 22
@@ -38,8 +31,6 @@ set sidebar_short_path = yes
 set sidebar_next_new_wrap = yes
 set sidebar_sort_method = alpha
 set sidebar_format = '%D%?F? [%F]?%* %?N?%N/?%?S?%S?'
-# set sidebar_folder_indent = yes
-# set sidebar_indent_string = "?"
 
 color status white black
 color status green black ''
@@ -55,5 +46,3 @@ color status blue yellow '() ([0-9]+%|all|end) \s*' 1
 color status black blue ' ([0-9]+%|all|end) \s*'
 color status yellow black '()\s*' 1
 color status default black ''
-
-
