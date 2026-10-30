@@ -20,14 +20,16 @@ ICON_NOTFICATION="/usr/share/icons/Adwaita/symbolic/status/mail-unread-symbolic.
 
 case "$(readlink -f /sbin/init 2>/dev/null)" in
 *systemd* | *openrc*)
-  export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus
+  DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
+  export DBUS_SESSION_BUS_ADDRESS
   ;;
 esac
 
 # Function to send desktop notifications
 # $1: mailbox, $2: from, $3: subject
 notify() {
-  export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+  XDG_RUNTIME_DIR="/run/user/$(id -u)"
+  export XDG_RUNTIME_DIR
   summary="New mail in $1"
   body="From: $2
 Subject: $3"
@@ -35,16 +37,13 @@ Subject: $3"
 }
 
 # Function to sync one account and notify about new mail
+# $1: account, remaining args: extra mbsync options
 syncandnotify() {
   account=$1
-  opts=$2
+  shift
   acc="$(echo "$account" | sed "s/.*\///")"
   echo "Syncing $acc..."
-  if [ -z "$opts" ]; then
-    mbsync -c "$MBSYNCRC" "$acc"
-  else
-    mbsync -c "$MBSYNCRC" $opts "$acc"
-  fi
+  mbsync -c "$MBSYNCRC" "$@" "$acc"
 
   maildir="$HOME/.local/share/mail/$acc"
   # Find emails in notified mailboxes newer than the last run
@@ -75,12 +74,12 @@ syncandnotify() {
   fi
 }
 
-opts=""
+opts=()
 accounts_args=""
 while [ $# -gt 0 ]; do
   case "$1" in
   -*)
-    opts="${opts:+$opts }$1"
+    opts+=("$1")
     shift
     ;;
   *)
@@ -104,7 +103,7 @@ if [ -z "$accounts" ]; then
 fi
 
 for account in $accounts; do
-  syncandnotify "$account" "$opts" &
+  syncandnotify "$account" "${opts[@]}" &
 done
 wait
 
