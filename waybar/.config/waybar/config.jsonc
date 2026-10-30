@@ -22,6 +22,7 @@
     "group/performance",
     "custom/keyboard",
     "bluetooth",
+    "custom/gamepad",
     "custom/ssh",
     "custom/home-assistant",
     "custom/norc#tong",
@@ -169,6 +170,13 @@
     "tooltip-format-connected": " {controller_alias}\t{controller_address}\n\n{num_connections} connected\n{device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
     "on-click": "kitty -e bluetui"
+  },
+  "custom/gamepad": {
+    "exec": "python $HOME/.config/waybar/module/gamepad.py",
+    "return-type": "json",
+    "interval": 5,
+    "format": "{}",
+    "tooltip": true
   },
   "custom/ssh": {
     "exec": "python $HOME/.config/waybar/module/ssh.py",
