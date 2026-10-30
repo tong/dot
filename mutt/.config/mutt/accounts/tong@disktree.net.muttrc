@@ -1,0 +1,32 @@
+# vim: filetype=neomuttrc
+
+alias me tong <tong@disktree.net>
+
+set from = "tong@disktree.net"
+set hostname = "disktree.net"
+set sendmail = "msmtp -a tong@disktree.net"
+set signature = "$HOME/.config/mutt/accounts/tong@disktree.net.signature"
+
+set mbox_type = Maildir
+set folder = "$HOME/.local/share/mail/tong@disktree.net"
+set message_cachedir = $HOME/.cache/mail/tong@disktree.net/bodies
+set header_cache = $HOME/.cache/mail/tong@disktree.net/headers
+
+# Notmuch
+set nm_default_url = "notmuch:///home/tong/.local/share/mail"
+set nm_unread_tag = unread
+set nm_record = yes
+virtual-mailboxes \
+    "archive" "notmuch://?query=tag:archive" \
+    "sent" "notmuch://?query=tag:sent" \
+    "newsletters" "notmuch://?query=tag:newsletters"
+
+# Mailboxes
+set spool_file = +INBOX
+set postponed = +Drafts
+set trash = +Trash
+set record = +Sent
+mailboxes `find ~/.local/share/mail/tong@disktree.net/ -type d -name cur | sed -e 's:/cur/*$::' -e 's/ /\\ /g' | sort | tr '\n' ' '`
+
+# GPG
+#source $HOME/.config/mutt/accounts/$EMAIL.gpgrc
