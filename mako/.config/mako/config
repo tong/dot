@@ -13,6 +13,7 @@ icon-border-radius=8
 max-icon-size=32
 outer-margin=20
 margin=8
+height=200
 
 [urgency=low]
 text-color=#808080FF
