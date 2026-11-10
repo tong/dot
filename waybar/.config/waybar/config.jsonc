@@ -242,7 +242,7 @@
   },
   "clock": {
     "interval": 1,
-    "format": "󰥔 {:%A, %d %B %Y - %H:%M:%S}",
+    "format": "{:%A, %d %B %Y - %H:%M:%S}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
